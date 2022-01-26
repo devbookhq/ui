@@ -8,3 +8,7 @@ github:
 
 image:
   file: .gitpod.Dockerfile
+
+vscode:
+  extensions:
+    - bradlc.vscode-tailwindcss

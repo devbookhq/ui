@@ -1,48 +1,34 @@
-import React, {
+import {
   useEffect,
   useRef,
-  memo,
 } from 'react';
-import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
-import { bracketMatching } from '@codemirror/matchbrackets'
 import {
-  closeBrackets,
-  closeBracketsKeymap,
-} from '@codemirror/closebrackets'
-import { commentKeymap } from '@codemirror/comment'
-import { indentOnInput } from '@codemirror/language'
-import {
-  codeFolding,
-  foldGutter,
-} from '@codemirror/fold'
+  EditorState,
+  EditorView,
+  basicSetup,
+} from '@codemirror/basic-setup';
 import {
   keymap,
-  drawSelection,
 } from '@codemirror/view'
-import { foldKeymap } from '@codemirror/fold'
 import {
   defaultKeymap,
   indentWithTab,
 } from '@codemirror/commands'
 import {
-  lineNumbers,
-  highlightActiveLineGutter,
-} from '@codemirror/gutter'
-import { classHighlightStyle } from '@codemirror/highlight'
-import {
   javascriptLanguage,
 } from '@codemirror/lang-javascript'
-
-import './Editor.css';
+import { oneDark } from '@codemirror/theme-one-dark'
 
 export interface Props {
   initialCode: string
   onChange: (content: string) => void
+  darkTheme?: boolean
 }
 
 function Editor({
   initialCode,
   onChange,
+  darkTheme,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null);
 
@@ -53,27 +39,17 @@ function Editor({
       if (update.docChanged) {
         onChange(update.state.doc.toString());
       }
-    });
+    })
+
     const state = EditorState.create({
       doc: initialCode,
       extensions: [
         basicSetup,
+        ...darkTheme ? [oneDark] : [],
         changeWatcher,
         javascriptLanguage,
-        drawSelection(),
-        highlightActiveLineGutter(),
-        indentOnInput(),
-        bracketMatching(),
-        closeBrackets(),
-        classHighlightStyle,
-        lineNumbers(),
-        codeFolding(),
-        foldGutter(),
         keymap.of([
-          ...closeBracketsKeymap,
           ...defaultKeymap,
-          ...commentKeymap,
-          ...foldKeymap,
           indentWithTab,
           // Override default browser Ctrl/Cmd+S shortcut when a code cell is focused.
           {
@@ -86,16 +62,21 @@ function Editor({
 
     const view = new EditorView({ state, parent: editorEl.current });
     return () => {
-      view.destroy();
-    };
-  }, [initialCode, onChange, editorEl]);
+      view.destroy()
+    }
+  }, [
+    initialCode,
+    onChange,
+    editorEl,
+    darkTheme,
+  ])
 
   return (
     <div
-      className="editor"
+      className="flex-1 flex overflow-auto max-h-full"
       ref={editorEl}
     />
   )
 }
 
-export default memo(Editor);
+export default Editor

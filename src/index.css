@@ -1,0 +1,12 @@
+@tailwind utilities;
+@tailwind components;
+@tailwind base;
+
+@layer utilities {
+  .output-font {
+    font-size: 13px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    white-space: pre;
+    line-height: 1.5;
+  }
+}

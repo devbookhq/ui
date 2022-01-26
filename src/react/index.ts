@@ -1,11 +1,3 @@
-export { default as useDevbook } from './useDevbook'
-
-import {
-  Opts,
-  State,
-} from './useDevbook'
-
-export type {
-  Opts,
-  State,
-}
+export { default as Editor } from './components/Editor'
+export { default as Output } from './components/Output'
+// export { default as Iframe } from './components/Iframe'
