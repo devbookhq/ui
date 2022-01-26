@@ -7,6 +7,7 @@ export type Output = 'error' | 'output'
 export interface Props {
   stdout?: string[]
   stderr?: string[]
+  height?: number // in px
   lightTheme?: boolean
 }
 
@@ -14,26 +15,13 @@ function Output({
   stdout = [],
   stderr = [],
   lightTheme,
+  height = 150,
 }: Props) {
 
   const logs = useMemo(() => {
     return [
       ...stdout.map(s => ({ message: s, type: 'output' as Output })),
       ...stderr.map(s => ({ message: s, type: 'error' as Output })),
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
-      { message: 'mm', type: 'output' },
     ]
   }, [stderr, stdout])
 
@@ -43,11 +31,13 @@ function Output({
       { 'dark': !lightTheme },
     )}>
       <div
+        style={{
+          height: `${height}px`,
+        }}
         className={cn(`
         flex-1
         flex
         flex-col
-        h-60
         rounded
 
         dark:bg-black-900

@@ -8,7 +8,6 @@ import {
   Env,
   DevbookStatus,
 } from '@devbookhq/sdk';
-import Splitter from '@devbookhq/splitter';
 import { Editor, Output } from '@devbookhq/ui'
 
 import './App.css';
@@ -22,7 +21,6 @@ const initialCmd =
 `
 
 function App() {
-  const [sizes, setSizes] = useState([50, 50]);
   const [code, setCode] = useState(initialCode);
   const [cmd, setCmd] = useState(initialCmd);
   const [execType, setExecType] = useState('code');
@@ -58,7 +56,6 @@ function App() {
 
   return (
     <div className="app">
-      {/* <Iframe url='google.com' /> */}
       {status === DevbookStatus.Disconnected && <div>Status: Disconnected, will start VM</div>}
       {status === DevbookStatus.Connecting && <div>Status: Starting VM...</div>}
       {status === DevbookStatus.Connected && (

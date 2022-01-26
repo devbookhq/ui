@@ -1,34 +1,77 @@
 import {
   MouseEvent,
+  useState,
+  KeyboardEvent,
 } from 'react'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 import RefreshIcon from '../RefreshIcon'
 import IconButton from '../IconButton'
 import CellHeader from '../CellHeader'
-import Text from '../Text'
 
 export interface Props {
   url?: string
   onReloadIframe: (e: MouseEvent) => void
+  onConfirm: (url: string) => void
 }
 
 function Header({
   url = '',
   onReloadIframe,
+  onConfirm,
 }: Props) {
+
+  const [newURL, setNewURL] = useState(url)
+
+  useHotkeys('enter', function confirmOnEnter() {
+    onConfirm(newURL)
+  }, [newURL, onConfirm])
+
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      onConfirm(newURL)
+    }
+  }
+
+  function handleInputChange(e: any) {
+    setNewURL(e.target.value)
+  }
+
+  function onRefresh(e: MouseEvent) {
+    onConfirm(newURL)
+    onReloadIframe(e)
+  }
 
   return (
     <CellHeader>
       <div className="flex items-center space-x-2">
         <IconButton
-          onMouseDown={onReloadIframe}
+          onMouseDown={onRefresh}
           icon={<RefreshIcon />}
         />
-        <Text
-          mono
-          hierarchy={Text.hierarchy.Secondary}
-          size={Text.size.Small}
-          text={url}
+        <input
+          className="
+          p-0.5
+          pl-[10px]
+          flex-1
+          placeholder:text-denim-400
+          dark:placeholder:text-gray-700
+          border
+          border-gray-500
+          dark:border-black-600
+          rounded
+          text-2xs
+          font-400
+          font-mono
+          text-denim-700
+          dark:text-gray-200
+          bg-transparent
+          outline-none
+        "
+          value={newURL}
+          onKeyDown={handleKeyDown}
+          onChange={handleInputChange}
+          placeholder="https://"
         />
       </div>
     </CellHeader>

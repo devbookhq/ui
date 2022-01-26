@@ -1,5 +1,5 @@
 import {
-  useRef,
+  useRef, useState,
 } from 'react'
 
 import Separator from '../Separator'
@@ -10,20 +10,26 @@ import IframeEl, { IframeElHandle } from './IframeEl'
 
 export interface Props {
   url: string
+  height?: number // in px
+  lightTheme?: boolean
 }
 
 function Iframe({
-  url,
+  url: initialURL,
+  height = 150,
+  lightTheme,
 }: Props) {
   const iframeRef = useRef<IframeElHandle>(null)
+  const [url, setURL] = useState(initialURL)
 
   function handleReloadIframe() {
     iframeRef.current?.reload()
   }
 
   return (
-    <div>
+    <div className={`${lightTheme ? '' : 'dark'}`}>
       <Header
+        onConfirm={setURL}
         url={url}
         onReloadIframe={handleReloadIframe}
       />
@@ -34,25 +40,27 @@ function Iframe({
       {url
         ? (
           <IframeEl
+            height={height}
             ref={iframeRef}
             src={url}
           />
         )
         : (
           <div
+            style={{
+              height: `${height}px`,
+            }}
             className="
-            h-[150px]
-
             flex
             items-center
             justify-center
-
             rounded-b
-
             border-x
             border-b
-          border-black-600
-          bg-gray-700
+            border-gray-500
+            dark:border-black-600
+            bg-gray-800
+            dark:bg-gray-700
           "
           >
             <SpinnerIcon />

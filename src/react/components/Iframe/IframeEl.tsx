@@ -9,6 +9,7 @@ import SpinnerIcon from '../SpinnerIcon'
 
 export interface Props {
   src: string
+  height: number // in px
 }
 
 export interface IframeElHandle {
@@ -17,8 +18,10 @@ export interface IframeElHandle {
 
 const IframeEl = forwardRef<IframeElHandle, Props>(({
   src,
+  height,
 }, ref) => {
   const [v, setV] = useState(0)
+
   useImperativeHandle(ref, () => ({
     reload: () => {
       setV(v + 1)
@@ -31,16 +34,21 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
         flex-1
         flex
         relative
+        rounded-b
 
         border-x
       border-x-black-650
       "
     >
       <iframe
+        style={{
+          height: `${height}px`,
+        }}
         key={v}
         className={cn(
           'flex-1',
           'bg-transparent',
+          'rounded-b',
           'z-20',
         )}
         src={src}

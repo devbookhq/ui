@@ -28,7 +28,8 @@
     "@codemirror/highlight": "^0.19.7",
     "@codemirror/lang-javascript": "^0.19.6",
     "@codemirror/view": "^0.19.40",
-    "classnames": "^2.3.1"
+    "classnames": "^2.3.1",
+    "react-hotkeys-hook": "^3.4.4"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.1.3",
