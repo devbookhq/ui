@@ -47,6 +47,6 @@ export default {
     typescript(),
     nodePolyfills(),
     nodeResolve(),
-    terser(),
+    // terser(),
   ],
 }

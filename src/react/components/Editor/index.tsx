@@ -19,15 +19,20 @@ import {
 } from '@codemirror/lang-javascript'
 import { classHighlightStyle } from '@codemirror/highlight'
 
+import Header from './Header';
+import Separator from '../Separator';
+
 export interface Props {
   initialCode: string
   onChange: (content: string) => void
   lightTheme?: boolean
+  filepath?: string
 }
 
 function Editor({
   initialCode,
   onChange,
+  filepath,
   lightTheme,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null);
@@ -71,10 +76,23 @@ function Editor({
   ])
 
   return (
-    <div
-      className={`flex-1 flex max-h-full min-w-0 devbook ${lightTheme ? '' : 'dark'}`}
-      ref={editorEl}
-    />
+    <div className={`rounded ${lightTheme ? '' : 'dark'}`}>
+      {filepath &&
+        <>
+          <Header
+            filepath={filepath}
+          />
+          <Separator
+            variant={Separator.variant.CodeEditor}
+            dir={Separator.dir.Horizontal}
+          />
+        </>
+      }
+      <div
+        className={`flex-1 flex max-h-full min-w-0 overflow-auto devbook ${filepath ? 'rounded-b' : 'rounded'}`}
+        ref={editorEl}
+      />
+    </div>
   )
 }
 

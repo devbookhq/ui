@@ -9,7 +9,7 @@ import {
   DevbookStatus,
 } from '@devbookhq/sdk';
 import Splitter from '@devbookhq/splitter';
-import { Editor, Output, Iframe } from '@devbookhq/ui'
+import { Editor, Output } from '@devbookhq/ui'
 
 import './App.css';
 
@@ -27,8 +27,17 @@ function App() {
   const [cmd, setCmd] = useState(initialCmd);
   const [execType, setExecType] = useState('code');
 
-  const { stderr, stdout, runCode, runCmd, status } = useDevbook({ debug: true, env: Env.NodeJS });
+  const { stderr, stdout, runCode, runCmd, status } = {
+    stderr: [],
+    stdout: [],
+    runCode: (str: string) => { },
+    runCmd: (str: string) => { },
+    status: DevbookStatus.Disconnected,
+  };
+  // const { stderr, stdout, runCode, runCmd, status } = useDevbook({ debug: true, env: Env.NodeJS });
   console.log({ stdout, stderr })
+
+
 
   const handleEditorChange = useCallback((content: string) => {
     if (execType === 'code') {
@@ -61,23 +70,15 @@ function App() {
           <button className="run-btn" onClick={run}>Run</button>
         </div>
       )}
-
-      <Splitter
-        classes={['flex', 'flex']}
-        initialSizes={sizes}
-        onResizeFinished={(_, sizes) => {
-          setSizes(sizes);
-        }}
-      >
-        <Editor
-          initialCode={execType === 'code' ? initialCode : initialCmd}
-          onChange={handleEditorChange}
-        />
-        <Output
-          stdout={stdout}
-          stderr={stderr}
-        />
-      </Splitter>
+      <Editor
+        filepath="index.js"
+        initialCode={execType === 'code' ? initialCode : initialCmd}
+        onChange={handleEditorChange}
+      />
+      <Output
+        stdout={stdout}
+        stderr={stderr}
+      />
     </div >
   );
 }

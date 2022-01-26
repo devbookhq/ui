@@ -3,6 +3,12 @@ module.exports = {
   darkMode: 'class',
   important: true,
   theme: {
+    extend: {
+      fontSize: {
+        '2xs': '0.75rem',
+        xs: '0.8125rem',
+      },
+    },
     colors: {
       transparent: 'transparent',
       black: {
@@ -11,6 +17,9 @@ module.exports = {
         700: '#262626',
         650: '#292929',
         600: '#363636',
+      },
+      red: {
+        400: '#FC4F60',
       },
       gray: {
         800: '#8F8F8F',
