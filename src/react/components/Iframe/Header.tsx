@@ -3,7 +3,6 @@ import {
   useState,
   KeyboardEvent,
 } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
 
 import RefreshIcon from '../RefreshIcon'
 import IconButton from '../IconButton'
@@ -20,12 +19,7 @@ function Header({
   onReloadIframe,
   onConfirm,
 }: Props) {
-
   const [newURL, setNewURL] = useState(url)
-
-  useHotkeys('enter', function confirmOnEnter() {
-    onConfirm(newURL)
-  }, [newURL, onConfirm])
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
@@ -44,7 +38,7 @@ function Header({
 
   return (
     <CellHeader>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 flex-1">
         <IconButton
           onMouseDown={onRefresh}
           icon={<RefreshIcon />}
@@ -54,6 +48,8 @@ function Header({
           p-0.5
           pl-[10px]
           flex-1
+          flex
+          min-w-0
           placeholder:text-denim-400
           dark:placeholder:text-gray-700
           border

@@ -3,13 +3,3 @@
   @apply flex-1 max-w-[600px];
   @apply flex flex-col space-y-2;
 }
-
-.run-btn {
-  @apply py-1 px-3;
-  @apply rounded;
-  @apply bg-black-600 hover:bg-black-700;
-}
-
-.controls .type {
-  @apply text-[black];
-}

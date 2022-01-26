@@ -4,10 +4,8 @@
 
 html, body {
   @apply w-full h-full m-0;
-
   @apply text-base overflow-hidden;
-  @apply text-gray-200;
-  @apply bg-black-800;
+  @apply bg-[#1F1F1F];
 }
 
 body {

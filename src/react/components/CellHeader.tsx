@@ -3,21 +3,16 @@ import cn from 'classnames'
 
 export interface Props {
   children?: ReactNode
-  sideButtons?: ReactNode
-  name?: string
 }
 
 function CellHeader({
   children,
-  sideButtons,
-  name,
 }: Props) {
   return (
     <div
       className={cn(
-        { 'pl-1.5': !name },
-        'pr-1.5',
-
+        'px-1.5',
+        'py-1',
         'flex',
         'items-center',
         'justify-end',
@@ -33,60 +28,14 @@ function CellHeader({
       <div
         className="
           flex
+          flex-1
           items-center
           justify-start
           space-x-2
         "
       >
-        {name && (
-          <div
-            className="
-              py-0.5
-              px-1.5
-              h-full
-              rounded-tl
-              bg-purple-400
-            "
-          >
-            <span
-              className="
-                text-gray-200
-                text-2xs
-                font-mono
-                font-400
-              "
-            >
-              {name}
-            </span>
-          </div>
-        )}
-
-        <div
-          className="
-            py-1
-            flex
-            justify-start
-            items-center
-            space-x-2
-          "
-        >
-          {children}
-        </div>
+        {children}
       </div>
-
-
-      {sideButtons && (
-        <div
-          className="
-            py-1
-            flex
-            items-center
-            space-x-2
-          "
-        >
-          {sideButtons}
-        </div>
-      )}
     </div>
   )
 }

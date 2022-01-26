@@ -1,9 +1,3 @@
-import {
-  MouseEvent,
-} from 'react'
-
-import RefreshIcon from '../RefreshIcon'
-import IconButton from '../IconButton'
 import CellHeader from '../CellHeader'
 import Text from '../Text'
 

@@ -1,80 +1,21 @@
-import {
-  useState,
-  useCallback,
-} from 'react';
+import { Output, Editor, Iframe, Language } from '@devbookhq/ui'
 
-import {
-  useDevbook,
-  Env,
-  DevbookStatus,
-} from '@devbookhq/sdk';
-import { Editor, Output } from '@devbookhq/ui'
-
-import './App.css';
-
-const initialCode = `const os = require('os');
-console.log('Hostname:', os.hostname());
-console.log(process.env)`
-
-const initialCmd =
-  `ls -l
-`
+import './App.css'
 
 function App() {
-  const [code, setCode] = useState(initialCode);
-  const [cmd, setCmd] = useState(initialCmd);
-  const [execType, setExecType] = useState('code');
-
-  const { stderr, stdout, runCode, runCmd, status } = {
-    stderr: [],
-    stdout: [],
-    runCode: (str: string) => { },
-    runCmd: (str: string) => { },
-    status: DevbookStatus.Disconnected,
-  };
-  // const { stderr, stdout, runCode, runCmd, status } = useDevbook({ debug: true, env: Env.NodeJS });
-  console.log({ stdout, stderr })
-
-
-
-  const handleEditorChange = useCallback((content: string) => {
-    if (execType === 'code') {
-      setCode(content);
-    } else {
-      setCmd(content);
-    }
-  }, [setCode, execType]);
-
-  const run = useCallback(() => {
-    if (execType === 'code') {
-      runCode(code);
-    } else {
-      runCmd(cmd);
-    }
-  }, [runCode, runCmd, code, cmd, execType]);
-
-
   return (
     <div className="app">
-      {status === DevbookStatus.Disconnected && <div>Status: Disconnected, will start VM</div>}
-      {status === DevbookStatus.Connecting && <div>Status: Starting VM...</div>}
-      {status === DevbookStatus.Connected && (
-        <div className="controls">
-          <select className="type" value={execType} onChange={e => setExecType(e.target.value)}>
-            <option value="code">Code</option>
-            <option value="cmd">Command</option>
-          </select>
-          <button className="run-btn" onClick={run}>Run</button>
-        </div>
-      )}
       <Editor
+        language={Language.jsx}
         filepath="index.js"
-        initialCode={execType === 'code' ? initialCode : initialCmd}
-        onChange={handleEditorChange}
+        initialCode={'console.log("world")'}
+      />
+      <Iframe
+        url="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"
       />
       <Output
-        stdout={stdout}
-        stderr={stderr}
+        stdout={['out1', 'out2']}
+        stderr={['err1']}
       />
     </div >
   );

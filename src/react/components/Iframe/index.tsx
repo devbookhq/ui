@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useRef, useState,
 } from 'react'
 
@@ -29,8 +30,8 @@ function Iframe({
   return (
     <div className={`${lightTheme ? '' : 'dark'}`}>
       <Header
+        url={initialURL}
         onConfirm={setURL}
-        url={url}
         onReloadIframe={handleReloadIframe}
       />
       <Separator

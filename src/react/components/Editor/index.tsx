@@ -2,37 +2,60 @@ import {
   useEffect,
   useRef,
 } from 'react';
+import { classHighlightStyle } from '@codemirror/highlight'
 import {
-  EditorState,
   EditorView,
-  basicSetup,
-} from '@codemirror/basic-setup';
-import {
   keymap,
+  highlightSpecialChars,
+  drawSelection,
+  highlightActiveLine,
+  dropCursor,
 } from '@codemirror/view'
+import { EditorState } from '@codemirror/state'
+import {
+  history,
+  historyKeymap,
+} from '@codemirror/history'
+import {
+  foldGutter,
+  foldKeymap,
+} from '@codemirror/fold'
+import { indentOnInput } from '@codemirror/language'
+import {
+  lineNumbers,
+  highlightActiveLineGutter,
+} from '@codemirror/gutter'
 import {
   defaultKeymap,
   indentWithTab,
 } from '@codemirror/commands'
+import { bracketMatching } from '@codemirror/matchbrackets'
 import {
-  javascriptLanguage,
-} from '@codemirror/lang-javascript'
-import { classHighlightStyle } from '@codemirror/highlight'
+  closeBrackets,
+  closeBracketsKeymap,
+} from '@codemirror/closebrackets'
+import { commentKeymap } from '@codemirror/comment'
 
+import {
+  getLanguageExtension,
+  Language,
+} from './language'
 import Header from './Header';
 import Separator from '../Separator';
 
 export interface Props {
-  initialCode: string
-  onChange: (content: string) => void
+  initialCode?: string
+  onChange?: (content: string) => void
   lightTheme?: boolean
   filepath?: string
+  language?: Language
 }
 
 function Editor({
-  initialCode,
+  initialCode = '',
   onChange,
   filepath,
+  language,
   lightTheme,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null);
@@ -42,19 +65,32 @@ function Editor({
 
     const changeWatcher = EditorView.updateListener.of(update => {
       if (update.docChanged) {
-        onChange(update.state.doc.toString());
+        onChange?.(update.state.doc.toString());
       }
     })
+
+    const languageExtension = getLanguageExtension(language)
 
     const state = EditorState.create({
       doc: initialCode,
       extensions: [
-        basicSetup,
-        changeWatcher,
-        javascriptLanguage,
-        classHighlightStyle,
+        lineNumbers(),
+        highlightActiveLineGutter(),
+        highlightSpecialChars(),
+        history(),
+        foldGutter(),
+        drawSelection(),
+        dropCursor(),
+        indentOnInput(),
+        bracketMatching(),
+        closeBrackets(),
+        highlightActiveLine(),
         keymap.of([
+          ...closeBracketsKeymap,
           ...defaultKeymap,
+          ...historyKeymap,
+          ...foldKeymap,
+          ...commentKeymap,
           indentWithTab,
           // Override default browser Ctrl/Cmd+S shortcut when a code cell is focused.
           {
@@ -62,6 +98,9 @@ function Editor({
             run: () => true,
           },
         ]),
+        changeWatcher,
+        languageExtension,
+        classHighlightStyle,
       ],
     });
 
@@ -73,6 +112,7 @@ function Editor({
     initialCode,
     onChange,
     editorEl,
+    language,
   ])
 
   return (
