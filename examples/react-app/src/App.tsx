@@ -49,7 +49,7 @@ function App() {
 
   return (
     <div className="app">
-      <Iframe url='google.com' />
+      {/* <Iframe url='google.com' /> */}
       {status === DevbookStatus.Disconnected && <div>Status: Disconnected, will start VM</div>}
       {status === DevbookStatus.Connecting && <div>Status: Starting VM...</div>}
       {status === DevbookStatus.Connected && (

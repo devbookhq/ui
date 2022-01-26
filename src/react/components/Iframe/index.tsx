@@ -9,7 +9,7 @@ import Header from './Header'
 import IframeEl, { IframeElHandle } from './IframeEl'
 
 export interface Props {
-  url?: string
+  url: string
 }
 
 function Iframe({
@@ -51,9 +51,7 @@ function Iframe({
 
             border-x
             border-b
-
-            border-black-600
-
+          border-black-600
           bg-gray-700
           "
           >

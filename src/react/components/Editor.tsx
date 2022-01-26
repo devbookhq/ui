@@ -17,7 +17,7 @@ import {
 import {
   javascriptLanguage,
 } from '@codemirror/lang-javascript'
-import { oneDark } from '@codemirror/theme-one-dark'
+import { classHighlightStyle } from '@codemirror/highlight'
 
 export interface Props {
   initialCode: string
@@ -45,9 +45,9 @@ function Editor({
       doc: initialCode,
       extensions: [
         basicSetup,
-        ...lightTheme ? [] : [oneDark],
         changeWatcher,
         javascriptLanguage,
+        classHighlightStyle,
         keymap.of([
           ...defaultKeymap,
           indentWithTab,
@@ -68,12 +68,11 @@ function Editor({
     initialCode,
     onChange,
     editorEl,
-    lightTheme,
   ])
 
   return (
     <div
-      className="flex-1 flex max-h-full min-w-0 devbook"
+      className={`flex-1 flex max-h-full min-w-0 devbook ${lightTheme ? '' : 'dark'}`}
       ref={editorEl}
     />
   )

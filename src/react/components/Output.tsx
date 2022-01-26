@@ -10,10 +10,10 @@ export interface Props {
 function Output({
   stdout = [],
   stderr = [],
-  containerClass = 'p-4 bg-[#141414] output-font',
-  headerClass = 'output-font',
-  outputClass = 'font-bold output-font',
-  errorClass = 'text-[#FC4F60] output-font',
+  containerClass = 'p-4 bg-[#141414] text-[14px] font-mono whitespace-pre leading-normal',
+  headerClass = 'text-[14px] font-mono whitespace-pre leading-normal',
+  outputClass = 'font-bold text-[14px] font-mono whitespace-pre leading-normal',
+  errorClass = 'text-[#FC4F60] text-[14px] font-mono whitespace-pre leading-normal',
 }: Props) {
 
   return (

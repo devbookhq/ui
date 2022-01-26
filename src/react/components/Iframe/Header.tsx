@@ -1,6 +1,5 @@
 import {
   MouseEvent,
-  useState,
 } from 'react'
 
 import RefreshIcon from '../RefreshIcon'
