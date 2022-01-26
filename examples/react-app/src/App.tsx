@@ -9,17 +9,16 @@ import {
   DevbookStatus,
 } from '@devbookhq/sdk';
 import Splitter from '@devbookhq/splitter';
+import { Editor, Output, Iframe } from '@devbookhq/ui'
 
 import './App.css';
-import Editor from './Editor';
-import Output from './Output';
 
 const initialCode = `const os = require('os');
 console.log('Hostname:', os.hostname());
 console.log(process.env)`
 
 const initialCmd =
-`ls -l
+  `ls -l
 `
 
 function App() {
@@ -50,6 +49,7 @@ function App() {
 
   return (
     <div className="app">
+      <Iframe url='google.com' />
       {status === DevbookStatus.Disconnected && <div>Status: Disconnected, will start VM</div>}
       {status === DevbookStatus.Connecting && <div>Status: Starting VM...</div>}
       {status === DevbookStatus.Connected && (

@@ -38,8 +38,8 @@ export default {
   plugins: [
     autoExternal({ builtins: false }),
     postcss({
+      extensions: ['.css'],
       minimize: true,
-      extract: true,
       config: {
         path: './postcss.config.js',
       },

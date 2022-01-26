@@ -22,13 +22,13 @@ import { oneDark } from '@codemirror/theme-one-dark'
 export interface Props {
   initialCode: string
   onChange: (content: string) => void
-  darkTheme?: boolean
+  lightTheme?: boolean
 }
 
 function Editor({
   initialCode,
   onChange,
-  darkTheme,
+  lightTheme,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null);
 
@@ -45,7 +45,7 @@ function Editor({
       doc: initialCode,
       extensions: [
         basicSetup,
-        ...darkTheme ? [oneDark] : [],
+        ...lightTheme ? [] : [oneDark],
         changeWatcher,
         javascriptLanguage,
         keymap.of([
@@ -68,12 +68,12 @@ function Editor({
     initialCode,
     onChange,
     editorEl,
-    darkTheme,
+    lightTheme,
   ])
 
   return (
     <div
-      className="flex-1 flex overflow-auto max-h-full"
+      className="flex-1 flex max-h-full min-w-0 devbook"
       ref={editorEl}
     />
   )

@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind base;
 
-@import './codemirror.css';
-
 html, body {
   @apply w-full h-full m-0;
 

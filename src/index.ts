@@ -1,3 +1,3 @@
-export * from './react'
-
 import './index.css'
+
+export * from './react'

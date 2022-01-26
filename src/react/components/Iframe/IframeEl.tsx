@@ -5,11 +5,10 @@ import {
   useImperativeHandle,
 } from 'react'
 
-import { SpinnerIcon } from 'src/components/icons'
+import SpinnerIcon from '../SpinnerIcon'
 
 export interface Props {
   src: string
-  hasPointerEvents: boolean
 }
 
 export interface IframeElHandle {
@@ -18,7 +17,6 @@ export interface IframeElHandle {
 
 const IframeEl = forwardRef<IframeElHandle, Props>(({
   src,
-  hasPointerEvents,
 }, ref) => {
   const [v, setV] = useState(0)
   useImperativeHandle(ref, () => ({
@@ -45,7 +43,6 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
           'flex-1',
           'bg-transparent',
           'z-20',
-          { 'pointer-events-none': !hasPointerEvents },
         )}
         src={src}
       />

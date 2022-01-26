@@ -17,7 +17,7 @@ function Output({
 }: Props) {
 
   return (
-    <div className={`flex-1 text-xs flex flex-column overflow-auto${containerClass}`}>
+    <div className={`flex-1 text-xs flex flex-col overflow-auto ${containerClass}`}>
       <div className={headerClass}>OUTPUT</div>
       {stdout.map((out, idx) => (
         <span className={outputClass} key={`out_${idx}`}>{out}</span>
