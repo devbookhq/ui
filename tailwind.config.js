@@ -41,8 +41,10 @@ module.exports = {
       },
     },
   },
+  corePlugins: {
+    preflight: false,
+  },
   variants: {
-    scrollbar: ['dark'],
     extend: {
       backgroundColor: ['active', 'disabled'],
       opacity: ['disabled'],
