@@ -6,7 +6,7 @@ import {
 } from '@codemirror/lang-javascript'
 import { shell } from '@codemirror/legacy-modes/mode/shell'
 import { StreamLanguage } from '@codemirror/stream-parser'
-
+import { sql } from '@codemirror/lang-sql'
 const shellLanguage = StreamLanguage.define(shell)
 
 export enum Language {
@@ -15,6 +15,7 @@ export enum Language {
   'js' = 'js',
   'tsx' = 'tsx',
   'ts' = 'ts',
+  'sql' = 'sql',
 }
 
 export function getLanguageExtension(lang?: Language) {
@@ -27,6 +28,8 @@ export function getLanguageExtension(lang?: Language) {
       return typescriptLanguage
     case Language.tsx:
       return tsxLanguage
+    case Language.sql:
+      return sql()
     case Language.sh:
       return shellLanguage
     default:

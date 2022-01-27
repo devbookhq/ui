@@ -40,8 +40,8 @@ import {
   getLanguageExtension,
   Language,
 } from './language'
-import Header from './Header';
-import Separator from '../Separator';
+import Header from './Header'
+import Separator from '../Separator'
 
 export interface Props {
   initialCode?: string
