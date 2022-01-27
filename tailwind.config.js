@@ -41,9 +41,6 @@ module.exports = {
       },
     },
   },
-  corePlugins: {
-    preflight: false,
-  },
   variants: {
     extend: {
       backgroundColor: ['active', 'disabled'],
