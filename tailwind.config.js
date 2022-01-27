@@ -50,4 +50,7 @@ module.exports = {
       cursor: ['disabled'],
     },
   },
+  corePlugins: {
+    preflight: false,
+  },
 }

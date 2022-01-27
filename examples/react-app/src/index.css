@@ -1,7 +1,3 @@
-@tailwind utilities;
-@tailwind components;
-@tailwind base;
-
 html, body {
   @apply w-full h-full m-0;
   @apply text-base overflow-hidden;

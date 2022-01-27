@@ -25,6 +25,8 @@ const IconButton = forwardRef<HTMLButtonElement, Props>(({
         justify-center
 
         rounded
+        border-none
+        cursor-pointer
 
         text-denim-400
         dark:text-gray-200
