@@ -1,7 +1,7 @@
 {
   "name": "@devbookhq/ui",
   "version": "1.0.7",
-  "description": "",
+  "description": "Devbook UI is a React UI library",
   "homepage": "https://usedevbook.com",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
