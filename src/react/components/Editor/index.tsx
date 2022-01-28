@@ -1,6 +1,7 @@
 import {
   useEffect,
   useRef,
+  memo,
 } from 'react';
 import { classHighlightStyle } from '@codemirror/highlight'
 import {
@@ -136,4 +137,4 @@ function Editor({
   )
 }
 
-export default Editor
+export default memo(Editor)
