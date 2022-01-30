@@ -1,7 +1,6 @@
 html, body {
   @apply w-full h-full m-0;
-  @apply text-base overflow-hidden;
-  @apply bg-[#1F1F1F];
+  @apply text-base overflow-hidden flex flex-1;
 }
 
 body {

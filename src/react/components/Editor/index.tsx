@@ -45,19 +45,21 @@ import Header from './Header'
 import Separator from '../Separator'
 
 export interface Props {
-  initialCode?: string
-  onChange?: (content: string) => void
+  initialContent?: string
+  onContentChange?: (content: string) => void
   lightTheme?: boolean
   filepath?: string
   language?: Language
+  height?: number // in px
 }
 
 function Editor({
-  initialCode = '',
-  onChange,
+  initialContent = '',
+  onContentChange,
   filepath,
   language,
   lightTheme,
+  height,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null);
 
@@ -66,14 +68,14 @@ function Editor({
 
     const changeWatcher = EditorView.updateListener.of(update => {
       if (update.docChanged) {
-        onChange?.(update.state.doc.toString());
+        onContentChange?.(update.state.doc.toString());
       }
     })
 
     const languageExtension = getLanguageExtension(language)
 
     const state = EditorState.create({
-      doc: initialCode,
+      doc: initialContent,
       extensions: [
         lineNumbers(),
         highlightActiveLineGutter(),
@@ -110,8 +112,8 @@ function Editor({
       view.destroy()
     }
   }, [
-    initialCode,
-    onChange,
+    initialContent,
+    onContentChange,
     editorEl,
     language,
   ])
@@ -132,6 +134,9 @@ function Editor({
       <div
         className={`flex-1 flex max-h-full min-w-0 overflow-auto devbook ${filepath ? 'rounded-b' : 'rounded'}`}
         ref={editorEl}
+        style={{
+          ...height && { height: `${height}px` },
+        }}
       />
     </div>
   )

@@ -37,7 +37,9 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
         rounded-b
 
         border-x
-      border-x-black-650
+        border-b
+      border-gray-300
+      dark:border-black-650
       "
     >
       <iframe

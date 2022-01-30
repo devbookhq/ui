@@ -1,14 +1,14 @@
 .devbook {
   .cm-editor {
     @apply px-2 min-w-0 flex flex-1 h-full;
-    @apply bg-black-650;
+    @apply dark:bg-black-650 bg-gray-300;
   }
 
   .cm-content {
     @apply text-xs font-mono;
     @apply h-auto;
-    @apply text-gray-200;
-    @apply caret-gray-500;
+    @apply dark:text-gray-200 text-denim-700;
+    @apply dark:caret-gray-500 caret-black-650;
   }
 
   .cm-editor .cm-scroller {
@@ -30,7 +30,7 @@
   }
 
   .cm-scroller::-webkit-scrollbar-thumb {
-    @apply bg-black-600;
+    @apply dark:bg-black-600 bg-gray-500;
   }
 
   .cm-editor.cm-focused {
@@ -38,24 +38,24 @@
   }
 
   .cm-editor.cm-focused .cm-cursor {
-    @apply border-l-gray-500;
+    @apply dark:border-l-gray-500 border-l-black-650;
   }
-
+  
   .cm-editor.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection {
-    @apply bg-gray-800;
-    @apply text-gray-400;
+    @apply dark:bg-gray-800 bg-gray-600;
+    @apply dark:text-gray-400 text-denim-400;
   }
-
+  
   .cm-editor .cm-gutters {
-    @apply bg-black-650;
-    @apply text-gray-800;
+    @apply dark:bg-black-650 bg-gray-300;
+    @apply dark:text-gray-800 text-denim-100;
     @apply pr-2 border-none;
   }
-
+  
   .cm-gutter {
     @apply text-xs font-mono;
     @apply h-auto border-none;
-    @apply bg-black-650;
+    @apply dark:bg-black-650 bg-gray-300;
   }
 
   .cm-gutter.cm-lineNumbers {
@@ -64,11 +64,11 @@
   }
 
   .cm-editor .cm-activeLineGutter {
-    @apply bg-black-650;
+    @apply dark:bg-black-650 bg-gray-300;
   }
-
+  
   .cm-editor.cm-focused .cm-activeLineGutter {
-    @apply text-gray-400;
+    @apply dark:text-gray-400 text-black-600;
   }
 
   .cm-editor .cm-line.cm-activeLine {
@@ -84,7 +84,7 @@
   .cm-content .cm-line, .cm-editor .cm-gutters .cm-lineNumbers {
     @apply py-px;
   }
-
+  
   /* Token styling */
   /* regexp, escape, and special(string) are mapped to "cmt-string2" */
   .cmt-string2 {
