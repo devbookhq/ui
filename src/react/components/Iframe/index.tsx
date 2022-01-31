@@ -21,7 +21,11 @@ function Iframe({
   lightTheme,
 }: Props) {
   const iframeRef = useRef<IframeElHandle>(null)
-  const [url, setURL] = useState(initialURL)
+  const [url, setURL] = useState<string>()
+
+  useEffect(function initializeURL() {
+    setURL(initialURL)
+  }, [initialURL])
 
   function handleReloadIframe() {
     iframeRef.current?.reload()
