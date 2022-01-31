@@ -2,6 +2,7 @@ import {
   MouseEvent,
   useState,
   KeyboardEvent,
+  useEffect,
 } from 'react'
 
 import RefreshIcon from '../RefreshIcon'
@@ -19,11 +20,17 @@ function Header({
   onReloadIframe,
   onConfirm,
 }: Props) {
-  const [newURL, setNewURL] = useState(url)
+  const [newURL, setNewURL] = useState<string>()
+
+  useEffect(function initializeURL() {
+    setNewURL(url)
+  }, [url])
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
-      onConfirm(newURL)
+      if (newURL) {
+        onConfirm(newURL)
+      }
     }
   }
 
@@ -32,7 +39,9 @@ function Header({
   }
 
   function onRefresh(e: MouseEvent) {
-    onConfirm(newURL)
+    if (newURL) {
+      onConfirm(newURL)
+    }
     onReloadIframe(e)
   }
 
