@@ -25,6 +25,7 @@ export default function ExampleEditor() {
       language={Language.js}
       initialContent='console.log("world")'
       onContentChange={(content) => console.log(content)}
+      isReadonly={false}
       lightTheme={true}
     />
   )

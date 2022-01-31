@@ -12,7 +12,7 @@ import {
   highlightActiveLine,
   dropCursor,
 } from '@codemirror/view'
-import { EditorState } from '@codemirror/state'
+import { EditorState, Facet } from '@codemirror/state'
 import {
   history,
   historyKeymap,
@@ -46,6 +46,7 @@ import Separator from '../Separator'
 
 export interface Props {
   initialContent?: string
+  isReadonly?: boolean
   onContentChange?: (content: string) => void
   lightTheme?: boolean
   filepath?: string
@@ -57,6 +58,7 @@ function Editor({
   initialContent = '',
   onContentChange,
   filepath,
+  isReadonly = false,
   language,
   lightTheme,
   height,
@@ -77,6 +79,8 @@ function Editor({
     const state = EditorState.create({
       doc: initialContent,
       extensions: [
+        EditorState.readOnly.of(isReadonly),
+        EditorView.editable.of(!isReadonly),
         lineNumbers(),
         highlightActiveLineGutter(),
         highlightSpecialChars(),
@@ -116,6 +120,7 @@ function Editor({
     onContentChange,
     editorEl,
     language,
+    isReadonly,
   ])
 
   return (

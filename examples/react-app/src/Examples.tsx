@@ -7,6 +7,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
   return (
     <div className="examples">
       <Editor
+        isReadonly={false}
         lightTheme={theme === 'light'}
         language={Language.jsx}
         filepath="index.js"
