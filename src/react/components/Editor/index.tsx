@@ -12,7 +12,10 @@ import {
   highlightActiveLine,
   dropCursor,
 } from '@codemirror/view'
-import { EditorState, Facet } from '@codemirror/state'
+import {
+  EditorState,
+  Transaction,
+} from '@codemirror/state'
 import {
   history,
   historyKeymap,
@@ -43,6 +46,11 @@ import {
 } from './language'
 import Header from './Header'
 import Separator from '../Separator'
+
+const disableSpellchecking = {
+  'data-gramm': 'false',
+  'spellcheck': 'false',
+}
 
 export interface Props {
   initialContent?: string
@@ -79,6 +87,19 @@ function Editor({
     const state = EditorState.create({
       doc: initialContent,
       extensions: [
+        EditorView.domEventHandlers({
+          blur: (_, view) => {
+            view.dispatch({
+              selection: {
+                anchor: 0,
+                head: 0,
+              },
+              annotations: Transaction.remote.of(true),
+              filter: false,
+            })
+          },
+        }),
+        EditorView.contentAttributes.of(disableSpellchecking),
         EditorState.readOnly.of(isReadonly),
         EditorView.editable.of(!isReadonly),
         lineNumbers(),
