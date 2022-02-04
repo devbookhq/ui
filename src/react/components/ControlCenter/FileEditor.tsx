@@ -7,19 +7,21 @@ import { useDevbook, Env, DevbookStatus } from '@devbookhq/sdk'
 
 export interface Props {
   devbook: ReturnType<typeof useDevbook>
+  filepath: string
+  onFilepathChange: (filepath: string) => void
 }
 
 function FileEditor({
+  filepath,
+  onFilepathChange,
   devbook: {
     fs,
     status,
   },
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
-  const [filepath, setFilepath] = useState('/package.json')
   const [initialContent, setInitialContent] = useState<string>()
 
-  console.log('file editor')
   useEffect(() => {
     async function init() {
       if (!fs) return
@@ -78,7 +80,7 @@ function FileEditor({
   ])
 
   function handleInputChange(e: any) {
-    setFilepath(e.target.value)
+    onFilepathChange(e.target.value)
     setInitialContent('')
   }
 

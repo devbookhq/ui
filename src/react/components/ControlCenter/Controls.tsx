@@ -8,6 +8,7 @@ import SpinnerIcon from '../SpinnerIcon'
 enum Tab {
   Iframe,
   Editor,
+  Console,
 }
 
 export interface Props {
@@ -18,6 +19,8 @@ function Controls({ env }: Props) {
   const [tab, setTab] = useState(Tab.Editor)
   const devbook = useDevbook({ debug: true, env, port: 3000 })
   const { status } = devbook
+
+  const [filepath, setFilepath] = useState('/package.json')
 
   return (
     <div className="flex flex-col flex-1 h-full w-full dark">
@@ -45,14 +48,26 @@ function Controls({ env }: Props) {
               isSelected={tab === Tab.Iframe}
               handleClick={() => setTab(Tab.Iframe)}
             />
+            {/* <ControlTab
+              label="Console"
+              isSelected={tab === Tab.Console}
+              handleClick={() => setTab(Tab.Console)}
+            /> */}
           </div>
           <div className="overflow-y-auto flex flex-1">
             {tab === Tab.Editor &&
-              <FileEditor devbook={devbook} />
+              <FileEditor
+                devbook={devbook}
+                onFilepathChange={setFilepath}
+                filepath={filepath}
+              />
             }
             {tab === Tab.Iframe &&
               <Iframe devbook={devbook} />
             }
+            {/* {tab === Tab.Console &&
+              <Console devbook={devbook} />
+            } */}
           </div>
         </>
       }
