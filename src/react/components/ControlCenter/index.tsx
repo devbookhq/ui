@@ -9,10 +9,9 @@ import { Env } from '@devbookhq/sdk'
 let globalPanel: any = undefined
 
 const startingPosition = {
-  my: 'right-bottom',
-  at: 'right-bottom',
-  offsetX: -50,
-  offsetY: -50,
+  my: 'right-center',
+  at: 'right-center',
+  offsetX: -20,
 }
 const startingSize = {
   width: '450px',
@@ -52,7 +51,7 @@ class ControlCenter extends Component<Props> {
           panel.content.append(div)
         },
         callback: (panel: any) => {
-          // panel.style.height = startingSize.height
+          panel.style.height = startingSize.height
           // const maxHeight = window.innerHeight - (window.innerHeight * 30) / 100
           // panel.content.style.maxHeight = `${maxHeight}px`
           // panel.content.style.maxWidth = `${window.innerWidth - 20}px`
