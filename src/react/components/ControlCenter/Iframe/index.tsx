@@ -10,17 +10,19 @@ import Header from './Header'
 import IframeEl, { IframeElHandle } from './IframeEl'
 
 export interface Props {
-  url: string
-  height?: number // in px
-  lightTheme?: boolean
+  devbook: ReturnType<typeof useDevbook>
 }
 
-function Iframe() {
-  const { url: initialURL } = useDevbook({ env: Env.Supabase, port: 3000 })
-
+function Iframe({
+  devbook: {
+    url: initialURL,
+  },
+}: Props) {
   const iframeRef = useRef<IframeElHandle>(null)
   const [url, setURL] = useState<string>()
 
+
+  console.log('iframe')
   useEffect(function initializeURL() {
     setURL(initialURL)
   }, [initialURL])
@@ -30,7 +32,7 @@ function Iframe() {
   }
 
   return (
-    <div className="dark bg-black-650 h-full w-full">
+    <div className="dark bg-black-650 flex flex-1 flex-col">
       <Header
         url={initialURL}
         onConfirm={setURL}
@@ -50,8 +52,6 @@ function Iframe() {
             flex-1
             items-center
             justify-center
-            bg-gray-800
-            dark:bg-gray-700
           "
           >
             <SpinnerIcon />

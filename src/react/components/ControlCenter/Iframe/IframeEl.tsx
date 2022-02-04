@@ -4,7 +4,6 @@ import {
   forwardRef,
   useImperativeHandle,
 } from 'react'
-
 import SpinnerIcon from '../../SpinnerIcon'
 
 export interface Props {
@@ -31,10 +30,12 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
       className="
         flex-1
         flex
+        max-h-full
         relative
       "
     >
       <iframe
+        height="100%"
         key={v}
         className={cn(
           'flex-1',

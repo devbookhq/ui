@@ -7,7 +7,12 @@ export interface Props {
 }
 
 function Portal({ rootNode, children }: Props) {
-  const element = useMemo(() => document.createElement('div'), [])
+  const element = useMemo(() => {
+    const el = document.createElement('div')
+    el.style.height = '100%'
+    el.style.width = '100%'
+    return el
+  }, [])
 
   useEffect(function initElement() {
     const root = rootNode.appendChild(element)

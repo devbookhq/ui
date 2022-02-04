@@ -59,6 +59,8 @@
     line-height: normal; }
   .jsPanel .jsPanel-content {
     border: 0;
+    border-bottom-left-radius: 0.25em;
+    border-bottom-right-radius: 0.25em;
     box-sizing: border-box;
     vertical-align: baseline;
     font-family: Roboto,"Open Sans",Lato,"Helvetica Neue",Arial,sans-serif;
@@ -69,7 +71,8 @@
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
-    flex-grow: 1; }
+    flex-grow: 1; 
+  }
     .jsPanel .jsPanel-content pre {
       color: inherit; }
   .jsPanel .jsPanel-ftr {

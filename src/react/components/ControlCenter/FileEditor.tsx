@@ -5,13 +5,21 @@ import createEditorState from '../Editor/createEditorState'
 import { Language } from '../Editor/language'
 import { useDevbook, Env, DevbookStatus } from '@devbookhq/sdk'
 
-function FileEditor() {
+export interface Props {
+  devbook: ReturnType<typeof useDevbook>
+}
+
+function FileEditor({
+  devbook: {
+    fs,
+    status,
+  },
+}: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
   const [filepath, setFilepath] = useState('/package.json')
   const [initialContent, setInitialContent] = useState<string>()
 
-  const { fs, status } = useDevbook({ debug: true, env: Env.NextJS })
-
+  console.log('file editor')
   useEffect(() => {
     async function init() {
       if (!fs) return
@@ -81,10 +89,9 @@ function FileEditor() {
           py-1.5
           px-0.5
           pl-[10px]
-          flex-1
-          flex
           bg-black-600
           min-w-0
+          flex 
           placeholder:text-denim-400
           dark:placeholder:text-gray-700
           text-2xs
@@ -99,7 +106,7 @@ function FileEditor() {
         placeholder="/<filename>"
       />
       <div
-        className={`flex-1 max-h-full flex min-w-0 overflow-auto devbook`}
+        className={`flex-1 max-h-full overflow-auto flex min-w-0 devbook`}
         ref={editorEl}
       />
     </div>

@@ -7,7 +7,6 @@ import {
 
 import RefreshIcon from '../../RefreshIcon'
 import IconButton from '../../IconButton'
-import CellHeader from '../../CellHeader'
 
 export interface Props {
   url?: string
@@ -46,7 +45,7 @@ function Header({
   }
 
   return (
-    <div className="flex items-center space-x-2 flex-1 py-2 mx-1">
+    <div className="flex items-center space-x-2 py-2 px-1 min-w-0">
       <IconButton
         onMouseDown={onRefresh}
         icon={<RefreshIcon />}
@@ -55,9 +54,9 @@ function Header({
         className="
           p-0.5
           pl-[10px]
-          flex-1
-          flex
           min-w-0
+          flex
+          flex-1
           placeholder:text-denim-400
           dark:placeholder:text-gray-700
           border
