@@ -8,7 +8,7 @@ import { Env } from '@devbookhq/sdk'
 
 let globalPanel: any = undefined
 
-const startingPosition = 'right-center -50 20'
+const startingPosition = 'right-center 0 20'
 const startingSize = {
   width: '450px',
   height: '600px',
