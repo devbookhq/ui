@@ -44,7 +44,8 @@
   overflow: visible;
   position: absolute;
   /* top: 0  do not remove, otherwise panel is at the very bottom of the page -> results in vertical scrollbars -> positioning at right incorrect */
-  z-index: 200; }
+  z-index: 200 !important;
+ }
   .jsPanel .jsPanel-hdr {
     border-bottom: 1px solid #363636;
     border-top-left-radius: 0.25em;
@@ -624,7 +625,7 @@
   cursor: pointer;
   line-height: .8rem;
   padding: 0;
-  z-index: 100;
+  z-index: 200;
   border: 0;
   background-color: transparent; }
 
