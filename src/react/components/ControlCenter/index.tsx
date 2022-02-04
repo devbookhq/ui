@@ -46,11 +46,12 @@ class ControlCenter extends Component<Props> {
           div.className += 'h-full bg-black-650'
           panel.content.append(div)
         },
-        // callback: (panel: any) => {
-        //   const maxHeight = window.innerHeight - (window.innerHeight * 30) / 100
-        //   panel.content.style.maxHeight = `${maxHeight}px`
-        //   panel.content.style.maxWidth = `${window.innerWidth - 20}px`
-        // },
+        callback: (panel: any) => {
+          panel.style.height = startingSize.height
+          // const maxHeight = window.innerHeight - (window.innerHeight * 30) / 100
+          // panel.content.style.maxHeight = `${maxHeight}px`
+          // panel.content.style.maxWidth = `${window.innerWidth - 20}px`
+        },
         onclosed: () => {
           globalPanel = undefined
         },
