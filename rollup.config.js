@@ -44,7 +44,7 @@ export default {
         path: './postcss.config.js',
       },
     }),
-    typescript(),
+    typescript({ tsconfig: './tsconfig.json' }),
     nodePolyfills(),
     nodeResolve(),
     terser(),
