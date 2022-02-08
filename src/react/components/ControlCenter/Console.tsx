@@ -1,3 +1,4 @@
+import { useDevbook } from '@devbookhq/sdk'
 import cn from 'classnames'
 import { useMemo } from 'react'
 import Text from '../Text'
@@ -5,17 +6,14 @@ import Text from '../Text'
 export type Output = 'error' | 'output'
 
 export interface Props {
-  stdout?: string[]
-  stderr?: string[]
-  height?: number // in px
-  lightTheme?: boolean
+  devbook: ReturnType<typeof useDevbook>
 }
 
 function Console({
-  stdout = [],
-  stderr = [],
-  lightTheme,
-  height = 150,
+  devbook: {
+    stderr,
+    stdout,
+  },
 }: Props) {
 
   const logs = useMemo(() => {
@@ -28,12 +26,8 @@ function Console({
   return (
     <div className={cn(
       'flex flex-1 min-w-0',
-      { 'dark': !lightTheme },
     )}>
       <div
-        style={{
-          height: `${height}px`,
-        }}
         className={cn(`
         flex-1
         flex

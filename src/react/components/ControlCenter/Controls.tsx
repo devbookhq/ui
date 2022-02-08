@@ -4,11 +4,14 @@ import Iframe from './Iframe'
 import ControlTab from './ControlTab'
 import { useDevbook, Env, DevbookStatus } from '@devbookhq/sdk'
 import SpinnerIcon from '../SpinnerIcon'
+import Terminal from './Terminal'
+import Console from './Console'
 
 enum Tab {
   Iframe,
   Editor,
   Console,
+  Terminal,
 }
 
 export interface Props {
@@ -62,11 +65,16 @@ function Controls({ env }: Props) {
               isSelected={tab === Tab.Iframe}
               handleClick={() => setTab(Tab.Iframe)}
             />
-            {/* <ControlTab
+            <ControlTab
+              label="Terminal"
+              isSelected={tab === Tab.Terminal}
+              handleClick={() => setTab(Tab.Terminal)}
+            />
+            <ControlTab
               label="Console"
               isSelected={tab === Tab.Console}
               handleClick={() => setTab(Tab.Console)}
-            /> */}
+            />
           </div>
           <div className="overflow-y-auto flex flex-1">
             {tab === Tab.Editor &&
@@ -79,9 +87,12 @@ function Controls({ env }: Props) {
             {tab === Tab.Iframe &&
               <Iframe devbook={devbook} />
             }
-            {/* {tab === Tab.Console &&
+            {tab === Tab.Terminal &&
+              <Terminal devbook={devbook} />
+            }
+            {tab === Tab.Console &&
               <Console devbook={devbook} />
-            } */}
+            }
           </div>
         </>
       }
