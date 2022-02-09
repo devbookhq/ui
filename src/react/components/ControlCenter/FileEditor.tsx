@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, KeyboardEvent } from
 import createEditorState from '../Editor/createEditorState'
 import { Language } from '../Editor/language'
 import { useDevbook, Env, DevbookStatus } from '@devbookhq/sdk'
+import Filesystem from '../Filesystem/Filesystem'
 
 export interface Props {
   devbook: ReturnType<typeof useDevbook>
@@ -14,13 +15,12 @@ export interface Props {
 function FileEditor({
   filepath,
   onFilepathChange,
-  devbook: {
-    fs,
-    status,
-  },
+  devbook,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
   const [initialContent, setInitialContent] = useState<string>()
+
+  const { fs, status } = devbook
 
   useEffect(() => {
     async function init() {
@@ -86,7 +86,11 @@ function FileEditor({
 
   return (
     <div className="dark bg-black-650 flex flex-1 flex-col space-y-1">
-      <input
+      <Filesystem
+        devbook={devbook}
+        onFileChange={handleFileChange}
+      />
+      {/* <input
         className="
           py-1.5
           px-0.5
@@ -106,7 +110,7 @@ function FileEditor({
         value={filepath}
         onChange={handleInputChange}
         placeholder="/<filename>"
-      />
+      /> */}
       <div
         className={`flex-1 max-h-full overflow-auto flex min-w-0 devbook`}
         ref={editorEl}
