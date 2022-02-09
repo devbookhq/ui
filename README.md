@@ -55,7 +55,7 @@ export default function ExampleIframe() {
 
 ### Output
 ```tsx
-import { Outpout } from '@devbookhq/ui'
+import { Output } from '@devbookhq/ui'
 
 export default function ExampleOutput() {
   return (
