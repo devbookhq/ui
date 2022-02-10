@@ -27,7 +27,10 @@ function Controls({ env }: Props) {
   const [filepath, setFilepath] = useState('/package.json')
 
   useEffect(function initControls() {
-    centerControls.openFile = setFilepath
+    centerControls.openFile = (path) => {
+      setFilepath(path)
+      setTab(Tab.Editor)
+    }
     return () => {
       centerControls.openFile = undefined
     }
