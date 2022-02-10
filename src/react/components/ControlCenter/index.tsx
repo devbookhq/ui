@@ -2,9 +2,9 @@ import { Component } from 'react'
 const { jsPanel } = require('jspanel4/es6module/jspanel')
 
 import Portal from './Portal'
-import FileEditor from './FileEditor'
 import Controls from './Controls'
 import { Env } from '@devbookhq/sdk'
+export { centerControls } from './Controls'
 
 let globalPanel: any = undefined
 

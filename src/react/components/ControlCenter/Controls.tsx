@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FileEditor from './FileEditor'
 import Iframe from './Iframe'
 import ControlTab from './ControlTab'
@@ -15,12 +15,23 @@ export interface Props {
   env: Env
 }
 
+export const centerControls: { openFile?: (path: string) => void } = {
+  openFile: undefined
+}
+
 function Controls({ env }: Props) {
   const [tab, setTab] = useState(Tab.Editor)
   const devbook = useDevbook({ debug: true, env, port: 3000 })
   const { status } = devbook
 
   const [filepath, setFilepath] = useState('/package.json')
+
+  useEffect(function initControls() {
+    centerControls.openFile = setFilepath
+    return () => {
+      centerControls.openFile = undefined
+    }
+  }, [])
 
   return (
     <div className="flex flex-col flex-1 h-full w-full dark">
