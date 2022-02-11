@@ -21,7 +21,9 @@ function Portal({ rootNode, children }: Props) {
   useEffect(function initElement() {
     const root = rootNode.appendChild(element)
     return () => {
-      root.removeChild(element)
+      if (root) {
+        root.removeChild(element)
+      }
     }
   }, [])
 
