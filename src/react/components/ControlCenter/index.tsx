@@ -1,9 +1,9 @@
 import { Component } from 'react'
 const { jsPanel } = require('jspanel4/es6module/jspanel')
+import { Env } from '@devbookhq/sdk'
 
 import Portal from './Portal'
 import Controls from './Controls'
-import { Env } from '@devbookhq/sdk'
 export { centerControls } from './Controls'
 
 const startingPosition = {

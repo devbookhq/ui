@@ -1,8 +1,16 @@
-import { useEffect, useState } from 'react'
+import {
+  useEffect,
+  useState,
+} from 'react'
+import {
+  useDevbook,
+  Env,
+  DevbookStatus,
+} from '@devbookhq/sdk'
+
 import FileEditor from './FileEditor'
 import Iframe from './Iframe'
 import ControlTab from './ControlTab'
-import { useDevbook, Env, DevbookStatus } from '@devbookhq/sdk'
 import SpinnerIcon from '../SpinnerIcon'
 import Terminal from './Terminal'
 import Console from './Console'
@@ -87,12 +95,12 @@ function Controls({ env }: Props) {
             {tab === Tab.Iframe &&
               <Iframe devbook={devbook} />
             }
-            {tab === Tab.Terminal &&
+            {/* {tab === Tab.Terminal &&
               <Terminal devbook={devbook} />
             }
             {tab === Tab.Console &&
               <Console devbook={devbook} />
-            }
+            } */}
           </div>
         </>
       }

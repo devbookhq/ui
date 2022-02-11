@@ -41,6 +41,7 @@ function FileEditor({
   const saveFile = useCallback(async (content) => {
     if (!filepath) return
     if (status !== DevbookStatus.Connected) return
+    if (!fs) return
 
     try {
       await fs.write(filepath, content)
@@ -79,40 +80,16 @@ function FileEditor({
     saveFile,
   ])
 
-  function handleInputChange(e: any) {
-    onFilepathChange(e.target.value)
-    setInitialContent('')
-  }
-
   return (
     <div className="dark bg-black-650 flex flex-1 space-y-1">
       <div className="">
-        <Filesystem
-          devbook={devbook}
-          onOpenFile={onFilepathChange}
-        />
+        {fs &&
+          <Filesystem
+            filesystem={fs}
+            onOpenFile={onFilepathChange}
+          />
+        }
       </div>
-      {/* <input
-        className="
-          py-1.5
-          px-0.5
-          pl-[10px]
-          bg-black-600
-          min-w-0
-          flex
-          placeholder:text-denim-400
-          dark:placeholder:text-gray-700
-          text-2xs
-          font-400
-          font-mono
-          text-denim-700
-          dark:text-gray-200
-          outline-none
-        "
-        value={filepath}
-        onChange={handleInputChange}
-        placeholder="/<filename>"
-      /> */}
       <div
         className={`flex-1 max-h-full overflow-auto flex min-w-0 devbook`}
         ref={editorEl}

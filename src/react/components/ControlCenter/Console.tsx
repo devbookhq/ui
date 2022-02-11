@@ -1,4 +1,4 @@
-import { useDevbook } from '@devbookhq/sdk'
+import type { useDevbook } from '@devbookhq/sdk'
 import cn from 'classnames'
 import { useMemo } from 'react'
 import Text from '../Text'

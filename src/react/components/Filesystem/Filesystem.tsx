@@ -24,9 +24,10 @@ import type {
 
 import FilesystemDir from './FilesystemDir'
 import FilesystemNamePrompt from './FilesystemNamePrompt'
+import { FS } from '@devbookhq/sdk/lib/cjs/core'
 
 export interface FilesystemProps {
-  devbook: ReturnType<typeof useDevbook>
+  filesystem: FS
   onOpenFile: (filepath: string) => void
 }
 
@@ -66,9 +67,7 @@ const createIcon: CreateFilesystemIcon = (args) => {
 
 function Filesystem({
   onOpenFile,
-  devbook: {
-    fs: filesystem,
-  },
+  filesystem,
 }: FilesystemProps) {
   const [serializedFS, setSerializedFS] = useState<SerializedFSNode[]>(filesystem.serialize(createComponent, createPrompt, createIcon) || [])
   const [expandedKeys, setExpandedKeys] = useState<string[]>([])
@@ -86,7 +85,7 @@ function Filesystem({
       }
     }
     setSerializedFS(filesystem.serialize(createComponent, createPrompt, createIcon))
-  }, [])
+  }, [filesystem])
 
   const handleFSPromptConfirm = useCallback((args: { fullPath: string, name: string, type: FSNodeType }) => {
     const { fullPath, name, type } = args
@@ -105,6 +104,7 @@ function Filesystem({
     }
   }, [
     handleOpenFile,
+    filesystem,
   ])
 
   const handleSelectNode = useCallback((node: any) => {
@@ -119,7 +119,7 @@ function Filesystem({
     const promise = createManagedPromise()
     promises.set(path, promise)
     return promise.promise as Promise<void>
-  }, [])
+  }, [filesystem])
 
   const expandNode = useCallback((args: { key: string, shouldExpand: boolean }) => {
     const { key, shouldExpand } = args
@@ -139,7 +139,7 @@ function Filesystem({
     // User might be adding a new file or dir to a directory which they haven't expanded yet.
     // That means that we haven't loaded the directory's children yet.
     loadDirData(args.dirPath)
-      .then(() => {
+      ?.then(() => {
         expandNode({ key: args.dirPath, shouldExpand: true })
       })
   }, [
@@ -157,21 +157,23 @@ function Filesystem({
       filesystem.removeListener('onShowPrompt', handleFSShowPrompt)
     }
   }, [
+    filesystem,
     handleFSPromptConfirm,
     handleFSDirsChange,
     handleFSShowPrompt,
   ])
 
   if (!serializedFS.length) return null
+
   return (
     <Tree.DirectoryTree
       motion={null}
       expandedKeys={expandedKeys}
       treeData={serializedFS}
-      loadData={e => loadDirData(e.key as string)}
-      onExpand={(_, event) => expandNode({ key: event.node.key as string, shouldExpand: !event.node.expanded })}
+      loadData={(e: any) => loadDirData(e.key as string)}
+      onExpand={(_: any, event: any) => expandNode({ key: event.node.key as string, shouldExpand: !event.node.expanded })}
       //titleRender={node => <TreeNodeTitle node={node as SerializedFSNode} />}
-      onSelect={(_, info) => handleSelectNode(info.node)}
+      onSelect={(_: any, info: any) => handleSelectNode(info.node)}
     />
   )
 }
