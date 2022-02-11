@@ -1,9 +1,9 @@
 import path from 'path'
 import { EditorView } from '@codemirror/view'
-import { useCallback, useEffect, useMemo, useRef, useState, KeyboardEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import createEditorState from '../Editor/createEditorState'
 import { Language } from '../Editor/language'
-import { useDevbook, Env, DevbookStatus } from '@devbookhq/sdk'
+import { useDevbook, DevbookStatus } from '@devbookhq/sdk'
 import Filesystem from '../Filesystem/Filesystem'
 
 export interface Props {
@@ -86,7 +86,7 @@ function FileEditor({
 
   return (
     <div className="dark bg-black-650 flex flex-1 space-y-1">
-      <div className="max-w-[100px]">
+      <div className="">
         <Filesystem
           devbook={devbook}
           onOpenFile={onFilepathChange}
@@ -99,7 +99,7 @@ function FileEditor({
           pl-[10px]
           bg-black-600
           min-w-0
-          flex 
+          flex
           placeholder:text-denim-400
           dark:placeholder:text-gray-700
           text-2xs
