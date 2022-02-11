@@ -65,7 +65,7 @@ function Controls({ env }: Props) {
               isSelected={tab === Tab.Iframe}
               handleClick={() => setTab(Tab.Iframe)}
             />
-            <ControlTab
+            {/* <ControlTab
               label="Terminal"
               isSelected={tab === Tab.Terminal}
               handleClick={() => setTab(Tab.Terminal)}
@@ -74,7 +74,7 @@ function Controls({ env }: Props) {
               label="Console"
               isSelected={tab === Tab.Console}
               handleClick={() => setTab(Tab.Console)}
-            />
+            /> */}
           </div>
           <div className="overflow-y-auto flex flex-1">
             {tab === Tab.Editor &&

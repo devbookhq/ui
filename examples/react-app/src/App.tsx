@@ -2,7 +2,7 @@ import './App.css';
 
 import { ControlCenter, centerControls } from '@devbookhq/ui'
 import Examples from './Examples';
-import { Env } from '@devbookhq/sdk';
+import { Env } from '@devbookhq/sdk'
 
 function App() {
   return (

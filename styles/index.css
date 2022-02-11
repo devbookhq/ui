@@ -1,5 +1,9 @@
+@import 'antd/dist/antd.css';
+
 @import './codemirror.css';
 @import './controlCenter.css';
+@import './ant/tree.css';
+@import './ant/switch.css';
 
 @tailwind utilities;
 @tailwind components;
@@ -11,4 +15,15 @@
     border-style: solid;
     border-color: theme('borderColor.DEFAULT', currentColor);
   }
+}
+
+/* Something sets the `vertical-align` rule to `middle` for SVG which messes up with Ant Design's icons. */
+svg {
+  vertical-align: baseline;
+}
+
+/* `:after` and `:before` pseudo-elements can't be set via Tailwind. */
+label.required:after {
+  @apply pl-1;
+  content: "*";
 }

@@ -1,0 +1,63 @@
+/**
+ * This file contains CSS rules that overrides the default style of the Ant's Tree components.
+ */
+
+/* Remove tree's background. */
+.ant-tree {
+  @apply bg-transparent;
+}
+
+/* Set the tree's font-family, text and icon colors and enable antialiasing. */
+.ant-tree-list {
+  @apply font-sans text-xs text-denim-700 dark:text-gray-200;
+}
+
+/* Add visual padding to the node. */
+.ant-tree.ant-tree-directory .ant-tree-treenode {
+  @apply px-4
+}
+
+/* Set proper text colors for the titles. */
+.ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-node-content-wrapper .ant-tree-title {
+  @apply text-denim-700 dark:text-gray-200;
+}
+
+/* Override the hover effect, text color and background color for selected nodes. */
+.ant-tree.ant-tree-directory .ant-tree-treenode::before {
+  @apply transition-none;
+}
+.ant-tree.ant-tree-directory .ant-tree-treenode:hover::before,
+.ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
+  @apply bg-denim-100 dark:bg-denim-800;
+}
+/* Disable the hover effect on disabled nodes. */
+.ant-tree.ant-tree-directory .ant-tree-treenode-disabled:hover::before {
+  @apply bg-transparent;
+}
+
+/* Customize padding between the caret and the rest of the row. Disable animation. */
+.ant-tree .ant-tree-node-content-wrapper {
+  @apply p-0 transition-none;
+}
+
+/* Disable "not-allowed" cursor for disabled nodes. */
+.ant-tree.ant-tree-directory .ant-tree-treenode-disabled .ant-tree-node-content-wrapper {
+  @apply cursor-default;
+}
+
+/* Don't show an icon for disabled nodes. */
+.ant-tree.ant-tree-directory .ant-tree-treenode-disabled .ant-tree-iconEle {
+  @apply hidden;
+}
+
+/* Make the title part of a node to take the maximum width. */
+.ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-node-content-wrapper,
+.ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-node-content-wrapper .ant-tree-title,
+.ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-node-content-wrapper .ant-tree-title .ant-dropdown-trigger {
+  @apply flex-1 flex;
+}
+
+/* Set the size of the caret icon. */
+.ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-switcher {
+  @apply w-6 h-6 text-[10px] transition-none;
+}

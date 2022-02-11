@@ -1,0 +1,7 @@
+.ant-switch {
+  @apply bg-gray-550 dark:bg-gray-800 !important;
+}
+
+.ant-switch.ant-switch-checked {
+  @apply bg-green-400 !important;
+}

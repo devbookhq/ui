@@ -12,7 +12,7 @@ const startingPosition = {
   offsetX: -20,
 }
 const startingSize = {
-  width: '450px',
+  width: '700px',
   height: '600px',
 }
 

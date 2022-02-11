@@ -85,11 +85,13 @@ function FileEditor({
   }
 
   return (
-    <div className="dark bg-black-650 flex flex-1 flex-col space-y-1">
-      <Filesystem
-        devbook={devbook}
-        onFileChange={handleFileChange}
-      />
+    <div className="dark bg-black-650 flex flex-1 space-y-1">
+      <div className="max-w-[100px]">
+        <Filesystem
+          devbook={devbook}
+          onOpenFile={onFilepathChange}
+        />
+      </div>
       {/* <input
         className="
           py-1.5

@@ -1,4 +1,4 @@
-import {
+import React, {
   useState,
   useEffect,
   useCallback,
@@ -6,16 +6,28 @@ import {
 import {
   Tree,
 } from 'antd'
-import { useDevbook } from '@devbookhq/sdk'
+import type { useDevbook } from '@devbookhq/sdk'
+import {
+  FileOutlined,
+  FolderOutlined,
+} from '@ant-design/icons'
 
 import {
   FSNodeType,
   SerializedFSNode,
 } from './types'
+import type {
+  CreateFilesystemComponent,
+  CreateFilesystemPrompt,
+  CreateFilesystemIcon,
+} from '@devbookhq/sdk/lib/esm/core/runningEnvironment/filesystem/filesystemNode'
 
+import FilesystemDir from './FilesystemDir'
+import FilesystemNamePrompt from './FilesystemNamePrompt'
 
 export interface FilesystemProps {
   devbook: ReturnType<typeof useDevbook>
+  onOpenFile: (filepath: string) => void
 }
 
 function createManagedPromise<T = void>() {
@@ -38,53 +50,60 @@ function createManagedPromise<T = void>() {
 
 const promises = new Map<string, any>()
 
-function Filesystem({ envID, documentEnvID }: FilesystemProps) {
-  const env = useRunningEnv({ documentEnvID })
-  const [serializedFS, setSerializedFS] = useState<SerializedFSNode[]>(env?.filesystem.serialize() || [])
+const createComponent: CreateFilesystemComponent = (args) => {
+  return React.createElement(FilesystemDir, args)
+}
+
+const createPrompt: CreateFilesystemPrompt = (args) => {
+  return React.createElement(FilesystemNamePrompt, args)
+}
+
+const createIcon: CreateFilesystemIcon = (args) => {
+  return args.type === 'File'
+    ? React.createElement(FileOutlined)
+    : React.createElement(FolderOutlined)
+}
+
+function Filesystem({
+  onOpenFile,
+  devbook: {
+    fs: filesystem,
+  },
+}: FilesystemProps) {
+  const [serializedFS, setSerializedFS] = useState<SerializedFSNode[]>(filesystem.serialize(createComponent, createPrompt, createIcon) || [])
   const [expandedKeys, setExpandedKeys] = useState<string[]>([])
 
-  const handleOpenFile = useCallback((path: string) => {
-    throw new Error('Not implemented')
-  }, [])
+  const handleOpenFile = useCallback((filepath: string) => {
+    onOpenFile(filepath)
+  }, [onOpenFile])
 
   // Since the filesystem serialization is triggered relatively often, we want to use `useCallback` for functions.
   const handleFSDirsChange = useCallback(({ dirPaths }: { dirPaths: string[] }) => {
-    if (!env) return
     for (const dp of dirPaths) {
       const promise = promises.get(dp)
       if (promise) {
         promise.resolveHandle()
       }
     }
-    setSerializedFS(env.filesystem.serialize())
-  }, [env])
+    setSerializedFS(filesystem.serialize(createComponent, createPrompt, createIcon))
+  }, [])
 
   const handleFSPromptConfirm = useCallback((args: { fullPath: string, name: string, type: FSNodeType }) => {
-    if (!env) return
-
     const { fullPath, name, type } = args
     if (!name) return
 
     switch (type) {
       case 'File':
-        Runner.obj?.createFile({
-          envID: env.id,
-          path: fullPath,
-          content: '',
-        })
+        filesystem.write(fullPath, '')
         handleOpenFile(fullPath)
         break
       case 'Dir':
-        Runner.obj?.createDir({
-          envID: env.id,
-          path: fullPath,
-        })
+        filesystem.createDir(fullPath)
         break
       default:
         throw new Error('Unknown node type')
     }
   }, [
-    env,
     handleOpenFile,
   ])
 
@@ -96,14 +115,11 @@ function Filesystem({ envID, documentEnvID }: FilesystemProps) {
   // Triggered by `Tree` if a node doesn't have any children and is leaf.
   // Once a node has children, it won't be triggered again.
   const loadDirData = useCallback((path: string) => {
-    Runner.obj?.listDir({
-      envID,
-      path,
-    })
+    filesystem.listDir(path)
     const promise = createManagedPromise()
     promises.set(path, promise)
     return promise.promise as Promise<void>
-  }, [envID])
+  }, [])
 
   const expandNode = useCallback((args: { key: string, shouldExpand: boolean }) => {
     const { key, shouldExpand } = args
@@ -132,27 +148,24 @@ function Filesystem({ envID, documentEnvID }: FilesystemProps) {
   ])
 
   useEffect(function registerFSListeners() {
-    if (!env?.filesystem) return
-    env.filesystem.addListener('onNewItemConfirm', handleFSPromptConfirm)
-    env.filesystem.addListener('onDirsChange', handleFSDirsChange)
-    env.filesystem.addListener('onShowPrompt', handleFSShowPrompt)
+    filesystem.addListener('onNewItemConfirm', handleFSPromptConfirm)
+    filesystem.addListener('onDirsChange', handleFSDirsChange)
+    filesystem.addListener('onShowPrompt', handleFSShowPrompt)
     return () => {
-      env.filesystem.removeListener('onNewItemConfirm', handleFSPromptConfirm)
-      env.filesystem.removeListener('onDirsChange', handleFSDirsChange)
-      env.filesystem.removeListener('onShowPrompt', handleFSShowPrompt)
+      filesystem.removeListener('onNewItemConfirm', handleFSPromptConfirm)
+      filesystem.removeListener('onDirsChange', handleFSDirsChange)
+      filesystem.removeListener('onShowPrompt', handleFSShowPrompt)
     }
   }, [
-    env?.filesystem,
     handleFSPromptConfirm,
     handleFSDirsChange,
     handleFSShowPrompt,
   ])
 
-  if (!env || !serializedFS.length) return null
+  if (!serializedFS.length) return null
   return (
     <Tree.DirectoryTree
       motion={null}
-      height={500}
       expandedKeys={expandedKeys}
       treeData={serializedFS}
       loadData={e => loadDirData(e.key as string)}
