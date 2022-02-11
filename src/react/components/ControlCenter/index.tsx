@@ -51,9 +51,6 @@ class ControlCenter extends Component<Props, { panel?: any }> {
       callback: (panel: any) => {
         panel.style.height = startingSize.height
       },
-      onclosed: () => {
-        this.removePanel()
-      },
     })
     this.setState({ panel })
   }
@@ -63,7 +60,7 @@ class ControlCenter extends Component<Props, { panel?: any }> {
   }
 
   private removePanel() {
-    this.state.panel?.remove()
+    this.state.panel?.close()
     this.setState(s => ({ ...s, panel: undefined }))
   }
 
