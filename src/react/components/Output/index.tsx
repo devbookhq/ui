@@ -20,8 +20,8 @@ function Output({
 
   const logs = useMemo(() => {
     return [
-      ...stdout.map(s => ({ message: s, type: 'output' as Output })),
       ...stderr.map(s => ({ message: s, type: 'error' as Output })),
+      ...stdout.map(s => ({ message: s, type: 'output' as Output })),
     ]
   }, [stderr, stdout])
 
@@ -37,6 +37,7 @@ function Output({
         className={cn(`
         flex-1
         flex
+        overflow-x-hidden
         flex-col
         rounded
 
@@ -52,7 +53,7 @@ function Output({
             text="OUTPUT"
           />
         </div>
-        <div className="overflow-y-auto leading-tight px-4 pt-2">
+        <div className="overflow-auto leading-tight px-4 pt-2">
           {logs.map((o, i) =>
             <div key={o.message + i}>
               <Text
