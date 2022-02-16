@@ -53,7 +53,7 @@ function Output({
             text="OUTPUT"
           />
         </div>
-        <div className="overflow-auto leading-tight px-4 pt-2">
+        <div className="overflow-auto leading-tight px-4 pt-2 whitespace-pre">
           {logs.map((o, i) =>
             <div key={o.message + i}>
               <Text
