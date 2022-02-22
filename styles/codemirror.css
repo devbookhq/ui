@@ -1,6 +1,6 @@
 .devbook {
   .cm-editor {
-    @apply px-2 min-w-0 flex flex-1 h-full;
+    @apply px-2 min-w-0 flex flex-1 h-full text-left;
     @apply dark:bg-black-650 bg-gray-300;
   }
 

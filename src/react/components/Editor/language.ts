@@ -4,6 +4,7 @@ import {
   jsxLanguage,
   tsxLanguage,
 } from '@codemirror/lang-javascript'
+import { pythonLanguage } from '@codemirror/lang-python'
 import { shell } from '@codemirror/legacy-modes/mode/shell'
 import { StreamLanguage } from '@codemirror/stream-parser'
 import { sql } from '@codemirror/lang-sql'
@@ -16,10 +17,13 @@ export enum Language {
   'tsx' = 'tsx',
   'ts' = 'ts',
   'sql' = 'sql',
+  'py' = 'py',
 }
 
 export function getLanguageExtension(lang?: Language) {
   switch (lang) {
+    case Language.py:
+      return pythonLanguage
     case Language.js:
       return javascriptLanguage
     case Language.jsx:
