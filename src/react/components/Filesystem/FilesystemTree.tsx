@@ -24,7 +24,7 @@ import type {
 
 import FilesystemDir from './FilesystemDir'
 import FilesystemNamePrompt from './FilesystemNamePrompt'
-import { FS } from '@devbookhq/sdk/lib/cjs/core'
+import type { FS } from '@devbookhq/sdk/lib/cjs/core'
 
 export interface FilesystemProps {
   filesystem: FS
@@ -65,7 +65,7 @@ const createIcon: CreateFilesystemIcon = (args) => {
     : React.createElement(FolderOutlined)
 }
 
-function Filesystem({
+function FilesystemTree({
   onOpenFile,
   filesystem,
 }: FilesystemProps) {
@@ -178,4 +178,4 @@ function Filesystem({
   )
 }
 
-export default Filesystem
+export default FilesystemTree
