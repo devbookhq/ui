@@ -17,6 +17,7 @@ export interface Props {
   isReadonly?: boolean
   onContentChange?: (content: string) => void
   lightTheme?: boolean
+  withFilesystem?: boolean,
   filepath?: string
   language?: Language
   height?: number // in px

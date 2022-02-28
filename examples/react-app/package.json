@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@devbookhq/sdk": "^1.0.11",
     "@devbookhq/ui": "file:../..",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

@@ -11,7 +11,7 @@ import {
   useEffect,
 } from 'react'
 
-import Header from './Header'
+import Header from '../Editor/Header'
 import Separator from '../Separator'
 
 export interface Props {

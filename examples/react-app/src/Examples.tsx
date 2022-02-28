@@ -1,11 +1,18 @@
-import { Output, Editor, Iframe, Language } from '@devbookhq/ui'
+import { useDevbook } from '@devbookhq/sdk';
+import { Output, Editor, Iframe, Language, FileExplorer } from '@devbookhq/ui'
 
 import './Examples.css'
 
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
+  const devbook = useDevbook({ env: 'banana-node' })
+
   return (
     <div className="examples">
+      <FileExplorer
+        devbook={devbook}
+        lightTheme={theme === 'light'}
+      />
       <Editor
         isReadonly={false}
         lightTheme={theme === 'light'}
