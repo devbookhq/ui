@@ -1,30 +1,30 @@
-import React, {
+import {
   useState,
   useEffect,
   useCallback,
+  createElement,
 } from 'react'
 import {
   Tree,
 } from 'antd'
-import type { useDevbook } from '@devbookhq/sdk'
 import {
   FileOutlined,
   FolderOutlined,
 } from '@ant-design/icons'
-
-import {
-  FSNodeType,
-  SerializedFSNode,
-} from './types'
 import type {
   CreateFilesystemComponent,
   CreateFilesystemPrompt,
   CreateFilesystemIcon,
 } from '@devbookhq/sdk/lib/esm/core/runningEnvironment/filesystem/filesystemNode'
+import type { FS } from '@devbookhq/sdk/lib/esm/core'
+
+import {
+  FSNodeType,
+  SerializedFSNode,
+} from './types'
 
 import FilesystemDir from './FilesystemDir'
 import FilesystemNamePrompt from './FilesystemNamePrompt'
-import type { FS } from '@devbookhq/sdk/lib/cjs/core'
 
 export interface FilesystemProps {
   filesystem: FS
@@ -52,20 +52,20 @@ function createManagedPromise<T = void>() {
 const promises = new Map<string, any>()
 
 const createComponent: CreateFilesystemComponent = (args) => {
-  return React.createElement(FilesystemDir, args)
+  return createElement(FilesystemDir, args)
 }
 
 const createPrompt: CreateFilesystemPrompt = (args) => {
-  return React.createElement(FilesystemNamePrompt, args)
+  return createElement(FilesystemNamePrompt, args)
 }
 
 const createIcon: CreateFilesystemIcon = (args) => {
   return args.type === 'File'
-    ? React.createElement(FileOutlined)
-    : React.createElement(FolderOutlined)
+    ? createElement(FileOutlined)
+    : createElement(FolderOutlined)
 }
 
-function FilesystemTree({
+function FileExplorer({
   onOpenFile,
   filesystem,
 }: FilesystemProps) {
@@ -178,4 +178,4 @@ function FilesystemTree({
   )
 }
 
-export default FilesystemTree
+export default FileExplorer

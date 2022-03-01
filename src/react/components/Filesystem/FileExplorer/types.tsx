@@ -1,5 +1,3 @@
-
-
 import { ReactNode } from 'react'
 
 type FSNodeType = 'File' | 'Dir' | 'Prompt' | 'Empty' | 'Root'
@@ -25,7 +23,6 @@ interface DirContentEvent {
   dirPath: string
   content: SerializedFSNode[]
 }
-
 
 export type {
   FSNodeType,

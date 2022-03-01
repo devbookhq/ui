@@ -11,7 +11,7 @@ function CellHeader({
   return (
     <div
       className={cn(
-        'px-1.5',
+        'px-2',
         'py-1',
         'flex',
         'items-center',

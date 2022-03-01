@@ -5,11 +5,12 @@ import {
   ChangeEvent,
   KeyboardEvent,
 } from 'react'
-import Input from '../Input'
+
+import Input from '../../Input'
 
 export interface Props {
- onConfirm?: (name: string) => void,
- onBlur?: () => void,
+  onConfirm?: (name: string) => void,
+  onBlur?: () => void,
 }
 
 function FilesystemNamePrompt({

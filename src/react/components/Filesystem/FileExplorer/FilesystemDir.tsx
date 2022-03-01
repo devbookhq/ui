@@ -4,8 +4,7 @@ import {
   FolderAddOutlined,
 } from '@ant-design/icons'
 
-import Text from '../Text'
-
+import Text from '../../Text'
 import ContextButton from './ContextButton'
 
 export interface Props {
@@ -30,10 +29,8 @@ function FilesystemDir({
       "
     >
       <Text text={name} />
-
       <div
         className="
-          space-x-1
           invisible
           group-hover:visible
         "

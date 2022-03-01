@@ -1,9 +1,12 @@
-import { ReactNode, MouseEvent } from 'react'
+import {
+  ReactNode,
+  MouseEvent,
+} from 'react'
 
 export interface Props {
-  onMouseDown: (e: MouseEvent) => void,
-  onClick: (e: MouseEvent) => void,
-  icon: ReactNode,
+  onMouseDown: (e: MouseEvent) => void
+  onClick: (e: MouseEvent) => void
+  icon: ReactNode
 }
 
 function ContextButton({
@@ -20,6 +23,7 @@ function ContextButton({
         dark:text-gray-700
         dark:hover:text-gray-200
         cursor-pointer
+        bg-transparent
       "
       onMouseDown={onMouseDown}
       onClick={onClick}

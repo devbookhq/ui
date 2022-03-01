@@ -14,7 +14,7 @@
 
 /* Add visual padding to the node. */
 .ant-tree.ant-tree-directory .ant-tree-treenode {
-  @apply px-4
+  @apply px-4;
 }
 
 /* Set proper text colors for the titles. */

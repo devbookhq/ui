@@ -1,5 +1,3 @@
-import cn from 'classnames'
-
 enum Variant {
   Light,
   Dark,
