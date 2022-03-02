@@ -118,12 +118,12 @@ function Filesystem({
           ...height && { height },
         }}
       >
-        {!fs || status !== "Connected" &&
+        {!fs || status !== 'Connected' &&
           <div className="flex flex-1 items-center justify-center">
             <SpinnerIcon />
           </div>
         }
-        {fs && status === "Connected" &&
+        {fs && status === 'Connected' &&
           <Splitter
             onResizeFinished={(_, sizes) => setSizes(sizes)}
             initialSizes={sizes}
