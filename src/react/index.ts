@@ -1,5 +1,6 @@
-export { default as Filesystem } from './components/Filesystem'
 export { default as Editor } from './components/Editor'
+export { default as Filesystem } from './components/Filesystem'
 export { default as Output } from './components/Output'
 export { default as Iframe } from './components/Iframe'
+export { default as Terminal } from './components/Terminal'
 export { Language } from './components/Editor/language'

@@ -5,15 +5,21 @@ import {
   Iframe,
   Language,
   Filesystem,
+  Terminal,
 } from '@devbookhq/ui'
 
 import './Examples.css'
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
-  const devbook = useDevbook({ env: 'banana-node' })
+  const devbook = useDevbook({ env: 'banana-node', config: { domain: 'banana-orch.usedevbook.com' } })
 
   return (
     <div className="examples">
+      <Terminal
+        lightTheme={theme === 'light'}
+        devbook={devbook}
+        height="200px"
+      />
       <Filesystem
         devbook={devbook}
         lightTheme={theme === 'light'}

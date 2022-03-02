@@ -30,7 +30,10 @@ export interface Props {
 
 function Filesystem({
   initialFilepath,
-  devbook,
+  devbook: {
+    fs,
+    status,
+  },
   lightTheme,
   height = '200px',
 }: Props) {
@@ -38,8 +41,6 @@ function Filesystem({
   const [initialContent, setInitialContent] = useState<string>()
   const [filepath, setFilepath] = useState(initialFilepath)
   const [sizes, setSizes] = useState([40, 60])
-
-  const { fs, status } = devbook
 
   useEffect(() => {
     async function init() {
