@@ -44,7 +44,7 @@ function Filesystem({
   useEffect(() => {
     async function init() {
       if (!fs) return
-      if (status !== "Connected") return
+      if (status !== 'Connected') return
       if (!filepath) return
 
       const content = await fs.get(filepath)
@@ -59,7 +59,7 @@ function Filesystem({
 
   const saveFile = useCallback(async (content) => {
     if (!filepath) return
-    if (status !== "Connected") return
+    if (status !== 'Connected') return
     if (!fs) return
 
     try {
