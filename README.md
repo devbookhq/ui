@@ -11,6 +11,7 @@ Available components:
 - [Editor](#editor)
 - [Iframe](#iframe)
 - [Output](#output)
+- [Filesystem](#filesystem)
 
 ![example](examples/example.png)
 
@@ -37,6 +38,7 @@ Supported languages:
 * TS/TSX
 * Shell
 * SQL
+* Python
 
 ### Iframe
 ```tsx
@@ -47,7 +49,7 @@ export default function ExampleIframe() {
     <Iframe
       url="https://..."
       lightTheme={false}
-      height={150}
+      height="150px"
     />
   )
 }
@@ -63,7 +65,26 @@ export default function ExampleOutput() {
       stdout={['out1', 'out2']}
       stderr={['err1']}
       lightTheme={false}
-      height={150}
+      height="150px"
+    />
+  )
+}
+```
+
+### Filesystem
+```tsx
+import { Filesystem } from '@devbookhq/ui'
+import { useDevbook } from '@devbookhq/sdk'
+
+export default function ExampleFilesystem() {
+  const devbook = useDevbook({ env: 'your-env', config: { domain: 'your-domain' }})
+
+  return (
+    <Filesystem
+      devbook={devbook}
+      lightTheme={false}
+      height="150px"
+      initialFilepath="/README.md"
     />
   )
 }

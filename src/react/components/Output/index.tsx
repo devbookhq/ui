@@ -1,5 +1,6 @@
-import cn from 'classnames'
 import { useMemo } from 'react'
+import cn from 'classnames'
+
 import Text from '../Text'
 
 export type Output = 'error' | 'output'
@@ -7,7 +8,7 @@ export type Output = 'error' | 'output'
 export interface Props {
   stdout?: string[]
   stderr?: string[]
-  height?: number // in px
+  height?: string
   lightTheme?: boolean
 }
 
@@ -15,7 +16,7 @@ function Output({
   stdout = [],
   stderr = [],
   lightTheme,
-  height = 150,
+  height = '150px',
 }: Props) {
 
   const logs = useMemo(() => {
@@ -32,7 +33,7 @@ function Output({
     )}>
       <div
         style={{
-          height: `${height}px`,
+          ...height && { height },
         }}
         className={cn(`
         flex-1

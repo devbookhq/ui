@@ -22,8 +22,9 @@ function FilesystemDir({
     <div
       className="
         group
-        flex-1
         flex
+        flex-1
+        truncate
         justify-between
         items-center
       "

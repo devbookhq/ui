@@ -4,7 +4,7 @@
 
 /* Remove tree's background. */
 .ant-tree {
-  @apply bg-transparent;
+  @apply bg-transparent text-denim-700 dark:text-gray-200;
 }
 
 /* Set the tree's font-family, text and icon colors and enable antialiasing. */
@@ -55,6 +55,10 @@
 .ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-node-content-wrapper .ant-tree-title,
 .ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-node-content-wrapper .ant-tree-title .ant-dropdown-trigger {
   @apply flex-1 flex;
+}
+
+.ant-tree-title {
+  @apply truncate;
 }
 
 /* Set the size of the caret icon. */

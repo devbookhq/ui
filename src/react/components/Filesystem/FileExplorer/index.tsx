@@ -168,6 +168,7 @@ function FileExplorer({
   return (
     <Tree.DirectoryTree
       motion={null}
+      className="w-full"
       expandedKeys={expandedKeys}
       treeData={serializedFS}
       loadData={(e: any) => loadDirData(e.key as string)}

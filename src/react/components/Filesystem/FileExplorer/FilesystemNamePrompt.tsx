@@ -53,6 +53,8 @@ function FilesystemNamePrompt({
         text-xs
         rounded
         border
+        text-denim-700
+        dark:text-gray-200
         border-green-400
         bg-transparent
       `}

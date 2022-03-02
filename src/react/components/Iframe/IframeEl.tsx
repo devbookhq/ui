@@ -9,7 +9,7 @@ import SpinnerIcon from '../SpinnerIcon'
 
 export interface Props {
   src: string
-  height: number // in px
+  height: string
 }
 
 export interface IframeElHandle {
@@ -44,7 +44,7 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
     >
       <iframe
         style={{
-          height: `${height}px`,
+          height,
         }}
         key={v}
         className={cn(

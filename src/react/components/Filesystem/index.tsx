@@ -19,23 +19,25 @@ import createEditorState from '../Editor/createEditorState'
 import { Language } from '../Editor/language'
 import FileExplorer from './FileExplorer'
 import SpinnerIcon from '../SpinnerIcon'
+import Text from '../Text'
 
 export interface Props {
   devbook: ReturnType<typeof useDevbook>
   initialFilepath?: string
   lightTheme?: boolean
-  height?: number // in px
+  height?: string
 }
 
 function Filesystem({
   initialFilepath,
   devbook,
   lightTheme,
-  height = 200,
+  height = '200px',
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
   const [initialContent, setInitialContent] = useState<string>()
   const [filepath, setFilepath] = useState(initialFilepath)
+  const [sizes, setSizes] = useState([40, 60])
 
   const { fs, status } = devbook
 
@@ -113,34 +115,46 @@ function Filesystem({
       <div
         className="flex-1 flex max-h-full min-w-0 overflow-auto devbook rounded-b bg-gray-300 dark:bg-black-650"
         style={{
-          ...height && { height: `${height}px` },
+          ...height && { height },
         }}
       >
-        <Splitter
-          initialSizes={[40, 60]}
-          classes={['flex', 'flex']}
-          draggerClassName="dark:bg-black-600 bg-gray-600"
-          gutterClassName="dark:bg-black-800 bg-gray-500"
-          direction={SplitDirection.Horizontal}
-        >
-          <div className="flex flex-1 overflow-auto max-h-full">
-            {fs && status === "Connected" &&
+        {!fs || status !== "Connected" &&
+          <div className="flex flex-1 items-center justify-center">
+            <SpinnerIcon />
+          </div>
+        }
+        {fs && status === "Connected" &&
+          <Splitter
+            onResizeFinished={(_, sizes) => setSizes(sizes)}
+            initialSizes={sizes}
+            minWidths={[50, 50]}
+            classes={['flex min-w-0', 'flex min-w-0']}
+            draggerClassName="dark:bg-black-600 bg-gray-400"
+            gutterClassName="dark:bg-black-800 bg-gray-500 hover:dark:bg-black-900 hover:bg-gray-600"
+            direction={SplitDirection.Horizontal}
+          >
+            <div className="flex flex-1 min-w-0 overflow-auto max-h-full py-1">
               <FileExplorer
                 filesystem={fs}
                 onOpenFile={setFilepath}
               />
-            }
-            {!fs || status !== "Connected" &&
-              <div className="flex flex-1 items-center justify-center">
-                <SpinnerIcon />
-              </div>
-            }
-          </div>
-          <div
-            className={`flex-1 max-h-full overflow-auto flex min-w-0 devbook`}
-            ref={editorEl}
-          />
-        </Splitter>
+            </div>
+            <div className="flex-1 max-h-full flex min-w-0">
+              {filepath && <div
+                className="flex-1 max-h-full overflow-auto flex min-w-0 devbook"
+                ref={editorEl}
+              />}
+              {!filepath &&
+                <div className="flex flex-1 items-center justify-center">
+                  <Text
+                    text="No file selected"
+                    hierarchy={Text.hierarchy.Secondary}
+                  />
+                </div>
+              }
+            </div>
+          </Splitter>
+        }
       </div>
     </div>
   )

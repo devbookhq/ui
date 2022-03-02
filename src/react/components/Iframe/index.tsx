@@ -11,13 +11,13 @@ import IframeEl, { IframeElHandle } from './IframeEl'
 
 export interface Props {
   url: string
-  height?: number // in px
+  height?: string
   lightTheme?: boolean
 }
 
 function Iframe({
   url: initialURL,
-  height = 150,
+  height = '150px',
   lightTheme,
 }: Props) {
   const iframeRef = useRef<IframeElHandle>(null)

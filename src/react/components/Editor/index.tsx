@@ -20,7 +20,7 @@ export interface Props {
   withFilesystem?: boolean,
   filepath?: string
   language?: Language
-  height?: number // in px
+  height?: string
 }
 
 function Editor({
@@ -73,7 +73,7 @@ function Editor({
         className={`flex-1 flex max-h-full min-w-0 overflow-auto devbook ${filepath ? 'rounded-b' : 'rounded'}`}
         ref={editorEl}
         style={{
-          ...height && { height: `${height}px` },
+          ...height && { height },
         }}
       />
     </div>
