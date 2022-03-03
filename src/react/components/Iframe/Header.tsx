@@ -20,7 +20,7 @@ function Header({
   onReloadIframe,
   onConfirm,
 }: Props) {
-  const [newURL, setNewURL] = useState<string>()
+  const [newURL, setNewURL] = useState<string>('')
 
   useEffect(function initializeURL() {
     setNewURL(url)
