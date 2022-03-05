@@ -20,20 +20,28 @@ function useTerminal({
   const [terminal, setTerminal] = useState<Terminal>()
 
   useEffect(function initialize() {
-    if (status !== "Connected") return
-    if (!devbookTerminal) return
+    async function init() {
+      if (status !== "Connected") return
+      if (!devbookTerminal) return
 
-    const term = new Terminal({})
+      const term = new Terminal({})
 
-    const session = devbookTerminal.createSession((data) => term.write(data))
-    term.onData((data) => session.sendData(data))
-    term.onResize((size) => session.resize(size))
+      const session = await devbookTerminal.createSession((data) => term.write(data))
+      term.onData((data) => session.sendData(data))
+      term.onResize((size) => session.resize(size))
 
-    setTerminal(term)
+      setTerminal(term)
+
+      return () => {
+        term.dispose()
+        session.destroy()
+      }
+    }
+
+    const disposePromise = init()
 
     return () => {
-      term.dispose()
-      session.destroy()
+      disposePromise.then((dispose) => dispose?.())
     }
   }, [
     status,
