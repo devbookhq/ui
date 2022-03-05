@@ -22,7 +22,7 @@ import SpinnerIcon from '../SpinnerIcon'
 import Text from '../Text'
 
 export interface Props {
-  devbook: ReturnType<typeof useDevbook>
+  devbook: Pick<ReturnType<typeof useDevbook>, 'fs' | 'status'>
   initialFilepath?: string
   lightTheme?: boolean
   height?: string
@@ -42,7 +42,9 @@ function Filesystem({
   const [filepath, setFilepath] = useState(initialFilepath)
   const [sizes, setSizes] = useState([40, 60])
 
-  useEffect(() => {
+  useEffect(function initSelectedFileContent() {
+    console.log('effect change')
+
     async function init() {
       if (!fs) return
       if (status !== 'Connected') return
@@ -99,7 +101,6 @@ function Filesystem({
     }
   }, [
     initialContent,
-    parent,
     language,
     saveFile,
   ])

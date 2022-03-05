@@ -1,4 +1,4 @@
 .app {
-  @apply pt-2 w-full h-full;
+  @apply pt-2 w-full h-full overflow-y-auto;
   @apply flex flex-1 flex-row space-x-4 items-center justify-center; 
 }

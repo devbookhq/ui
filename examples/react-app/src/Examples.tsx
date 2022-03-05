@@ -11,7 +11,7 @@ import {
 import './Examples.css'
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
-  const devbook = useDevbook({ env: 'banana-node', config: { domain: 'banana-orch.usedevbook.com' } })
+  const devbook = useDevbook({ env: 'banana-node', config: { domain: 'banana.usedevbook.com' } })
 
   return (
     <div className="examples">
@@ -20,7 +20,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
         devbook={devbook}
         height="200px"
       />
-      <Filesystem
+      {/* <Filesystem
         devbook={devbook}
         lightTheme={theme === 'light'}
       />
@@ -39,7 +39,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
         lightTheme={theme === 'light'}
         stdout={['out1', 'out2']}
         stderr={['err1']}
-      />
+      /> */}
     </div>
   );
 }

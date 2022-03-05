@@ -4,12 +4,14 @@ import {
 } from 'react'
 import type { useDevbook } from '@devbookhq/sdk'
 
+import 'xterm/css/xterm.css'
+
 import Header from '../Editor/Header'
 import Separator from '../Separator'
 import useTerminal from './useTerminal'
 
 export interface Props {
-  devbook: ReturnType<typeof useDevbook>
+  devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
   height?: string
   lightTheme?: boolean
 }
@@ -33,12 +35,8 @@ function Terminal({
       <Header
         filepath="Terminal"
       />
-      <Separator
-        variant={Separator.variant.CodeEditor}
-        dir={Separator.dir.Horizontal}
-      />
       <div
-        className="flex-1 flex max-h-full min-w-0 overflow-auto rounded"
+        className="flex-1 flex max-h-full min-w-0 overflow-auto"
         ref={terminalEl}
         style={{
           ...height && { height },

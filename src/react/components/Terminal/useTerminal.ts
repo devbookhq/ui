@@ -8,7 +8,7 @@ import type {
 } from '@devbookhq/sdk'
 
 export interface Opts {
-  devbook: ReturnType<typeof useDevbook>
+  devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
 }
 
 function useTerminal({
@@ -23,7 +23,7 @@ function useTerminal({
     if (status !== "Connected") return
     if (!devbookTerminal) return
 
-    const term = new Terminal()
+    const term = new Terminal({})
 
     const session = devbookTerminal.createSession((data) => term.write(data))
     term.onData((data) => session.sendData(data))
