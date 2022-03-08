@@ -4,6 +4,7 @@ import {
 } from 'react'
 import { Terminal } from 'xterm'
 import type {
+  DevbookStatus,
   useDevbook,
 } from '@devbookhq/sdk'
 
@@ -24,9 +25,15 @@ function useTerminal({
       if (status !== "Connected") return
       if (!devbookTerminal) return
 
-      const term = new Terminal({})
+      const term = new Terminal({
+        bellStyle: 'none',
+        cursorStyle: 'block',
+        fastScrollModifier: 'shift',
+        rendererType: 'dom',
+      })
 
       const session = await devbookTerminal.createSession((data) => term.write(data))
+
       term.onData((data) => session.sendData(data))
       term.onResize((size) => session.resize(size))
 

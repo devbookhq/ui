@@ -5,6 +5,7 @@
 @import './controlCenter.css';
 @import './ant/tree.css';
 @import './ant/switch.css';
+@import './xterm.css';
 
 @tailwind utilities;
 @tailwind components;

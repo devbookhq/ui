@@ -6,8 +6,6 @@ import {
 import type { useDevbook } from '@devbookhq/sdk'
 import { FitAddon } from 'xterm-addon-fit'
 
-import 'xterm/css/xterm.css'
-
 import Header from '../Editor/Header'
 import Separator from '../Separator'
 import useTerminal from './useTerminal'
@@ -51,22 +49,22 @@ function Terminal({
         filepath="Terminal"
       />
       <div
-        className="rounded-b overflow-auto min-w-0 max-h-full flex flex-1 bg-gray-300 dark:bg-black-650"
+        className="rounded-b w-full overflow-auto max-h-full flex flex-1 bg-gray-300 dark:bg-black-650"
         style={{
           ...height && { height },
         }}
+        ref={terminalEl}
       >
         {/* {isLoading &&
           <div
             className="flex flex-1 justify-center items-center"
           >
-            <SpinnerIcon />
+          <SpinnerIcon />
           </div>
         } */}
-        <div
-          className="flex flex-1 min-w-0 max-h-full"
-          ref={terminalEl}
-        />
+        {/* <div
+          className=""
+        /> */}
       </div>
     </div>
   )

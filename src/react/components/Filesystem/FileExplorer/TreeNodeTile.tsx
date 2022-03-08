@@ -21,7 +21,6 @@ function TreeNodeTitle({
   const menu = (
     <Menu
       onClick={(e) => {
-        console.log('Click', { node })
         // The context menu might get displayed on top of the tree node so we want
         // to prevent the DOM event to propagate there and trigger click events.
         e.domEvent.stopPropagation()

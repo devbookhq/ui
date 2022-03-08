@@ -43,8 +43,6 @@ function Filesystem({
   const [sizes, setSizes] = useState([40, 60])
 
   useEffect(function initSelectedFileContent() {
-    console.log('effect change')
-
     async function init() {
       if (!fs) return
       if (status !== 'Connected') return
