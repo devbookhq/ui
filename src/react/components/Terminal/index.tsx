@@ -23,7 +23,7 @@ function Terminal({
   lightTheme,
 }: Props) {
   const terminalEl = useRef<HTMLDivElement>(null)
-  const terminal = useTerminal({ devbook })
+  const terminal = useTerminal({ devbook, lightTheme })
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(function attachTerminal() {
@@ -53,9 +53,9 @@ function Terminal({
         dir={Separator.dir.Horizontal}
       />
       <div
-        className="rounded-b overflow-auto max-h-full flex flex-1 bg-gray-300 dark:bg-black-650 py-2 pl-4 pr-1"
+        className="rounded-b overflow-auto max-h-full flex flex-1 bg-gray-300 dark:bg-black-650 py-2 pl-4"
         style={{
-          ...height && { minHeight: height, maxHeight: height, height },
+          ...height && { minHeight: height, maxHeight: height },
         }}
         ref={terminalEl}
       >

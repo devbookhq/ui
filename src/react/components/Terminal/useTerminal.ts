@@ -4,12 +4,12 @@ import {
 } from 'react'
 import { Terminal } from 'xterm'
 import type {
-  DevbookStatus,
   useDevbook,
 } from '@devbookhq/sdk'
 
 export interface Opts {
   devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
+  lightTheme?: boolean,
 }
 
 function useTerminal({
@@ -17,6 +17,7 @@ function useTerminal({
     status,
     terminal: devbookTerminal,
   },
+  lightTheme,
 }: Opts) {
   const [terminal, setTerminal] = useState<Terminal>()
 
@@ -29,10 +30,11 @@ function useTerminal({
         bellStyle: 'none',
         cursorStyle: 'block',
         theme: {
-          background: '#292929',
+          background: lightTheme ? '#DEDEDE' : '#292929',
+          foreground: lightTheme ? '#3C4A5D' : '#E9E9E9',
+          cursor: lightTheme ? '#3C4A5D' : '#E9E9E9',
         },
       })
-
       const session = await devbookTerminal.createSession((data) => term.write(data))
 
       term.onData((data) => session.sendData(data))
@@ -54,6 +56,7 @@ function useTerminal({
   }, [
     status,
     devbookTerminal,
+    lightTheme,
   ])
 
   return terminal

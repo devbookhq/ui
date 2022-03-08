@@ -12,6 +12,7 @@ Available components:
 - [Iframe](#iframe)
 - [Output](#output)
 - [Filesystem](#filesystem)
+- [Terminal](#terminal)
 
 ![example](examples/example.png)
 
@@ -85,6 +86,24 @@ export default function ExampleFilesystem() {
       lightTheme={false}
       height="150px"
       initialFilepath="/README.md"
+    />
+  )
+}
+```
+
+### Terminal
+```tsx
+import { Filesystem } from '@devbookhq/ui'
+import { useDevbook } from '@devbookhq/sdk'
+
+export default function ExampleTerminal() {
+  const devbook = useDevbook({ env: 'your-env', config: { domain: 'your-domain' }})
+
+  return (
+    <Terminal
+      devbook={devbook}
+      lightTheme={false}
+      height="200px"
     />
   )
 }

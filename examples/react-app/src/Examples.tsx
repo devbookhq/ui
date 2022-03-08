@@ -11,7 +11,7 @@ import {
 import './Examples.css'
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
-  const devbook = useDevbook({ env: 'banana-node', config: { domain: 'banana.usedevbook.com' } })
+  const devbook = useDevbook({ debug: true, env: 'dbk-dev-env', config: { domain: 'dev.usedevbook.com' } })
 
   return (
     <div className="examples">
@@ -20,22 +20,22 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
         devbook={devbook}
         height="200px"
       />
-      {/* <Filesystem
+      <Filesystem
         devbook={devbook}
         lightTheme={theme === 'light'}
       />
-      <Editor
+      {/* <Editor
         isReadonly={false}
         lightTheme={theme === 'light'}
         language={Language.jsx}
         filepath="index.js"
         initialContent={'console.log("world")'}
-      />
-      <Iframe
+      /> */}
+      {/* <Iframe
         lightTheme={theme === 'light'}
         url="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"
-      />
-      <Output
+      /> */}
+      {/* <Output
         lightTheme={theme === 'light'}
         stdout={['out1', 'out2']}
         stderr={['err1']}
