@@ -30,6 +30,9 @@ function useTerminal({
         cursorStyle: 'block',
         fastScrollModifier: 'shift',
         rendererType: 'dom',
+        theme: {
+          background: '#292929',
+        },
       })
 
       const session = await devbookTerminal.createSession((data) => term.write(data))

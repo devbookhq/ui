@@ -46,25 +46,29 @@ function Terminal({
   return (
     <div className={`rounded flex flex-col flex-1 ${lightTheme ? '' : 'dark'}`}>
       <Header
-        filepath="Terminal"
+        filepath="> Terminal"
+      />
+      <Separator
+        variant={Separator.variant.CodeEditor}
+        dir={Separator.dir.Horizontal}
       />
       <div
-        className="rounded-b w-full overflow-auto max-h-full flex flex-1 bg-gray-300 dark:bg-black-650"
+        className="rounded-b overflow-auto max-h-full flex flex-1 bg-gray-300 dark:bg-black-650 py-2 pl-4 pr-1"
         style={{
-          ...height && { height },
+          ...height && { minHeight: height },
         }}
         ref={terminalEl}
       >
-        {/* {isLoading &&
+        {isLoading &&
           <div
-            className="flex flex-1 justify-center items-center"
+            className="flex flex-1 justify-center items-center max-h-full min-w-0"
+          // style={{
+          //   ...height && { height },
+          // }}
           >
-          <SpinnerIcon />
+            <SpinnerIcon />
           </div>
-        } */}
-        {/* <div
-          className=""
-        /> */}
+        }
       </div>
     </div>
   )
