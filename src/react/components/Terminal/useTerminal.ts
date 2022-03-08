@@ -28,8 +28,6 @@ function useTerminal({
       const term = new Terminal({
         bellStyle: 'none',
         cursorStyle: 'block',
-        fastScrollModifier: 'shift',
-        rendererType: 'dom',
         theme: {
           background: '#292929',
         },

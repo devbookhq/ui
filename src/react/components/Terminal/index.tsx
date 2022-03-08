@@ -55,16 +55,13 @@ function Terminal({
       <div
         className="rounded-b overflow-auto max-h-full flex flex-1 bg-gray-300 dark:bg-black-650 py-2 pl-4 pr-1"
         style={{
-          ...height && { minHeight: height },
+          ...height && { minHeight: height, maxHeight: height, height },
         }}
         ref={terminalEl}
       >
         {isLoading &&
           <div
             className="flex flex-1 justify-center items-center max-h-full min-w-0"
-          // style={{
-          //   ...height && { height },
-          // }}
           >
             <SpinnerIcon />
           </div>
