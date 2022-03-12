@@ -5,7 +5,6 @@ import {
 } from 'react'
 import type { useDevbook } from '@devbookhq/sdk'
 import { FitAddon } from 'xterm-addon-fit'
-import debounce from 'lodash/debounce'
 
 import Header from '../Editor/Header'
 import Separator from '../Separator'
@@ -37,14 +36,9 @@ function Terminal({
     terminal.open(terminalEl.current)
     fitAddon.fit()
 
-    const debouncedFit = debounce(() => fitAddon.fit(), 50)
-
     setIsLoading(false)
 
-    terminalEl.current.addEventListener('resize', debouncedFit)
-
     return () => {
-      terminalEl.current?.removeEventListener('resize', debouncedFit)
       setIsLoading(true)
     }
   }, [terminal])
