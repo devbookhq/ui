@@ -168,13 +168,12 @@ function FileExplorer({
   return (
     <Tree.DirectoryTree
       motion={null}
-      className="w-full"
+      className="w-full devbook-filesystem"
       expandedKeys={expandedKeys}
       treeData={serializedFS}
-      loadData={(e: any) => loadDirData(e.key as string)}
-      onExpand={(_: any, event: any) => expandNode({ key: event.node.key as string, shouldExpand: !event.node.expanded })}
-      //titleRender={node => <TreeNodeTitle node={node as SerializedFSNode} />}
-      onSelect={(_: any, info: any) => handleSelectNode(info.node)}
+      loadData={(e) => loadDirData(e.key.toString())}
+      onExpand={(_, event) => expandNode({ key: event.node.key.toString(), shouldExpand: !event.node.expanded })}
+      onSelect={(_, info) => handleSelectNode(info.node)}
     />
   )
 }

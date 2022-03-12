@@ -133,7 +133,7 @@ function Filesystem({
             gutterClassName="dark:bg-black-800 bg-gray-500 hover:dark:bg-black-900 hover:bg-gray-600"
             direction={SplitDirection.Horizontal}
           >
-            <div className="flex flex-1 min-w-0 overflow-auto max-h-full py-1">
+            <div className="flex flex-1 min-w-0 max-h-full py-1 devbook-filesystem">
               <FileExplorer
                 filesystem={fs}
                 onOpenFile={setFilepath}
@@ -145,7 +145,7 @@ function Filesystem({
                 ref={editorEl}
               />}
               {!filepath &&
-                <div className="flex flex-1 items-center justify-center">
+                <div className="flex flex-1 items-center justify-center p-2 text-center">
                   <Text
                     text="No file selected"
                     hierarchy={Text.hierarchy.Secondary}

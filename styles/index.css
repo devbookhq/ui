@@ -1,8 +1,6 @@
-/*@import 'antd/dist/antd.css';*/
 @import 'antd/es/tree/style/index.css';
 
 @import './codemirror.css';
-@import './controlCenter.css';
 @import './ant/tree.css';
 @import './ant/switch.css';
 @import './xterm.css';

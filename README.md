@@ -93,7 +93,7 @@ export default function ExampleFilesystem() {
 
 ### Terminal
 ```tsx
-import { Filesystem } from '@devbookhq/ui'
+import { Terminal } from '@devbookhq/ui'
 import { useDevbook } from '@devbookhq/sdk'
 
 export default function ExampleTerminal() {

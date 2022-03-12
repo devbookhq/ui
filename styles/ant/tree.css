@@ -65,3 +65,24 @@
 .ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-switcher {
   @apply w-6 h-6 text-[10px] transition-none;
 }
+
+.devbook-filesystem {
+  @apply overflow-auto;
+  
+  /* Firefox scrollbar styling */
+  scrollbar-color: #8F8F8F transparent;
+  scrollbar-width: thin;
+}
+
+/* .devbook-filesystem::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+} */
+
+.devbook-filesystem::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
+.devbook-filesystem::-webkit-scrollbar-thumb {
+  @apply dark:bg-black-600 bg-gray-500;
+}

@@ -29,6 +29,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
         lightTheme={theme === 'light'}
         language={Language.jsx}
         filepath="index.js"
+        height="200px"
         initialContent={'console.log("world")'}
       /> */}
       {/* <Iframe
