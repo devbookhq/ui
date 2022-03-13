@@ -5,6 +5,7 @@ import {
 } from 'react'
 import type { useDevbook } from '@devbookhq/sdk'
 import { FitAddon } from 'xterm-addon-fit'
+import { WebLinksAddon } from 'xterm-addon-web-links'
 
 import Header from '../Editor/Header'
 import Separator from '../Separator'
@@ -30,7 +31,9 @@ function Terminal({
     if (!terminalEl.current) return
     if (!terminal) return
 
-    const fitAddon = new FitAddon();
+    terminal.loadAddon(new WebLinksAddon())
+
+     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
 
     terminal.open(terminalEl.current)
