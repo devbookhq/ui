@@ -1,10 +1,12 @@
 import {
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { Terminal } from 'xterm'
 import type {
   useDevbook,
+  TerminalSession,
 } from '@devbookhq/sdk'
 
 export interface Opts {
@@ -20,6 +22,7 @@ function useTerminal({
   lightTheme,
 }: Opts) {
   const [terminal, setTerminal] = useState<Terminal>()
+  const [session, setSession] = useState<TerminalSession>()
 
   useEffect(function initialize() {
     async function init() {
@@ -41,6 +44,7 @@ function useTerminal({
       term.onResize((size) => session.resize(size))
 
       setTerminal(term)
+      setSession(session)
 
       return () => {
         term.dispose()
@@ -59,7 +63,15 @@ function useTerminal({
     lightTheme,
   ])
 
-  return terminal
+  return useMemo(() => {
+    return {
+      terminal,
+      session,
+    }
+  }, [
+    terminal,
+    session,
+  ])
 }
 
 export default useTerminal

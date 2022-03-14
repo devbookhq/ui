@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="app">
       <Examples theme='dark' />
-      <Examples theme='light' />
+      {/* <Examples theme='light' /> */}
     </div>
   );
 }

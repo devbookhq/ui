@@ -1,4 +1,4 @@
-import { useDevbook } from '@devbookhq/sdk';
+import { DevbookStatus, useDevbook } from '@devbookhq/sdk';
 import {
   Output,
   Editor,
@@ -6,24 +6,60 @@ import {
   Language,
   Filesystem,
   Terminal,
+  Button,
+  TerminalHandler,
 } from '@devbookhq/ui'
+import { useEffect, useRef } from 'react';
 
 import './Examples.css'
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
   const devbook = useDevbook({ debug: true, env: 'dbk-dev-env', config: { domain: 'dev.usedevbook.com' } })
 
+  const terminalRef = useRef<TerminalHandler>(null)
+
+  useEffect(function initialize() {
+    async function init() {
+      console.log('term')
+      if (devbook.status !== DevbookStatus.Connected) return
+      if (!terminalRef.current) return
+      if (!devbook.fs) return
+
+      await devbook.fs.write('/.runops/config', '')
+
+      terminalRef.current.executeCmd('runops tasks repl\n:target mysql-test-target\n\x0C')
+    }
+
+    init()
+  }, [
+    terminalRef,
+    devbook.fs,
+    devbook.status,
+  ])
+
+  function getUsers() {
+    if (devbook.status !== DevbookStatus.Connected) return
+    if (!terminalRef.current) return
+
+    terminalRef.current.executeCmd('')
+  }
+
   return (
     <div className="examples">
       <Terminal
+        ref={terminalRef}
         lightTheme={theme === 'light'}
         devbook={devbook}
-        height="200px"
+        height="500px"
       />
-      <Filesystem
+      <Button
+        text="Get users from DB"
+        onMouseDown={getUsers}
+      />
+      {/* <Filesystem
         devbook={devbook}
         lightTheme={theme === 'light'}
-      />
+      /> */}
       {/* <Editor
         isReadonly={false}
         lightTheme={theme === 'light'}

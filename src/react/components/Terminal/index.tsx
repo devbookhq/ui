@@ -2,6 +2,9 @@ import {
   useRef,
   useEffect,
   useState,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
 } from 'react'
 import type { useDevbook } from '@devbookhq/sdk'
 import { FitAddon } from 'xterm-addon-fit'
@@ -18,14 +21,23 @@ export interface Props {
   lightTheme?: boolean
 }
 
-function Terminal({
-  devbook,
-  height,
-  lightTheme,
-}: Props) {
+export interface Handler {
+  executeCmd: (cmd: string) => void
+}
+
+const Terminal = forwardRef<Handler, Props>(({ devbook, height, lightTheme }, ref) => {
   const terminalEl = useRef<HTMLDivElement>(null)
-  const terminal = useTerminal({ devbook, lightTheme })
+  const { terminal, session } = useTerminal({ devbook, lightTheme })
   const [isLoading, setIsLoading] = useState(true)
+
+  const executeCmd = useCallback((cmd: string) => {
+    if (!session) return
+    session.sendData(cmd)
+  }, [session])
+
+  useImperativeHandle(ref, () => ({
+    executeCmd,
+  }), [executeCmd])
 
   useEffect(function attachTerminal() {
     if (!terminalEl.current) return
@@ -33,8 +45,8 @@ function Terminal({
 
     terminal.loadAddon(new WebLinksAddon())
 
-     const fitAddon = new FitAddon();
-    terminal.loadAddon(fitAddon);
+    const fitAddon = new FitAddon()
+    terminal.loadAddon(fitAddon)
 
     terminal.open(terminalEl.current)
     fitAddon.fit()
@@ -78,6 +90,6 @@ function Terminal({
       </div>
     </div>
   )
-}
+})
 
 export default Terminal
