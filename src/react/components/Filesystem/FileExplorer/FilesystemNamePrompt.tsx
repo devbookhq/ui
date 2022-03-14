@@ -1,5 +1,5 @@
 import {
-  useEffect,
+  useLayoutEffect,
   useState,
   useRef,
   ChangeEvent,
@@ -20,7 +20,7 @@ function FilesystemNamePrompt({
   const [value, setValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(function focusOnMount() {
+  useLayoutEffect(function focusOnMount() {
     inputRef.current?.focus()
   }, [])
 

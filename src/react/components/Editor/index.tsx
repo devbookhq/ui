@@ -1,7 +1,7 @@
 import {
   useRef,
   memo,
-  useEffect,
+  useLayoutEffect,
 } from 'react'
 
 import {
@@ -34,7 +34,7 @@ function Editor({
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
 
-  useEffect(function initEditor() {
+  useLayoutEffect(function initEditor() {
     if (!editorEl.current) return
 
     const state = createEditorState({

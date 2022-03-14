@@ -9,7 +9,10 @@ import {
   Button,
   TerminalHandler,
 } from '@devbookhq/ui'
-import { useEffect, useRef } from 'react';
+import {
+  useEffect,
+  useRef,
+} from 'react';
 
 import './Examples.css'
 
@@ -22,15 +25,25 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
     if (devbook.status !== DevbookStatus.Connected) return
     if (!terminalRef.current) return
 
-    terminalRef.current.executeCmd('runops tasks repl\n')
+    terminalRef.current.handleInput('runops tasks repl\n')
     terminalRef.current.focus()
   }
+
+  useEffect(function saveToken() {
+    if (devbook.status !== DevbookStatus.Connected) return
+
+    // devbook.runCmd('curl ...')
+  }, [
+    devbook.status,
+    devbook.runCmd,
+  ])
 
   return (
     <div className="examples">
       <Terminal
-        onStart={({ session, terminal }) => {
-          // session.sendData('runops tasks repl\n:target mysql-test-target\n\x0C')
+        autofocus
+        onStart={({ session }) => {
+          session.sendData('runops tasks repl\n:target mysql-test-target\n\x0C')
         }}
         ref={terminalRef}
         lightTheme={theme === 'light'}

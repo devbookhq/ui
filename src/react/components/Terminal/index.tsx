@@ -1,6 +1,6 @@
 import {
   useRef,
-  useEffect,
+  useLayoutEffect,
   useState,
   useCallback,
   forwardRef,
@@ -20,12 +20,13 @@ export interface Props {
   devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
   height?: string
   lightTheme?: boolean
+  title?: string
   autofocus?: boolean
   onStart?: (context: { session: TerminalSession, terminal: XTermTerminal }) => (Promise<void> | void)
 }
 
 export interface Handler {
-  executeCmd: (cmd: string) => void
+  handleInput: (input: string) => void
   focus: () => void
 }
 
@@ -35,29 +36,23 @@ const Terminal = forwardRef<Handler, Props>(({
   lightTheme,
   onStart,
   autofocus,
+  title = '> Terminal',
 }, ref) => {
   const terminalEl = useRef<HTMLDivElement>(null)
   const { terminal, session } = useTerminal({ devbook, lightTheme, onStart })
   const [isLoading, setIsLoading] = useState(true)
 
-  const executeCmd = useCallback((cmd: string) => {
-    if (!session) return
-
-    session.sendData(cmd)
-  }, [session])
+  const handleInput = useCallback((input: string) => session?.sendData(input), [session])
 
   useImperativeHandle(ref, () => ({
-    executeCmd,
-    focus: () => {
-      console.log('focus')
-      terminal?.focus()
-    },
+    handleInput,
+    focus: () => terminal?.focus(),
   }), [
-    executeCmd,
+    handleInput,
     terminal,
   ])
 
-  useEffect(function attachTerminal() {
+  useLayoutEffect(function attachTerminal() {
     if (!terminalEl.current) return
     if (!terminal) return
 
@@ -71,9 +66,7 @@ const Terminal = forwardRef<Handler, Props>(({
 
     setIsLoading(false)
 
-    if (autofocus) {
-      terminal.focus()
-    }
+    if (autofocus) terminal.focus()
 
     return () => {
       setIsLoading(true)
@@ -87,15 +80,19 @@ const Terminal = forwardRef<Handler, Props>(({
     <div
       className={`rounded flex flex-col min-w-0 flex-1 ${lightTheme ? '' : 'dark'}`}
     >
-      <Header
-        filepath="> Terminal"
-      />
-      <Separator
-        variant={Separator.variant.CodeEditor}
-        dir={Separator.dir.Horizontal}
-      />
+      {title &&
+        <>
+          <Header
+            filepath={title}
+          />
+          <Separator
+            variant={Separator.variant.CodeEditor}
+            dir={Separator.dir.Horizontal}
+          />
+        </>
+      }
       <div
-        className="rounded-b flex flex-1 min-w-0 bg-gray-300 dark:bg-black-650 pt-2 pl-4"
+        className={`flex flex-1 min-w-0 bg-gray-300 dark:bg-black-650 pl-4 ${title ? 'rounded-b pt-2' : 'rounded pt-4'}`}
         style={{
           ...height && { minHeight: height, maxHeight: height },
         }}

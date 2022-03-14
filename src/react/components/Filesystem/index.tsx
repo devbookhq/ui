@@ -3,6 +3,7 @@ import { EditorView } from '@codemirror/view'
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -81,7 +82,7 @@ function Filesystem({
     return Language[ext as keyof typeof Language] || Language.tsx
   }, [filepath])
 
-  useEffect(function initEditor() {
+  useLayoutEffect(function initEditor() {
     if (!editorEl.current) return
     if (!filepath) return
 

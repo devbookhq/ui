@@ -26,7 +26,8 @@ function Button({
         flex
         items-center
         justify-center
-        
+        whitespace-nowrap
+
         rounded
         border-none
         cursor-pointer
