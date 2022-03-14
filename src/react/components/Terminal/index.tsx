@@ -103,7 +103,7 @@ const Terminal = forwardRef<Handler, Props>(({
         >
           {isLoading &&
             <div
-              className="flex flex-1 justify-center items-center max-h-full min-w-0"
+              className={`flex flex-1 justify-center items-center max-h-full min-w-0 ${title ? '' : 'pb-2'}`}
             >
               <SpinnerIcon />
             </div>

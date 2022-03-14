@@ -32,7 +32,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
   useEffect(function saveToken() {
     if (devbook.status !== DevbookStatus.Connected) return
 
-    // devbook.runCmd('curl ...')
+    // await devbook.runCmd('curl ...')
   }, [
     devbook.status,
     devbook.runCmd,
