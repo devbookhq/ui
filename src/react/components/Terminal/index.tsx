@@ -6,9 +6,10 @@ import {
   forwardRef,
   useImperativeHandle,
 } from 'react'
-import type { useDevbook } from '@devbookhq/sdk'
+import type { TerminalSession, useDevbook } from '@devbookhq/sdk'
 import { FitAddon } from 'xterm-addon-fit'
 import { WebLinksAddon } from 'xterm-addon-web-links'
+import { Terminal as XTermTerminal } from 'xterm'
 
 import Header from '../Editor/Header'
 import Separator from '../Separator'
@@ -19,25 +20,42 @@ export interface Props {
   devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
   height?: string
   lightTheme?: boolean
+  autofocus?: boolean
+  onStart?: (context: { session: TerminalSession, terminal: XTermTerminal }) => (Promise<void> | void)
 }
 
 export interface Handler {
   executeCmd: (cmd: string) => void
+  focus: () => void
 }
 
-const Terminal = forwardRef<Handler, Props>(({ devbook, height, lightTheme }, ref) => {
+const Terminal = forwardRef<Handler, Props>(({
+  devbook,
+  height,
+  lightTheme,
+  onStart,
+  autofocus,
+}, ref) => {
   const terminalEl = useRef<HTMLDivElement>(null)
-  const { terminal, session } = useTerminal({ devbook, lightTheme })
+  const { terminal, session } = useTerminal({ devbook, lightTheme, onStart })
   const [isLoading, setIsLoading] = useState(true)
 
   const executeCmd = useCallback((cmd: string) => {
     if (!session) return
+
     session.sendData(cmd)
   }, [session])
 
   useImperativeHandle(ref, () => ({
     executeCmd,
-  }), [executeCmd])
+    focus: () => {
+      console.log('focus')
+      terminal?.focus()
+    },
+  }), [
+    executeCmd,
+    terminal,
+  ])
 
   useEffect(function attachTerminal() {
     if (!terminalEl.current) return
@@ -53,14 +71,21 @@ const Terminal = forwardRef<Handler, Props>(({ devbook, height, lightTheme }, re
 
     setIsLoading(false)
 
+    if (autofocus) {
+      terminal.focus()
+    }
+
     return () => {
       setIsLoading(true)
     }
-  }, [terminal])
+  }, [
+    terminal,
+    autofocus,
+  ])
 
   return (
     <div
-      className={`rounded flex flex-col flex-1 ${lightTheme ? '' : 'dark'}`}
+      className={`rounded flex flex-col min-w-0 flex-1 ${lightTheme ? '' : 'dark'}`}
     >
       <Header
         filepath="> Terminal"

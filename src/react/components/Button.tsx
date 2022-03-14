@@ -4,13 +4,13 @@ import {
 import Text from './Text'
 
 export interface Props {
-  onMouseDown?: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void
+  onClick?: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void
   text: string,
   lightTheme?: boolean
 }
 
 function Button({
-  onMouseDown,
+  onClick,
   text,
   lightTheme,
 }: Props) {
@@ -40,7 +40,7 @@ function Button({
         hover:bg-gray-600
         hover:dark:bg-black-700
         "
-        onMouseDown={onMouseDown}
+        onClick={onClick}
       >
         <Text
           hierarchy={Text.hierarchy.Primary}

@@ -18,35 +18,20 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
 
   const terminalRef = useRef<TerminalHandler>(null)
 
-  useEffect(function initialize() {
-    async function init() {
-      console.log('term')
-      if (devbook.status !== DevbookStatus.Connected) return
-      if (!terminalRef.current) return
-      if (!devbook.fs) return
-
-      await devbook.fs.write('/.runops/config', '')
-
-      terminalRef.current.executeCmd('runops tasks repl\n:target mysql-test-target\n\x0C')
-    }
-
-    init()
-  }, [
-    terminalRef,
-    devbook.fs,
-    devbook.status,
-  ])
-
   function getUsers() {
     if (devbook.status !== DevbookStatus.Connected) return
     if (!terminalRef.current) return
 
-    terminalRef.current.executeCmd('')
+    terminalRef.current.executeCmd('runops tasks repl\n')
+    terminalRef.current.focus()
   }
 
   return (
     <div className="examples">
       <Terminal
+        onStart={({ session, terminal }) => {
+          // session.sendData('runops tasks repl\n:target mysql-test-target\n\x0C')
+        }}
         ref={terminalRef}
         lightTheme={theme === 'light'}
         devbook={devbook}
@@ -54,7 +39,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
       />
       <Button
         text="Get users from DB"
-        onMouseDown={getUsers}
+        onClick={getUsers}
       />
       {/* <Filesystem
         devbook={devbook}
