@@ -72,31 +72,24 @@ function Snippet({
 
   return (
     <div className="space-y-1">
-      <div className="space-x-2 flex">
-        <Button
-          text="Run"
-          onClick={run}
-        />
-        {isLoading &&
-          <div className="flex my-auto">
-            <Spinner />
-          </div>
-        }
-      </div>
+      <Button
+        disabled={devbook.status !== "Connected"}
+        isLoading={isLoading}
+        text="Run"
+        onClick={run}
+      />
       <Editor
         language={language}
         initialContent={initialCode}
         onContentChange={setCode}
       />
-      {(stdout.length > 0 || stderr.length > 0) && (
-        <div className="pt-1">
-          <Output
-            stdout={stdout}
-            stderr={stderr}
-            height="200px"
-          />
-        </div>
-      )}
+      {(stdout.length > 0 || stderr.length > 0) &&
+        <Output
+          stdout={stdout}
+          stderr={stderr}
+          height="200px"
+        />
+      }
     </div>
   )
 }
