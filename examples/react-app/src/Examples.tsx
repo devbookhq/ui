@@ -8,6 +8,8 @@ import {
   Terminal,
   Button,
   TerminalHandler,
+  Snippet,
+  FileEditor,
 } from '@devbookhq/ui'
 import {
   useEffect,
@@ -17,7 +19,7 @@ import {
 import './Examples.css'
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
-  const devbook = useDevbook({ debug: true, env: 'dbk-dev-env', config: { domain: 'dev.usedevbook.com' } })
+  const devbook = useDevbook({ debug: true, env: 'runops-env', config: { domain: 'shared.usedevbook.com' } })
 
   const terminalRef = useRef<TerminalHandler>(null)
 
@@ -40,6 +42,8 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
 
   return (
     <div className="examples">
+      <FileEditor devbook={devbook} filepath="index2.js">Index</FileEditor>
+      <Snippet devbook={devbook}>console.log('')</Snippet>
       <Terminal
         autofocus
         onStart={({ session }) => {

@@ -11,6 +11,7 @@ import Editor from '../Editor'
 import Spinner from '../SpinnerIcon'
 import Output from '../Output'
 import { Language } from '../Editor/language'
+import Button from '../Button'
 
 type SnippetDevbook = Pick<ReturnType<typeof useDevbook>, 'fs' | 'runCmd' | 'stderr' | 'stdout' | 'status'>
 
@@ -70,11 +71,14 @@ function Snippet({
   ])
 
   return (
-    <div className="dbk-editor-wrapper">
-      <div className="control-wrapper">
-        <button className="run-btn" onClick={run}>Run</button>
+    <div className="space-y-1">
+      <div className="space-x-2 flex">
+        <Button
+          text="Run"
+          onClick={run}
+        />
         {isLoading &&
-          <div className="spin-wrapper">
+          <div className="flex my-auto">
             <Spinner />
           </div>
         }
@@ -85,7 +89,7 @@ function Snippet({
         onContentChange={setCode}
       />
       {(stdout.length > 0 || stderr.length > 0) && (
-        <div style={{ paddingTop: '4px' }}>
+        <div className="pt-1">
           <Output
             stdout={stdout}
             stderr={stderr}

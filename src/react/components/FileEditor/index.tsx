@@ -49,14 +49,12 @@ function FileEditor({
   ])
 
   return (
-    <div className="dbk-editor-wrapper">
-      <Editor
-        filepath={filepath}
-        language={language}
-        initialContent={initialContent}
-        onContentChange={updateContent}
-      />
-    </div>
+    <Editor
+      filepath={filepath}
+      language={language}
+      initialContent={initialContent}
+      onContentChange={updateContent}
+    />
   )
 }
 
