@@ -1,5 +1,3 @@
-@import 'antd/es/tree/style/index.css';
-
 @import './codemirror.css';
 @import './ant/tree.css';
 @import './ant/switch.css';
