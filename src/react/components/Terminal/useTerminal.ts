@@ -2,6 +2,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useCallback,
 } from 'react'
 import { Terminal as XTermTerminal } from 'xterm'
 import type {
@@ -11,7 +12,6 @@ import type {
 
 export interface Opts {
   devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
-  onStart?: (context: { session: TerminalSession, terminal: XTermTerminal }) => (Promise<void> | void)
   lightTheme?: boolean,
 }
 
@@ -21,7 +21,6 @@ function useTerminal({
     terminal: devbookTerminal,
   },
   lightTheme,
-  onStart,
 }: Opts) {
   const [terminal, setTerminal] = useState<XTermTerminal>()
   const [session, setSession] = useState<TerminalSession>()
@@ -45,8 +44,6 @@ function useTerminal({
       term.onData((data) => session.sendData(data))
       term.onResize((size) => session.resize(size))
 
-      await onStart?.({ session, terminal: term })
-
       setTerminal(term)
       setSession(session)
 
@@ -63,7 +60,6 @@ function useTerminal({
     }
   }, [
     status,
-    onStart,
     devbookTerminal,
     lightTheme,
   ])

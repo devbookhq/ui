@@ -5,11 +5,11 @@ import {
   useCallback,
   forwardRef,
   useImperativeHandle,
+  useEffect,
 } from 'react'
-import type { TerminalSession, useDevbook } from '@devbookhq/sdk'
+import type { useDevbook } from '@devbookhq/sdk'
 import { FitAddon } from 'xterm-addon-fit'
 import { WebLinksAddon } from 'xterm-addon-web-links'
-import { Terminal as XTermTerminal } from 'xterm'
 
 import Header from '../Editor/Header'
 import Separator from '../Separator'
@@ -22,7 +22,7 @@ export interface Props {
   lightTheme?: boolean
   title?: string
   autofocus?: boolean
-  onStart?: (context: { session: TerminalSession, terminal: XTermTerminal }) => (Promise<void> | void)
+  onStart?: (handler: Handler) => (Promise<void> | void)
 }
 
 export interface Handler {
@@ -39,7 +39,7 @@ const Terminal = forwardRef<Handler, Props>(({
   title = '> Terminal',
 }, ref) => {
   const terminalEl = useRef<HTMLDivElement>(null)
-  const { terminal, session } = useTerminal({ devbook, lightTheme, onStart })
+  const { terminal, session } = useTerminal({ devbook, lightTheme })
   const [isLoading, setIsLoading] = useState(true)
 
   const handleInput = useCallback((input: string) => session?.sendData(input), [session])
@@ -74,6 +74,21 @@ const Terminal = forwardRef<Handler, Props>(({
   }, [
     terminal,
     autofocus,
+  ])
+
+  useEffect(function handleOnStart() {
+    if (!onStart) return
+    if (!terminal) return
+    if (!handleInput) return
+
+    onStart({
+      handleInput,
+      focus: () => terminal.focus(),
+    })
+  }, [
+    onStart,
+    terminal,
+    handleInput,
   ])
 
   return (

@@ -93,14 +93,31 @@ export default function ExampleFilesystem() {
 
 ### Terminal
 ```tsx
-import { Terminal } from '@devbookhq/ui'
+import { Terminal, TerminalHandle } from '@devbookhq/ui'
 import { useDevbook } from '@devbookhq/sdk'
 
 export default function ExampleTerminal() {
   const devbook = useDevbook({ env: 'your-vm-id', config: { domain: 'shared.usedevbook.com' }})
 
+  const terminalRef = useRef<TerminalHandle>(null)
+
+  function runEcho() {
+    if (devbook.status !== DevbookStatus.Connected) return
+    if (!terminalRef.current) return
+
+    // You can programatically control the terminal like this
+    terminalRef.current.handleInput('echo Hello\n')
+    terminalRef.current.focus()
+  }
+
   return (
     <Terminal
+      // This method is run after the terminal connects to the VM
+      onStart={(handler) => {
+        handler.handleInput('echo Started\n')
+      }}
+      ref={terminalRef}
+      onStart={}
       devbook={devbook}
       lightTheme={false}
       height="200px"
