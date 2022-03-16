@@ -78,7 +78,7 @@ import { Filesystem } from '@devbookhq/ui'
 import { useDevbook } from '@devbookhq/sdk'
 
 export default function ExampleFilesystem() {
-  const devbook = useDevbook({ env: 'your-env', config: { domain: 'your-domain' }})
+  const devbook = useDevbook({ env: 'your-vm-id', config: { domain: 'shared.usedevbook.com' }})
 
   return (
     <Filesystem
@@ -97,7 +97,7 @@ import { Terminal } from '@devbookhq/ui'
 import { useDevbook } from '@devbookhq/sdk'
 
 export default function ExampleTerminal() {
-  const devbook = useDevbook({ env: 'your-env', config: { domain: 'your-domain' }})
+  const devbook = useDevbook({ env: 'your-vm-id', config: { domain: 'shared.usedevbook.com' }})
 
   return (
     <Terminal
