@@ -39,7 +39,9 @@ export default {
     autoExternal({ builtins: false }),
     postcss({
       extensions: ['.css'],
-      minimize: true,
+      inject: {
+        insertAt: "top",
+      },
       config: {
         path: './postcss.config.js',
       },
