@@ -16,7 +16,7 @@ import {
 import './Examples.css'
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
-  const devbook = useDevbook({ env: 'your-env', config: { domain: 'your-domain' } })
+  const devbook = useDevbook({ env: 'your-vm-id', config: { domain: 'shared.usedevbook.com' } })
 
   const terminalRef = useRef<TerminalHandler>(null)
 
