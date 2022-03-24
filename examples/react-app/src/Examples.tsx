@@ -17,7 +17,6 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
   const devbook = useDevbook({
     env: 'your-vm-id',
     debug: true,
-    __debug__idleTime: 3000,
     config: {
       domain: 'shared.usedevbook.com',
     },
