@@ -50,6 +50,7 @@ function useTerminal({
       return () => {
         term.dispose()
         session.destroy()
+        setTerminal(undefined)
       }
     }
 
