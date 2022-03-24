@@ -1,4 +1,0 @@
-.examples {
-  @apply pt-2;
-  @apply flex flex-col space-x-2 flex-1 max-w-[850px];
-}

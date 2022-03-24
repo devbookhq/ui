@@ -1,10 +1,8 @@
-import './App.css';
-
 import Examples from './Examples';
 
 function App() {
   return (
-    <div className="app">
+    <div className="flex flex-1 min-w-0 justify-center items-center p-2">
       <Examples theme='dark' />
       {/* <Examples theme='light' /> */}
     </div>

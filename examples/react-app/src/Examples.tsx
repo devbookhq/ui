@@ -13,10 +13,15 @@ import {
   useRef,
 } from 'react';
 
-import './Examples.css'
-
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
-  const devbook = useDevbook({ env: 'your-vm-id', config: { domain: 'shared.usedevbook.com' } })
+  const devbook = useDevbook({
+    env: 'your-vm-id',
+    debug: true,
+    __debug__idleTime: 3000,
+    config: {
+      domain: 'shared.usedevbook.com',
+    },
+  })
 
   const terminalRef = useRef<TerminalHandler>(null)
 
@@ -29,7 +34,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
   }
 
   return (
-    <div className="examples">
+    <div className="space-y-2 w-[750px]">
       <Terminal
         autofocus
         onStart={(handler) => {
