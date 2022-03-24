@@ -1,6 +1,6 @@
 {
   "name": "@devbookhq/ui",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Devbook UI is a React UI library",
   "homepage": "https://usedevbook.com",
   "license": "SEE LICENSE IN LICENSE",
@@ -48,7 +48,7 @@
     "xterm-addon-web-links": "^0.5.1"
   },
   "peerDependencies": {
-    "@devbookhq/sdk": "^1.0.16"
+    "@devbookhq/sdk": "^1.0.17"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.1.3",
