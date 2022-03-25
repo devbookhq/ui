@@ -8,8 +8,6 @@ import {
   useEffect,
 } from 'react'
 import type { useDevbook } from '@devbookhq/sdk'
-import { FitAddon } from 'xterm-addon-fit'
-import { WebLinksAddon } from 'xterm-addon-web-links'
 
 import Header from '../Editor/Header'
 import Separator from '../Separator'
@@ -53,23 +51,34 @@ const Terminal = forwardRef<Handler, Props>(({
   ])
 
   useLayoutEffect(function attachTerminal() {
-    if (!terminalEl.current) return
-    if (!terminal) return
+    async function attach() {
+      if (!terminalEl.current) return
+      if (!terminal) return
 
-    terminal.loadAddon(new WebLinksAddon())
+      const fit = await import('xterm-addon-fit')
+      const webLinks = await import('xterm-addon-web-links')
 
-    const fitAddon = new FitAddon()
-    terminal.loadAddon(fitAddon)
+      terminal.loadAddon(new webLinks.WebLinksAddon())
 
-    terminal.open(terminalEl.current)
-    fitAddon.fit()
+      const fitAddon = new fit.FitAddon()
+      terminal.loadAddon(fitAddon)
 
-    setIsLoading(false)
+      terminal.open(terminalEl.current)
+      fitAddon.fit()
 
-    if (autofocus) terminal.focus()
+      setIsLoading(false)
+
+      if (autofocus) terminal.focus()
+
+      return () => {
+        setIsLoading(true)
+      }
+    }
+
+    const res = attach()
 
     return () => {
-      setIsLoading(true)
+      res.then(r => r?.())
     }
   }, [
     terminal,

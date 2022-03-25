@@ -15,7 +15,7 @@ import {
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
   const devbook = useDevbook({
-    env: 'your-vm-id',
+    env: 'runops-env',
     debug: true,
     config: {
       domain: 'shared.usedevbook.com',

@@ -4,7 +4,7 @@ import {
   useState,
   useCallback,
 } from 'react'
-import { Terminal as XTermTerminal } from 'xterm'
+import type { Terminal as XTermTerminal } from 'xterm'
 import type {
   useDevbook,
   TerminalSession,
@@ -30,7 +30,9 @@ function useTerminal({
       if (status !== "Connected") return
       if (!devbookTerminal) return
 
-      const term = new XTermTerminal({
+      const xterm = await import('xterm')
+
+      const term = new xterm.Terminal({
         bellStyle: 'none',
         cursorStyle: 'block',
         theme: {
