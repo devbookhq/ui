@@ -51,7 +51,6 @@ function Editor({
   }, [
     initialContent,
     onContentChange,
-    parent,
     language,
     isReadonly,
   ])
