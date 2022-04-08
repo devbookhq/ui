@@ -6,6 +6,7 @@ import {
   Language,
   Filesystem,
   Terminal,
+  Screen,
   TerminalHandler,
 } from '@devbookhq/ui'
 import {
@@ -15,10 +16,11 @@ import {
 
 function Examples({ theme }: { theme: 'dark' | 'light' }) {
   const devbook = useDevbook({
-    env: 'your-vm-id',
+    env: 'dbk-dev-env',
+    __debug__idleTime: 9999999,
     debug: true,
     config: {
-      domain: 'shared.usedevbook.com',
+      domain: 'dev.usedevbook.com',
     },
   })
 
@@ -34,37 +36,7 @@ function Examples({ theme }: { theme: 'dark' | 'light' }) {
 
   return (
     <div className="space-y-2 w-[750px]">
-      <Terminal
-        autofocus
-        onStart={(handler) => {
-          handler.handleInput('echo Started\n')
-        }}
-        ref={terminalRef}
-        lightTheme={theme === 'light'}
-        devbook={devbook}
-        height="500px"
-      />
-      <Filesystem
-        devbook={devbook}
-        lightTheme={theme === 'light'}
-      />
-      <Editor
-        isReadonly={false}
-        lightTheme={theme === 'light'}
-        language={Language.jsx}
-        filepath="index.js"
-        height="200px"
-        initialContent={'console.log("world")'}
-      />
-      <Iframe
-        lightTheme={theme === 'light'}
-        url="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"
-      />
-      <Output
-        lightTheme={theme === 'light'}
-        stdout={['out1', 'out2']}
-        stderr={['err1']}
-      />
+      <Screen devbook={devbook}></Screen>
     </div>
   );
 }
