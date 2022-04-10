@@ -3,10 +3,12 @@ import cn from 'classnames'
 
 export interface Props {
   children?: ReactNode
+  rounded?: boolean
 }
 
 function CellHeader({
   children,
+  rounded,
 }: Props) {
   return (
     <div
@@ -19,7 +21,7 @@ function CellHeader({
         { 'justify-between': children },
         { 'space-x-2': children },
 
-        'rounded-t',
+        { 'rounded-t': rounded },
 
         'bg-gray-300',
         'dark:bg-black-650',

@@ -13,10 +13,12 @@ export interface Props {
   url?: string
   onReloadIframe: (e: MouseEvent) => void
   onConfirm: (url: string) => void
+  rounded?: boolean
 }
 
 function Header({
   url = '',
+  rounded = true,
   onReloadIframe,
   onConfirm,
 }: Props) {
@@ -46,14 +48,14 @@ function Header({
   }
 
   return (
-    <CellHeader>
+    <CellHeader rounded={rounded}>
       <div className="flex items-center space-x-2 flex-1">
         <IconButton
           onMouseDown={onRefresh}
           icon={<RefreshIcon />}
         />
         <input
-          className="
+          className={`
           p-0.5
           pl-[10px]
           flex-1
@@ -72,7 +74,7 @@ function Header({
           dark:text-gray-200
           bg-transparent
           outline-none
-        "
+        `}
           value={newURL}
           onKeyDown={handleKeyDown}
           onChange={handleInputChange}

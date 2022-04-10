@@ -94,31 +94,35 @@ function Editor({
   ])
 
   return (
-    <div className="flex flex-col flex-1 min-w-0 max-h-full devbook h-full">
-      <div className="flex items-start bg-black-800">
-        <div className="min-w-[100px] px-2 py-1 border-black-600 bg-black-650 items-center">
-          <Text
-            mono
-            hierarchy={Text.hierarchy.Secondary}
-            size={Text.size.Small}
-            text={filepath}
-          />
-        </div>
-      </div>
-      <div className="flex flex-1 overflow-auto min-w-0">
-        {filepath && <div
-          className="w-full h-full"
-          ref={editorEl}
-        />}
-        {!filepath &&
-          <div className="flex flex-1 items-center justify-center p-2 text-center">
-            <Text
-              text="No file selected"
-              hierarchy={Text.hierarchy.Secondary}
+    <div className="flex flex-col flex-1 min-w-0 max-h-full devbook h-full bg-black-700">
+      {filepath &&
+        <>
+          <div className="flex items-start">
+            <div className="min-w-[100px] px-2 py-1 border-black-600 bg-black-650 items-center">
+              <Text
+                mono
+                hierarchy={Text.hierarchy.Secondary}
+                size={Text.size.Small}
+                text={filepath}
+              />
+            </div>
+          </div>
+          <div className="flex flex-1 overflow-hidden min-w-0">
+            <div
+              className="w-full h-full"
+              ref={editorEl}
             />
           </div>
-        }
-      </div>
+        </>
+      }
+      {!filepath &&
+        <div className="flex flex-1 items-center justify-center p-2 text-center">
+          <Text
+            text="No file selected"
+            hierarchy={Text.hierarchy.Secondary}
+          />
+        </div>
+      }
     </div>
   )
 }

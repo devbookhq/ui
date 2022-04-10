@@ -74,10 +74,10 @@
   scrollbar-width: thin;
 }
 
-/* .devbook-filesystem::-webkit-scrollbar {
+.devbook-filesystem::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-} */
+}
 
 .devbook-filesystem::-webkit-scrollbar-corner {
   @apply bg-transparent;
@@ -498,7 +498,8 @@
   background-color: #bae7ff;
 }
 .ant-tree .ant-tree-node-content-wrapper .ant-tree-iconEle {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   width: 24px;
   height: 24px;
   line-height: 24px;

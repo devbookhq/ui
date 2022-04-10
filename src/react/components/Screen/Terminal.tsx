@@ -102,7 +102,7 @@ const Terminal = forwardRef<Handler, Props>(({
 
   return (
     <div
-      className={`flex p-2 flex-col max-h-[200px] sm:max-h-[300px] md:max-h-[400px] min-w-0 flex-1 ${lightTheme ? '' : 'dark'}`}
+      className={`flex px-2 pt-2 flex-col max-h-[180px] sm:max-h-[240px] md:max-h-[300px] min-w-0 bg-black-650 flex-1 ${lightTheme ? '' : 'dark'}`}
     >
       <div
         className={`flex flex-1 min-w-0 bg-gray-300 dark:bg-black-650`}

@@ -24,6 +24,8 @@ function ContextButton({
         dark:hover:text-gray-200
         cursor-pointer
         bg-transparent
+        flex
+        flex-1
       "
       onMouseDown={onMouseDown}
       onClick={onClick}

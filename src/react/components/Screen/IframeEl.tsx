@@ -34,6 +34,7 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
         flex-1
         flex
         relative
+        bg-black-700
 
       border-gray-300
       dark:border-black-650

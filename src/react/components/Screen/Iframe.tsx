@@ -35,6 +35,7 @@ function Iframe({
   return (
     <div className={`flex h-full flex-col flex-1 ${lightTheme ? '' : 'dark'}`}>
       <Header
+        rounded={false}
         url={initialURL}
         onConfirm={setURL}
         onReloadIframe={handleReloadIframe}
