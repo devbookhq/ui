@@ -6,19 +6,34 @@ import Splitter from '@devbookhq/splitter'
 import Iframe from './Iframe'
 import Terminal from './Terminal'
 import Text from '../Text'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FileExplorer from '../Filesystem/FileExplorer'
 import Editor from './Editor'
+import { initAnalytics } from 'src/analytics'
 
 export interface Props {
   devbook: Pick<ReturnType<typeof useDevbook>, 'fs' | 'status'>
+  magicbellAPIKey: string
+  magicbellAPISecret: string
 }
 
 function Screen({
   devbook,
+  magicbellAPIKey,
+  magicbellAPISecret,
 }: Props) {
   const [sizes, setSizes] = useState([15, 40, 45])
   const [filepath, setFilepath] = useState<string>()
+
+  useEffect(() => {
+    initAnalytics({
+      apiKey: magicbellAPIKey,
+      apiSecret: magicbellAPISecret,
+    })
+  }, [
+    magicbellAPIKey,
+    magicbellAPISecret,
+  ])
 
   const {
     fs,
@@ -48,7 +63,10 @@ function Screen({
             onOpenFile={setFilepath}
           />
         </div>
-        <Editor devbook={devbook} filepath={filepath} />
+        <Editor
+          devbook={devbook}
+          filepath={filepath}
+        />
         <div className="flex flex-1 flex-col h-full bg-black-800 space-y-2">
           <Iframe
             url="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"

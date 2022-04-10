@@ -12,10 +12,17 @@ interface AnalyticsEvent {
   },
 }
 
-const MAGICBELL_API_KEY = '6bf4652df6d418a88992859dd9d59b4942c770b3'
-const MAGICBELL_API_SECRET = 'gkvvO5aB575RrD8BYJ/D//vdRR9dxcH8k1zJZz14'
+let MAGICBELL_API_KEY: string | undefined
+let MAGICBELL_API_SECRET: string | undefined
+
+export function initAnalytics({ apiKey, apiSecret }: { apiKey: string, apiSecret: string }) {
+  MAGICBELL_API_KEY = apiKey
+  MAGICBELL_API_SECRET = apiSecret
+}
 
 export async function sendAnalyticsEvent(event: AnalyticsEvent) {
+  if (!MAGICBELL_API_KEY || !MAGICBELL_API_SECRET) throw new Error('No Magicbell API key of API secret')
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
