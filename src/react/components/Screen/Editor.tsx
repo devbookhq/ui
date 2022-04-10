@@ -15,6 +15,7 @@ import type {
 import createEditorState from '../Editor/createEditorState'
 import { Language } from '../Editor/language'
 import Text from '../Text'
+import { sendAnalyticsEvent } from 'src/analytics'
 
 export interface Props {
   devbook: Pick<ReturnType<typeof useDevbook>, 'fs' | 'status'>
@@ -41,6 +42,17 @@ function Editor({
 
       const content = await fs.get(filepath)
       setInitialContent(content)
+      sendAnalyticsEvent({
+        email: 'tomas@usedevbook.com',
+        category: 'event',
+        title: 'New analytics event',
+        content: {
+          project: 'example-app',
+          type: 'open file',
+          message: `User opened file "${filepath}"`
+        }
+      })
+
     }
     init()
   }, [
