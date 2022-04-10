@@ -34,10 +34,7 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
         flex-1
         flex
         relative
-        rounded-b
 
-        border-x
-        border-b
       border-gray-300
       dark:border-black-650
       "
@@ -51,7 +48,6 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
           'flex-1',
           'flex',
           'bg-transparent',
-          'rounded-b',
           'z-20',
         )}
         src={src}

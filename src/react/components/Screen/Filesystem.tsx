@@ -18,7 +18,7 @@ import Separator from '../Separator'
 
 import createEditorState from '../Editor/createEditorState'
 import { Language } from '../Editor/language'
-import FileExplorer from './FileExplorer'
+import FileExplorer from '../Filesystem/FileExplorer'
 import SpinnerIcon from '../SpinnerIcon'
 import Text from '../Text'
 
@@ -36,12 +36,12 @@ function Filesystem({
     status,
   },
   lightTheme,
-  height = '200px',
+  height,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
   const [initialContent, setInitialContent] = useState<string>()
   const [filepath, setFilepath] = useState(initialFilepath)
-  const [sizes, setSizes] = useState([40, 60])
+  const [sizes, setSizes] = useState([30, 70])
 
   useEffect(function initSelectedFileContent() {
     async function init() {
@@ -87,7 +87,7 @@ function Filesystem({
     if (!filepath) return
 
     const state = createEditorState({
-      initialContent,
+      initialContent: initialContent || '',
       language,
       onContentChange(content) {
         saveFile(content)
@@ -105,44 +105,45 @@ function Filesystem({
   ])
 
   return (
-    <div className={`rounded ${lightTheme ? '' : 'dark'}`}>
-      <Header
-        filepath={filepath || '/'}
-      />
-      <Separator
-        variant={Separator.variant.CodeEditor}
-        dir={Separator.dir.Horizontal}
-      />
-      <div
-        className="flex-1 flex max-h-full min-w-0 overflow-auto devbook rounded-b bg-gray-300 dark:bg-black-650"
-        style={{
-          ...height && { height },
-        }}
-      >
-        {!fs || status !== 'Connected' &&
-          <div className="flex flex-1 items-center justify-center">
-            <SpinnerIcon />
+    <div
+      className="flex-1 flex dark h-full w-full"
+    >
+      {!fs || status !== 'Connected' &&
+        <div className="flex flex-1 items-center justify-center">
+          <SpinnerIcon />
+        </div>
+      }
+      {fs && status === 'Connected' &&
+        <Splitter
+          onResizeFinished={(_, sizes) => setSizes(sizes)}
+          initialSizes={sizes}
+          classes={['h-full flex min-w-0', 'h-full flex min-w-0']}
+          draggerClassName="dark:bg-black-600 bg-gray-400"
+          gutterClassName="dark:bg-black-800 bg-gray-500 hover:dark:bg-black-900 hover:bg-gray-600"
+          direction={SplitDirection.Horizontal}
+        >
+          <div className="flex flex-1 min-w-0 max-h-full py-1 devbook-filesystem">
+            <FileExplorer
+              filesystem={fs}
+              onOpenFile={setFilepath}
+            />
           </div>
-        }
-        {fs && status === 'Connected' &&
-          <Splitter
-            onResizeFinished={(_, sizes) => setSizes(sizes)}
-            initialSizes={sizes}
-            minWidths={[50, 50]}
-            classes={['flex min-w-0', 'flex min-w-0']}
-            draggerClassName="dark:bg-black-600 bg-gray-400"
-            gutterClassName="dark:bg-black-800 bg-gray-500 hover:dark:bg-black-900 hover:bg-gray-600"
-            direction={SplitDirection.Horizontal}
-          >
-            <div className="flex flex-1 min-w-0 max-h-full py-1 devbook-filesystem">
-              <FileExplorer
-                filesystem={fs}
-                onOpenFile={setFilepath}
+          <div className="flex flex-col flex-1 min-w-0 max-h-full">
+            <div className="px-2 py-1 border-r flex">
+              <Text
+                mono
+                hierarchy={Text.hierarchy.Secondary}
+                size={Text.size.Small}
+                text={filepath}
               />
             </div>
-            <div className="flex-1 max-h-full flex min-w-0">
+            <Separator
+              variant={Separator.variant.CodeEditor}
+              dir={Separator.dir.Horizontal}
+            />
+            <div className="h-full">
               {filepath && <div
-                className="flex-1 max-h-full overflow-auto flex min-w-0 devbook"
+                className="h-full"
                 ref={editorEl}
               />}
               {!filepath &&
@@ -154,9 +155,9 @@ function Filesystem({
                 </div>
               }
             </div>
-          </Splitter>
-        }
-      </div>
+          </div>
+        </Splitter>
+      }
     </div>
   )
 }

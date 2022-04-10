@@ -30,7 +30,7 @@ export interface Props {
 }
 
 function Filesystem({
-  initialFilepath,
+  initialFilepath = '/',
   devbook: {
     fs,
     status,
@@ -42,6 +42,8 @@ function Filesystem({
   const [initialContent, setInitialContent] = useState<string>()
   const [filepath, setFilepath] = useState(initialFilepath)
   const [sizes, setSizes] = useState([40, 60])
+
+  console.log('FILES')
 
   useEffect(function initSelectedFileContent() {
     async function init() {

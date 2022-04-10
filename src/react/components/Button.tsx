@@ -6,7 +6,7 @@ import Text from './Text'
 
 export interface Props {
   onClick?: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void
-  text: string,
+  text: string
   lightTheme?: boolean
   disabled?: boolean
   isLoading?: boolean
