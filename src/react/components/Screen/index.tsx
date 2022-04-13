@@ -1,3 +1,4 @@
+import { ReactNode, useEffect, useState } from 'react'
 import type {
   useDevbook,
 } from '@devbookhq/sdk'
@@ -5,8 +6,6 @@ import Splitter from '@devbookhq/splitter'
 
 import Iframe from './Iframe'
 import Terminal from './Terminal'
-import Text from '../Text'
-import { useEffect, useState } from 'react'
 import FileExplorer from '../Filesystem/FileExplorer'
 import Editor from './Editor'
 import { initAnalytics } from 'src/analytics'
@@ -16,10 +15,14 @@ export interface Props {
   devbook: Pick<ReturnType<typeof useDevbook>, 'fs' | 'status'>
   magicbellAPIKey: string
   magicbellAPISecret: string
+  header: ReactNode
+  sidebar: ReactNode
 }
 
 function Screen({
   devbook,
+  header,
+  sidebar,
   magicbellAPIKey,
   magicbellAPISecret,
 }: Props) {
@@ -45,14 +48,11 @@ function Screen({
   return (
     <div className="flex-1 flex min-w-0 devbook bg-black-650 dark flex-col max-h-full">
       <div className="border-b border-black-600 py-2 px-4 bg-black-650">
-        <Text
-          text="Devbook"
-          hierarchy={Text.hierarchy.Primary}
-          size={Text.size.Medium}
-        />
+        {header}
       </div>
       <div className="flex flex-1 min-w-0">
         <div className="w-12 bg-black-650">
+          {sidebar}
         </div>
         <Separator dir={Separator.dir.Vertical} variant={Separator.variant.CodeEditor} />
         <Splitter
