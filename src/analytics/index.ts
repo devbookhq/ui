@@ -9,6 +9,7 @@ interface AnalyticsEvent {
     timestamp?: string
     type: string
     message: string
+    action?: string
   },
 }
 
@@ -20,7 +21,7 @@ export function initAnalytics({ apiKey, apiSecret }: { apiKey: string, apiSecret
   MAGICBELL_API_SECRET = apiSecret
 }
 
-export async function sendAnalyticsEvent(event: AnalyticsEvent) {
+async function sendAnalyticsEvent(event: AnalyticsEvent) {
   if (!MAGICBELL_API_KEY || !MAGICBELL_API_SECRET) throw new Error('No Magicbell API key of API secret')
 
   await fetch(url, {
@@ -44,5 +45,15 @@ export async function sendAnalyticsEvent(event: AnalyticsEvent) {
         }],
       }
     })
+  })
+}
+
+
+export function sendEvent(content: AnalyticsEvent['content']) {
+  return sendAnalyticsEvent({
+    email: 'tomas@usedevbook.com',
+    category: 'event',
+    title: 'New analytics event',
+    content,
   })
 }

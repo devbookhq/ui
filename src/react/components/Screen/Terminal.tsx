@@ -14,6 +14,7 @@ import Header from '../Editor/Header'
 import Separator from '../Separator'
 import useTerminal from '../Terminal/useTerminal'
 import SpinnerIcon from '../SpinnerIcon'
+import { sendEvent } from 'src/analytics'
 
 export interface Props {
   devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
@@ -70,6 +71,26 @@ const Terminal = forwardRef<Handler, Props>(({
       setIsLoading(false)
 
       if (autofocus) terminal.focus()
+
+      let feed: string[] = []
+
+      terminal.onData((input) => {
+        if (input.length > 0) {
+          feed.push(input)
+        }
+      })
+
+      terminal.onLineFeed(() => {
+        const line = feed.join('').trim()
+        feed = []
+        if (!line) return
+        sendEvent({
+          project: 'example-app',
+          type: 'execute command',
+          message: `User executed command "${line}"`,
+          action: 'Show command output',
+        })
+      })
 
       return () => {
         setIsLoading(true)
