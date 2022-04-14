@@ -1,6 +1,7 @@
 import path from 'path'
 import { EditorView } from '@codemirror/view'
 import {
+  memo,
   useCallback,
   useEffect,
   useLayoutEffect,

@@ -34,10 +34,7 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
         flex-1
         flex
         relative
-        bg-black-700
-
-      border-gray-300
-      dark:border-black-650
+        bg-white
       "
     >
       <iframe
@@ -48,12 +45,12 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
         className={cn(
           'flex-1',
           'flex',
-          'bg-transparent',
+          'bg-white',
           'z-20',
         )}
         src={src}
       />
-      <div
+      {/* <div
         className="absolute z-10"
         style={{
           top: 'calc(50%)',
@@ -61,7 +58,7 @@ const IframeEl = forwardRef<IframeElHandle, Props>(({
         }}
       >
         <SpinnerIcon />
-      </div>
+      </div> */}
     </div>
   )
 })

@@ -23,7 +23,7 @@ export function initAnalytics({ apiKey, apiSecret }: { apiKey: string, apiSecret
 export async function sendAnalyticsEvent(event: AnalyticsEvent) {
   if (!MAGICBELL_API_KEY || !MAGICBELL_API_SECRET) throw new Error('No Magicbell API key of API secret')
 
-  const response = await fetch(url, {
+  await fetch(url, {
     method: 'POST',
     headers: {
       'X-MAGICBELL-API-KEY': MAGICBELL_API_KEY,
@@ -42,15 +42,7 @@ export async function sendAnalyticsEvent(event: AnalyticsEvent) {
         "recipients": [{
           "email": event.email,
         }],
-        "custom_attributes": {
-          "order": {
-            "id": "1202983",
-            "title": "A title you can use in your templates"
-          }
-        }
       }
     })
   })
-
-  return response.json()
 }

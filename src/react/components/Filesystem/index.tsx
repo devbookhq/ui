@@ -43,8 +43,6 @@ function Filesystem({
   const [filepath, setFilepath] = useState(initialFilepath)
   const [sizes, setSizes] = useState([40, 60])
 
-  console.log('FILES')
-
   useEffect(function initSelectedFileContent() {
     async function init() {
       if (!fs) return

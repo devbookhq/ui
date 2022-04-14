@@ -6,6 +6,7 @@ import {
   forwardRef,
   useImperativeHandle,
   useEffect,
+  memo,
 } from 'react'
 import type { useDevbook } from '@devbookhq/sdk'
 
@@ -124,4 +125,4 @@ const Terminal = forwardRef<Handler, Props>(({
   )
 })
 
-export default Terminal
+export default memo(Terminal)
