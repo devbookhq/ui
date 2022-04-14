@@ -61,17 +61,17 @@ function Editor({
     if (status !== 'Connected') return
     if (!fs) return
 
-    sendEvent({
-      project: 'example-app',
-      type: 'edit file',
-      message: `User edited file "${filepath}"`,
-      action: 'Show file snapshot',
-    })
-
     try {
       await fs.write(filepath, content)
     } catch (err: any) {
       console.error(err)
+    } finally {
+      sendEvent({
+        project: 'example-app',
+        type: 'edit file',
+        message: `User edited file "${filepath}"`,
+        action: 'Show file snapshot',
+      })
     }
   }, [
     fs,
@@ -141,4 +141,4 @@ function Editor({
   )
 }
 
-export default Editor
+export default memo(Editor)
