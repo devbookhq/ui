@@ -56,7 +56,7 @@ function Editor({
     filepath,
   ])
 
-  const saveFile = useCallback(async (content) => {
+  const saveFile = useCallback(async (content: string, filepath: string) => {
     if (!filepath) return
     if (status !== 'Connected') return
     if (!fs) return
@@ -76,7 +76,6 @@ function Editor({
   }, [
     fs,
     status,
-    filepath,
   ])
 
   const language = useMemo(() => {
@@ -93,7 +92,7 @@ function Editor({
       initialContent: initialContent || '',
       language,
       onContentChange(content) {
-        saveFile(content)
+        saveFile(content, filepath)
       },
     })
 
