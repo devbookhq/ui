@@ -9,17 +9,14 @@
     @apply box-border;
   }
 
-  html {
-    @apply h-full;
-  }
-
   html, body {
+    @apply h-full;
     @apply bg-black-900;
-    @apply text-white antialiased;
+    @apply text-white-900 antialiased;
   }
 
   #__next {
-    @apply h-inherit flex flex-col justify-start;
+    @apply h-inherit flex justify-center items-stretch;
   }
 }
 

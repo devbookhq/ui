@@ -33,7 +33,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
           <meta name="robots" content="follow, index" />
           <link href="/favicon.ico" rel="shortcut icon" />
           <meta content={meta.description} name="description" />
-          <meta property="og:url" content={`https://subscription-starter.vercel.app${router.asPath}`} />
+          <meta property="og:url" content={`https://dash.usedevbook.com${router.asPath}`} />
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content={meta.title} />
           <meta property="og:description" content={meta.description} />
@@ -47,7 +47,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         </Head>
 
         {/*<Navbar/>*/}
-        <main>{children}</main>
+        {children}
         {/*<Footer/>*/}
       </>
   );
