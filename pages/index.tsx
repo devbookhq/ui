@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
-export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 
 export default function Home() {
   return (
@@ -14,3 +13,5 @@ export default function Home() {
     </div>
   )
 }
+
+// export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })

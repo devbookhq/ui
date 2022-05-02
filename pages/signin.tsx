@@ -5,7 +5,7 @@ import {
 import { useRouter } from 'next/router'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-import { useUser } from 'utils/useUser'
+import { useUser } from '@supabase/supabase-auth-helpers/react'
 import GitHubButton from 'components/GitHubButton'
 
 

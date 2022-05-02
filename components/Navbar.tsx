@@ -1,4 +1,4 @@
-import { useUser } from 'utils/useUser';
+import { useUser } from '@supabase/supabase-auth-helpers/react'
 import Link from 'components/Link'
 
 function Navbar() {
@@ -9,7 +9,6 @@ function Navbar() {
   return (
     <header
       className="
-        py-4
         flex
         flex-row
         justify-between
