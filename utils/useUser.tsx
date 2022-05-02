@@ -1,5 +1,5 @@
 import {
-  //useEffect,
+  useEffect,
   useState,
   createContext,
   useContext
@@ -11,17 +11,23 @@ import {
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
 export interface UserDetails {
-  id: string /* primary key */
-  first_name: string
-  last_name: string
+  id: string
   full_name?: string
   avatar_url?: string
+}
+
+export interface CodeSnippet {
+  id: string
+  title: string
+  description: string
+  code: string
+  creator_id: string
 }
 
 type UserContextType = {
   accessToken: string | null
   user: User | null
-  //userDetails: UserDetails | null
+  userDetails: UserDetails | null
   isLoading: boolean
 }
 
@@ -33,36 +39,37 @@ export interface Props {
   [propName: string]: any;
 }
 export function UserContextProvider(props: Props) {
-  //const { supabaseClient: supabase } = props
+  const { supabaseClient: supabase } = props
   const { user, accessToken, isLoading: isLoadingUser } = useSupaUser()
   const [isLoadingData, setIsloadingData] = useState(false)
-  //const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
 
-  //const getUserDetails = () => supabase.from<UserDetails>('users').select('*').single()
+  const getUserDetails = () => supabase.from<UserDetails>('users').select('*').single()
+  const getCodeSnippets = () => supabase.from<CodeSnippet>('code_snippets').select('*').eq('creator_id', user?.id)
 
-   //useEffect(() => {
-   //  if (user && !isLoadingData && !userDetails) {
-   //    setIsloadingData(true);
-   //    Promise.allSettled([getUserDetails()]).then(
-   //      (results) => {
-   //        const userDetailsPromise = results[0]
+  useEffect(() => {
+    if (user && !isLoadingData && !userDetails) {
+      setIsloadingData(true);
+      Promise.allSettled([getUserDetails()]).then(
+        (results) => {
+          const userDetailsPromise = results[0]
 
-   //        if (userDetailsPromise.status === 'fulfilled')
-   //          setUserDetails(userDetailsPromise.value.data)
+          if (userDetailsPromise.status === 'fulfilled')
+            setUserDetails(userDetailsPromise.value.data)
 
-   //        setIsloadingData(false)
-   //      }
-   //    );
-   //  } else if (!user && !isLoadingUser && !isLoadingData) {
-   //    setUserDetails(null)
-   //  }
-   //}, [user, isLoadingUser])
+          setIsloadingData(false)
+        }
+      );
+    } else if (!user && !isLoadingUser && !isLoadingData) {
+      setUserDetails(null)
+    }
+  }, [user, isLoadingUser])
 
 
   const value = {
     accessToken,
     user,
-    //userDetails,
+    userDetails,
     isLoading: isLoadingUser || isLoadingData,
   }
   return <UserContext.Provider value={value} {...props} />;

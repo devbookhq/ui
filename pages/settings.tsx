@@ -1,14 +1,19 @@
+import Link from 'next/link'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 import Title from 'components/typography/Title'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
-function Home() {
+function Settings() {
+
   return (
     <div className="flex flex-col">
-      <Title>Code Snippets</Title>
+      <Title>Settings</Title>
 
+      <Link href="/api/auth/logout">
+        <a>Sign out</a>
+      </Link>
     </div>
   )
 }
 
-export default Home
+export default Settings

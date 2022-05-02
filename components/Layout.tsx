@@ -3,8 +3,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import Navbar from 'components/Navbar'
-//import Footer from 'components/ui/Footer';
-// import { PageMeta } from '../types';
 
 export interface PageMeta {
   title: string;
@@ -56,7 +54,6 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         ">
           <Navbar/>
           {children}
-          {/*<Footer/>*/}
         </div>
       </>
   );
