@@ -34,8 +34,8 @@ function SignIn() {
   if (!user) {
     return (
       <div className="
+        m-auto
         flex
-        self-center
         rounded
       ">
         <div className="
@@ -43,7 +43,7 @@ function SignIn() {
           w-[300px]
           flex
           flex-col
-          space-y-4
+          space-y-16
           items-center
           bg-black-800
         ">

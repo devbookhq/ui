@@ -13,10 +13,13 @@
     @apply h-full;
     @apply bg-black-900;
     @apply text-white-900 antialiased;
+
+    font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue', 'Helvetica', sans-serif;
+    text-rendering: optimizeLegibility;
   }
 
   #__next {
-    @apply h-inherit flex justify-center items-stretch;
+    @apply h-inherit flex flex-col items-center;
   }
 }
 

@@ -1,5 +1,9 @@
-
-import { useEffect, useState, createContext, useContext } from 'react';
+import {
+  //useEffect,
+  useState,
+  createContext,
+  useContext
+} from 'react'
 import {
   useUser as useSupaUser,
   User
@@ -17,7 +21,7 @@ export interface UserDetails {
 type UserContextType = {
   accessToken: string | null
   user: User | null
-  userDetails: UserDetails | null
+  //userDetails: UserDetails | null
   isLoading: boolean
 }
 
@@ -29,35 +33,35 @@ export interface Props {
   [propName: string]: any;
 }
 export function UserContextProvider(props: Props) {
-  const { supabaseClient: supabase } = props
+  //const { supabaseClient: supabase } = props
   const { user, accessToken, isLoading: isLoadingUser } = useSupaUser()
   const [isLoadingData, setIsloadingData] = useState(false)
-  const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
+  //const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
 
-  const getUserDetails = () => supabase.from<UserDetails>('users').select('*').single()
+  //const getUserDetails = () => supabase.from<UserDetails>('users').select('*').single()
 
-   useEffect(() => {
-     if (user && !isLoadingData && !userDetails) {
-       setIsloadingData(true);
-       Promise.allSettled([getUserDetails()]).then(
-         (results) => {
-           const userDetailsPromise = results[0]
+   //useEffect(() => {
+   //  if (user && !isLoadingData && !userDetails) {
+   //    setIsloadingData(true);
+   //    Promise.allSettled([getUserDetails()]).then(
+   //      (results) => {
+   //        const userDetailsPromise = results[0]
 
-           if (userDetailsPromise.status === 'fulfilled')
-             setUserDetails(userDetailsPromise.value.data)
+   //        if (userDetailsPromise.status === 'fulfilled')
+   //          setUserDetails(userDetailsPromise.value.data)
 
-           setIsloadingData(false)
-         }
-       );
-     } else if (!user && !isLoadingUser && !isLoadingData) {
-       setUserDetails(null)
-     }
-   }, [user, isLoadingUser])
+   //        setIsloadingData(false)
+   //      }
+   //    );
+   //  } else if (!user && !isLoadingUser && !isLoadingData) {
+   //    setUserDetails(null)
+   //  }
+   //}, [user, isLoadingUser])
 
   const value = {
     accessToken,
     user,
-    userDetails,
+    //userDetails,
     isLoading: isLoadingUser || isLoadingData,
   }
   return <UserContext.Provider value={value} {...props} />;
@@ -70,5 +74,3 @@ export function useUser() {
   }
   return ctx
 }
-
-
