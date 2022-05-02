@@ -6,12 +6,20 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/node": "^17.0.31",
+    "@types/react": "^18.0.8",
     "date-fns": "^2.11.1",
     "gray-matter": "^4.0.2",
     "next": "latest",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "remark": "^14.0.1",
-    "remark-html": "^15.0.0"
+    "remark-html": "^15.0.0",
+    "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.6",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.24"
   }
 }
