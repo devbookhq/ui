@@ -46,9 +46,18 @@ export default function Layout({ children, meta: pageMeta }: Props) {
           <meta name="twitter:image" content={meta.cardImage} />
         </Head>
 
-        <Navbar/>
-        {children}
-        {/*<Footer/>*/}
+        <div className="
+          p-4
+          flex-1
+          flex
+          flex-col
+          max-w-[1160px]
+          w-full
+        ">
+          <Navbar/>
+          {children}
+          {/*<Footer/>*/}
+        </div>
       </>
   );
 }

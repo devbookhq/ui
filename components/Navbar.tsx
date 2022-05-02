@@ -9,9 +9,7 @@ function Navbar() {
   return (
     <header
       className="
-        max-w-[1160px]
-        w-full
-        p-4
+        py-4
         flex
         flex-row
         justify-between
