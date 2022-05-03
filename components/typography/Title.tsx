@@ -4,8 +4,8 @@ import cn from 'classnames'
 interface Props {
   children: ReactNode
   className?: string
-  variant: Variant
-  rank: Rank
+  variant?: Variant
+  rank?: Rank
 }
 
 export enum Rank {
