@@ -45,7 +45,7 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
           p-2
           rounded-lg
         ">
-          <span clasName="">Code snippet title</span>
+          <span className="">Code snippet title</span>
         </div>
       </div>
     </div>
