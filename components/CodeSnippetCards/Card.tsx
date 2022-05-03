@@ -1,6 +1,6 @@
 import { CodeSnippet } from 'utils/useUser'
 import Text from 'components/typography/Text'
-import Edit from 'components/Edit'
+import CodeEditor from 'components/CodeEditor'
 
 interface Props {
   codeSnippet: CodeSnippet
@@ -42,7 +42,7 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
         rounded-lg
         bg-black-900
       ">
-        <Edit
+        <CodeEditor
           initialContent={shortened}
           isReadonly
           height="174px"
