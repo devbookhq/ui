@@ -7,6 +7,7 @@ import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
 import { useUser } from 'utils/useUser'
 import GitHubButton from 'components/GitHubButton'
+import Edit from '@/components/Edit'
 
 
 function SignIn() {
@@ -38,6 +39,7 @@ function SignIn() {
         flex
         rounded
       ">
+        <Edit initialContent='const a = 5;'></Edit>
         <div className="
           p-4
           w-[300px]

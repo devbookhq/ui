@@ -1,15 +1,20 @@
+@import "./codemirror.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
+
   *,
   *:before,
   *:after {
     @apply box-border;
   }
 
-  html, body {
+  html,
+  body {
     @apply h-full;
     @apply bg-black-900;
     @apply text-white-900 antialiased;
