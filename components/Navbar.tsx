@@ -3,7 +3,6 @@ import Link from 'components/Link'
 
 function Navbar() {
   const { user, userDetails } = useUser()
-  console.log({ userDetails })
 
   if (!user) return null
 

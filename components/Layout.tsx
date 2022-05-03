@@ -38,7 +38,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
           <meta property="og:title" content={meta.title} />
           <meta property="og:image" content={meta.cardImage} />
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@vercel" />
+          <meta name="twitter:site" content="@devbookhq" />
           <meta name="twitter:title" content={meta.title} />
           <meta name="twitter:description" content={meta.description} />
           <meta name="twitter:image" content={meta.cardImage} />
@@ -49,6 +49,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
           flex-1
           flex
           flex-col
+          space-y-8
           max-w-[1160px]
           w-full
         ">

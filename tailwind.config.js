@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        transparent: 'transparent',
         white: {
           900: '#FFFFFF',
         },
@@ -14,6 +15,10 @@ module.exports = {
           800: '#1A191D',
           700: '#29282Fj',
           600: '#979797',
+          500: '#313034',
+        },
+        green: {
+          500: '#0AC069',
         },
       },
       height: {
