@@ -3,7 +3,7 @@ import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from 'utils/useUser'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
-import CodeSnippetCard from 'components/CodeSnippetCard'
+import CodeSnippetCards from 'components/CodeSnippetCards'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 function Home() {
@@ -44,37 +44,10 @@ function Home() {
         </div>
       )
       : (
-        <div className="
-          flex
-          flex-col
-          items-center
-          space-y-2
-
-          md:flex-row
-          md:flex-wrap
-          md:space-y-0
-          md:gap-2
-        ">
-          {codeSnippets.map(cs => (
-            <>
-            <CodeSnippetCard
-              key={cs.id}
-              codeSnippet={cs}
-            />
-            <CodeSnippetCard
-              key={cs.id}
-              codeSnippet={cs}
-            />
-            <CodeSnippetCard
-              key={cs.id}
-              codeSnippet={cs}
-            />
-            </>
-          ))}
-        </div>
+        <CodeSnippetCards
+          codeSnippets={codeSnippets}
+        />
       )}
-
-
     </div>
   )
 }

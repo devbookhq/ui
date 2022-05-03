@@ -19,6 +19,7 @@ module.exports = {
         },
         green: {
           500: '#0AC069',
+          200: '#71DFAB',
         },
       },
       height: {
