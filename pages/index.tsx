@@ -4,6 +4,7 @@ import { useUser } from 'utils/useUser'
 import Title from 'components/typography/Title'
 import ButtonLink from 'components/ButtonLink'
 import CodeSnippetCards from 'components/CodeSnippetCards'
+import PlusIcon from 'components/icons/Plus'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 function Home() {
@@ -25,6 +26,7 @@ function Home() {
         <Title>Code Snippets</Title>
         <ButtonLink
           text="New Code Snippet"
+          icon={<PlusIcon/>}
           href="/new"
         />
       </div>

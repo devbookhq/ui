@@ -1,5 +1,3 @@
-
-
 import {
   typescriptLanguage,
   javascriptLanguage,

@@ -1,4 +1,4 @@
-import React from 'react'
+import ReactNode from 'react'
 import Link from 'next/link'
 
 import Text from 'components/typography/Text'
@@ -13,12 +13,14 @@ interface Props {
   text: string
   href: string
   variant?: Variant
+  icon?: ReactNode
 }
 
 function ButtonLink({
   text,
   href,
   variant = Variant.Outline,
+  icon,
 }: Props) {
 
   if (variant === Variant.Full) {
@@ -63,9 +65,16 @@ function ButtonLink({
         <div className="
           py-[4px]
           px-[10px]
+
+          flex
+          flex-row
+          items-center
+          space-x-2
+
           rounded-lg
           bg-black-900
         ">
+          {icon}
           <Text text={text}/>
         </div>
       </button>
