@@ -1,4 +1,4 @@
-import ReactNode from 'react'
+import { ReactNode } from 'react'
 import Link from 'next/link'
 
 import Text from 'components/typography/Text'
