@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import Title from 'components/typography/Title'
+import Edit from 'components/Edit'
 
 function New() {
   return (
@@ -31,6 +32,8 @@ function New() {
         <Title>/</Title>
         <Title>New</Title>
       </div>
+
+      <Edit initialContent="const a = 5;"/>
     </div>
   )
 }

@@ -15,7 +15,7 @@ export enum Rank {
 
 const Ranks = {
   [Rank.Primary]: 'text-white-900',
-  [Rank.Secondary]: 'text-black-600'
+  [Rank.Secondary]: 'text-gray-600'
 }
 
 export enum Variant {

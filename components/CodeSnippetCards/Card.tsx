@@ -13,7 +13,7 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
 
       p-[2px]
 
-      bg-black-500
+      bg-black-700
 
       hover:bg-green-gradient
 

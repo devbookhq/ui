@@ -12,7 +12,7 @@ function MyLink({ href, title }: Props) {
     >
       <a className="
         font-medium
-        text-black-600
+        text-gray-600
         hover:no-underline
         hover:text-white-900
       ">

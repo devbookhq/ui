@@ -4,7 +4,6 @@ import { useUser } from 'utils/useUser'
 import Title from 'components/typography/Title'
 import ButtonLink from 'components/ButtonLink'
 import CodeSnippetCards from 'components/CodeSnippetCards'
-import Edit from '@/components/Edit'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 function Home() {
@@ -18,10 +17,21 @@ function Home() {
       flex-col
       space-y-16
     ">
-      <Title>Code Snippets</Title>
+      <div className="
+        flex
+        justify-between
+        items-center
+      ">
+        <Title>Code Snippets</Title>
+        <ButtonLink
+          text="New Code Snippet"
+          href="/new"
+        />
+      </div>
+
       {!codeSnippets.length
-        ? (
-          <div className="
+      ? (
+        <div className="
           flex
           flex-col
           items-center
@@ -32,24 +42,25 @@ function Home() {
           w-full
           bg-transparent
           border
-          border-black-500
+          border-black-700
           rounded-lg
         ">
-            <Title variant={Title.variant.T2}>Get Started</Title>
+          <Title variant={Title.variant.T2}>Get Started</Title>
 
-            <div />
+          <div/>
 
-            <Button
-              text="New Code Snippet"
-              onClick={() => { }}
-            />
-          </div>
-        )
-        : (
-          <CodeSnippetCards
-            codeSnippets={codeSnippets}
+          <ButtonLink
+            variant={ButtonLink.variant.Full}
+            text="New Code Snippet"
+            href="/new"
           />
-        )}
+        </div>
+      )
+      : (
+        <CodeSnippetCards
+          codeSnippets={codeSnippets}
+        />
+      )}
     </div>
   )
 }

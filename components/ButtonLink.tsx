@@ -12,7 +12,7 @@ export enum Variant {
 interface Props {
   text: string
   href: string
-  variant: Variant
+  variant?: Variant
 }
 
 function ButtonLink({
@@ -54,7 +54,7 @@ function ButtonLink({
         className="
           p-[2px]
           rounded-lg
-          bg-black-500
+          bg-black-700
           hover:bg-green-gradient
           hover:shadow-lg
           hover:shadow-green-500/50
