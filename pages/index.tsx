@@ -2,12 +2,14 @@ import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
 import { useUser } from 'utils/useUser'
 import Title from 'components/typography/Title'
-import Button from 'components/Button'
+import ButtonLink from 'components/ButtonLink'
 import CodeSnippetCards from 'components/CodeSnippetCards'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 function Home() {
   const { codeSnippets } = useUser()
+
+  // TODO: Loading before `useUser` is ready and everything is loaded.
 
   return (
     <div className="
@@ -15,7 +17,17 @@ function Home() {
       flex-col
       space-y-16
     ">
-      <Title>Code Snippets</Title>
+      <div className="
+        flex
+        justify-between
+        items-center
+      ">
+        <Title>Code Snippets</Title>
+        <ButtonLink
+          text="New Code Snippet"
+          href="/new"
+        />
+      </div>
 
       {!codeSnippets.length
       ? (
@@ -37,9 +49,10 @@ function Home() {
 
           <div/>
 
-          <Button
+          <ButtonLink
+            variant={ButtonLink.variant.Full}
             text="New Code Snippet"
-            onClick={() => {}}
+            href="/new"
           />
         </div>
       )

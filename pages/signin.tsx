@@ -7,6 +7,7 @@ import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
 import { useUser } from 'utils/useUser'
 import GitHubButton from 'components/GitHubButton'
+import Title from 'components/typography/Title'
 
 
 function SignIn() {
@@ -47,7 +48,7 @@ function SignIn() {
           items-center
           bg-black-800
         ">
-          <h2>Sign Up</h2>
+          <Title variant={Title.variant.T2}>Sign In</Title>
           <GitHubButton
             onClick={signInWithGitHub}
           />

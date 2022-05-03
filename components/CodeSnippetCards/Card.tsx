@@ -14,9 +14,9 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
       p-[2px]
 
       bg-black-500
-      hover:bg-gradient-to-b
-      hover:from-green-200
-      hover:to-green-500
+
+      hover:bg-green-gradient
+
       hover:cursor-pointer
       hover:shadow-lg
       hover:shadow-green-500/50

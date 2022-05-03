@@ -11,7 +11,7 @@ function MyLink({ href, title }: Props) {
       href={href}
     >
       <a className="
-        font-semibold
+        font-medium
         text-black-600
         hover:no-underline
         hover:text-white-900

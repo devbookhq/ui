@@ -4,7 +4,18 @@ import cn from 'classnames'
 interface Props {
   children: ReactNode
   className?: string
-  variant?: Variant
+  variant: Variant
+  rank: Rank
+}
+
+export enum Rank {
+  Primary,
+  Secondary,
+}
+
+const Ranks = {
+  [Rank.Primary]: 'text-white-900',
+  [Rank.Secondary]: 'text-black-600'
 }
 
 export enum Variant {
@@ -20,10 +31,12 @@ const Variants = {
 function Title({
   className,
   children,
+  rank = Rank.Primary,
   variant = Variant.T1,
 }: Props) {
   return (
     <span className={cn(
+      Ranks[rank],
       Variants[variant],
       className,
     )}>
@@ -32,6 +45,7 @@ function Title({
   )
 }
 
+Title.rank = Rank
 Title.variant = Variant
 
 export default Title

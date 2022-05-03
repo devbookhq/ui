@@ -9,7 +9,7 @@ function Text({
   return (
     <span className="
       text-white
-      text-base
+      text-sm
     ">
       {text}
     </span>

@@ -23,6 +23,14 @@
   }
 }
 
+@layer components {
+  .bg-green-gradient {
+    @apply bg-gradient-to-b;
+    @apply from-green-200;
+    @apply to-green-500;
+  }
+}
+
 a {
   color: #0070f3;
   text-decoration: none;
@@ -36,3 +44,4 @@ img {
   max-width: 100%;
   display: block;
 }
+
