@@ -51,9 +51,9 @@ function Editor({
   ])
 
   return (
-    <div className={`rounded devbook dark`}>
+    <div className={`rounded-lg devbook dark`}>
       <div
-        className={`flex-1 flex max-h-full min-w-0 overflow-auto devbook rounded`}
+        className={`flex-1 flex max-h-full min-w-0 overflow-auto devbook rounded-lg`}
         ref={editorEl}
         style={{
           ...height && { height },

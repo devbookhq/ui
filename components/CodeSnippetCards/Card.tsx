@@ -1,13 +1,26 @@
 import { CodeSnippet } from 'utils/useUser'
 import Text from 'components/typography/Text'
+import Edit from 'components/Edit'
 
 interface Props {
   codeSnippet: CodeSnippet
 }
 
+const previewLength = 7
+
 function CodeSnippetCard({ codeSnippet: cs }: Props) {
+  const lines = cs.code.split('\n')
+  const previewLines = lines.slice(0, previewLength)
+
+  const shortened = lines.length > previewLength
+  ? previewLines.concat(['...']).join('\n')
+  : previewLines.join('\n')
+
+
   return (
     <div className="
+      max-h-[218px]
+      h-full
       w-full
       md:max-w-[320px]
 
@@ -29,17 +42,11 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
         rounded-lg
         bg-black-900
       ">
-        <div className="p-2">
-          <span className="
-            font-mono
-            text-sm
-            whitespace-pre
-            line-clamp-10
-          ">
-            {cs.code}
-          </span>
-        </div>
-
+        <Edit
+          initialContent={shortened}
+          isReadonly
+          height="174px"
+        />
         <div className="
           flex-1
           bg-black-800

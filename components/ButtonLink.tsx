@@ -69,6 +69,7 @@ function ButtonLink({
           flex
           flex-row
           items-center
+          justify-center
           space-x-2
 
           rounded-lg

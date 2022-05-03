@@ -20,8 +20,12 @@ function Home() {
     ">
       <div className="
         flex
-        justify-between
-        items-center
+        flex-col
+        space-y-2
+
+        sm:flex-row
+        sm:justify-between
+        sm:items-center
       ">
         <Title>Code Snippets</Title>
         <ButtonLink

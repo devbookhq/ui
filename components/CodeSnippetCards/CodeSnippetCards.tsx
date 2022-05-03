@@ -13,7 +13,8 @@ function CodeSnippetCards({ codeSnippets }: Props) {
     <div className="
       flex
       flex-col
-      items-center
+      items-start
+      justify-start
       space-y-4
 
       md:flex-row
