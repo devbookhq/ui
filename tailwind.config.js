@@ -1,10 +1,13 @@
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
+      lineClamp: {
+        10: '10',
+      },
       colors: {
         transparent: 'transparent',
         white: {
@@ -27,4 +30,7 @@ module.exports = {
       },
     },
   },
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 }

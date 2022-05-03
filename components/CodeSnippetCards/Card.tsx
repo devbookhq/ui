@@ -1,4 +1,5 @@
 import { CodeSnippet } from 'utils/useUser'
+import Text from 'components/typography/Text'
 
 interface Props {
   codeSnippet: CodeSnippet
@@ -8,7 +9,7 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
   return (
     <div className="
       w-full
-      md:max-w-[300px]
+      md:max-w-[320px]
 
       p-[2px]
 
@@ -20,9 +21,7 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
       hover:shadow-lg
       hover:shadow-green-500/50
 
-
       rounded-lg
-      select-none
     ">
       <div className="
         flex
@@ -34,6 +33,8 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
           <span className="
             font-mono
             text-sm
+            whitespace-pre
+            line-clamp-10
           ">
             {cs.code}
           </span>
@@ -43,9 +44,12 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
           flex-1
           bg-black-800
           p-2
-          rounded-lg
+          rounded-b-lg
+          truncate
         ">
-          <span className="">Code snippet title</span>
+          <Text
+            text="[CHANGE] Code snippet title [CHANGE]"
+          />
         </div>
       </div>
     </div>

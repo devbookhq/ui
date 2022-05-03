@@ -22,20 +22,10 @@ function CodeSnippetCards({ codeSnippets }: Props) {
       md:gap-4
     ">
       {codeSnippets.length && codeSnippets.map(cs => (
-        <>
         <CodeSnippetCard
           key={cs.id}
           codeSnippet={cs}
         />
-        <CodeSnippetCard
-          key={cs.id}
-          codeSnippet={cs}
-        />
-        <CodeSnippetCard
-          key={cs.id}
-          codeSnippet={cs}
-        />
-        </>
       ))}
     </div>
   )
