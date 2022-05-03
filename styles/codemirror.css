@@ -219,6 +219,5 @@
   .cm-editor .cm-gutter.cm-lineNumbers {
     @apply rounded-tl-lg;
   }
-
 }
 

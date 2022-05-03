@@ -24,7 +24,6 @@ function Editor({
   onContentChange,
   isReadonly = false,
   language,
-  lightTheme,
   height,
   className,
 }: Props) {
