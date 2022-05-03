@@ -6,7 +6,7 @@ interface Props {
   codeSnippet: CodeSnippet
 }
 
-const previewLength = 7
+const previewLength = 8
 
 function CodeSnippetCard({ codeSnippet: cs }: Props) {
   const lines = cs.code.split('\n')
@@ -42,11 +42,18 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
         rounded-lg
         bg-black-900
       ">
-        <CodeEditor
-          initialContent={shortened}
-          isReadonly
-          height="174px"
-        />
+        <div className="
+          bg-black-900
+          rounded-lg
+        ">
+          <CodeEditor
+            isReadonly
+            className="preview"
+            height="174px"
+            content={shortened}
+          />
+        </div>
+
         <div className="
           flex-1
           bg-black-800

@@ -47,14 +47,14 @@ const disableSpellchecking = {
 }
 
 export interface Options {
-  initialContent?: string
+  content?: string
   isReadonly?: boolean
   onContentChange?: (content: string) => void
   language?: Language
 }
 
 function createEditorState({
-  initialContent = '',
+  content = '',
   onContentChange,
   isReadonly = false,
   language,
@@ -69,7 +69,7 @@ function createEditorState({
   const languageExtension = getLanguageExtension(language)
 
   const state = EditorState.create({
-    doc: initialContent,
+    doc: content,
     extensions: [
       EditorView.domEventHandlers({
         blur: (_, view) => {

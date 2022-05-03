@@ -11,21 +11,22 @@ import createEditorState from './createEditorState'
 import { EditorView } from '@codemirror/view'
 
 export interface Props {
-  initialContent?: string
+  content?: string
   isReadonly?: boolean
   onContentChange?: (content: string) => void
-  lightTheme?: boolean
   language?: Language
   height?: string
+  className?: string
 }
 
 function Editor({
-  initialContent = '',
+  content = '',
   onContentChange,
   isReadonly = false,
   language,
   lightTheme,
   height,
+  className,
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
 
@@ -33,7 +34,7 @@ function Editor({
     if (!editorEl.current) return
 
     const state = createEditorState({
-      initialContent,
+      content,
       onContentChange,
       isReadonly,
       language,
@@ -44,22 +45,27 @@ function Editor({
       view.destroy()
     }
   }, [
-    initialContent,
+    content,
     onContentChange,
     language,
     isReadonly,
   ])
 
   return (
-    <div className={`rounded-lg devbook dark`}>
-      <div
-        className={`flex-1 flex max-h-full min-w-0 overflow-auto devbook rounded-lg`}
-        ref={editorEl}
-        style={{
-          ...height && { height },
-        }}
-      />
-    </div>
+    <div
+      className={`
+        flex-1
+        flex
+        max-h-full
+        min-w-0
+        overflow-auto
+        ${className}
+      `}
+      ref={editorEl}
+      style={{
+        ...height && { height },
+      }}
+    />
   )
 }
 

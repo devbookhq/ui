@@ -33,7 +33,11 @@ function New() {
         <Title>New</Title>
       </div>
 
-      <CodeEditor initialContent="const a = 5;"/>
+      <div className="bg-black-800">
+        <CodeEditor
+          content="const a = 5;"
+        />
+      </div>
     </div>
   )
 }
