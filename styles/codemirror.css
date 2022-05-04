@@ -1,5 +1,5 @@
 .cm-editor {
-  @apply min-w-0 flex flex-1 text-left;
+  @apply min-w-0 flex flex-1 h-full text-left;
   @apply bg-transparent;
 
   ::selection {

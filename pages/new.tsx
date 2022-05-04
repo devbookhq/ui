@@ -44,13 +44,20 @@ function New() {
           flex-1
           flex
           flex-col
-          space-y-4
+          md:flex-row
+          md:space-x-4
         ">
           <div className="
             flex
             flex-row
             items-center
+            justify-start
             space-x-4
+
+            md:flex-col
+            md:items-start
+            md:space-x-0
+            md:space-y-4
           ">
             <Text
               text="Code"
@@ -80,6 +87,20 @@ function New() {
                 absolute
                 inset-0
               "
+            />
+          </div>
+          <div className="
+            hidden
+            lg:flex
+            lg:flex-col
+            lg:items-start
+            lg:space-y-4
+          ">
+            <Text
+              text="URL will go here"
+            />
+            <Text
+              text="Embed will go here"
             />
           </div>
         </div>
