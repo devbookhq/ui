@@ -17,7 +17,7 @@ export const getServerSideProps = withAuthRequired({
     if (!tab || !Object.entries(tabs).find(([key, val]) => val.key === tab)) {
       return {
         redirect: {
-          destination: `/new?tab=${tabs[0].key}`,
+          destination: `/new?tab=${tabs.code.key}`,
           permanent: false,
         }
       }
