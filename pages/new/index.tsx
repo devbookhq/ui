@@ -1,4 +1,4 @@
-import { useEffect } from 'React'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
