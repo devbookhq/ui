@@ -6,11 +6,15 @@
 
 
 @layer base {
-
   *,
   *:before,
   *:after {
     @apply box-border;
+  }
+
+  ::selection {
+    @apply text-white-900;
+    @apply bg-green-500/70;
   }
 
   html,

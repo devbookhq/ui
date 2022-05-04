@@ -49,7 +49,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
           flex-1
           flex
           flex-col
-          space-y-8
+          space-y-6
           max-w-[1160px]
           w-full
         ">

@@ -1,7 +1,7 @@
 import {
   useRef,
   memo,
-  useLayoutEffect,
+  useEffect,
 } from 'react'
 
 import {
@@ -29,7 +29,7 @@ function Editor({
 }: Props) {
   const editorEl = useRef<HTMLDivElement>(null)
 
-  useLayoutEffect(function initEditor() {
+  useEffect(function initEditor() {
     if (!editorEl.current) return
 
     const state = createEditorState({
@@ -53,12 +53,8 @@ function Editor({
   return (
     <div
       className={`
-        flex-1
-        flex
-        max-h-full
-        min-w-0
         overflow-auto
-        ${className}
+        ${className || ''}
       `}
       ref={editorEl}
       style={{

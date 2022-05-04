@@ -16,12 +16,13 @@ function Home() {
     <div className="
       flex
       flex-col
-      space-y-16
+      space-y-6
     ">
       <div className="
         flex
         flex-col
         space-y-2
+        min-h-[48px]
 
         sm:flex-row
         sm:justify-between

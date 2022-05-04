@@ -1,6 +1,11 @@
 .cm-editor {
-  @apply min-w-0 flex flex-1 h-full text-left;
+  @apply min-w-0 flex flex-1 text-left;
   @apply bg-transparent;
+
+  ::selection {
+    @apply text-white-900;
+    @apply bg-white-900/70;
+  }
 }
 
 .cm-content {
@@ -27,7 +32,7 @@
 }
 
 .cm-scroller::-webkit-scrollbar-thumb {
-  @apply bg-black-800;
+  @apply bg-black-700;
 }
 
 .cm-editor.cm-focused {
@@ -38,9 +43,8 @@
   @apply border-l-gray-500;
 }
 
-.cm-editor.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection {
-  @apply text-white-900;
-  @apply bg-green-500/70 !important;
+.cm-editor.cm-focused .cm-selectionBackground, .cm-selectionBackground {
+  @apply bg-white-900/30 !important;
 }
 
 .cm-editor .cm-gutters {
@@ -56,8 +60,9 @@
 }
 
 .cm-gutter.cm-lineNumbers {
+  @apply min-w-[36px];
   @apply text-right;
-  min-width: 36px;
+  @apply rounded-l-lg;
 }
 
 .cm-editor .cm-activeLineGutter {
@@ -217,6 +222,7 @@
   }
 
   .cm-editor .cm-gutter.cm-lineNumbers {
+    @apply rounded-none; /* Reset border radius */
     @apply rounded-tl-lg;
   }
 }
