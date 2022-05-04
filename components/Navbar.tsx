@@ -1,5 +1,5 @@
 import { useUser } from 'utils/useUser'
-import Link from 'components/Link'
+import TitleLink from 'components/TitleLink'
 
 function Navbar() {
   const { user, userDetails } = useUser()
@@ -20,15 +20,17 @@ function Navbar() {
         flex
         flex-row
         items-center
-        space-x-8
+        space-x-6
       ">
-        <Link
+        <TitleLink
           href="/"
           title="Home"
+          size={TitleLink.size.T3}
         />
-        <Link
+        <TitleLink
           href="/settings"
           title="Settings"
+          size={TitleLink.size.T3}
         />
 
         <div

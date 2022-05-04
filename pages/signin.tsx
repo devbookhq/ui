@@ -48,7 +48,10 @@ function SignIn() {
           items-center
           bg-black-800
         ">
-          <Title variant={Title.variant.T2}>Sign In</Title>
+          <Title
+            title="Sign In"
+            size={Title.size.T2}
+          />
           <GitHubButton
             onClick={signInWithGitHub}
           />

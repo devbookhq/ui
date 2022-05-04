@@ -1,10 +1,9 @@
-import { ReactNode } from 'react'
 import cn from 'classnames'
 
 interface Props {
-  children: ReactNode
+  title: string
   className?: string
-  variant?: Variant
+  size?: Size
   rank?: Rank
 }
 
@@ -18,34 +17,36 @@ const Ranks = {
   [Rank.Secondary]: 'text-gray-600'
 }
 
-export enum Variant {
+export enum Size {
   T1,
   T2,
+  T3,
 }
 
-const Variants = {
-  [Variant.T1]: 'text-2xl font-semibold',
-  [Variant.T2]: 'text-base font-semibold',
+const Sizes = {
+  [Size.T1]: 'text-2xl font-semibold',
+  [Size.T2]: 'text-base font-semibold',
+  [Size.T3]: 'text-base font-medium',
 }
 
 function Title({
   className,
-  children,
-  rank = Rank.Primary,
-  variant = Variant.T1,
+  title,
+  rank,
+  size = Size.T1,
 }: Props) {
   return (
     <span className={cn(
-      Ranks[rank],
-      Variants[variant],
+      rank && Ranks[rank],
+      Sizes[size],
       className,
     )}>
-      {children}
+      {title}
     </span>
   )
 }
 
 Title.rank = Rank
-Title.variant = Variant
+Title.size = Size
 
 export default Title

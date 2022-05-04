@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
+import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
@@ -22,22 +23,12 @@ function New() {
           space-x-2
           min-h-[48px]
         ">
-          <Link href="/">
-            <a className="
-              hover:no-underline
-            ">
-              <Title
-                className="
-                  hover:text-white-900
-                "
-                rank={Title.rank.Secondary}
-              >
-                Code Snippets
-              </Title>
-            </a>
-          </Link>
-          <Title>/</Title>
-          <Title>New</Title>
+          <TitleLink
+            href="/"
+            title="Code Snippets"
+          />
+          <Title title="/"/>
+          <Title title="New"/>
         </div>
 
         <div className="

@@ -28,7 +28,9 @@ function Home() {
         sm:justify-between
         sm:items-center
       ">
-        <Title>Code Snippets</Title>
+        <Title
+          title="Code Snippets"
+        />
         <ButtonLink
           text="New Code Snippet"
           icon={<PlusIcon/>}
@@ -52,7 +54,10 @@ function Home() {
           border-black-700
           rounded-lg
         ">
-          <Title variant={Title.variant.T2}>Get Started</Title>
+          <Title
+            title="Get Started"
+            size={Title.size.T2}
+          />
 
           <div/>
 

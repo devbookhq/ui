@@ -7,7 +7,9 @@ function Settings() {
 
   return (
     <div className="flex flex-col">
-      <Title>Settings</Title>
+      <Title
+        title="Settings"
+      />
 
       <Link href="/api/auth/logout">
         <a>Sign out</a>

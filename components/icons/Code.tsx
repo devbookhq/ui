@@ -1,4 +1,4 @@
-function Plus() {
+function Code() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,16 +7,15 @@ function Plus() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="feather feather-code"
     >
-      <line x1="12" y1="5" x2="12" y2="19"></line>
-      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="16 18 22 12 16 6"></polyline>
+      <polyline points="8 6 2 12 8 18"></polyline>
     </svg>
   )
 }
 
-
-export default Plus
+export default Code
