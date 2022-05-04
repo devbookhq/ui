@@ -38,12 +38,12 @@ function Title({
   icon,
 }: Props) {
   const classes = cn(
-        'flex',
-        'flex-row',
-        'items-center',
-        'justify-center',
-        'space-x-2',
-    !rank !== undefined ? Ranks[rank] : undefined,
+    'flex',
+    'flex-row',
+    'items-center',
+    'justify-center',
+    'space-x-2',
+    rank !== undefined ? Ranks[rank] : undefined,
     Sizes[size],
     className,
   )
