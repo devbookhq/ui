@@ -34,7 +34,7 @@ function Home() {
         <ButtonLink
           text="New Code Snippet"
           icon={<PlusIcon/>}
-          href="/new"
+          href="/new?tab=code"
         />
       </div>
 
@@ -64,7 +64,7 @@ function Home() {
           <ButtonLink
             variant={ButtonLink.variant.Full}
             text="New Code Snippet"
-            href="/new"
+            href="/new?tab=code"
           />
         </div>
       )

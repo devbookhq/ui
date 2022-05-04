@@ -9,7 +9,8 @@ interface Props {
   title: string
   icon?: ReactNode
   size?: Size
-  isActive?: boolean
+  active?: boolean
+  shallow?: boolean
 }
 
 function TitleLink({
@@ -17,18 +18,20 @@ function TitleLink({
   title,
   icon,
   size,
-  isActive,
+  active,
+  shallow,
 }: Props) {
   return (
     <Link
       href={href}
+      shallow={shallow}
     >
       <a className="
 
         hover:no-underline
       ">
         <Title
-          rank={isActive ? Title.rank.Primary : Title.rank.Secondary}
+          rank={active ? Title.rank.Primary : Title.rank.Secondary}
           className="hover:text-white-900"
           size={size}
           title={title}

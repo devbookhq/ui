@@ -1,3 +1,5 @@
+import { useEffect } from 'React'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
@@ -8,8 +10,41 @@ import CodeEditor from 'components/CodeEditor'
 import CodeIcon from 'components/icons/Code'
 import BoxIcon from 'components/icons/Box'
 
-export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
+const tabs = [
+  {
+    key: 'code',
+    title: 'Code',
+    icon: <CodeIcon/>,
+  },
+  {
+    key: 'env',
+    title: 'Environment',
+    icon: <BoxIcon/>,
+  },
+]
+
+export const getServerSideProps = withAuthRequired({
+  redirectTo: '/signin',
+  // Linter won't allow to create a build unless we have an async here.
+  async getServerSideProps(ctx) {
+    const { tab } = ctx.query
+    if (!tab || !tabs.find(t => t.key === tab)) {
+      return {
+        redirect: {
+          destination: `/new?tab=${tabs[0].key}`,
+          permanent: false,
+        }
+      }
+    }
+    return {
+      props: {},
+    }
+  }
+})
+
 function New() {
+  const router = useRouter()
+  const currentTab = router.query.tab
   return (
     <>
       {/* Fake breadcrumbs */}
@@ -37,7 +72,9 @@ function New() {
           flex-1
           flex
           flex-col
+          space-y-4
           md:flex-row
+          md:space-y-0
           md:space-x-4
         ">
           <div className="
@@ -52,19 +89,17 @@ function New() {
             md:space-x-0
             md:space-y-4
           ">
-            <TitleLink
-              href="/new/code"
-              title="Code"
-              icon={<CodeIcon/>}
-              size={TitleLink.size.T3}
-              isActive
-            />
-            <TitleLink
-              href="/new/env"
-              title="Environment"
-              icon={<BoxIcon/>}
-              size={TitleLink.size.T3}
-            />
+            {tabs.map(t => (
+              <TitleLink
+                key={t.key}
+                href={`/new?tab=${t.key}`}
+                title={t.title}
+                icon={t.icon}
+                size={TitleLink.size.T3}
+                active={t.key === currentTab}
+                shallow
+              />
+            ))}
           </div>
           <div className="
             flex-1
