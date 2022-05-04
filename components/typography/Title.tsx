@@ -5,6 +5,7 @@ interface Props {
   className?: string
   size?: Size
   rank?: Rank
+  icon?: any
 }
 
 export enum Rank {
@@ -14,7 +15,7 @@ export enum Rank {
 
 const Ranks = {
   [Rank.Primary]: 'text-white-900',
-  [Rank.Secondary]: 'text-gray-600'
+  [Rank.Secondary]: 'text-gray-600',
 }
 
 export enum Size {
@@ -34,13 +35,30 @@ function Title({
   title,
   rank,
   size = Size.T1,
+  icon,
 }: Props) {
+  const classes = cn(
+        'flex',
+        'flex-row',
+        'items-center',
+        'justify-center',
+        'space-x-2',
+    !rank !== undefined ? Ranks[rank] : undefined,
+    Sizes[size],
+    className,
+  )
+
+  if (icon) {
+    return (
+      <div className={classes}>
+        {icon}
+        <span>{title}</span>
+      </div>
+    )
+  }
+
   return (
-    <span className={cn(
-      rank && Ranks[rank],
-      Sizes[size],
-      className,
-    )}>
+    <span className={classes}>
       {title}
     </span>
   )

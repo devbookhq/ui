@@ -5,6 +5,8 @@ import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
+import CodeIcon from 'components/icons/Code'
+import BoxIcon from 'components/icons/Box'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 function New() {
@@ -50,17 +52,18 @@ function New() {
             md:space-x-0
             md:space-y-4
           ">
-            <Text
-              text="Code"
+            <TitleLink
+              href="/new/code"
+              title="Code"
+              icon={<CodeIcon/>}
+              size={TitleLink.size.T3}
+              isActive
             />
-            <Text
-              text="Design"
-            />
-            <Text
-              text="Environment"
-            />
-            <Text
-              text="Analytics"
+            <TitleLink
+              href="/new/env"
+              title="Environment"
+              icon={<BoxIcon/>}
+              size={TitleLink.size.T3}
             />
           </div>
           <div className="

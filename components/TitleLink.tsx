@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import { ReactNode } from 'react'
 import Link from 'next/link'
 
@@ -8,6 +9,7 @@ interface Props {
   title: string
   icon?: ReactNode
   size?: Size
+  isActive?: boolean
 }
 
 function TitleLink({
@@ -15,28 +17,22 @@ function TitleLink({
   title,
   icon,
   size,
+  isActive,
 }: Props) {
   return (
     <Link
       href={href}
     >
       <a className="
-        flex
-        flex-row
-        items-center
-        justify-center
-        space-x-2
 
         hover:no-underline
       ">
-        {icon}
         <Title
+          rank={isActive ? Title.rank.Primary : Title.rank.Secondary}
+          className="hover:text-white-900"
           size={size}
           title={title}
-          className="
-            text-gray-600
-            hover:text-white-900
-          "
+          icon={icon}
         />
       </a>
     </Link>
