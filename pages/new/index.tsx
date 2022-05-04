@@ -1,34 +1,20 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
+import { tabs, Tab } from 'utils/newCodeSnippetTabs'
+import NewCodeSnippetContent from 'components/NewCodeSnippetContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
-import Text from 'components/typography/Text'
-import CodeEditor from 'components/CodeEditor'
-import CodeIcon from 'components/icons/Code'
-import BoxIcon from 'components/icons/Box'
-
-const tabs = [
-  {
-    key: 'code',
-    title: 'Code',
-    icon: <CodeIcon/>,
-  },
-  {
-    key: 'env',
-    title: 'Environment',
-    icon: <BoxIcon/>,
-  },
-]
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
   // Linter won't allow to create a build unless we have an async here.
   async getServerSideProps(ctx) {
     const { tab } = ctx.query
-    if (!tab || !tabs.find(t => t.key === tab)) {
+    console.log(Object.entries(tabs))
+    if (!tab || !Object.entries(tabs).find(([key, val]) => val.key === tab)) {
       return {
         redirect: {
           destination: `/new?tab=${tabs[0].key}`,
@@ -43,6 +29,7 @@ export const getServerSideProps = withAuthRequired({
 })
 
 function New() {
+  const [code, setCode] = useState('')
   const router = useRouter()
   const currentTab = router.query.tab
   return (
@@ -89,54 +76,27 @@ function New() {
             md:space-x-0
             md:space-y-4
           ">
-            {tabs.map(t => (
+            {Object.entries(tabs).map(([key, val]) => (
               <TitleLink
-                key={t.key}
-                href={`/new?tab=${t.key}`}
-                title={t.title}
-                icon={t.icon}
+                key={val.key}
+                href={`/new?tab=${val.key}`}
+                title={val.title}
+                icon={val.icon}
                 size={TitleLink.size.T3}
-                active={t.key === currentTab}
+                active={val.key === currentTab}
                 shallow
               />
             ))}
           </div>
-          <div className="
-            flex-1
-            relative
-            overflow-hidden
-            bg-black-800
-            border-black-700
-            border
-            rounded-lg
-          ">
-            <CodeEditor
-              content="const a = 5;"
-              className="
-                absolute
-                inset-0
-              "
-            />
-          </div>
-          <div className="
-            hidden
-            lg:flex
-            lg:flex-col
-            lg:items-start
-            lg:space-y-4
-          ">
-            <Text
-              text="URL will go here"
-            />
-            <Text
-              text="Embed will go here"
-            />
-          </div>
+
+          <NewCodeSnippetContent
+            code={code}
+            onContentChange={setCode}
+          />
         </div>
       </div>
     </>
   )
 }
-
 
 export default New

@@ -24,7 +24,9 @@ function TitleLink({
   return (
     <Link
       href={href}
-      shallow={shallow}
+      //shallow={shallow}
+      replace
+      shallow
     >
       <a className="
 

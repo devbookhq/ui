@@ -2,13 +2,15 @@ import {
   useRef,
   memo,
   useEffect,
+  useState,
 } from 'react'
+import { EditorView } from '@codemirror/view'
+import { EditorState } from '@codemirror/state'
 
 import {
   Language,
 } from './language'
 import createEditorState from './createEditorState'
-import { EditorView } from '@codemirror/view'
 
 export interface Props {
   content?: string
@@ -27,6 +29,8 @@ function Editor({
   height,
   className,
 }: Props) {
+  const [editorState, setEditorState] = useState<EditorState>()
+  const [editorView, setEditorView] = useState<EditorView>()
   const editorEl = useRef<HTMLDivElement>(null)
 
   useEffect(function initEditor() {
@@ -40,15 +44,16 @@ function Editor({
     })
 
     const view = new EditorView({ state, parent: editorEl.current });
+
     return () => {
       view.destroy()
     }
   }, [
-    content,
     onContentChange,
     language,
     isReadonly,
   ])
+
 
   return (
     <div
