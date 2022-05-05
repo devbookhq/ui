@@ -27,7 +27,7 @@ interface ErrorRes {
 async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
     const { user } = await getUser({ req, res })
-    if (!user) throw error('could not get user')
+    if (!user) throw new Error('could not get user')
 
     const id = randomstring.generate({ length: 12, charset: 'alphanumeric' })
     const title = dockerNames.getRandomName().replace('_', '-')
@@ -49,15 +49,14 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
   }
 }
 
-async function updateCodeItem(req: NextApiRequest<CodeSnippet>, res: NextApiResponse<CodeSnippet | ErrorRes>) {
+async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
-    const cs = req.body
+    const cs = req.body as CodeSnippet
     const { user } = await getUser({ req, res })
-    if (!user) throw error('could not get user')
+    if (!user) throw new Error('could not get user')
 
     if (user.id !== cs.creator_id) {
-      res.setHeader('Not Allowed')
-      res.status('405').end('Not allowed - user does not have write access')
+      res.status(405).end('Not allowed - user does not have write access')
       return
     }
 
