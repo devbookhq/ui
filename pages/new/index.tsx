@@ -7,13 +7,14 @@ import { tabs, Tab } from 'utils/newCodeSnippetTabs'
 import NewCodeSnippetContent from 'components/NewCodeSnippetContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
+import Button from 'components/Button'
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
-  // Linter won't allow to create a build unless we have an async here.
+  // NOTE: Linter won't allow to create a build unless we have an async here.
+  // Redirect user to the `?tab=code` if no valid tab query is present.
   async getServerSideProps(ctx) {
     const { tab } = ctx.query
-    console.log(Object.entries(tabs))
     if (!tab || !Object.entries(tabs).find(([key, val]) => val.key === tab)) {
       return {
         redirect: {
@@ -44,15 +45,25 @@ function New() {
         <div className="
           flex
           items-center
-          space-x-2
-          min-h-[48px]
+          justify-between
         ">
-          <TitleLink
-            href="/"
-            title="Code Snippets"
+          <div className="
+            flex
+            items-center
+            space-x-2
+            min-h-[48px]
+          ">
+            <TitleLink
+              href="/"
+              title="Code Snippets"
+            />
+            <Title title="/"/>
+            <Title title="New"/>
+          </div>
+          <Button
+            variant={Button.variant.Full}
+            text="Create"
           />
-          <Title title="/"/>
-          <Title title="New"/>
         </div>
 
         <div className="
