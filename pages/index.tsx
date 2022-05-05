@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 import useSWR from 'swr'
-import { toast } from 'react-toastify'
 
 import { useUser } from 'utils/useUser'
+import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
 import CodeSnippetCards from 'components/CodeSnippetCards'
@@ -33,15 +33,7 @@ function Home() {
         router.push(`/${data.slug}/edit?tab=code`)
       })
     } catch(err: any) {
-      toast.error(`Error: ${err.message}`, {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-      })
+      showErrorNotif(`Error: ${err.message}`)
       setIsLoading(false)
     }
   }

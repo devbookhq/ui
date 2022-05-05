@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import {
+  useState,
+  useEffect,
+} from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import {
   getUser,
   withAuthRequired,
@@ -8,12 +10,14 @@ import {
 } from '@supabase/supabase-auth-helpers/nextjs'
 
 import type { CodeSnippet } from 'types'
+import { showErrorNotif } from 'utils/notification'
 import { tabs, Tab } from 'utils/newCodeSnippetTabs'
 import NewCodeSnippetContent from 'components/NewCodeSnippetContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 import Button from 'components/Button'
-
+import ButtonLink from 'components/ButtonLink'
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
@@ -21,7 +25,6 @@ export const getServerSideProps = withAuthRequired({
     try {
       const { user } = await getUser(ctx)
       const { tab, slug }: { tab?: string, slug?: string } = ctx.query
-      console.log({ tab, slug })
 
       // Try to get a code snippet from the DB based on the slug.
       const { data, error } = await supabaseServerClient(ctx)
@@ -79,77 +82,109 @@ interface Props {
 }
 
 function CodeSnippetEditor({ codeSnippet, error }: Props) {
-  // TODO: if (error)
-
-  console.log({ codeSnippet, error })
-
   const [code, setCode] = useState('')
   const router = useRouter()
   const slug = router.query.slug || []
 
   const currentTab = router.query.tab
+
+  useEffect(function checkForError() {
+    if (error) {
+      showErrorNotif(`Error: ${error}`)
+    }
+  }, [error])
+
   return (
     <>
-      {/* Fake breadcrumbs */}
-      <div className="
-        flex-1
-        flex
-        flex-col
-        space-y-6
-      ">
+      {error && (
         <div className="
           flex
+          flex-col
           items-center
-          space-x-2
-          min-h-[48px]
-        ">
-           <TitleLink
-             href="/"
-             title="Code Snippets"
-           />
-           <Title title="/"/>
-           <Title title="Edit"/>
-        </div>
+          space-y-16
 
+          py-6
+
+          w-full
+          bg-transparent
+          border
+          border-black-700
+          rounded-lg
+        ">
+          <Title
+            title="Something went wrong"
+            size={Title.size.T2}
+          />
+          <Text
+            text={error}
+          />
+          <ButtonLink
+            href="/"
+            text="Go Home"
+          />
+        </div>
+      )}
+      {!error && (
         <div className="
           flex-1
           flex
           flex-col
-          space-y-4
-          md:flex-row
-          md:space-y-0
-          md:space-x-4
+          space-y-6
         ">
           <div className="
             flex
-            flex-row
             items-center
-            justify-start
-            space-x-4
-            md:flex-col
-            md:items-start
-            md:space-x-0
-            md:space-y-4
+            space-x-2
+            min-h-[48px]
           ">
-            {Object.entries(tabs).map(([key, val]) => (
-              <TitleLink
-                key={val.key}
-                href={`/${codeSnippet.slug}/edit?tab=${val.key}`}
-                title={val.title}
-                icon={val.icon}
-                size={TitleLink.size.T3}
-                active={val.key === currentTab}
-                shallow
-              />
-            ))}
+             <TitleLink
+               href="/"
+               title="Code Snippets"
+             />
+             <Title title="/"/>
+             <Title title="Edit"/>
           </div>
 
-          <NewCodeSnippetContent
-            code={code}
-            onContentChange={setCode}
-          />
+          <div className="
+            flex-1
+            flex
+            flex-col
+            space-y-4
+            md:flex-row
+            md:space-y-0
+            md:space-x-4
+          ">
+            <div className="
+              flex
+              flex-row
+              items-center
+              justify-start
+              space-x-4
+              md:flex-col
+              md:items-start
+              md:space-x-0
+              md:space-y-4
+            ">
+              {Object.entries(tabs).map(([key, val]) => (
+                <TitleLink
+                  key={val.key}
+                  href={`/${codeSnippet.slug}/edit?tab=${val.key}`}
+                  title={val.title}
+                  icon={val.icon}
+                  size={TitleLink.size.T3}
+                  active={val.key === currentTab}
+                  shallow
+                />
+              ))}
+            </div>
+
+            <NewCodeSnippetContent
+              code={code}
+              onContentChange={setCode}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }
