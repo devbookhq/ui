@@ -6,6 +6,11 @@
 
 
 @layer base {
+  /* Override react-toastify vars */
+  :root {
+    --toastify-color-dark: #313034;
+  }
+
   *,
   *:before,
   *:after {
@@ -38,15 +43,6 @@
     @apply from-green-200;
     @apply to-green-500;
   }
-}
-
-a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 img {

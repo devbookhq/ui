@@ -10,18 +10,14 @@ import {
 } from '@supabase/supabase-auth-helpers/react'
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
+import type {
+  CodeSnippet,
+} from 'types'
+
 export interface UserDetails {
   id: string
   full_name?: string
   avatar_url?: string
-}
-
-export interface CodeSnippet {
-  id: string
-  title: string
-  description: string
-  code: string
-  creator_id: string
 }
 
 type UserContextType = {
@@ -33,7 +29,6 @@ type UserContextType = {
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
-
 
 export interface Props {
   supabaseClient: SupabaseClient;

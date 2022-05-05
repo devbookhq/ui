@@ -62,7 +62,7 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
           truncate
         ">
           <Text
-            text="[CHANGE] Code snippet title [CHANGE]"
+            text={cs.title}
           />
         </div>
       </div>

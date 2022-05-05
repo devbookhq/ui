@@ -31,12 +31,16 @@
     "@types/react": "^18.0.8",
     "classnames": "^2.3.1",
     "date-fns": "^2.11.1",
+    "docker-names": "^1.2.1",
     "gray-matter": "^4.0.2",
     "next": "latest",
+    "randomstring": "^1.2.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-toastify": "^9.0.0",
     "remark": "^14.0.1",
-    "remark-html": "^15.0.0"
+    "remark-html": "^15.0.0",
+    "swr": "2.0.0-beta.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.6",

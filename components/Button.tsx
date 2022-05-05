@@ -38,6 +38,7 @@ function Button({
           hover:shadow-lg
           hover:shadow-green-500/50
         "
+        onClick={onClick}
       >
         <div className="
           flex
