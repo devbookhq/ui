@@ -1,15 +1,19 @@
-import { CodeSnippet } from 'utils/useUser'
+import type { CodeSnippet } from 'types'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
 
 interface Props {
   codeSnippet: CodeSnippet
+  onClick?: (e: any) => void
 }
 
 const previewLength = 8
 
-function CodeSnippetCard({ codeSnippet: cs }: Props) {
-  const lines = cs.code.split('\n')
+function CodeSnippetCard({
+  codeSnippet: cs,
+  onClick,
+}: Props) {
+  const lines = cs.code?.split('\n') || []
   const previewLines = lines.slice(0, previewLength)
 
   const shortened = lines.length > previewLength
@@ -18,24 +22,26 @@ function CodeSnippetCard({ codeSnippet: cs }: Props) {
 
 
   return (
-    <div className="
-      max-h-[218px]
-      h-full
-      w-full
-      md:max-w-[320px]
+    <div
+      className="
+        max-h-[218px]
+        h-full
+        w-full
+        md:max-w-[320px]
 
-      p-[2px]
+        p-[2px]
 
-      bg-black-700
+        bg-black-700
 
-      hover:bg-green-gradient
+        hover:bg-green-gradient
 
-      hover:cursor-pointer
-      hover:shadow-lg
-      hover:shadow-green-500/50
+        hover:cursor-pointer
+        hover:shadow-lg
+        hover:shadow-green-500/50
 
-      rounded-lg
-    ">
+        rounded-lg"
+        onClick={onClick}
+      >
       <div className="
         flex
         flex-col

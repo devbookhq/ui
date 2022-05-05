@@ -7,7 +7,9 @@ import {
   withAuthRequired,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import randomstring from 'randomstring'
-import dockerNames from 'docker-names'
+
+// docker-names pkg doesn't have types
+const dockerNames: any = require('docker-names')
 
 import type {
   CodeSnippet,
@@ -17,15 +19,12 @@ import {
   upsertCodeSnippet,
 } from 'utils/supabaseAdmin'
 
-interface Data {
-  id: string
-  title: string
-  slug: string
-  code: string
-  creator_id: string
+interface ErrorRes {
+  statusCode: number
+  message: string
 }
 
-async function createCodeItem(req: NextApiRequest, res: NextApiResponse<Data>) {
+async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
     const { user } = await getUser({ req, res })
     if (!user) throw Error('Could not get user')
@@ -43,14 +42,14 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<Data>) {
     }
     await upsertCodeSnippet(codeSnippet)
 
-    res.status(200).json({ codeSnippet })
+    res.status(200).json(codeSnippet)
   } catch (err: any) {
     console.log(err)
     res.status(500).json({ statusCode: 500, message: err.message })
   }
 }
 
-async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<Data>) {
+async function updateCodeItem(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ todo: 'todo', })
 }
 

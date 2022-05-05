@@ -3,7 +3,7 @@ import type {
   NextApiResponse,
 } from 'next'
 
-export default async (req: NextApiRequest, res: NextApiResonse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET')
     res.status(405).end('Method Not Allowed')

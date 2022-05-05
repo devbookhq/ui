@@ -1,6 +1,8 @@
 import { ReactNode } from 'react'
+import Link from 'next/link'
+import { useRouter }  from 'next/router'
 
-import { CodeSnippet } from 'utils/useUser'
+import { CodeSnippet } from 'types'
 import CodeSnippetCard from './Card'
 
 
@@ -9,6 +11,12 @@ interface Props {
 }
 
 function CodeSnippetCards({ codeSnippets }: Props) {
+  const router = useRouter()
+
+  function openCodeSnippet(cs: CodeSnippet) {
+    router.push(`/${cs.slug}/edit?tab=code`)
+  }
+
   return (
     <div className="
       flex
@@ -26,6 +34,7 @@ function CodeSnippetCards({ codeSnippets }: Props) {
         <CodeSnippetCard
           key={cs.id}
           codeSnippet={cs}
+          onClick={() => openCodeSnippet(cs)}
         />
       ))}
     </div>

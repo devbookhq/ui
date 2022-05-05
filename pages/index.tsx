@@ -20,15 +20,17 @@ function Home() {
 
   async function createNewCodeSnippet() {
     setIsLoading(true)
-    await new Promise((resolve) => setTimeout(() => resolve(), 1000))
     try {
       fetch('/api/code', {
         method: 'PUT',
       })
       .then(response => response.json())
-      .then(data => {
-        console.log({ data })
-        // TODO: Push to /c/slug or ideally /slug
+      .then((data: any) => {
+        if (data.statusCode === 500) {
+          // TODO: Internal error.
+          // { statusCode: 500, message: err.message }
+        }
+        router.push(`/${data.slug}/edit?tab=code`)
       })
     } catch(err: any) {
       toast.error(`Error: ${err.message}`, {
