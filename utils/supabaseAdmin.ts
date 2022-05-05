@@ -19,6 +19,4 @@ export async function upsertCodeSnippet(cs: CodeSnippet) {
     .upsert(cs)
 
   if (error) throw error
-
-  console.log(`Code snippet inserted/updated: ${cs.id}`)
 }

@@ -1,6 +1,7 @@
 import {
   useState,
   useEffect,
+  useCallback,
 } from 'react'
 import { useRouter } from 'next/router'
 import {
@@ -94,6 +95,24 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
     }
   }, [error])
 
+  const updateCode = useCallback(async (c: string) => {
+    setCode(c)
+
+    const newCS = {
+      ...codeSnippet,
+      code: c,
+    }
+    const response = await fetch('/api/code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newCS)
+    })
+    const j = await response.json()
+    console.log({j})
+  }, [setCode, codeSnippet])
+
   return (
     <>
       {error && (
@@ -180,7 +199,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
 
             <NewCodeSnippetContent
               code={code}
-              onContentChange={setCode}
+              onContentChange={updateCode}
             />
           </div>
         </div>

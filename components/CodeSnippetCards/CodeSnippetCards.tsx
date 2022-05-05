@@ -1,4 +1,7 @@
-import { ReactNode } from 'react'
+import {
+  ReactNode,
+  useMemo,
+} from 'react'
 import Link from 'next/link'
 import { useRouter }  from 'next/router'
 
@@ -10,8 +13,15 @@ interface Props {
   codeSnippets: CodeSnippet[]
 }
 
+function sortSnippets(a: CodeSnippet, b: CodeSnippet) {
+  if (a.title < b.title) return -1
+  if (a.title > b.title) return 1
+  return 0
+}
+
 function CodeSnippetCards({ codeSnippets }: Props) {
   const router = useRouter()
+  const sorted = useMemo(() => codeSnippets.sort((a, b) => sortSnippets(a, b)), [codeSnippets])
 
   function openCodeSnippet(cs: CodeSnippet) {
     router.push(`/${cs.slug}/edit?tab=code`)
@@ -30,7 +40,7 @@ function CodeSnippetCards({ codeSnippets }: Props) {
       md:space-y-0
       md:gap-4
     ">
-      {codeSnippets.length && codeSnippets.map(cs => (
+      {codeSnippets.length && sorted.map(cs => (
         <CodeSnippetCard
           key={cs.id}
           codeSnippet={cs}
