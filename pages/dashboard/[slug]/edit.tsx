@@ -53,7 +53,7 @@ export const getServerSideProps = withAuthRequired({
       if (!tab || !Object.entries(tabs).find(([key, val]) => val.key === tab)) {
         return {
           redirect: {
-            destination: `/${slug}/edit?tab=${tabs.code.key}`,
+            destination: `/dashboard/${slug}/edit?tab=${tabs.code.key}`,
             permanent: false,
           },
           props: {
@@ -158,7 +158,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
             text={error}
           />
           <ButtonLink
-            href="/"
+            href="/dashboard"
             text="Go Home"
           />
         </div>
@@ -177,7 +177,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
             min-h-[48px]
           ">
              <TitleLink
-               href="/"
+               href="/dashboard"
                title="Code Snippets"
              />
              <Title title="/"/>
@@ -207,7 +207,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
               {Object.entries(tabs).map(([key, val]) => (
                 <TitleLink
                   key={val.key}
-                  href={`/${codeSnippet.slug}/edit?tab=${val.key}`}
+                  href={`/dashboard/${codeSnippet.slug}/edit?tab=${val.key}`}
                   title={val.title}
                   icon={val.icon}
                   size={TitleLink.size.T3}

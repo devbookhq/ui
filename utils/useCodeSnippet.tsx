@@ -8,39 +8,47 @@ import type {
   CodeSnippet,
 } from 'types'
 
-function useCodeSnippets(userID?: string) {
-  const [cs, setCS] = useState<CodeSnippet[]>([])
+function useCodeSnippet({ slug, id }: { slug?: string, id?: string }) {
+  const [cs, setCS] = useState<CodeSnippet | undefined>()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [val, setVal] = useState(0)
 
-  function reload() {
-    setVal(c => c+1)
-  }
-
-  useEffect(function fetchCodeSnippets() {
-    if (!userID) return
+  useEffect(function fetchCodeSnippet() {
+    if (!slug && !id) return
     if (isLoading) return
 
     setIsLoading(true)
+
+    let key = ''
+    let val = ''
+    if (slug) {
+      key = 'slug'
+      val = slug
+    }
+
+    if (id) {
+      key = 'id'
+      val = id
+    }
+
     supabaseClient
       .from<CodeSnippet>('code_snippets')
       .select('*')
-      .eq('creator_id', userID)
+      .eq(key, val)
+      .single()
       .then(({ data, error: err }) => {
         if (data) setCS(data)
         if (err) setError(err.message)
         setIsLoading(false)
       })
-  }, [userID, val])
 
+  }, [slug, id])
 
   return {
-    codeSnippets: cs,
+    codeSnippet: cs,
     error,
     isLoading,
-    reload,
   }
 }
 
-export default useCodeSnippets
+export default useCodeSnippet

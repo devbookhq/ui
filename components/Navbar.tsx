@@ -23,12 +23,12 @@ function Navbar() {
         space-x-6
       ">
         <TitleLink
-          href="/"
+          href="/dashboard"
           title="Home"
           size={TitleLink.size.T3}
         />
         <TitleLink
-          href="/settings"
+          href="/dashboard/settings"
           title="Settings"
           size={TitleLink.size.T3}
         />

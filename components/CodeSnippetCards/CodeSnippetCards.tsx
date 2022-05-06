@@ -28,7 +28,7 @@ function CodeSnippetCards({
   const sorted = useMemo(() => codeSnippets.sort((a, b) => sortSnippets(a, b)), [codeSnippets])
 
   function openCodeSnippet(cs: CodeSnippet) {
-    router.push(`/${cs.slug}/edit?tab=code`)
+    router.push(`/dashboard/${cs.slug}/edit?tab=code`)
   }
 
   return (
