@@ -2,6 +2,8 @@ import {
   ReactNode,
   forwardRef,
 } from 'react'
+import cn from 'classnames'
+
 import Text from 'components/typography/Text'
 
 export enum Variant {
@@ -29,21 +31,22 @@ function Button({
   if (variant === Variant.Full) {
     return (
       <button
-        className={`
-          py-1.5
-          px-4
+        className={cn(
+          'py-1.5',
+          'px-4',
 
-          flex
-          items-center
-          justify-center
+          'flex',
+          'items-center',
+          'justify-center',
 
-          rounded-lg
+          'rounded-lg',
 
-          bg-green-500
-          hover:shadow-lg
-          hover:shadow-green-500/50
-          ${isDisabled && 'pointer-events-none'}
-        `}
+          'bg-green-500',
+          'hover:shadow-lg',
+          'hover:shadow-green-500/50',
+          {'pointer-events-none': isDisabled },
+          className,
+        )}
         onClick={onClick}
       >
         <div className="
@@ -65,15 +68,16 @@ function Button({
 
   return (
     <button
-      className={`
-        p-[2px]
-        rounded-lg
-        bg-black-700
-        hover:bg-green-gradient
-        hover:shadow-lg
-        hover:shadow-green-500/50
-        ${isDisabled && 'pointer-events-none'}
-      `}
+      className={cn(
+        'p-[2px]',
+        'rounded-lg',
+        'bg-black-700',
+        'hover:bg-green-gradient',
+        'hover:shadow-lg',
+        'hover:shadow-green-500/50',
+        {'pointer-events-none': isDisabled},
+        className,
+      )}
       onClick={onClick}
     >
       <div className="
