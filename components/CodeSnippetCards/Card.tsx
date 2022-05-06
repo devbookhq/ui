@@ -9,6 +9,8 @@ import type { CodeSnippet } from 'types'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
 import MoreVerticalIcon from 'components/icons/MoreVertical'
+import { showErrorNotif } from 'utils/notification'
+import useOnClickOutside from 'utils/useOnClickOutside'
 
 interface Props {
   codeSnippet: CodeSnippet
@@ -16,19 +18,6 @@ interface Props {
 }
 
 const previewLength = 8
-
-function useOnClickOutside(ref: RefObject<HTMLElement>, cb: (e: MouseEvent) => any, deps: DependencyList = []) {
-  useEffect(function listenToMouseDownEvent() {
-    function handleMouseDown(e: MouseEvent) {
-      if (e.target && !ref.current?.contains(e.target as Node)) {
-        cb(e)
-      }
-    }
-
-    document.addEventListener('mousedown', handleMouseDown, true)
-    return () => document.removeEventListener('mousedown', handleMouseDown, true)
-  }, [ref, cb, ...deps])
-}
 
 function CodeSnippetCard({
   codeSnippet: cs,
@@ -47,11 +36,28 @@ function CodeSnippetCard({
   ? previewLines.concat(['...']).join('\n')
   : previewLines.join('\n')
 
-  function onMoreClick(e: any) {
+  function handleOnMoreClick(e: any) {
     e.stopPropagation()
     setShowDropdown(c => !c)
   }
 
+  async function handleOnDeleteClick(e: any) {
+    if (confirm(`Are you sure you want to delete '${cs.title}'? This cannot be reversed.`)) {
+      fetch('/api/code', {
+        method: 'DELETE',
+      })
+      .then(response => response.json())
+      .then((data: any) => {
+        if (data.statusCode === 500 && data.message) {
+          throw new Error(data.message)
+        }
+      })
+      .catch(err => {
+        showErrorNotif(`Error: ${err.message}`)
+      })
+    }
+    setShowDropdown(false)
+  }
 
   return (
     <div
@@ -60,85 +66,96 @@ function CodeSnippetCard({
         relative
         w-full
         md:max-w-[320px]
+    ">
+      <div
+        ref={cardRef}
+        className="
 
-        p-[2px]
+          p-[2px]
 
-        bg-black-700
+          bg-black-700
 
-        hover:bg-green-gradient
+          hover:bg-green-gradient
 
-        hover:cursor-pointer
-        hover:shadow-lg
-        hover:shadow-green-500/50
+          hover:cursor-pointer
+          hover:shadow-lg
+          hover:shadow-green-500/50
 
-        rounded-lg"
-        onClick={onClick}
-      >
-      <div className="
-        flex
-        flex-col
-        rounded-lg
-        bg-black-900
-      ">
+          rounded-lg"
+          onClick={onClick}
+        >
         <div className="
-          bg-black-900
-          rounded-lg
-        ">
-          <CodeEditor
-            isReadonly
-            className="preview"
-            height="174px"
-            content={shortened}
-          />
-        </div>
-
-        <div className="
-          flex-1
           flex
-          items-center
-          justify-between
-          bg-black-800
-          p-2
-          rounded-b-lg
-          truncate
+          flex-col
+          rounded-lg
+          bg-black-900
         ">
-          <Text
-            text={cs.title}
-          />
-          <div
-            className="
-              p-1
-              rounded
-              hover:bg-black-700
-            "
-            onClick={onMoreClick}
-          >
-            <MoreVerticalIcon/>
+          <div className="
+            bg-black-900
+            rounded-lg
+          ">
+            <CodeEditor
+              isReadonly
+              className="preview"
+              height="174px"
+              content={shortened}
+            />
           </div>
+
+          <div className="
+            flex-1
+            flex
+            items-center
+            justify-between
+            bg-black-800
+            p-2
+            rounded-b-lg
+            truncate
+          ">
+            <Text
+              text={cs.title}
+            />
+            <div
+              className="
+                p-1
+                rounded
+                hover:bg-black-700
+              "
+              onClick={handleOnMoreClick}
+            >
+              <MoreVerticalIcon/>
+            </div>
+          </div>
+
+
         </div>
-
-
-
-        {showDropdown && (
-          <div
-            className="
-              absolute
-              p-1
-              px-2
-              z-10
-              rounded
-              bg-black-700
-              hover:bg-[#504E55]
-            "
-            style={{
-              left: 'calc(100% - 53px)',
-              top: 'calc(100% - 6px)',
-            }}
-          >
-            <p>hello</p>
-          </div>
-        )}
       </div>
+
+      {showDropdown && (
+        <div
+          className="
+            absolute
+            p-1
+            px-2
+            z-10
+            rounded
+            bg-black-700
+            hover:bg-[#504E55]
+          "
+          style={{
+            left: 'calc(100% - 53px)',
+            top: 'calc(100% - 6px)',
+          }}
+        >
+          <Text
+            className="
+              cursor-pointer
+            "
+            text="Delete"
+            onClick={handleOnDeleteClick}
+          />
+        </div>
+      )}
     </div>
   )
 }

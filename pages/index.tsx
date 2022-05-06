@@ -19,22 +19,20 @@ function Home() {
 
   async function createNewCodeSnippet() {
     setIsLoading(true)
-    try {
-      fetch('/api/code', {
-        method: 'PUT',
-      })
-      .then(response => response.json())
-      .then((data: any) => {
-        if (data.statusCode === 500) {
-          // TODO: Internal error.
-          // { statusCode: 500, message: err.message }
-        }
-        router.push(`/${data.slug}/edit?tab=code`)
-      })
-    } catch(err: any) {
+    fetch('/api/code', {
+      method: 'PUT',
+    })
+    .then(response => response.json())
+    .then((data: any) => {
+      if (data.statusCode === 500 && data.message) {
+        throw new Error(data.message)
+      }
+      router.push(`/${data.slug}/edit?tab=code`)
+    })
+    .catch(err => {
       showErrorNotif(`Error: ${err.message}`)
       setIsLoading(false)
-    }
+    })
   }
 
   return (

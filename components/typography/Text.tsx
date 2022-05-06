@@ -11,19 +11,27 @@ const Sizes = {
 }
 
 interface Props {
+  className?: string
   text: string
   size?: Size
+  onClick?: (e: any) => void
 }
 
 function Text({
+  className,
   text,
   size = Size.S2,
+  onClick,
 }: Props) {
   return (
-    <span className={cn(
-      'text-white',
-      Sizes[size],
-    )}>
+    <span
+      className={cn(
+        'text-white',
+        Sizes[size],
+        className,
+      )}
+      onClick={onClick}
+    >
       {text}
     </span>
   )
