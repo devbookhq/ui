@@ -15,7 +15,7 @@ function CodeSnippet() {
     codeSnippet: cs,
     error,
     isLoading,
-  } = useCodeSnippet({ slug })
+  } = useCodeSnippet({ slug: Array.isArray(slug) ? slug[0] : slug  })
 
   console.log({ cs, error, isLoading })
 

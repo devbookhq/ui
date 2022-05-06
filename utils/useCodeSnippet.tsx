@@ -19,7 +19,7 @@ function useCodeSnippet({ slug, id }: { slug?: string, id?: string }) {
 
     setIsLoading(true)
 
-    let key = ''
+    let key: keyof CodeSnippet
     let val = ''
     if (slug) {
       key = 'slug'
@@ -34,7 +34,7 @@ function useCodeSnippet({ slug, id }: { slug?: string, id?: string }) {
     supabaseClient
       .from<CodeSnippet>('code_snippets')
       .select('*')
-      .eq(key, val)
+      .eq(key!, val)
       .single()
       .then(({ data, error: err }) => {
         if (data) setCS(data)
