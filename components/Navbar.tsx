@@ -33,6 +33,7 @@ function Navbar() {
           size={TitleLink.size.T3}
         />
 
+        {/*
         <div
           className="
             relative
@@ -47,6 +48,7 @@ function Navbar() {
             backgroundImage: `url(${userDetails?.avatar_url})`,
           }}
         />
+        */}
       </nav>
     </header>
   )
