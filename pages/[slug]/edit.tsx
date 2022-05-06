@@ -83,7 +83,7 @@ interface Props {
 }
 
 function CodeSnippetEditor({ codeSnippet, error }: Props) {
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState(codeSnippet.code || '')
   const router = useRouter()
   const slug = router.query.slug || []
 

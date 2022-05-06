@@ -16,15 +16,14 @@
 }
 
 .cm-editor .cm-scroller {
-  overflow: auto;
+  @apply overflow-auto;
   /* Firefox scrollbar styling */
   scrollbar-color: #8F8F8F transparent;
   scrollbar-width: thin;
 }
 
 .cm-scroller::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  @apply h-[10px] w-[10px];
 }
 
 .cm-scroller::-webkit-scrollbar-corner {
@@ -48,9 +47,10 @@
 }
 
 .cm-editor .cm-gutters {
+  @apply pr-2;
   @apply text-gray-800;
   @apply bg-transparent;
-  @apply pr-2 border-none;
+  @apply border-none;
 }
 
 .cm-gutter {
@@ -78,9 +78,9 @@
 }
 
 .cm-foldPlaceholder {
-  background-color: transparent;
-  border: none;
-  color: #ddd;
+  @apply bg-transparent;
+  @apply border-none;
+  @apply text-gray-300;
 }
 
 .cm-content .cm-line, .cm-editor .cm-gutters .cm-lineNumbers {

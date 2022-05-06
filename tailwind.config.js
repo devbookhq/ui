@@ -34,11 +34,6 @@ module.exports = {
           200: '#E9E9E9',
           100: '#F0F0F0',
         },
-        denim: {
-          700: '#3C4A5D',
-          400: '#6A7380',
-          100: '#AEAFB2',
-        },
       },
       height: {
         inherit: 'inherit',

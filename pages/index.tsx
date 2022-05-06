@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
-import useSWR from 'swr'
 
 import { useUser } from 'utils/useUser'
 import { showErrorNotif } from 'utils/notification'
