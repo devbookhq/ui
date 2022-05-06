@@ -13,10 +13,14 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 )
 
-export async function upsertCodeSnippet(cs: CodeSnippet) {
+async function upsertCodeSnippet(cs: CodeSnippet) {
   const { error } = await supabaseAdmin
     .from<CodeSnippet>('code_snippets')
     .upsert(cs)
 
   if (error) throw error
+}
+
+export {
+  upsertCodeSnippet,
 }

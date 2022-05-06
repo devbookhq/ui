@@ -74,7 +74,7 @@ export default withAuthRequired(async (req, res) => {
   } else if (req.method === 'POST') {
     await updateCodeItem(req, res)
   } else {
-    res.setHeader('Allow', 'PUT, POST')
+    res.setHeader('Allow', 'PUT, POST, DELETE')
     res.status(405).end('Method Not Allowed')
   }
 })

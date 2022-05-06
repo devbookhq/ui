@@ -5,12 +5,17 @@ import {
   RefObject,
   DependencyList,
 } from 'react'
+import { useRouter } from 'next/router'
+
 import type { CodeSnippet } from 'types'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
 import MoreVerticalIcon from 'components/icons/MoreVertical'
 import { showErrorNotif } from 'utils/notification'
 import useOnClickOutside from 'utils/useOnClickOutside'
+
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+
 
 interface Props {
   codeSnippet: CodeSnippet
@@ -23,6 +28,7 @@ function CodeSnippetCard({
   codeSnippet: cs,
   onClick,
 }: Props) {
+  const router = useRouter()
   const [showDropdown, setShowDropdown] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   useOnClickOutside(cardRef, () => {
@@ -43,20 +49,20 @@ function CodeSnippetCard({
 
   async function handleOnDeleteClick(e: any) {
     if (confirm(`Are you sure you want to delete '${cs.title}'? This cannot be reversed.`)) {
-      fetch('/api/code', {
-        method: 'DELETE',
-      })
-      .then(response => response.json())
-      .then((data: any) => {
-        if (data.statusCode === 500 && data.message) {
-          throw new Error(data.message)
-        }
-      })
-      .catch(err => {
+      try {
+        const { error, ...rest } = await supabaseClient
+          .from<CodeSnippet>('code_snippets')
+          .delete()
+          .eq('id', cs.id)
+        if (error) throw error
+
+        // Force reload - the easiest way to update data.
+        router.reload()
+      } catch(err: any) {
         showErrorNotif(`Error: ${err.message}`)
-      })
+        setShowDropdown(false)
+      }
     }
-    setShowDropdown(false)
   }
 
   return (
