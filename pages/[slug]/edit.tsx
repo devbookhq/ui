@@ -120,6 +120,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
   }, [setCode, codeSnippet])
 
   const handleTitleChange = useCallback(async (t: string) => {
+    if (!t) return
     setTitle(t)
     const newCS = {
       ...codeSnippet,
