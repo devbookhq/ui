@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import {
+  useState,
+  useRef,
+} from 'react'
 import { useRouter } from 'next/router'
+import Splitter, { SplitDirection } from '@devbookhq/splitter'
 
 import type { CodeSnippet } from 'types'
 import { Tab } from 'utils/newCodeSnippetTabs'
 import CodeEditor from 'components/CodeEditor'
 import Text from 'components/typography/Text'
+import EditIcon from 'components/icons/Edit'
 
 interface Props {
   code: string
@@ -21,6 +26,12 @@ function NewCodeSnippetContent({
 }: Props) {
   const router = useRouter()
   const tab = router.query.tab
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  function handleEditClick() {
+    if (!inputRef || !inputRef.current) return
+    inputRef.current.focus()
+  }
 
   switch (tab) {
     case Tab.Code:
@@ -34,15 +45,29 @@ function NewCodeSnippetContent({
           border-black-700
           rounded-lg
         ">
-
           <div className="
             flex
+            flex-row
+            space-x-1
             py-1.5
             px-2
             rounded-t-lg
             bg-black-700
           ">
+            <div
+              className="
+                p-1
+                rounded
+                cursor-pointer
+                text-white-900/50
+                hover:text-white-900
+              "
+              onClick={handleEditClick}
+            >
+              <EditIcon/>
+            </div>
             <input
+              ref={inputRef}
               className="
                 flex-1
                 bg-transparent
@@ -51,22 +76,35 @@ function NewCodeSnippetContent({
               onChange={e => onTitleChange(e.target.value)}
             />
           </div>
-          <div className="
-            flex-1
-            relative
-            overflow-hidden
-            bg-black-800
-            rounded-b-lg
-          ">
-            <CodeEditor
-              content={code}
-              onContentChange={onCodeChange}
-              className="
-                absolute
-                inset-0
-              "
-            />
-          </div>
+          <Splitter
+            direction={SplitDirection.Vertical}
+            classes={['flex']}
+            initialSizes={[85, 15]}
+          >
+            <div className="
+              flex-1
+              relative
+              overflow-hidden
+              bg-black-800
+              rounded-b-lg
+            ">
+              <CodeEditor
+                content={code}
+                onContentChange={onCodeChange}
+                className="
+                  absolute
+                  inset-0
+                "
+              />
+            </div>
+            <div className="
+              p-2
+              font-mono
+              text-sm
+            ">
+              output will go here
+            </div>
+          </Splitter>
         </div>
       )
     case Tab.Env:

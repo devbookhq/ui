@@ -126,8 +126,10 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
     const newCS = {
       ...codeSnippet,
       title: t,
+      slug: `${t.replace(/\s+/g, '-').toLowerCase()}-${codeSnippet.id}`,
     }
     const j = await upsertCodeSnippet(newCS)
+    router.replace(`/${newCS.slug}/edit?tab=code`)
     console.log({j})
   }, [setTitle, codeSnippet])
 
