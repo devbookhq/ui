@@ -82,8 +82,21 @@ interface Props {
   error?: string
 }
 
+async function upsertCodeSnippet(cs: CodeSnippet) {
+  const response = await fetch('/api/code', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(cs)
+  })
+  return response.json()
+}
+
 function CodeSnippetEditor({ codeSnippet, error }: Props) {
   const [code, setCode] = useState(codeSnippet.code || '')
+  const [title, setTitle] = useState(codeSnippet.title)
+
   const router = useRouter()
   const slug = router.query.slug || []
 
@@ -95,23 +108,26 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
     }
   }, [error])
 
-  const updateCode = useCallback(async (c: string) => {
+  const handleCodeChange = useCallback(async (c: string) => {
     setCode(c)
 
     const newCS = {
       ...codeSnippet,
       code: c,
     }
-    const response = await fetch('/api/code', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newCS)
-    })
-    const j = await response.json()
+    const j = await upsertCodeSnippet(newCS)
     console.log({j})
   }, [setCode, codeSnippet])
+
+  const handleTitleChange = useCallback(async (t: string) => {
+    setTitle(t)
+    const newCS = {
+      ...codeSnippet,
+      title: t,
+    }
+    const j = await upsertCodeSnippet(newCS)
+    console.log({j})
+  }, [setTitle, codeSnippet])
 
   return (
     <>
@@ -199,8 +215,25 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
 
             <NewCodeSnippetContent
               code={code}
-              onContentChange={updateCode}
+              title={title}
+              onCodeChange={handleCodeChange}
+              onTitleChange={handleTitleChange}
             />
+
+            <div className="
+              hidden
+              lg:flex
+              lg:flex-col
+              lg:items-start
+              lg:space-y-4
+            ">
+              <Text
+                text="URL will go here"
+              />
+              <Text
+                text="Embed will go here"
+              />
+            </div>
           </div>
         </div>
       )}
