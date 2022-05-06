@@ -80,6 +80,7 @@ function Home() {
             text="New Code Snippet"
             icon={isLoadingNewSnippet ? <SpinnerIcon/> : <PlusIcon/>}
             onClick={createNewCodeSnippet}
+            isDisabled={isLoadingNewSnippet}
           />
         )}
       </div>
@@ -129,6 +130,7 @@ function Home() {
             icon={isLoadingNewSnippet ? <SpinnerIcon/> : null}
             text="New Code Snippet"
             onClick={createNewCodeSnippet}
+            isDisabled={isLoadingNewSnippet}
           />
         </div>
       )}
