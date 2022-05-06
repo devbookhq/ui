@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import {
+  useState,
+  useEffect,
+} from 'react'
 import { useRouter } from 'next/router'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
@@ -8,17 +11,24 @@ import Title from 'components/typography/Title'
 import Button from 'components/Button'
 import CodeSnippetCards from 'components/CodeSnippetCards'
 import PlusIcon from 'components/icons/Plus'
+import SpinnerIcon from 'components/icons/Spinner'
+import useCodeSnippets from 'utils/useCodeSnippets'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 function Home() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const { codeSnippets } = useUser()
+  const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
+  const { user } = useUser()
 
-  // TODO: Loading before `useUser` is ready and everything is loaded.
+  const {
+    codeSnippets,
+    isLoading,
+    error: csError,
+    reload: reloadCS,
+  } = useCodeSnippets(user?.id || '')
 
   async function createNewCodeSnippet() {
-    setIsLoading(true)
+    setIsLoadingNewSnippet(true)
     fetch('/api/code', {
       method: 'PUT',
     })
@@ -31,12 +41,22 @@ function Home() {
     })
     .catch(err => {
       showErrorNotif(`Error: ${err.message}`)
-      setIsLoading(false)
+      setIsLoadingNewSnippet(false)
     })
   }
 
+  function handleCodeSnippetDeletion() {
+    reloadCS()
+  }
+
+  useEffect(function checkCSError() {
+    if (!csError) return
+    showErrorNotif(`Error: ${csError}`)
+  }, [csError])
+
   return (
     <div className="
+      flex-1
       flex
       flex-col
       space-y-6
@@ -58,14 +78,31 @@ function Home() {
         {codeSnippets.length > 0 && (
           <Button
             text="New Code Snippet"
-            icon={<PlusIcon/>}
+            icon={isLoadingNewSnippet ? <SpinnerIcon/> : <PlusIcon/>}
             onClick={createNewCodeSnippet}
           />
         )}
       </div>
 
-      {!codeSnippets.length
-      ? (
+      {isLoading && (
+        <div className="
+          flex-1
+          flex
+          items-center
+          justify-center
+        ">
+          <SpinnerIcon/>
+        </div>
+      )}
+
+      {!isLoading && codeSnippets.length > 0 && (
+        <CodeSnippetCards
+          codeSnippets={codeSnippets}
+          onCodeSnippetDeletion={handleCodeSnippetDeletion}
+        />
+      )}
+
+      {!isLoading && !codeSnippets.length &&(
         <div className="
           flex
           flex-col
@@ -89,15 +126,11 @@ function Home() {
 
           <Button
             variant={Button.variant.Full}
+            icon={isLoadingNewSnippet ? <SpinnerIcon/> : null}
             text="New Code Snippet"
             onClick={createNewCodeSnippet}
           />
         </div>
-      )
-      : (
-        <CodeSnippetCards
-          codeSnippets={codeSnippets}
-        />
       )}
     </div>
   )

@@ -16,10 +16,10 @@ import useOnClickOutside from 'utils/useOnClickOutside'
 
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-
 interface Props {
   codeSnippet: CodeSnippet
   onClick?: (e: any) => void
+  onDelete?: (cs: CodeSnippet) => void
 }
 
 const previewLength = 8
@@ -27,6 +27,7 @@ const previewLength = 8
 function CodeSnippetCard({
   codeSnippet: cs,
   onClick,
+  onDelete,
 }: Props) {
   const router = useRouter()
   const [showDropdown, setShowDropdown] = useState(false)
@@ -56,8 +57,7 @@ function CodeSnippetCard({
           .eq('id', cs.id)
         if (error) throw error
 
-        // Force reload - the easiest way to update data.
-        router.reload()
+        onDelete?.(cs)
       } catch(err: any) {
         showErrorNotif(`Error: ${err.message}`)
         setShowDropdown(false)

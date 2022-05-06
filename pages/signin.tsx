@@ -8,7 +8,7 @@ import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from 'utils/useUser'
 import GitHubButton from 'components/GitHubButton'
 import Title from 'components/typography/Title'
-
+import SpinnerIcon from 'components/icons/Spinner'
 
 function SignIn() {
   const router = useRouter()
@@ -61,8 +61,13 @@ function SignIn() {
   }
 
   return (
-    <div>
-      Loading...
+    <div className="
+      flex-1
+      flex
+      items-center
+      justify-center
+    ">
+      <SpinnerIcon/>
     </div>
   )
 }

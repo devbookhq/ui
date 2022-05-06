@@ -11,6 +11,7 @@ import CodeSnippetCard from './Card'
 
 interface Props {
   codeSnippets: CodeSnippet[]
+  onCodeSnippetDeletion: (cs: CodeSnippet) => void
 }
 
 function sortSnippets(a: CodeSnippet, b: CodeSnippet) {
@@ -19,7 +20,10 @@ function sortSnippets(a: CodeSnippet, b: CodeSnippet) {
   return 0
 }
 
-function CodeSnippetCards({ codeSnippets }: Props) {
+function CodeSnippetCards({
+  codeSnippets,
+  onCodeSnippetDeletion,
+}: Props) {
   const router = useRouter()
   const sorted = useMemo(() => codeSnippets.sort((a, b) => sortSnippets(a, b)), [codeSnippets])
 
@@ -45,6 +49,7 @@ function CodeSnippetCards({ codeSnippets }: Props) {
           key={cs.id}
           codeSnippet={cs}
           onClick={() => openCodeSnippet(cs)}
+          onDelete={onCodeSnippetDeletion}
         />
       ))}
     </div>
