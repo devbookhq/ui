@@ -2,7 +2,7 @@ import { useUser } from 'utils/useUser'
 import TitleLink from 'components/TitleLink'
 
 function Navbar() {
-  const { user, userDetails } = useUser()
+  const { user } = useUser()
 
   if (!user) return null
 
