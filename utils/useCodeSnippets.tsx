@@ -33,11 +33,6 @@ function useCodeSnippets(userID?: string) {
       .then(({ data, error: err }) => {
         if (data) setCS(data)
         if (err) setError(err.message)
-      })
-      .catch((err: any) => {
-        setError(err.message)
-      })
-      .finally(() => {
         setIsJobInProcess(false)
         setIsLoading(false)
       })

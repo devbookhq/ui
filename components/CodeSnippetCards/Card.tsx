@@ -76,14 +76,12 @@ function CodeSnippetCard({
       <div
         ref={cardRef}
         className="
-
           p-[2px]
 
           bg-black-700
+          cursor-pointer
 
           hover:bg-green-gradient
-
-          hover:cursor-pointer
           hover:shadow-lg
           hover:shadow-green-500/50
 
