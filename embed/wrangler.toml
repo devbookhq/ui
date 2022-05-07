@@ -1,8 +1,6 @@
-name = "embed"
+name = "embed-dev"
 type = "javascript"
-zone_id = ""
-account_id = ""
-route = ""
+account_id = "5b4d35dabe176b6a4017c8e38351a548"
 workers_dev = true
 compatibility_date = "2022-05-07"
 
@@ -10,3 +8,14 @@ compatibility_date = "2022-05-07"
 command = "npm install && npm run build"
 [build.upload]
 format = "service-worker"
+
+[vars]
+SUPABASE_URL = "https://eazfkpnsvqrijiorxdbj.supabase.co"
+
+[env.production]
+name = "embed-production"
+zone_id = "526615871424790820a10de58e0359ee"
+route = "usedevbook.com/embed/*"
+
+# [secrets]
+# SUPABASE_ANON_KEY
