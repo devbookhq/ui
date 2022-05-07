@@ -99,7 +99,7 @@ function CodeSnippetCard({
             rounded-lg
           ">
             <CodeEditor
-              isReadonly
+              isReadOnly
               className="preview"
               height="174px"
               content={shortened}
