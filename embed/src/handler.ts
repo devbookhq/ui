@@ -20,11 +20,22 @@ const script = `
 
 export async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url)
-  // `pathname` should be an ID of a code snippet
-  const { pathname } = url
+  console.log({ p: url.pathname })
+  // `pathname` should be in the format of '/embed/:codeSnippetID'
+  const splits = url.pathname.split('/') // ['', 'embed', :codeSnippetID]
+  const id = (splits.length && splits.length == 3) ? splits[2] : ''
 
-  const { data, error } = await db.from('code_snippets').select('*').eq('id', pathname)
+  const { data, error } = await db.from('code_snippets').select('*').eq('id', id)
 
+  if (error) {
+    console.error(error)
+    return new Response(error.message || error.toString(), {
+      status: 500,
+    })
+  }
 
-  return new Response(`request method: ${request.method}`)
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })
 }
