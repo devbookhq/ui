@@ -37,7 +37,7 @@ function Dashboard() {
       if (data.statusCode === 500 && data.message) {
         throw new Error(data.message)
       }
-      router.push(`/dashboard/${data.slug}/edit?tab=code`)
+      router.push(`/dashboard/${encodeURIComponent(data.slug)}/edit?tab=code`)
     })
     .catch(err => {
       showErrorNotif(`Error: ${err.message}`)

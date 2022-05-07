@@ -129,7 +129,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
       slug: `${t.replace(/\s+/g, '-').toLowerCase()}-${codeSnippet.id}`,
     }
     const j = await upsertCodeSnippet(newCS)
-    router.replace(`/${newCS.slug}/edit?tab=code`)
+    router.replace(`/dashboard/${encodeURIComponent(newCS.slug)}/edit?tab=code`)
     console.log({j})
   }, [setTitle, codeSnippet])
 
@@ -207,7 +207,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
               {Object.entries(tabs).map(([key, val]) => (
                 <TitleLink
                   key={val.key}
-                  href={`/dashboard/${codeSnippet.slug}/edit?tab=${val.key}`}
+                  href={`/dashboard/${encodeURIComponent(codeSnippet.slug)}/edit?tab=${val.key}`}
                   title={val.title}
                   icon={val.icon}
                   size={TitleLink.size.T3}

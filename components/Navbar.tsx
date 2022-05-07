@@ -27,7 +27,7 @@ function Navbar() {
       ">
         <TitleLink
           href="/dashboard"
-          title="Home"
+          title="Dashboard"
           size={TitleLink.size.T3}
         />
         <TitleLink
