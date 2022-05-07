@@ -14,7 +14,7 @@ import createEditorState from './createEditorState'
 
 export interface Props {
   content?: string
-  isReadonly?: boolean
+  isReadOnly?: boolean
   onContentChange?: (content: string) => void
   language?: Language
   height?: string
@@ -24,7 +24,7 @@ export interface Props {
 function Editor({
   content = '',
   onContentChange,
-  isReadonly = false,
+  isReadOnly = false,
   language,
   height,
   className,
@@ -39,7 +39,7 @@ function Editor({
     const state = createEditorState({
       content,
       onContentChange,
-      isReadonly,
+      isReadOnly,
       language,
     })
 
@@ -51,7 +51,7 @@ function Editor({
   }, [
     onContentChange,
     language,
-    isReadonly,
+    isReadOnly,
   ])
 
 

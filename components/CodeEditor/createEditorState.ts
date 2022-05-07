@@ -48,7 +48,7 @@ const disableSpellchecking = {
 
 export interface Options {
   content?: string
-  isReadonly?: boolean
+  isReadOnly?: boolean
   onContentChange?: (content: string) => void
   language?: Language
 }
@@ -56,7 +56,7 @@ export interface Options {
 function createEditorState({
   content = '',
   onContentChange,
-  isReadonly = false,
+  isReadOnly = false,
   language,
 }: Options) {
 
@@ -84,8 +84,8 @@ function createEditorState({
         },
       }),
       EditorView.contentAttributes.of(disableSpellchecking),
-      EditorState.readOnly.of(isReadonly),
-      EditorView.editable.of(!isReadonly),
+      EditorState.readOnly.of(isReadOnly),
+      EditorView.editable.of(!isReadOnly),
       lineNumbers(),
       highlightActiveLineGutter(),
       highlightSpecialChars(),

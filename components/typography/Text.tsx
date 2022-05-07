@@ -15,6 +15,7 @@ interface Props {
   text: string
   size?: Size
   onClick?: (e: any) => void
+  mono?: boolean
 }
 
 function Text({
@@ -22,6 +23,7 @@ function Text({
   text,
   size = Size.S2,
   onClick,
+  mono,
 }: Props) {
   return (
     <span
@@ -29,6 +31,7 @@ function Text({
         'text-white',
         Sizes[size],
         className,
+        {'font-mono': mono},
       )}
       onClick={onClick}
     >

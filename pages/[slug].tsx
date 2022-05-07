@@ -14,7 +14,9 @@ import type {
   CodeSnippet,
 } from 'types'
 import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
+import PlayCircleIcon from 'components/icons/PlayCircle'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = ctx.query.slug as string
@@ -84,25 +86,59 @@ function CodeSnippet({
           flex-1
           flex
           flex-col
-          space-y-6
+          items-start
         ">
           <div className="
             flex
             flex-col
-            space-y-2
+            items-start
+            justify-start
             min-h-[48px]
-
-            sm:flex-row
-            sm:justify-between
-            sm:items-center
+            mb-6
           ">
             <Title
               title={cs.title}
             />
           </div>
 
+          <div className="
+            flex
+            flex-row
+            items-center
+            space-x-3
+            mb-3
+            py-1.5
+            px-2
+            rounded-lg
+            border
+            border-black-700
+            hover:bg-black-700
+            cursor-pointer
+          ">
+            <div className="
+              flex
+              items-center
+              justify-center
+              rounded-full
+              p-1
+              bg-green-500/30
+              text-green-500
+            ">
+              <PlayCircleIcon className="
+                relative
+                left-[1px]
+              "/>
+            </div>
+            <Text
+              size={Text.size.S1}
+              text="Run"
+              mono
+            />
+          </div>
+
 
           <div className="
+            w-full
             flex-1
             flex
             flex-col
@@ -116,13 +152,14 @@ function CodeSnippet({
               initialSizes={[85, 15]}
             >
               <div className="
+                rounded-t-lg
                 flex-1
                 relative
                 overflow-hidden
                 bg-black-800
-                rounded-b-lg
               ">
                 <CodeEditor
+                  isReadOnly
                   content={cs.code || ''}
                   className="
                     absolute
