@@ -11,7 +11,8 @@ import type {
 function useCodeSnippets(userID?: string) {
   const [cs, setCS] = useState<CodeSnippet[]>([])
   const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isJobInProcess, setIsJobInProcess] = useState(false)
   const [val, setVal] = useState(0)
 
   function reload() {
@@ -20,9 +21,11 @@ function useCodeSnippets(userID?: string) {
 
   useEffect(function fetchCodeSnippets() {
     if (!userID) return
-    if (isLoading) return
+    if (isJobInProcess) return
 
+    setIsJobInProcess(true)
     setIsLoading(true)
+
     supabaseClient
       .from<CodeSnippet>('code_snippets')
       .select('*')
@@ -30,10 +33,15 @@ function useCodeSnippets(userID?: string) {
       .then(({ data, error: err }) => {
         if (data) setCS(data)
         if (err) setError(err.message)
+      })
+      .catch((err: any) => {
+        setError(err.message)
+      })
+      .finally(() => {
+        setIsJobInProcess(false)
         setIsLoading(false)
       })
   }, [userID, val])
-
 
   return {
     codeSnippets: cs,

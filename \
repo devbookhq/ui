@@ -39,18 +39,15 @@ function Navbar() {
         <div
           className="
             relative
-            w-[32px]
-            h-[32px]
+            w-[28px]
+            h-[28px]
             bg-cover
             bg-no-repeat
             bg-center
             rounded-[100%]
             cursor-pointer
-            border-2
-            border-white-900
-            hover:border-green-500
-            hover:shadow-lg
-            hover:shadow-green-500/50
+            border
+            border-black-700
           "
           style={{
             backgroundImage: `url(${userDetails?.avatar_url})`,

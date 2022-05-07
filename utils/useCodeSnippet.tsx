@@ -11,12 +11,14 @@ import type {
 function useCodeSnippet({ slug, id }: { slug?: string, id?: string }) {
   const [cs, setCS] = useState<CodeSnippet | undefined>()
   const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isJobInProcess, setIsJobInProcess] = useState(false)
 
   useEffect(function fetchCodeSnippet() {
     if (!slug && !id) return
-    if (isLoading) return
+    if (isJobInProcess) return
 
+    setIsJobInProcess(true)
     setIsLoading(true)
 
     let key: keyof CodeSnippet
@@ -39,9 +41,14 @@ function useCodeSnippet({ slug, id }: { slug?: string, id?: string }) {
       .then(({ data, error: err }) => {
         if (data) setCS(data)
         if (err) setError(err.message)
+      })
+      .catch((err: any) => {
+        setError(err.message)
+      })
+      .finally(() => {
+        setIsJobInProcess(false)
         setIsLoading(false)
       })
-
   }, [slug, id])
 
   return {
