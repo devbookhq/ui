@@ -16,6 +16,8 @@ SUPABASE_URL = "https://eazfkpnsvqrijiorxdbj.supabase.co"
 name = "embed-production"
 zone_id = "526615871424790820a10de58e0359ee"
 route = "usedevbook.com/embed/*"
+[env.production.vars]
+SUPABASE_URL = "https://eazfkpnsvqrijiorxdbj.supabase.co"
 
 # [secrets]
 # SUPABASE_ANON_KEY
