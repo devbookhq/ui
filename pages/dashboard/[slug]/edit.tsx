@@ -13,7 +13,7 @@ import {
 import type { CodeSnippet } from 'types'
 import { showErrorNotif } from 'utils/notification'
 import { tabs, Tab } from 'utils/newCodeSnippetTabs'
-import NewCodeSnippetContent from 'components/NewCodeSnippetContent'
+import CSEditorContent from 'components/CSEditorContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
@@ -217,7 +217,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
               ))}
             </div>
 
-            <NewCodeSnippetContent
+            <CSEditorContent
               code={code}
               title={title}
               onCodeChange={handleCodeChange}
@@ -225,18 +225,32 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
             />
 
             <div className="
+              max-w-[272px]
+              w-full
               hidden
               lg:flex
               lg:flex-col
               lg:items-start
-              lg:space-y-4
+              lg:space-y-1
             ">
-              <Text
-                text="URL will go here"
+              <Title
+                size={Title.size.T2}
+                title="Public URL"
               />
-              <Text
-                text="Embed will go here"
-              />
+              <a
+                href={`http://localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}
+                className="
+                  max-w-full
+                  text-green-500
+                  overflow-hidden
+                  truncate
+                  text-sm
+                  cursor-pointer
+                  underline
+                "
+              >
+                {`localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}
+              </a>
             </div>
           </div>
         </div>

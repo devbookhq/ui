@@ -18,7 +18,7 @@ interface Props {
   onTitleChange: (title: string) => void
 }
 
-function NewCodeSnippetContent({
+function CSEditorContent({
   code,
   title,
   onCodeChange,
@@ -116,4 +116,4 @@ function NewCodeSnippetContent({
   }
 }
 
-export default NewCodeSnippetContent
+export default CSEditorContent
