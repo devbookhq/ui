@@ -19,6 +19,7 @@ import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import Button from 'components/Button'
 import ButtonLink from 'components/ButtonLink'
+import Select from 'components/Select'
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
@@ -267,6 +268,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
               >
                 {`localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}
               </a>
+              <Select/>
             </div>
           </div>
         </div>
