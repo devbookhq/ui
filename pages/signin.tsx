@@ -16,7 +16,6 @@ function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
   const [errMessage, setErrMessage] = useState('')
 
-
   async function signInWithGitHub() {
     setIsLoading(true)
     const { error } = await supabaseClient.auth.signIn({ provider: 'github' });

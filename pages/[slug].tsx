@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
+//import { useEffect } from 'react'
 
 import {
   GetServerSideProps,
 } from 'next'
-//import { useRouter } from 'next/router'
 //import useCodeSnippet from 'utils/useCodeSnippet'
 import {
   supabaseServerClient,
@@ -19,13 +18,26 @@ import CodeEditor from 'components/CodeEditor'
 import PlayCircleIcon from 'components/icons/PlayCircle'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const slug = ctx.query.slug as string
+  const slug = ctx.query.slug as string | undefined
+  if (!slug) {
+    return {
+      notFound: true,
+    }
+  }
+  const splits = slug.split('-')
+  const id = splits[splits.length - 1]
+  if (!id) {
+    return {
+      notFound: true,
+    }
+  }
 
-  // Try to get a code snippet from the DB based on the slug.
+  // Try to get a code snippet from the DB based on a ID in the slug.
   const { data, error } = await supabaseServerClient(ctx)
     .from<CodeSnippet>('code_snippets')
     .select('*')
-    .eq('slug', slug)
+    .eq('id', id)
+
 
   if (error) {
     return {
@@ -38,10 +50,27 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       notFound: true,
     }
   }
+  const codeSnippet = data[0]
+
+  // We fetch the code snippet based on the ID at the end of a slug.
+  // User can change the prefix however they want but we fix it once the page loads.
+  // Example:
+  // Correct slug: /code-snippet-name-:someid
+  // User goes to: /foobar-:someid
+  if (slug !== codeSnippet.slug) {
+    return {
+      redirect: {
+        destination: `/${codeSnippet.slug}`,
+      },
+      props: {
+        codeSnippet,
+      },
+    }
+  }
 
   return {
     props: {
-      codeSnippet: data[0],
+      codeSnippet,
     },
   }
 }
@@ -55,9 +84,8 @@ function CodeSnippet({
   error,
   codeSnippet: cs,
 }: Props) {
-  console.log({ codeSnippet: cs, error })
-
   //const router = useRouter()
+
   //const { slug } = router.query
   //const {
   //  codeSnippet: cs,

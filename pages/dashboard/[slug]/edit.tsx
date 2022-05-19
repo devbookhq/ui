@@ -26,12 +26,24 @@ export const getServerSideProps = withAuthRequired({
     try {
       const { user } = await getUser(ctx)
       const { tab, slug }: { tab?: string, slug?: string } = ctx.query
+      if (!slug) {
+        return {
+          notFound: true,
+        }
+      }
+      const splits = slug.split('-')
+      const id = splits[splits.length - 1]
+      if (!id) {
+        return {
+          notFound: true,
+        }
+      }
 
-      // Try to get a code snippet from the DB based on the slug.
+      // Try to get a code snippet from the DB based on a ID in the slug.
       const { data, error } = await supabaseServerClient(ctx)
         .from<CodeSnippet>('code_snippets')
         .select('*')
-        .eq('slug', slug)
+        .eq('id', id)
         // Check if the user is the owner of a code snippet.
         .eq('creator_id', user!.id)
 
@@ -50,10 +62,18 @@ export const getServerSideProps = withAuthRequired({
       const codeSnippet = data[0]
 
       // Redirect user to the `?tab=code` if no valid tab query is present.
-      if (!tab || !Object.entries(tabs).find(([key, val]) => val.key === tab)) {
+      if (
+        // We fetch the code snippet based on the ID at the end of a slug.
+        // User can change the prefix however they want but we fix it once the page loads.
+        // Example:
+        // Correct slug: /code-snippet-name-:someid
+        // User goes to: /foobar-:someid
+        (slug !== codeSnippet.slug) ||
+        (!tab || !Object.entries(tabs).find(([_, val]) => val.key === tab))
+      ) {
         return {
           redirect: {
-            destination: `/dashboard/${slug}/edit?tab=${tabs.code.key}`,
+            destination: `/dashboard/${codeSnippet.slug}/edit?tab=${tabs.code.key}`,
             permanent: false,
           },
           props: {
@@ -94,12 +114,9 @@ async function upsertCodeSnippet(cs: CodeSnippet) {
 }
 
 function CodeSnippetEditor({ codeSnippet, error }: Props) {
+  const router = useRouter()
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
-
-  const router = useRouter()
-  const slug = router.query.slug || []
-
   const currentTab = router.query.tab
 
   useEffect(function checkForError() {
@@ -123,14 +140,13 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
     setTitle(t)
 
     if (!t) return
+    // Convert whitespace to '-', make it lowercase and append code snippet ID.
     const newCS = {
       ...codeSnippet,
       title: t,
       slug: `${t.replace(/\s+/g, '-').toLowerCase()}-${codeSnippet.id}`,
     }
-    const j = await upsertCodeSnippet(newCS)
-    router.replace(`/dashboard/${encodeURIComponent(newCS.slug)}/edit?tab=code`)
-    console.log({j})
+    await upsertCodeSnippet(newCS)
   }, [setTitle, codeSnippet])
 
   return (
