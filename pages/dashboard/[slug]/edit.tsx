@@ -133,8 +133,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
       ...codeSnippet,
       code: c,
     }
-    const j = await upsertCodeSnippet(newCS)
-    console.log({j})
+    await upsertCodeSnippet(newCS)
   }, [setCode, codeSnippet])
 
   const handleTitleChange = useCallback(async (t: string) => {
