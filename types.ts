@@ -5,3 +5,8 @@ export interface CodeSnippet {
   creator_id: string
   code?: string
 }
+
+export interface Runtime {
+  name: string
+  value: string
+}

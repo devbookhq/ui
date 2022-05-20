@@ -19,7 +19,7 @@ import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import Button from 'components/Button'
 import ButtonLink from 'components/ButtonLink'
-import Select from 'components/Select'
+import CSEditorSidebar from 'components/CSEditorSidebar'
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
@@ -239,36 +239,9 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
               onCodeChange={handleCodeChange}
               onTitleChange={handleTitleChange}
             />
-
-            <div className="
-              max-w-[272px]
-              w-full
-              hidden
-              lg:flex
-              lg:flex-col
-              lg:items-start
-              lg:space-y-1
-            ">
-              <Title
-                size={Title.size.T2}
-                title="Public URL"
-              />
-              <a
-                href={`http://localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}
-                className="
-                  max-w-full
-                  text-green-500
-                  overflow-hidden
-                  truncate
-                  text-sm
-                  cursor-pointer
-                  underline
-                "
-              >
-                {`localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}
-              </a>
-              <Select/>
-            </div>
+            <CSEditorSidebar
+              codeSnippet={codeSnippet}
+            />
           </div>
         </div>
       )}

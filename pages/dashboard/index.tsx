@@ -5,6 +5,7 @@ import {
 import { useRouter } from 'next/router'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
+import type { Runtime } from 'types'
 import { useUser } from 'utils/useUser'
 import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
@@ -12,13 +13,15 @@ import Button from 'components/Button'
 import CodeSnippetCards from 'components/CodeSnippetCards'
 import PlusIcon from 'components/icons/Plus'
 import SpinnerIcon from 'components/icons/Spinner'
+import NewCodeSnippetModal from 'components/NewCodeSnippetModal'
 import useCodeSnippets from 'utils/useCodeSnippets'
 
 export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
 function Dashboard() {
   const router = useRouter()
-  const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
   const { user } = useUser()
+  const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
+  const [isCSModalOpened, setIsCSModalOpened] = useState(true)
 
   const {
     codeSnippets,
@@ -27,7 +30,17 @@ function Dashboard() {
     reload: reloadCS,
   } = useCodeSnippets(user?.id || '')
 
-  async function createNewCodeSnippet() {
+  function closeCSModal() {
+    setIsCSModalOpened(false)
+  }
+
+  function openCSModal() {
+    setIsCSModalOpened(true)
+  }
+
+
+  async function createNewCodeSnippet(runtime: Runtime) {
+    // TODO: Runtime
     setIsLoadingNewSnippet(true)
     fetch('/api/code', {
       method: 'PUT',
@@ -55,86 +68,94 @@ function Dashboard() {
   }, [csError])
 
   return (
-    <div className="
-      flex-1
-      flex
-      flex-col
-      space-y-6
-    ">
+    <>
+      <NewCodeSnippetModal
+        isOpen={isCSModalOpened}
+        onClose={closeCSModal}
+        onCreateCodeSnippetClick={createNewCodeSnippet}
+      />
       <div className="
+        flex-1
         flex
         flex-col
-        space-y-2
-        min-h-[48px]
-
-        sm:flex-row
-        sm:justify-between
-        sm:items-center
+        space-y-6
+        px-2
       ">
-        <Title
-          title="Code Snippets"
-        />
-
-        {codeSnippets.length > 0 && (
-          <Button
-            text="New Code Snippet"
-            icon={isLoadingNewSnippet ? <SpinnerIcon/> : <PlusIcon/>}
-            onClick={createNewCodeSnippet}
-            isDisabled={isLoadingNewSnippet}
-          />
-        )}
-      </div>
-
-      {isLoading && (
-        <div className="
-          flex-1
-          flex
-          items-center
-          justify-center
-        ">
-          <SpinnerIcon/>
-        </div>
-      )}
-
-      {!isLoading && codeSnippets.length > 0 && (
-        <CodeSnippetCards
-          codeSnippets={codeSnippets}
-          onCodeSnippetDeletion={handleCodeSnippetDeletion}
-        />
-      )}
-
-      {!isLoading && !codeSnippets.length &&(
         <div className="
           flex
           flex-col
-          items-center
-          space-y-16
+          space-y-2
+          min-h-[48px]
 
-          py-6
-
-          w-full
-          bg-transparent
-          border
-          border-black-700
-          rounded-lg
+          sm:flex-row
+          sm:justify-between
+          sm:items-center
         ">
           <Title
-            title="Get Started"
-            size={Title.size.T2}
+            title="Code Snippets"
           />
 
-          <div/>
-
-          <Button
-            variant={Button.variant.Full}
-            icon={isLoadingNewSnippet ? <SpinnerIcon/> : null}
-            text="New Code Snippet"
-            onClick={createNewCodeSnippet}
-            isDisabled={isLoadingNewSnippet}
-          />
+          {codeSnippets.length > 0 && (
+            <Button
+              text="New Code Snippet"
+              icon={isLoadingNewSnippet ? <SpinnerIcon/> : <PlusIcon/>}
+              onClick={openCSModal}
+              isDisabled={isLoadingNewSnippet}
+            />
+          )}
         </div>
-      )}
-    </div>
+
+        {isLoading && (
+          <div className="
+            flex-1
+            flex
+            items-center
+            justify-center
+          ">
+            <SpinnerIcon/>
+          </div>
+        )}
+
+        {!isLoading && codeSnippets.length > 0 && (
+          <CodeSnippetCards
+            codeSnippets={codeSnippets}
+            onCodeSnippetDeletion={handleCodeSnippetDeletion}
+          />
+        )}
+
+        {!isLoading && !codeSnippets.length &&(
+          <div className="
+            flex
+            flex-col
+            items-center
+            space-y-16
+
+            py-6
+
+            w-full
+            bg-transparent
+            border
+            border-black-700
+            rounded-lg
+          ">
+            <Title
+              title="Get Started"
+              size={Title.size.T2}
+            />
+
+            <div/>
+
+            <Button
+              variant={Button.variant.Full}
+              icon={isLoadingNewSnippet ? <SpinnerIcon/> : null}
+              text="New Code Snippet"
+              onClick={openCSModal}
+              isDisabled={isLoadingNewSnippet}
+            />
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
