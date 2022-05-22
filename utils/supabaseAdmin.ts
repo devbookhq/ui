@@ -23,17 +23,32 @@ async function upsertCodeSnippet(cs: CodeSnippet) {
 
 async function registerEnvJob({
   codeSnippetID,
-  runtime,
+  template,
 }: {
   codeSnippetID: string,
-  runtime: Runtime,
+  template: string,
 }) {
-  const api = 'https://orchestration-api-7d2cl2hooq-uc.a.run.app'
+  const api = 'https://ondevbook.com'
+  const body = JSON.stringify({ codeSnippetID, template: 'nodejs', deps: [], })
+  console.log(body)
   fetch(`${api}/envs`, {
     method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body,
+  })
+  .then(response => {
+    console.log(response.status)
+    return response.json()
+  })
+  .then((data: any) => {
+    console.log(data)
+  })
+  .catch(err => {
+    console.log(err)
   })
 }
 
 export {
   upsertCodeSnippet,
+  registerEnvJob,
 }

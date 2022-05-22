@@ -7,16 +7,16 @@ import {
   withAuthRequired,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import randomstring from 'randomstring'
-
 // docker-names pkg doesn't have types
 const dockerNames: any = require('docker-names')
+
 
 import type {
   CodeSnippet,
 } from 'types'
-
 import {
   upsertCodeSnippet,
+  registerEnvJob,
 } from 'utils/supabaseAdmin'
 
 interface ErrorRes {
@@ -26,18 +26,16 @@ interface ErrorRes {
 
 async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
-    let { title }: {
-      // TODO: Runtime
-      title: string,
-    } = JSON.parse(req.body)
-    // TODO: Frontend might send code item's title.
     const { user } = await getUser({ req, res })
     if (!user) throw new Error('could not get user')
 
+    let { template, title }: {
+      template: string,
+      title: string,
+    } = JSON.parse(req.body)
+
     const id = randomstring.generate({ length: 12, charset: 'alphanumeric' })
-    if (!title) {
-      title = dockerNames.getRandomName().replace('_', '-')
-    }
+    if (!title) title = dockerNames.getRandomName().replace('_', '-')
     const slug = `${title}-${id}`
 
     const codeSnippet: CodeSnippet = {
@@ -48,9 +46,8 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
       code: '',
     }
     await upsertCodeSnippet(codeSnippet)
-
-
-    //await upsertEnv(codeSnippet)
+    console.log({ template })
+    await registerEnvJob({ codeSnippetID: codeSnippet.id, template })
 
     res.status(200).json(codeSnippet)
   } catch (err: any) {

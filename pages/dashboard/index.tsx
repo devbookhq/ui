@@ -5,7 +5,7 @@ import {
 import { useRouter } from 'next/router'
 import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
 
-import type { Runtime } from 'types'
+import type { Template } from 'types'
 import { useUser } from 'utils/useUser'
 import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
@@ -38,16 +38,17 @@ function Dashboard() {
     setIsCSModalOpened(true)
   }
 
-  async function createNewCodeSnippet({ runtime, title }: {
-    runtime: Runtime,
+  async function createNewCodeSnippet({ template, title }: {
+    template: Template,
     title: string,
   }) {
-    // TODO: Runtime
-    // TODO: Code snippet takes a runtime
+    // TODO: Template
+    // TODO: Code snippet takes a template
     setIsLoadingNewSnippet(true)
     fetch('/api/code', {
       method: 'PUT',
-      body: JSON.stringify({ runtime, title }),
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ template, title }),
     })
     .then(response => response.json())
     .then((data: any) => {

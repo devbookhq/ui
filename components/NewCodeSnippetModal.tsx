@@ -2,23 +2,21 @@ import {
   useState,
 } from 'react'
 
-import type { Runtime } from 'types'
+import type { Template } from 'types'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
 import Select from 'components/Select'
 import Input from 'components/Input'
 import SpinnerIcon from 'components/icons/Spinner'
 
-import RuntimeItem from './RuntimeItem'
-
 interface Props {
   isOpen: boolean
   onClose: () => void
-  onCreateCodeSnippetClick: ({ runtime, title }: { runtime: Runtime, title: string }) => void
+  onCreateCodeSnippetClick: ({ template, title }: { template: Template, title: string }) => void
   isLoading: boolean
 }
 
-const runtimes: Runtime[] = [
+const templates: Template[] = [
   {
     name: 'Bash',
     value: 'Bash',
@@ -44,7 +42,7 @@ function NewCodeSnippetModal({
   isLoading,
 }: Props) {
   const [title, setTitle] = useState('')
-  const [selectedRuntime, setSelectedRuntime] = useState(runtimes[0])
+  const [selectedTmpl, setSelectedTmpl] = useState(templates[0])
 
   function handleTitleChange(e: any) {
     setTitle(e.target.value)
@@ -52,7 +50,7 @@ function NewCodeSnippetModal({
 
   function handleCreateButtonClick() {
     onCreateCodeSnippetClick({
-      runtime: selectedRuntime,
+      template: selectedTmpl,
       title,
     })
   }

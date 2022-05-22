@@ -52,7 +52,7 @@ function CSEditorSidebar({
       ">
         <Title
           size={Title.size.T2}
-          title="Runtime"
+          title="Template"
         />
         <Select/>
       </div>

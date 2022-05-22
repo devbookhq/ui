@@ -6,7 +6,7 @@ export interface CodeSnippet {
   code?: string
 }
 
-export interface Runtime {
+export interface Template {
   name: string
   value: string
 }
