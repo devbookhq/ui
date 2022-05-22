@@ -1,19 +1,28 @@
 import {
   useState,
 } from 'react'
+
+import type { Runtime } from 'types'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
-import type { Runtime } from 'types'
+import Select from 'components/Select'
+import Input from 'components/Input'
+import SpinnerIcon from 'components/icons/Spinner'
 
 import RuntimeItem from './RuntimeItem'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
-  onCreateCodeSnippetClick: (runtime: Runtime) => void
+  onCreateCodeSnippetClick: ({ runtime, title }: { runtime: Runtime, title: string }) => void
+  isLoading: boolean
 }
 
 const runtimes: Runtime[] = [
+  {
+    name: 'Bash',
+    value: 'Bash',
+  },
   {
     name: 'Go',
     value: 'Golang',
@@ -32,8 +41,21 @@ function NewCodeSnippetModal({
   isOpen,
   onClose,
   onCreateCodeSnippetClick,
+  isLoading,
 }: Props) {
+  const [title, setTitle] = useState('')
   const [selectedRuntime, setSelectedRuntime] = useState(runtimes[0])
+
+  function handleTitleChange(e: any) {
+    setTitle(e.target.value)
+  }
+
+  function handleCreateButtonClick() {
+    onCreateCodeSnippetClick({
+      runtime: selectedRuntime,
+      title,
+    })
+  }
 
   return (
     <Modal
@@ -42,34 +64,41 @@ function NewCodeSnippetModal({
       onClose={onClose}
     >
       <div className="
+        mt-4
         w-full
         flex
         flex-col
         items-center
         justify-center
-        space-y-10
+        space-y-8
       ">
         <div className="
-          mt-4
           w-full
           flex
-          flex-wrap
-          justify-start
-          gap-2
+          flex-col
+          items-center
+          justify-center
+          space-y-4
         ">
-          {runtimes.map(r => (
-            <RuntimeItem
-              key={r.value}
-              runtime={r}
-              isSelected={r.value === selectedRuntime.value}
-              onClick={setSelectedRuntime}
-            />
-          ))}
+          <Input
+            wrapperClassName="w-full"
+            title="Title"
+            value={title}
+            onChange={handleTitleChange}
+            placeholder="Code snippet title"
+            onEnterDown={handleCreateButtonClick}
+          />
+          <Select
+            wrapperClassName="w-full"
+            title="Template"
+          />
         </div>
         <Button
           variant={Button.variant.Full}
-          text="Create Code Snippet"
-          onClick={() => onCreateCodeSnippetClick(selectedRuntime)}
+          text={isLoading ? 'Creating...' : 'Create Code Snippet' }
+          icon={isLoading ? <SpinnerIcon/> : null}
+          isDisabled={isLoading}
+          onClick={handleCreateButtonClick}
         />
       </div>
     </Modal>

@@ -26,11 +26,18 @@ interface ErrorRes {
 
 async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
+    let { title }: {
+      // TODO: Runtime
+      title: string,
+    } = JSON.parse(req.body)
+    // TODO: Frontend might send code item's title.
     const { user } = await getUser({ req, res })
     if (!user) throw new Error('could not get user')
 
     const id = randomstring.generate({ length: 12, charset: 'alphanumeric' })
-    const title = dockerNames.getRandomName().replace('_', '-')
+    if (!title) {
+      title = dockerNames.getRandomName().replace('_', '-')
+    }
     const slug = `${title}-${id}`
 
     const codeSnippet: CodeSnippet = {
@@ -41,6 +48,9 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
       code: '',
     }
     await upsertCodeSnippet(codeSnippet)
+
+
+    //await upsertEnv(codeSnippet)
 
     res.status(200).json(codeSnippet)
   } catch (err: any) {

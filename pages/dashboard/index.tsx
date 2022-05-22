@@ -21,7 +21,7 @@ function Dashboard() {
   const router = useRouter()
   const { user } = useUser()
   const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
-  const [isCSModalOpened, setIsCSModalOpened] = useState(true)
+  const [isCSModalOpened, setIsCSModalOpened] = useState(false)
 
   const {
     codeSnippets,
@@ -38,12 +38,16 @@ function Dashboard() {
     setIsCSModalOpened(true)
   }
 
-
-  async function createNewCodeSnippet(runtime: Runtime) {
+  async function createNewCodeSnippet({ runtime, title }: {
+    runtime: Runtime,
+    title: string,
+  }) {
     // TODO: Runtime
+    // TODO: Code snippet takes a runtime
     setIsLoadingNewSnippet(true)
     fetch('/api/code', {
       method: 'PUT',
+      body: JSON.stringify({ runtime, title }),
     })
     .then(response => response.json())
     .then((data: any) => {
@@ -71,6 +75,7 @@ function Dashboard() {
     <>
       <NewCodeSnippetModal
         isOpen={isCSModalOpened}
+        isLoading={isLoadingNewSnippet}
         onClose={closeCSModal}
         onCreateCodeSnippetClick={createNewCodeSnippet}
       />

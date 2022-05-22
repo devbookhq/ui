@@ -21,6 +21,19 @@ async function upsertCodeSnippet(cs: CodeSnippet) {
   if (error) throw error
 }
 
+async function registerEnvJob({
+  codeSnippetID,
+  runtime,
+}: {
+  codeSnippetID: string,
+  runtime: Runtime,
+}) {
+  const api = 'https://orchestration-api-7d2cl2hooq-uc.a.run.app'
+  fetch(`${api}/envs`, {
+    method: 'POST',
+  })
+}
+
 export {
   upsertCodeSnippet,
 }

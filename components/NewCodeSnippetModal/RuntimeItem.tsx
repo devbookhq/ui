@@ -1,13 +1,13 @@
 import cn from 'classnames'
 
 import type { Runtime } from 'types'
+import Title from 'components/typography/Title'
 
 interface Props {
   runtime: Runtime
   isSelected: boolean
   onClick: (r: Runtime) => void
 }
-
 
 function RuntimeItem({
   runtime,
@@ -17,7 +17,7 @@ function RuntimeItem({
   return (
     <div
       className={cn(
-        'max-w-[100px]',
+        'md:max-w-[100px]',
         'w-full',
         'p-[2px]',
         'bg-transparent',
@@ -36,7 +36,10 @@ function RuntimeItem({
         rounded-md
         bg-black-900
       ">
-        {runtime.name}
+        <Title
+          size={Title.size.T3}
+          title={runtime.name}
+        />
       </div>
     </div>
   )

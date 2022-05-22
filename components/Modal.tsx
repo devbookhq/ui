@@ -36,6 +36,8 @@ function Modal({
         </Transition.Child>
 
         <div className="
+          fixed
+          inset-0
           flex
           justify-center
           fixed
@@ -70,7 +72,6 @@ function Modal({
                 w-full
                 max-w-full
                 transform
-                overflow-hidden
                 rounded-lg
                 backdrop-blur
                 bg-black-900/30
@@ -93,9 +94,7 @@ function Modal({
                     size={Title.size.T1}
                   />
                 </div>
-
                 {children}
-
               </Dialog.Panel>
             </Transition.Child>
           </div>
