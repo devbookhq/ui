@@ -13,10 +13,10 @@ function postEnv(codeSnippetID: string, runtime: string) {
     runtime,
     deps: [],
   }
-  fetch('https://orchestration-api-7d2cl2hooq-uc.a.run.app/env', {
-    method: 'POST',
-    body: JSON.stringify(body),
-  })
+  //fetch('https://orchestration-api-7d2cl2hooq-uc.a.run.app/env', {
+  //  method: 'POST',
+  //  body: JSON.stringify(body),
+  //})
   //.then(response => response.json())
   //.then((data: any) => {
   //  if (data.statusCode === 500 && data.message) {

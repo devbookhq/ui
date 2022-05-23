@@ -47,7 +47,7 @@ function Dashboard() {
     setIsLoadingNewSnippet(true)
     fetch('/api/code', {
       method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ template, title }),
     })
     .then(response => response.json())

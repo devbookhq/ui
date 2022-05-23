@@ -3,6 +3,7 @@ import {
 } from '@supabase/supabase-js'
 
 import type {
+  CodeEnvironment,
   CodeSnippet,
 } from 'types'
 
@@ -21,6 +22,14 @@ async function upsertCodeSnippet(cs: CodeSnippet) {
   if (error) throw error
 }
 
+async function upsertEnv(env: CodeEnvironment) {
+  const { error } = await supabaseAdmin
+    .from<CodeEnvironment>('envs')
+    .upsert(env)
+
+  if (error) throw error
+}
+
 async function registerEnvJob({
   codeSnippetID,
   template,
@@ -30,10 +39,10 @@ async function registerEnvJob({
 }) {
   const api = 'https://ondevbook.com'
   const body = JSON.stringify({ codeSnippetID, template: 'nodejs', deps: [], })
-  console.log(body)
+
   fetch(`${api}/envs`, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body,
   })
   .then(response => {
@@ -44,11 +53,12 @@ async function registerEnvJob({
     console.log(data)
   })
   .catch(err => {
-    console.log(err)
+    console.error(err)
   })
 }
 
 export {
   upsertCodeSnippet,
   registerEnvJob,
+  upsertEnv,
 }

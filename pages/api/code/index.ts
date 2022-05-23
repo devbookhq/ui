@@ -13,9 +13,11 @@ const dockerNames: any = require('docker-names')
 
 import type {
   CodeSnippet,
+  CodeEnvironment,
 } from 'types'
 import {
   upsertCodeSnippet,
+  upsertEnv,
   registerEnvJob,
 } from 'utils/supabaseAdmin'
 
@@ -32,26 +34,36 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
     let { template, title }: {
       template: string,
       title: string,
-    } = JSON.parse(req.body)
+    } = req.body
 
-    const id = randomstring.generate({ length: 12, charset: 'alphanumeric' })
+    const csID = randomstring.generate({ length: 12, charset: 'alphanumeric' })
     if (!title) title = dockerNames.getRandomName().replace('_', '-')
-    const slug = `${title}-${id}`
+    const slug = `${title}-${csID}`
 
     const codeSnippet: CodeSnippet = {
-      id,
+      id: csID,
       title,
       slug,
       creator_id: user.id,
       code: '',
     }
+
     await upsertCodeSnippet(codeSnippet)
-    console.log({ template })
+
+    const envID = randomstring.generate({ length: 12, charset: 'alphanumeric' })
+    const env: CodeEnvironment = {
+      id: envID,
+      code_snippet_id: csID,
+      template: 'Nodejs',
+      deps: [],
+      state: 'None',
+    }
+    await upsertEnv(env)
     await registerEnvJob({ codeSnippetID: codeSnippet.id, template })
 
     res.status(200).json(codeSnippet)
   } catch (err: any) {
-    console.log(err)
+    console.error(err)
     res.status(500).json({ statusCode: 500, message: err.message })
   }
 }
@@ -70,7 +82,7 @@ async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
     await upsertCodeSnippet(cs)
     res.status(200).json(cs)
   } catch (err: any) {
-    console.log(err)
+    console.error(err)
     res.status(500).json({ statusCode: 500, message: err.message })
   }
 }
