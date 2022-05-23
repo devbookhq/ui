@@ -48,16 +48,24 @@ function CodeSnippetCard({
     setShowDropdown(c => !c)
   }
 
-  async function handleOnDeleteClick(e: any) {
+  async function handleOnDeleteClick(_: any) {
     if (confirm(`Are you sure you want to delete '${cs.title}'? This cannot be reversed.`)) {
       try {
-        const { error, ...rest } = await supabaseClient
-          .from<CodeSnippet>('code_snippets')
-          .delete()
-          .eq('id', cs.id)
-        if (error) throw error
-
-        onDelete?.(cs)
+        const body = JSON.stringify({ codeSnippetID: cs.id })
+        fetch('/api/code', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body,
+        })
+        .then(async response => {
+          const data = await response.json()
+          if (response.status >= 400) throw new Error(JSON.stringify(data))
+          onDelete?.(cs)
+        })
+        .catch(err => {
+          showErrorNotif(`Error: ${err.message}`)
+          setShowDropdown(false)
+        })
       } catch(err: any) {
         showErrorNotif(`Error: ${err.message}`)
         setShowDropdown(false)

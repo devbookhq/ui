@@ -19,6 +19,8 @@ import {
   upsertCodeSnippet,
   upsertEnv,
   registerEnvJob,
+  deleteCodeSnippet,
+  deleteEnv,
 } from 'utils/supabaseAdmin'
 
 interface ErrorRes {
@@ -87,11 +89,28 @@ async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
   }
 }
 
+async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes | { codeSnippetID: string }>) {
+  try {
+    // Before we delete a code_snippet, we have to delete a code snippet's environment.
+    // Then we need to register a Nomad job that deletes an environment files.
+    const { codeSnippetID } = req.body as { codeSnippetID: string }
+    await deleteEnv({ codeSnippetID })
+    await deleteCodeSnippet(codeSnippetID)
+
+    res.status(200).json({ codeSnippetID })
+  } catch (err: any) {
+    console.error(err)
+    res.status(500).json({ statusCode: 500, message: err.message })
+  }
+}
+
 export default withAuthRequired(async (req, res) => {
   if (req.method === 'PUT') {
     await createCodeItem(req, res)
   } else if (req.method === 'POST') {
     await updateCodeItem(req, res)
+  } else if (req.method === 'DELETE') {
+    await deleteCodeItem(req, res)
   } else {
     res.setHeader('Allow', 'PUT, POST, DELETE')
     res.status(405).end('Method Not Allowed')

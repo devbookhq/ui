@@ -10,7 +10,10 @@ import {
   supabaseServerClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
 
-import type { CodeSnippet } from 'types'
+import {
+  CodeEnvironment,
+  CodeSnippet,
+} from 'types'
 import { showErrorNotif } from 'utils/notification'
 import { tabs, Tab } from 'utils/newCodeSnippetTabs'
 import CSEditorContent from 'components/CSEditorContent'
@@ -41,26 +44,46 @@ export const getServerSideProps = withAuthRequired({
       }
 
       // Try to get a code snippet from the DB based on a ID in the slug.
-      const { data, error } = await supabaseServerClient(ctx)
+      const { data: csData, error: csErr } = await supabaseServerClient(ctx)
         .from<CodeSnippet>('code_snippets')
         .select('*')
         .eq('id', id)
         // Check if the user is the owner of a code snippet.
         .eq('creator_id', user!.id)
 
-      if (error) {
+      if (csErr) {
         return {
           props: {
-            error: error.message,
+            error: csErr.message,
           }
         }
-      } else if (!data.length) {
+      } else if (!csData.length) {
         return {
           notFound: true,
         }
       }
 
-      const codeSnippet = data[0]
+      const codeSnippet = csData[0]
+
+      // Also retrieve the code snippet's environment.
+      const { data: env, error: envErr } = await supabaseServerClient(ctx)
+        .from<CodeEnvironment>('envs')
+        .select('*')
+        .eq('code_snippet_id', id)
+        .single()
+      if (envErr) {
+        return {
+          props: {
+            error: envErr.message,
+          }
+        }
+      } else if (!env) {
+        return {
+          props: {
+            error: 'No environment for the code snippet found'
+          }
+        }
+      }
 
       // Redirect user to the `?tab=code` if no valid tab query is present.
       if (
@@ -79,6 +102,7 @@ export const getServerSideProps = withAuthRequired({
           },
           props: {
             codeSnippet,
+            env,
           },
         }
       }
@@ -86,6 +110,7 @@ export const getServerSideProps = withAuthRequired({
       return {
         props: {
           codeSnippet,
+          env,
         },
       }
     } catch (err: any) {
@@ -100,6 +125,7 @@ export const getServerSideProps = withAuthRequired({
 
 interface Props {
   codeSnippet: CodeSnippet
+  env: CodeEnvironment
   error?: string
 }
 
@@ -114,7 +140,11 @@ async function upsertCodeSnippet(cs: CodeSnippet) {
   return response.json()
 }
 
-function CodeSnippetEditor({ codeSnippet, error }: Props) {
+function CodeSnippetEditor({
+  codeSnippet,
+  env,
+  error,
+}: Props) {
   const router = useRouter()
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
@@ -220,7 +250,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
               md:space-x-0
               md:space-y-4
             ">
-              {Object.entries(tabs).map(([key, val]) => (
+              {Object.entries(tabs).map(([_, val]) => (
                 <TitleLink
                   key={val.key}
                   href={`/dashboard/${encodeURIComponent(codeSnippet.slug)}/edit?tab=${val.key}`}
@@ -241,6 +271,7 @@ function CodeSnippetEditor({ codeSnippet, error }: Props) {
             />
             <CSEditorSidebar
               codeSnippet={codeSnippet}
+              env={env}
             />
           </div>
         </div>

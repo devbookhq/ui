@@ -40,25 +40,45 @@ async function registerEnvJob({
   const api = 'https://ondevbook.com'
   const body = JSON.stringify({ codeSnippetID, template: 'nodejs', deps: [], })
 
-  fetch(`${api}/envs`, {
+  const response = await fetch(`${api}/envs`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body,
   })
-  .then(response => {
-    console.log(response.status)
-    return response.json()
+  if (response.status >= 400) {
+    const data = await response.json()
+    throw new Error(JSON.stringify(data))
+  }
+}
+
+async function deleteCodeSnippet(id: string) {
+  const { error } = await supabaseAdmin
+    .from<CodeSnippet>('code_snippets')
+    .delete()
+    .eq('id', id)
+  if (error) throw error
+}
+
+// Deletes an environment based on the code snippet ID.
+async function deleteEnv({ codeSnippetID }: { codeSnippetID: string }) {
+  const api = 'https://ondevbook.com'
+  const body = JSON.stringify({ codeSnippetID })
+
+  const response = await fetch(`${api}/envs`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body,
   })
-  .then((data: any) => {
-    console.log(data)
-  })
-  .catch(err => {
-    console.error(err)
-  })
+  if (response.status >= 400) {
+    const data = await response.json()
+    throw new Error(JSON.stringify(data))
+  }
 }
 
 export {
   upsertCodeSnippet,
   registerEnvJob,
   upsertEnv,
+  deleteEnv,
+  deleteCodeSnippet,
 }
