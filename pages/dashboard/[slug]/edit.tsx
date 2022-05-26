@@ -9,6 +9,7 @@ import {
   withAuthRequired,
   supabaseServerClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
+import { RpcWebSocketClient, IRpcNotification } from 'rpc-websocket-client';
 
 import {
   CodeEnvironment,
@@ -23,6 +24,8 @@ import Text from 'components/typography/Text'
 import Button from 'components/Button'
 import ButtonLink from 'components/ButtonLink'
 import CSEditorSidebar from 'components/CSEditorSidebar'
+
+const rpc = new RpcWebSocketClient();
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
@@ -149,6 +152,75 @@ function CodeSnippetEditor({
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
   const currentTab = router.query.tab
+  const [csState, setCSState] = useState('stopped')
+  const [stateSubID, setStateSubID] = useState('')
+  const [stdoutSubID, setStdoutSubID] = useState('')
+  const [stderrSubID, setStderrSubID] = useState('')
+
+  async function runCode() {
+    const response = await rpc.call('codeSnippet_run', [code])
+    console.log({ run: response })
+  }
+
+  async function stopCode() {
+    const response = await rpc.call('codeSnippet_stop')
+    console.log({ stop: response })
+  }
+
+  async function connect() {
+    await rpc.connect('ws://localhost:8010/ws')
+
+    rpc.call('codeSnippet_subscribe', ['state'])
+    .then((id: any) => {
+      if (id) {
+        console.log({stateID: id})
+        setStateSubID(id)
+      }
+    })
+    rpc.call('codeSnippet_subscribe', ['stdout'])
+    .then((id: any) => {
+      if (id) {
+        console.log({stdoutID: id})
+        setStdoutSubID(id)
+      }
+    })
+    rpc.call('codeSnippet_subscribe', ['stderr'])
+    .then((id: any) => {
+      if (id) {
+        console.log({stderrID: id})
+        setStderrSubID(id)
+      }
+    })
+
+  }
+
+  useEffect(function initWS() {
+    connect()
+  }, [])
+
+  function handleNotif(data: IRpcNotification) {
+    console.log({subscription: data.params?.subscription})
+    switch (data.params?.subscription) {
+      case stateSubID:
+        setCSState(data.params?.result || 'running')
+        console.log({ stateNotif: data.params?.result })
+      break
+      case stdoutSubID:
+        console.log({ stdoutNotif: data.params?.result })
+      break
+      case stderrSubID:
+        console.log({ stderrNotif: data.params?.result })
+      break
+    }
+  }
+
+  useEffect(function listenNotifs() {
+    rpc.onNotification.push(handleNotif)
+    return () => {
+      rpc.onNotification = rpc.onNotification.filter(val => val !== handleNotif)
+    }
+  //}, [])
+  }, [stateSubID, stdoutSubID, stderrSubID])
 
   useEffect(function checkForError() {
     if (error) {
@@ -228,6 +300,18 @@ function CodeSnippetEditor({
              />
              <Title title="/"/>
              <Title title="Edit"/>
+          </div>
+
+
+          <div className="
+            flex
+            items-center
+            space-x-2
+          ">
+            <Button
+              text={csState == 'running' ? 'Stop' : 'Run'}
+              onClick={csState == 'running' ? stopCode : runCode}
+            />
           </div>
 
           <div className="

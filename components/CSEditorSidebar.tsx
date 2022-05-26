@@ -18,6 +18,7 @@ interface Props {
   env: CodeEnvironment
 }
 
+
 function CSEditorSidebar({
   codeSnippet,
   env: initialEnv,
@@ -62,6 +63,7 @@ function CSEditorSidebar({
         items-start
         space-y-4
       ">
+        {/*
         <div className="
           w-full
           flex
@@ -75,6 +77,7 @@ function CSEditorSidebar({
           />
           <Select/>
         </div>
+        */}
 
         <div className="
           w-full

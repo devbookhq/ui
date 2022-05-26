@@ -42,7 +42,9 @@
     "react-dom": "17.0.2",
     "react-toastify": "^9.0.0",
     "remark": "^14.0.1",
-    "remark-html": "^15.0.0"
+    "remark-html": "^15.0.0",
+    "rpc-websocket-client": "^1.1.4",
+    "rpc-websockets": "^7.4.18"
   },
   "devDependencies": {
     "@types/randomstring": "^1.1.8",
