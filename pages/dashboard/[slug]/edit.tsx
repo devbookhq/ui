@@ -9,7 +9,6 @@ import {
   withAuthRequired,
   supabaseServerClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
-import { RpcWebSocketClient, IRpcNotification } from 'rpc-websocket-client';
 
 import {
   CodeEnvironment,
@@ -17,15 +16,14 @@ import {
 } from 'types'
 import { showErrorNotif } from 'utils/notification'
 import { tabs, Tab } from 'utils/newCodeSnippetTabs'
-import CSEditorContent from 'components/CSEditorContent'
+import CSEditorContent, { Output } from 'components/CSEditorContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import Button from 'components/Button'
 import ButtonLink from 'components/ButtonLink'
 import CSEditorSidebar from 'components/CSEditorSidebar'
-
-const rpc = new RpcWebSocketClient();
+import useSession from '@/utils/useSession'
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
@@ -152,75 +150,19 @@ function CodeSnippetEditor({
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
   const currentTab = router.query.tab
-  const [csState, setCSState] = useState('stopped')
-  const [stateSubID, setStateSubID] = useState('')
-  const [stdoutSubID, setStdoutSubID] = useState('')
-  const [stderrSubID, setStderrSubID] = useState('')
+  const [output, setOutput] = useState<Output[]>([])
 
-  async function runCode() {
-    const response = await rpc.call('codeSnippet_run', [code])
-    console.log({ run: response })
-  }
-
-  async function stopCode() {
-    const response = await rpc.call('codeSnippet_stop')
-    console.log({ stop: response })
-  }
-
-  async function connect() {
-    await rpc.connect('ws://localhost:8010/ws')
-
-    rpc.call('codeSnippet_subscribe', ['state'])
-    .then((id: any) => {
-      if (id) {
-        console.log({stateID: id})
-        setStateSubID(id)
-      }
-    })
-    rpc.call('codeSnippet_subscribe', ['stdout'])
-    .then((id: any) => {
-      if (id) {
-        console.log({stdoutID: id})
-        setStdoutSubID(id)
-      }
-    })
-    rpc.call('codeSnippet_subscribe', ['stderr'])
-    .then((id: any) => {
-      if (id) {
-        console.log({stderrID: id})
-        setStderrSubID(id)
-      }
-    })
-
-  }
-
-  useEffect(function initWS() {
-    connect()
-  }, [])
-
-  function handleNotif(data: IRpcNotification) {
-    console.log({subscription: data.params?.subscription})
-    switch (data.params?.subscription) {
-      case stateSubID:
-        setCSState(data.params?.result || 'running')
-        console.log({ stateNotif: data.params?.result })
-      break
-      case stdoutSubID:
-        console.log({ stdoutNotif: data.params?.result })
-      break
-      case stderrSubID:
-        console.log({ stderrNotif: data.params?.result })
-      break
-    }
-  }
-
-  useEffect(function listenNotifs() {
-    rpc.onNotification.push(handleNotif)
-    return () => {
-      rpc.onNotification = rpc.onNotification.filter(val => val !== handleNotif)
-    }
-  //}, [])
-  }, [stateSubID, stdoutSubID, stderrSubID])
+  const {
+    state: csState,
+    run,
+    stop,
+  } = useSession(
+    codeSnippet.id,
+    {
+      onStderr: (stderr) => setOutput(o => [...o, { type: 'stderr', value: stderr }]),
+      onStdout: (stdout) => setOutput(o => [...o, { type: 'stdout', value: stdout }]),
+    },
+  )
 
   useEffect(function checkForError() {
     if (error) {
@@ -258,6 +200,7 @@ function CodeSnippetEditor({
           flex
           flex-col
           items-center
+          text-red
           space-y-16
 
           py-6
@@ -294,12 +237,12 @@ function CodeSnippetEditor({
             space-x-2
             min-h-[48px]
           ">
-             <TitleLink
-               href="/dashboard"
-               title="Code Snippets"
-             />
-             <Title title="/"/>
-             <Title title="Edit"/>
+            <TitleLink
+              href="/dashboard"
+              title="Code Snippets"
+            />
+            <Title title="/" />
+            <Title title="Edit" />
           </div>
 
 
@@ -310,7 +253,7 @@ function CodeSnippetEditor({
           ">
             <Button
               text={csState == 'running' ? 'Stop' : 'Run'}
-              onClick={csState == 'running' ? stopCode : runCode}
+              onClick={csState == 'running' ? stop : () => run(code)}
             />
           </div>
 
@@ -349,6 +292,7 @@ function CodeSnippetEditor({
 
             <CSEditorContent
               code={code}
+              output={output}
               title={title}
               onCodeChange={handleCodeChange}
               onTitleChange={handleTitleChange}

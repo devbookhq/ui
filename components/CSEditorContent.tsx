@@ -11,16 +11,23 @@ import CodeEditor from 'components/CodeEditor'
 import Text from 'components/typography/Text'
 import EditIcon from 'components/icons/Edit'
 
-interface Props {
+export interface Props {
   code: string
   title: string
   onCodeChange: (code: string) => void
   onTitleChange: (title: string) => void
+  output: Output[]
+}
+
+export interface Output {
+  type: 'stderr' | 'stdout'
+  value: string
 }
 
 function CSEditorContent({
   code,
   title,
+  output,
   onCodeChange,
   onTitleChange,
 }: Props) {
@@ -64,7 +71,7 @@ function CSEditorContent({
               "
               onClick={handleEditClick}
             >
-              <EditIcon/>
+              <EditIcon />
             </div>
             <input
               ref={inputRef}
@@ -101,15 +108,26 @@ function CSEditorContent({
               p-2
               font-mono
               text-sm
+              flex
+              overflow-auto
+              whitespace-pre
+              flex-col
             ">
-              output will go here
+              {output.map((o, i) =>
+                <div
+                  key={i}
+                  className={o.type === 'stderr' ? 'text-red-400' : 'text-white-900'}>
+                  {o.value}
+                </div>
+              )
+              }
             </div>
           </Splitter>
         </div>
       )
     case Tab.Env:
       return (
-        <div/>
+        <div />
       )
     default:
       return <p>Unimplemented tab</p>
