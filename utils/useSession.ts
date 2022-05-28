@@ -7,16 +7,8 @@ import {
 import {
   Session,
   CodeSnippetState,
-  StateHandler,
-  StdoutHandler,
-  StderrHandler,
+  SessionHandlers,
 } from '@devbookhq/sdk'
-
-export interface SessionHandlers {
-  onStateChange?: StateHandler
-  onStderr?: StderrHandler
-  onStdout?: StdoutHandler
-}
 
 function useSession(
   codeSnippetID: string,
@@ -26,30 +18,30 @@ function useSession(
   const [state, setState] = useState<CodeSnippetState>('stopped')
 
   useEffect(function initSession() {
-    const newSession = new Session(codeSnippetID)
-    setSession(newSession);
-
-    (async function () {
-      try {
-        await newSession.connect()
-
-        await newSession.subscribe('state', (state) => {
-          handlers?.onStateChange?.(state)
+    console.log('reinitializing session')
+    const newSession = new Session(
+      codeSnippetID,
+      {
+        onStateChange(state) {
           setState(state)
-        })
-        await newSession.subscribe('stderr', (stderr) => {
-          handlers?.onStderr?.(stderr)
-        })
-        await newSession.subscribe('stdout', (stdout) => {
-          handlers?.onStdout?.(stdout)
-        })
-      } catch (e) {
-        console.error(e)
-      }
-    })();
+          handlers?.onStateChange?.(state)
+        },
+        onStdout: handlers?.onStdout,
+        onStderr: handlers?.onStderr,
+        onClose: handlers?.onClose,
+      },
+      true,
+    )
+
+    newSession.connect()
+      .then(() => {
+        setSession(newSession)
+      })
+      .catch(err => {
+        console.error(err)
+      })
 
     return () => {
-      newSession.stop()
       newSession.disconnect()
     }
   },
