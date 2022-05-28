@@ -15,13 +15,27 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "downlevelIteration": true,
     "isolatedModules": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/utils/*": ["utils/*"],
-      "@/styles/*": ["styles/*"]
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ]
     },
     "incremental": true
   },
@@ -32,6 +46,10 @@
   ],
   "exclude": [
     "node_modules",
-    "embed"
+    "embed",
+    "next.config.js",
+    "postcss.config.js",
+    "tailwind.config.js",
+    ".eslintrc.js",
   ]
 }
