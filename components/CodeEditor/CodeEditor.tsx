@@ -43,7 +43,7 @@ function Editor({
       language,
     })
 
-    const view = new EditorView({ state, parent: editorEl.current });
+    const view = new EditorView({ state, parent: editorEl.current })
 
     return () => {
       view.destroy()

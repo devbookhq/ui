@@ -18,7 +18,7 @@ function SignIn() {
 
   async function signInWithGitHub() {
     setIsLoading(true)
-    const { error } = await supabaseClient.auth.signIn({ provider: 'github' });
+    const { error } = await supabaseClient.auth.signIn({ provider: 'github' })
     if (error) {
       setErrMessage(error.message)
     }

@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { ReactNode } from 'react'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import Navbar from 'components/Navbar'
 
@@ -57,6 +57,6 @@ export default function Layout({ children, meta: pageMeta }: Props) {
           {children}
         </div>
       </>
-  );
+  )
 }
 

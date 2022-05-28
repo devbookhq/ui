@@ -5,7 +5,7 @@ import { AppProps } from 'next/app'
 import { UserProvider } from '@supabase/supabase-auth-helpers/react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify'
 import { UserContextProvider } from 'utils/useUser'
 import Layout from 'components/Layout'
 

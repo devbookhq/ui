@@ -46,7 +46,7 @@ export function UserContextProvider(props: Props) {
 
   useEffect(() => {
     if (user && !isLoadingData && !userDetails) {
-      setIsloadingData(true);
+      setIsloadingData(true)
       Promise.allSettled([getUserDetails(), getCodeSnippets()]).then(
         (results) => {
           const userDetailsPromise = results[0]
@@ -60,7 +60,7 @@ export function UserContextProvider(props: Props) {
 
           setIsloadingData(false)
         }
-      );
+      )
     } else if (!user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null)
     }
@@ -74,13 +74,13 @@ export function UserContextProvider(props: Props) {
     codeSnippets,
     isLoading: isLoadingUser || isLoadingData,
   }
-  return <UserContext.Provider value={value} {...props} />;
+  return <UserContext.Provider value={value} {...props} />
 }
 
 export function useUser() {
   const ctx = useContext(UserContext)
   if (ctx === undefined) {
-    throw new Error(`useUser must be used within a UserContextProvider.`)
+    throw new Error('useUser must be used within a UserContextProvider.')
   }
   return ctx
 }

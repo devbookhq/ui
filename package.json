@@ -9,7 +9,7 @@
     "lint": "next lint",
     "postinstall": "yarn disable-telemetry",
     "disable-telemetry": "npx next telemetry disable",
-    "fix": "npx eslint **/src/**/*.{ts,tsx,js} --fix",
+    "fix": "npx eslint **/{pages,utils,components}/**/*.{ts,tsx,js} --fix",
     "analyze": "ANALYZE=true yarn build",
     "check-types": "tsc --noEmit",
     "debug": "NODE_OPTIONS='--inspect' next dev"
