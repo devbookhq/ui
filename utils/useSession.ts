@@ -12,6 +12,10 @@ import {
 
 function useSession(
   codeSnippetID: string,
+  /**
+   * Handlers are excluded from the dependency array of the session,
+   * when you change them the session won't restart and rerender.
+   */
   handlers?: SessionHandlers,
 ) {
   const [session, setSession] = useState<Session>()
@@ -33,10 +37,9 @@ function useSession(
       true,
     )
 
+    setSession(newSession)
+
     newSession.connect()
-      .then(() => {
-        setSession(newSession)
-      })
       .catch(err => {
         console.error(err)
       })
