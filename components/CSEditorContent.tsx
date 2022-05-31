@@ -10,6 +10,8 @@ import { Tab } from 'utils/newCodeSnippetTabs'
 import CodeEditor from 'components/CodeEditor'
 import Text from 'components/typography/Text'
 import EditIcon from 'components/icons/Edit'
+import { Output } from 'utils/useSession'
+
 
 export interface Props {
   code: string
@@ -17,11 +19,6 @@ export interface Props {
   onCodeChange: (code: string) => void
   onTitleChange: (title: string) => void
   output: Output[]
-}
-
-export interface Output {
-  type: 'stderr' | 'stdout'
-  value: string
 }
 
 function CSEditorContent({

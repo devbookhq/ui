@@ -233,10 +233,10 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@devbookhq/sdk@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.0.4.tgz#acaf9709190071b515b7b7ef5994228ead56d3d8"
-  integrity sha512-umOTH6eQP7kmxFPPnnlgXh83ZyHKv1ZX8mufjLr83G7lvz2/lbQSmKo7UHTwmqVsR6CNiQAducSdgxImCMt99w==
+"@devbookhq/sdk@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.0.5.tgz#b8ecda539467b6b4a1e3be3ce536f7c6b0f1f90e"
+  integrity sha512-e7wfEdTyfP5DtwWWADLjqJX4BJXg32XzkNGi95hgQ5xn2p2EkiLRDPiJuPJLJLCGC3XYSAp4Mdc618gPYnwDow==
   dependencies:
     cross-fetch "^3.1.5"
     openapi-typescript-fetch "^1.1.3"

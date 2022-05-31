@@ -10,8 +10,16 @@ import {
   SessionHandlers,
 } from '@devbookhq/sdk'
 
+export interface Output {
+  type: 'stderr' | 'stdout'
+  value: string
+}
+
 function useSession(
-  codeSnippetID: string,
+  /**
+   * If the `codeSnippetID` is undefined the session will not be initialized.
+   */
+  codeSnippetID?: string,
   /**
    * Handlers are excluded from the dependency array of the session,
    * when you change them the session won't restart and rerender.
@@ -20,9 +28,11 @@ function useSession(
 ) {
   const [session, setSession] = useState<Session>()
   const [state, setState] = useState<CodeSnippetState>('stopped')
+  const [output, setOutput] = useState<Output[]>([])
 
   useEffect(function initSession() {
-    console.log('reinitializing session')
+    if (!codeSnippetID) return
+
     const newSession = new Session(
       codeSnippetID,
       {
@@ -30,9 +40,17 @@ function useSession(
           setState(state)
           handlers?.onStateChange?.(state)
         },
-        onStdout: handlers?.onStdout,
-        onStderr: handlers?.onStderr,
-        onClose: handlers?.onClose,
+        onStderr(stderr) {
+          setOutput(o => [...o, { type: 'stderr', value: stderr }])
+          handlers?.onStderr?.(stderr)
+        },
+        onStdout(stdout) {
+          setOutput(o => [...o, { type: 'stdout', value: stdout }])
+          handlers?.onStdout?.(stdout)
+        },
+        onClose() {
+          handlers?.onClose?.()
+        },
       },
       true,
     )
@@ -55,15 +73,20 @@ function useSession(
 
   const stop = useCallback(() => session?.stop(), [session])
   const run = useCallback((code: string) => session?.run(code), [session])
+  const getURL = useCallback((port?: number) => session?.getURL(port), [session])
 
   return useMemo(() => ({
     stop,
     run,
     state,
+    output,
+    getURL,
   }), [
     stop,
+    getURL,
     run,
     state,
+    output,
   ])
 }
 

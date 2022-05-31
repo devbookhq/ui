@@ -8,6 +8,7 @@ import {
   getUser,
   withAuthRequired,
   supabaseServerClient,
+  supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
 
 import {
@@ -16,7 +17,7 @@ import {
 } from 'types'
 import { showErrorNotif } from 'utils/notification'
 import { tabs, Tab } from 'utils/newCodeSnippetTabs'
-import CSEditorContent, { Output } from 'components/CSEditorContent'
+import CSEditorContent from 'components/CSEditorContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
@@ -143,26 +144,30 @@ async function upsertCodeSnippet(cs: CodeSnippet) {
 
 function CodeSnippetEditor({
   codeSnippet,
-  env,
+  env: initialEnv,
   error,
 }: Props) {
   const router = useRouter()
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
+  const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const currentTab = router.query.tab
-  const [output, setOutput] = useState<Output[]>([])
+
+  useEffect(function updateCodeSnippet() {
+    supabaseClient
+      .from<CodeEnvironment>(`envs:code_snippet_id=eq.${codeSnippet.id}`)
+      .on('UPDATE', payload => {
+        setEnv(payload.new)
+      })
+      .subscribe()
+  }, [codeSnippet])
 
   const {
     state: csState,
     run,
     stop,
-  } = useSession(
-    codeSnippet.id,
-    {
-      onStderr: (stderr) => setOutput(o => [...o, { type: 'stderr', value: stderr }]),
-      onStdout: (stdout) => setOutput(o => [...o, { type: 'stdout', value: stdout }]),
-    },
-  )
+    output,
+  } = useSession(env.state == 'Done' ? codeSnippet.id : undefined)
 
   useEffect(function checkForError() {
     if (error) {
@@ -245,16 +250,23 @@ function CodeSnippetEditor({
             <Title title="Edit" />
           </div>
 
-
           <div className="
             flex
             items-center
             space-x-2
           ">
             <Button
-              text={csState == 'running' ? 'Stop' : 'Run'}
-              onClick={csState == 'running' ? stop : () => run(code)}
+              isDisabled={env.state !== 'Done'}
+              text={csState === 'running' ? 'Stop' : 'Run'}
+              onClick={csState === 'running' ? stop : () => run(code)}
             />
+            {env.state !== 'Done' &&
+              <Title
+                size={Title.size.T3}
+                rank={Title.rank.Secondary}
+                title='Building environment for a new code snippet...'
+              />
+            }
           </div>
 
           <div className="

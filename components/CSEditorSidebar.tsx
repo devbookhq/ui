@@ -18,27 +18,16 @@ interface Props {
   env: CodeEnvironment
 }
 
-
 function CSEditorSidebar({
   codeSnippet,
-  env: initialEnv,
+  env,
 }: Props) {
-  const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const [stateTitle, setStateTitle] = useState('')
 
-  useEffect(function updateCodeSnippet() {
-    supabaseClient
-    .from<CodeEnvironment>(`envs:code_snippet_id=eq.${codeSnippet.id}`)
-    .on('UPDATE', payload => {
-      setEnv(payload.new)
-    })
-    .subscribe()
-  }, [codeSnippet])
-
-  useEffect(function updateStateTtile() {
+  useEffect(function updateStateTitle() {
     let t = 'Building environment...'
     switch (env.state) {
-      case 'Failed' :
+      case 'Failed':
         t = 'Failed to build environment'
       case 'Done':
         t = 'Environment ready'

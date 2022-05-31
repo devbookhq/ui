@@ -40,14 +40,14 @@ function Button({
           'justify-center',
 
           'rounded-lg',
-
           'bg-green-500',
           'hover:shadow-lg',
-          'hover:shadow-green-500/50',
-          {'pointer-events-none': isDisabled },
+          { 'hover:shadow-green-500/50': !isDisabled },
+          { 'opacity-70': isDisabled },
+          { 'cursor-not-allowed': isDisabled },
           className,
         )}
-        onClick={onClick}
+        onClick={!isDisabled ? onClick : () => { }}
       >
         <div className="
           flex
@@ -74,16 +74,17 @@ function Button({
         'bg-black-700',
         'hover:bg-green-gradient',
         'hover:shadow-lg',
-        'hover:shadow-green-500/50',
-        {'pointer-events-none': isDisabled},
+        { 'hover:shadow-green-500/50': !isDisabled },
+        { 'opacity-70': isDisabled },
+        { 'cursor-not-allowed': isDisabled },
         className,
       )}
-      onClick={onClick}
+      onClick={!isDisabled ? onClick : () => { }}
     >
       <div className="
         py-[4px]
         px-[10px]
-
+        
         flex
         flex-row
         items-center
