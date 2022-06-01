@@ -89,7 +89,7 @@ function useCodeSnippetSession(
   const getHostname = useCallback(async (port?: number) => {
     if (!sessionState) return
     await sessionState.connecting
-    return sessionState.session.getURL(port)
+    return sessionState.session.getHostname(port)
   }, [sessionState])
 
   return useMemo(() => ({
