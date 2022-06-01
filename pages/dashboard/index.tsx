@@ -50,17 +50,24 @@ function Dashboard() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ template, title }),
     })
-    .then(response => response.json())
-    .then((data: any) => {
-      if (data.statusCode === 500 && data.message) {
-        throw new Error(data.message)
-      }
-      router.push(`/dashboard/${encodeURIComponent(data.slug)}/edit?tab=code`)
-    })
-    .catch(err => {
-      showErrorNotif(`Error: ${err.message}`)
-      setIsLoadingNewSnippet(false)
-    })
+      .then(response => response.json())
+      .then((data: any) => {
+        if (data.statusCode === 500 && data.message) {
+          throw new Error(data.message)
+        }
+
+        router.push({
+          pathname: '/dashboard/[slug]/edit',
+          query: {
+            tab: 'code',
+            slug: data.slug,
+          },
+        })
+      })
+      .catch(err => {
+        showErrorNotif(`Error: ${err.message}`)
+        setIsLoadingNewSnippet(false)
+      })
   }
 
   function handleCodeSnippetDeletion() {
@@ -104,7 +111,7 @@ function Dashboard() {
           {codeSnippets.length > 0 && (
             <Button
               text="New Code Snippet"
-              icon={isLoadingNewSnippet ? <SpinnerIcon/> : <PlusIcon/>}
+              icon={isLoadingNewSnippet ? <SpinnerIcon /> : <PlusIcon />}
               onClick={openCSModal}
               isDisabled={isLoadingNewSnippet}
             />
@@ -118,7 +125,7 @@ function Dashboard() {
             items-center
             justify-center
           ">
-            <SpinnerIcon/>
+            <SpinnerIcon />
           </div>
         )}
 
@@ -129,7 +136,7 @@ function Dashboard() {
           />
         )}
 
-        {!isLoading && !codeSnippets.length &&(
+        {!isLoading && !codeSnippets.length && (
           <div className="
             flex
             flex-col
@@ -149,11 +156,11 @@ function Dashboard() {
               size={Title.size.T2}
             />
 
-            <div/>
+            <div />
 
             <Button
               variant={Button.variant.Full}
-              icon={isLoadingNewSnippet ? <SpinnerIcon/> : null}
+              icon={isLoadingNewSnippet ? <SpinnerIcon /> : null}
               text="New Code Snippet"
               onClick={openCSModal}
               isDisabled={isLoadingNewSnippet}

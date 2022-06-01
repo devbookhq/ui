@@ -42,7 +42,8 @@
   @apply border-l-gray-500;
 }
 
-.cm-editor.cm-focused .cm-selectionBackground, .cm-selectionBackground {
+.cm-editor.cm-focused .cm-selectionBackground,
+.cm-selectionBackground {
   @apply bg-white-900/30 !important;
 }
 
@@ -83,7 +84,8 @@
   @apply text-gray-300;
 }
 
-.cm-content .cm-line, .cm-editor .cm-gutters .cm-lineNumbers {
+.cm-content .cm-line,
+.cm-editor .cm-gutters .cm-lineNumbers {
   @apply py-px;
 }
 
@@ -222,8 +224,8 @@
   }
 
   .cm-editor .cm-gutter.cm-lineNumbers {
-    @apply rounded-none; /* Reset border radius */
+    @apply rounded-none;
+    /* Reset border radius */
     @apply rounded-tl-lg;
   }
 }
-

@@ -1,15 +1,13 @@
 import {
-  ReactNode,
   useMemo,
 } from 'react'
-import Link from 'next/link'
-import { useRouter }  from 'next/router'
+import { useRouter } from 'next/router'
 
 import { CodeSnippet } from 'types'
 import CodeSnippetCard from './Card'
 
 
-interface Props {
+export interface Props {
   codeSnippets: CodeSnippet[]
   onCodeSnippetDeletion: (cs: CodeSnippet) => void
 }
@@ -28,7 +26,13 @@ function CodeSnippetCards({
   const sorted = useMemo(() => codeSnippets.sort((a, b) => sortSnippets(a, b)), [codeSnippets])
 
   function openCodeSnippet(cs: CodeSnippet) {
-    router.push(`/dashboard/${encodeURIComponent(cs.slug)}/edit?tab=code`)
+    router.push({
+      pathname: '/dashboard/[slug]/edit',
+      query: {
+        tab: 'code',
+        slug: cs.slug,
+      },
+    })
   }
 
   return (

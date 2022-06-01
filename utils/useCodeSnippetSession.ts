@@ -83,6 +83,7 @@ function useCodeSnippetSession(
   const run = useCallback(async (code: string) => {
     if (!sessionState) return
     await sessionState.connecting
+    setOutput([])
     await sessionState.session.run(code)
   }, [sessionState])
 

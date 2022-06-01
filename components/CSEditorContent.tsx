@@ -41,10 +41,10 @@ function CSEditorContent({
     case Tab.Code:
       return (
         <div className="
-          flex-1
           flex
+          flex-1
           flex-col
-          items-stretch
+          overflow-hidden
           border
           border-black-700
           rounded-lg
@@ -82,24 +82,15 @@ function CSEditorContent({
           </div>
           <Splitter
             direction={SplitDirection.Vertical}
-            classes={['flex flex-1', 'flex']}
+            classes={['flex overflow-hidden min-h-0', 'flex overflow-hidden']}
             initialSizes={sizes}
             onResizeFinished={(_, sizes) => setSizes(sizes)}
           >
-            <div className="
-              flex-1
-              relative
-              overflow-hidden
-              bg-black-800
-              rounded-b-lg
-            ">
+            <div className="flex flex-1 overflow-hidden">
               <CodeEditor
                 content={code}
                 onContentChange={onCodeChange}
-                className="
-                  absolute
-                  inset-0
-                "
+                className="flex flex-1 overflow-hidden"
               />
             </div>
             <Output

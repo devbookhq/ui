@@ -29,8 +29,6 @@ function Editor({
   height,
   className,
 }: Props) {
-  const [editorState, setEditorState] = useState<EditorState>()
-  const [editorView, setEditorView] = useState<EditorView>()
   const editorEl = useRef<HTMLDivElement>(null)
 
   useEffect(function initEditor() {
@@ -54,11 +52,11 @@ function Editor({
     isReadOnly,
   ])
 
-
   return (
     <div
       className={`
         overflow-auto
+        bg-black-800
         ${className || ''}
       `}
       ref={editorEl}

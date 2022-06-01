@@ -1,9 +1,6 @@
 import {
-  useEffect,
   useState,
   useRef,
-  RefObject,
-  DependencyList,
 } from 'react'
 import { useRouter } from 'next/router'
 
@@ -14,9 +11,7 @@ import MoreVerticalIcon from 'components/icons/MoreVertical'
 import { showErrorNotif } from 'utils/notification'
 import useOnClickOutside from 'utils/useOnClickOutside'
 
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-
-interface Props {
+export interface Props {
   codeSnippet: CodeSnippet
   onClick?: (e: any) => void
   onDelete?: (cs: CodeSnippet) => void
@@ -29,7 +24,6 @@ function CodeSnippetCard({
   onClick,
   onDelete,
 }: Props) {
-  const router = useRouter()
   const [showDropdown, setShowDropdown] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   useOnClickOutside(cardRef, () => {
@@ -40,8 +34,8 @@ function CodeSnippetCard({
   const previewLines = lines.slice(0, previewLength)
 
   const shortened = lines.length > previewLength
-  ? previewLines.concat(['...']).join('\n')
-  : previewLines.join('\n')
+    ? previewLines.concat(['...']).join('\n')
+    : previewLines.join('\n')
 
   function handleOnMoreClick(e: any) {
     e.stopPropagation()
@@ -57,16 +51,16 @@ function CodeSnippetCard({
           headers: { 'Content-Type': 'application/json' },
           body,
         })
-        .then(async response => {
-          const data = await response.json()
-          if (response.status >= 400) throw new Error(JSON.stringify(data))
-          onDelete?.(cs)
-        })
-        .catch(err => {
-          showErrorNotif(`Error: ${err.message}`)
-          setShowDropdown(false)
-        })
-      } catch(err: any) {
+          .then(async response => {
+            const data = await response.json()
+            if (response.status >= 400) throw new Error(JSON.stringify(data))
+            onDelete?.(cs)
+          })
+          .catch(err => {
+            showErrorNotif(`Error: ${err.message}`)
+            setShowDropdown(false)
+          })
+      } catch (err: any) {
         showErrorNotif(`Error: ${err.message}`)
         setShowDropdown(false)
       }
@@ -94,8 +88,8 @@ function CodeSnippetCard({
           hover:shadow-green-500/50
 
           rounded-lg"
-          onClick={onClick}
-        >
+        onClick={onClick}
+      >
         <div className="
           flex
           flex-col
@@ -135,7 +129,7 @@ function CodeSnippetCard({
               "
               onClick={handleOnMoreClick}
             >
-              <MoreVerticalIcon/>
+              <MoreVerticalIcon />
             </div>
           </div>
 

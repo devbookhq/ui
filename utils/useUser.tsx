@@ -64,7 +64,10 @@ export function UserContextProvider(props: Props) {
     } else if (!user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null)
     }
-  }, [user, isLoadingUser])
+  }, [
+    user,
+    isLoadingUser,
+  ])
 
 
   const value = {

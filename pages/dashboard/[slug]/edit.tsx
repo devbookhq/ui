@@ -302,7 +302,6 @@ function CodeSnippetEditor({
                 />
               ))}
             </div>
-
             <CSEditorContent
               code={code}
               output={csOutput}
