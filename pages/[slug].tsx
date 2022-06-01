@@ -1,9 +1,6 @@
-//import { useEffect } from 'react'
-
 import {
   GetServerSideProps,
 } from 'next'
-//import useCodeSnippet from 'utils/useCodeSnippet'
 import {
   supabaseServerClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
@@ -16,8 +13,8 @@ import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
 import PlayCircleIcon from 'components/icons/PlayCircle'
-import useCodeSnippetSession from '@/utils/useCodeSnippetSession'
-import Output from '@/components/Output'
+import useCodeSnippetSession from 'utils/useCodeSnippetSession'
+import Output from 'components/Output'
 import { useState } from 'react'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
