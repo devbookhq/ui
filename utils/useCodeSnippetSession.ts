@@ -10,12 +10,12 @@ import {
   SessionHandlers,
 } from '@devbookhq/sdk'
 
-export interface Output {
+export interface CodeSnippetOutput {
   type: 'stderr' | 'stdout'
   value: string
 }
 
-function useSession(
+function useCodeSnippetSession(
   /**
    * If the `codeSnippetID` is undefined the session will not be initialized.
    */
@@ -26,9 +26,12 @@ function useSession(
    */
   handlers?: SessionHandlers,
 ) {
-  const [session, setSession] = useState<Session>()
+  const [sessionState, setSessionState] = useState<{
+    session: Session,
+    connecting?: Promise<void>,
+  }>()
   const [state, setState] = useState<CodeSnippetState>('stopped')
-  const [output, setOutput] = useState<Output[]>([])
+  const [output, setOutput] = useState<CodeSnippetOutput[]>([])
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
@@ -55,12 +58,12 @@ function useSession(
       true,
     )
 
-    setSession(newSession)
-
-    newSession.connect()
+    const connecting = newSession.connect()
       .catch(err => {
         console.error(err)
       })
+
+    setSessionState({ session: newSession, connecting })
 
     return () => {
       newSession.disconnect()
@@ -71,23 +74,37 @@ function useSession(
     [codeSnippetID],
   )
 
-  const stop = useCallback(() => session?.stop(), [session])
-  const run = useCallback((code: string) => session?.run(code), [session])
-  const getURL = useCallback((port?: number) => session?.getURL(port), [session])
+  const stop = useCallback(async () => {
+    if (!sessionState) return
+    await sessionState.connecting
+    await sessionState.session.stop()
+  }, [sessionState])
+
+  const run = useCallback(async (code: string) => {
+    if (!sessionState) return
+    await sessionState.connecting
+    await sessionState.session.run(code)
+  }, [sessionState])
+
+  const getHostname = useCallback(async (port?: number) => {
+    if (!sessionState) return
+    await sessionState.connecting
+    return sessionState.session.getURL(port)
+  }, [sessionState])
 
   return useMemo(() => ({
     stop,
     run,
+    getHostname,
     state,
     output,
-    getURL,
   }), [
     stop,
-    getURL,
+    getHostname,
     run,
     state,
     output,
   ])
 }
 
-export default useSession
+export default useCodeSnippetSession

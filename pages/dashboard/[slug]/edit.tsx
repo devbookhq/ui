@@ -9,6 +9,7 @@ import {
   withAuthRequired,
   supabaseServerClient,
   supabaseClient,
+  withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 
 import {
@@ -24,7 +25,7 @@ import Text from 'components/typography/Text'
 import Button from 'components/Button'
 import ButtonLink from 'components/ButtonLink'
 import CSEditorSidebar from 'components/CSEditorSidebar'
-import useSession from '@/utils/useSession'
+import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
@@ -65,7 +66,7 @@ export const getServerSideProps = withAuthRequired({
         }
       }
 
-      const codeSnippet = csData[0]
+      const codeSnippet: CodeSnippet | null = csData[0]
 
       // Also retrieve the code snippet's environment.
       const { data: env, error: envErr } = await supabaseServerClient(ctx)
@@ -163,11 +164,11 @@ function CodeSnippetEditor({
   }, [codeSnippet])
 
   const {
+    output: csOutput,
     state: csState,
     run,
     stop,
-    output,
-  } = useSession(env.state == 'Done' ? codeSnippet.id : undefined)
+  } = useCodeSnippetSession(env.state == 'Done' ? codeSnippet.id : undefined)
 
   useEffect(function checkForError() {
     if (error) {
@@ -304,7 +305,7 @@ function CodeSnippetEditor({
 
             <CSEditorContent
               code={code}
-              output={output}
+              output={csOutput}
               title={title}
               onCodeChange={handleCodeChange}
               onTitleChange={handleTitleChange}

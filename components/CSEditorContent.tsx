@@ -5,12 +5,11 @@ import {
 import { useRouter } from 'next/router'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
 
-import type { CodeSnippet } from 'types'
 import { Tab } from 'utils/newCodeSnippetTabs'
 import CodeEditor from 'components/CodeEditor'
-import Text from 'components/typography/Text'
 import EditIcon from 'components/icons/Edit'
-import { Output } from 'utils/useSession'
+import { CodeSnippetOutput } from 'utils/useCodeSnippetSession'
+import Output from './Output'
 
 
 export interface Props {
@@ -18,7 +17,7 @@ export interface Props {
   title: string
   onCodeChange: (code: string) => void
   onTitleChange: (title: string) => void
-  output: Output[]
+  output: CodeSnippetOutput[]
 }
 
 function CSEditorContent({
@@ -31,6 +30,7 @@ function CSEditorContent({
   const router = useRouter()
   const tab = router.query.tab
   const inputRef = useRef<HTMLInputElement>(null)
+  const [sizes, setSizes] = useState<number[]>([85, 15])
 
   function handleEditClick() {
     if (!inputRef || !inputRef.current) return
@@ -82,8 +82,9 @@ function CSEditorContent({
           </div>
           <Splitter
             direction={SplitDirection.Vertical}
-            classes={['flex']}
-            initialSizes={[85, 15]}
+            classes={['flex flex-1', 'flex']}
+            initialSizes={sizes}
+            onResizeFinished={(_, sizes) => setSizes(sizes)}
           >
             <div className="
               flex-1
@@ -101,24 +102,9 @@ function CSEditorContent({
                 "
               />
             </div>
-            <div className="
-              p-2
-              font-mono
-              text-sm
-              flex
-              overflow-auto
-              whitespace-pre
-              flex-col
-            ">
-              {output.map((o, i) =>
-                <div
-                  key={i}
-                  className={o.type === 'stderr' ? 'text-red-400' : 'text-white-900'}>
-                  {o.value}
-                </div>
-              )
-              }
-            </div>
+            <Output
+              output={output}
+            />
           </Splitter>
         </div>
       )

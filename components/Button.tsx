@@ -47,7 +47,7 @@ function Button({
           { 'cursor-not-allowed': isDisabled },
           className,
         )}
-        onClick={!isDisabled ? onClick : () => { }}
+        onMouseDown={!isDisabled ? onClick : () => { }}
       >
         <div className="
           flex
@@ -79,7 +79,7 @@ function Button({
         { 'cursor-not-allowed': isDisabled },
         className,
       )}
-      onClick={!isDisabled ? onClick : () => { }}
+      onMouseDown={!isDisabled ? onClick : () => { }}
     >
       <div className="
         py-[4px]

@@ -16,6 +16,9 @@ import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
 import PlayCircleIcon from 'components/icons/PlayCircle'
+import useCodeSnippetSession from '@/utils/useCodeSnippetSession'
+import Output from '@/components/Output'
+import { useState } from 'react'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = ctx.query.slug as string | undefined
@@ -84,6 +87,8 @@ function CodeSnippet({
   error,
   codeSnippet: cs,
 }: Props) {
+  const [sizes, setSizes] = useState<number[]>([85, 15])
+
   //const router = useRouter()
 
   //const { slug } = router.query
@@ -106,6 +111,13 @@ function CodeSnippet({
 
   // TODO: Error handling
   // TODO: Handling undefined code snippet
+
+  const {
+    output: csOutput,
+    state: csState,
+    run,
+    stop,
+  } = useCodeSnippetSession(cs?.id)
 
   return (
     <>
@@ -142,7 +154,9 @@ function CodeSnippet({
             border-black-700
             hover:bg-black-700
             cursor-pointer
-          ">
+          "
+            onMouseDown={csState === 'running' ? stop : () => run(cs.code || '')}
+          >
             <div className="
               flex
               items-center
@@ -159,11 +173,10 @@ function CodeSnippet({
             </div>
             <Text
               size={Text.size.S1}
-              text="Run"
+              text={csState === 'running' ? 'Stop' : 'Run'}
               mono
             />
           </div>
-
 
           <div className="
             w-full
@@ -176,8 +189,9 @@ function CodeSnippet({
           ">
             <Splitter
               direction={SplitDirection.Vertical}
-              classes={['flex']}
-              initialSizes={[85, 15]}
+              classes={['flex min-h-0', 'flex min-h-0']}
+              initialSizes={sizes}
+              onResizeFinished={(_, sizes) => setSizes(sizes)}
             >
               <div className="
                 rounded-t-lg
@@ -195,13 +209,9 @@ function CodeSnippet({
                   "
                 />
               </div>
-              <div className="
-                p-2
-                font-mono
-                text-sm
-              ">
-                output will go here
-              </div>
+              <Output
+                output={csOutput}
+              />
             </Splitter>
           </div>
         </div>
