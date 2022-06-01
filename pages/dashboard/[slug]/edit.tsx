@@ -168,7 +168,12 @@ function CodeSnippetEditor({
     state: csState,
     run,
     stop,
+    getHostname,
   } = useCodeSnippetSession(env.state == 'Done' ? codeSnippet.id : undefined)
+
+  useEffect(() => {
+    getHostname().then(h => console.log({ hostname: h }))
+  }, [])
 
   useEffect(function checkForError() {
     if (error) {
