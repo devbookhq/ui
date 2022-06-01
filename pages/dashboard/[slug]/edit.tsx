@@ -66,7 +66,7 @@ export const getServerSideProps = withAuthRequired({
         }
       }
 
-      const codeSnippet: CodeSnippet | null = csData[0]
+      const codeSnippet: CodeSnippet | null = csData && csData[0]
 
       // Also retrieve the code snippet's environment.
       const { data: env, error: envErr } = await supabaseServerClient(ctx)
@@ -173,7 +173,7 @@ function CodeSnippetEditor({
 
   useEffect(() => {
     getHostname().then(h => console.log({ hostname: h }))
-  }, [])
+  }, [getHostname])
 
   useEffect(function checkForError() {
     if (error) {
