@@ -94,9 +94,10 @@ function CodeSnippet({
   // TODO: Handling undefined code snippet.
 
   const {
-    output: csOutput,
-    state: csState,
+    csOutput,
+    csState,
     run,
+    state,
     stop,
   } = useCodeSnippetSession(cs?.id)
 
