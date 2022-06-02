@@ -1,6 +1,5 @@
 import {
   ReactNode,
-  forwardRef,
 } from 'react'
 import cn from 'classnames'
 
@@ -55,8 +54,8 @@ function Button({
           items-center
           justify-center
           space-x-2
+          bg-green-500
         ">
-          {icon}
           <Text
             size={Text.size.S1}
             text={text}
@@ -84,7 +83,7 @@ function Button({
       <div className="
         py-[4px]
         px-[10px]
-        
+
         flex
         flex-row
         items-center

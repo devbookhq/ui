@@ -1,4 +1,8 @@
 import {
+  useState,
+  useEffect,
+} from 'react'
+import {
   GetServerSideProps,
 } from 'next'
 import {
@@ -12,10 +16,9 @@ import type {
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
-import PlayCircleIcon from 'components/icons/PlayCircle'
+import ExecutionButton, { ExecutionState } from 'components/ExecutionButton'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import Output from 'components/Output'
-import { useState } from 'react'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = ctx.query.slug as string | undefined
@@ -85,29 +88,10 @@ function CodeSnippet({
   codeSnippet: cs,
 }: Props) {
   const [sizes, setSizes] = useState<number[]>([85, 15])
+  const [execState, setExecState] = useState<ExecutionState>(ExecutionState.Loading)
 
-  //const router = useRouter()
-
-  //const { slug } = router.query
-  //const {
-  //  codeSnippet: cs,
-  //  error,
-  //  isLoading,
-  //} = useCodeSnippet({ slug: Array.isArray(slug) ? slug[0] : slug  })
-
-  //useEffect(() => {
-  //  console.log({ query: router.query })
-  //}, [router.query])
-
-  //useEffect(() => {
-  //  if (!isLoading && !error && !cs) router
-  //}, [cs, isLoading, error])
-
-
-  //console.log({ cs, error, isLoading })
-
-  // TODO: Error handling
-  // TODO: Handling undefined code snippet
+  // TODO: Handle error from the server side props.
+  // TODO: Handling undefined code snippet.
 
   const {
     output: csOutput,
@@ -115,6 +99,21 @@ function CodeSnippet({
     run,
     stop,
   } = useCodeSnippetSession(cs?.id)
+
+  useEffect(function onCSStateChange() {
+    if (csState === 'running') setExecState(ExecutionState.Running)
+    else if (csState === 'stopped') setExecState(ExecutionState.Stopped)
+  }, [csState])
+
+  function runCode(code: string) {
+    setExecState(ExecutionState.Loading)
+    run(code)
+  }
+
+  function stopCode() {
+    setExecState(ExecutionState.Loading)
+    stop()
+  }
 
   return (
     <>
@@ -139,77 +138,56 @@ function CodeSnippet({
           </div>
 
           <div className="
-            flex
-            flex-row
-            items-center
-            space-x-3
-            mb-3
-            py-1.5
-            px-2
-            rounded-lg
-            border
-            border-black-700
-            hover:bg-black-700
-            cursor-pointer
-          "
-            onMouseDown={csState === 'running' ? stop : () => run(cs.code || '')}
-          >
-            <div className="
-              flex
-              items-center
-              justify-center
-              rounded-full
-              p-1
-              bg-green-500/30
-              text-green-500
-            ">
-              <PlayCircleIcon className="
-                relative
-                left-[1px]
-              "/>
-            </div>
-            <Text
-              size={Text.size.S1}
-              text={csState === 'running' ? 'Stop' : 'Run'}
-              mono
-            />
-          </div>
-
-          <div className="
             w-full
             flex-1
             flex
             flex-col
-            rounded-lg
-            border
-            border-black-700
+            items-center
+            justify-center
           ">
-            <Splitter
-              direction={SplitDirection.Vertical}
-              classes={['flex min-h-0', 'flex min-h-0']}
-              initialSizes={sizes}
-              onResizeFinished={(_, sizes) => setSizes(sizes)}
-            >
-              <div className="
-                rounded-t-lg
-                flex-1
-                relative
-                overflow-hidden
-                bg-black-800
-              ">
-                <CodeEditor
-                  isReadOnly
-                  content={cs.code || ''}
-                  className="
-                    absolute
-                    inset-0
-                  "
+            <ExecutionButton
+              className="mb-4"
+              state={execState}
+              onClick={csState === 'running' ? stopCode : () => runCode(cs.code || '')}
+              isDisabled={execState === ExecutionState.Loading}
+            />
+
+            <div className="
+              w-full
+              flex-1
+              flex
+              flex-col
+              rounded-lg
+              border
+              border-black-700
+            ">
+              <Splitter
+                direction={SplitDirection.Vertical}
+                classes={['flex min-h-0', 'flex min-h-0']}
+                initialSizes={sizes}
+                onResizeFinished={(_, sizes) => setSizes(sizes)}
+              >
+                <div className="
+                  rounded-t-lg
+                  flex-1
+                  relative
+                  overflow-hidden
+                  bg-black-800
+                ">
+                  <CodeEditor
+                    isReadOnly
+                    content={cs.code || ''}
+                    className="
+                      absolute
+                      inset-0
+                    "
+                  />
+                </div>
+                <Output
+                  output={csOutput}
                 />
-              </div>
-              <Output
-                output={csOutput}
-              />
-            </Splitter>
+              </Splitter>
+            </div>
           </div>
         </div>
       )}

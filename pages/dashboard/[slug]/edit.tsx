@@ -25,6 +25,7 @@ import Text from 'components/typography/Text'
 import Button from 'components/Button'
 import ButtonLink from 'components/ButtonLink'
 import CSEditorSidebar from 'components/CSEditorSidebar'
+import PlayCircleIcon from 'components/icons/PlayCircle'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 
 export const getServerSideProps = withAuthRequired({
@@ -260,6 +261,13 @@ function CodeSnippetEditor({
               isDisabled={env.state !== 'Done'}
               text={csState === 'running' ? 'Stop' : 'Run'}
               onClick={csState === 'running' ? stop : () => run(code)}
+              icon={
+                <PlayCircleIcon
+                  className="
+                    text-green-500
+                  "
+                />
+              }
             />
             {env.state !== 'Done' &&
               <Title
