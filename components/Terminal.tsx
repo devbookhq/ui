@@ -7,18 +7,17 @@ import {
   useImperativeHandle,
   useEffect,
 } from 'react'
-import type { useDevbook } from '@devbookhq/sdk'
+import type {
+  TerminalManager,
+} from '@devbookhq/sdk'
 
-import Header from '../Editor/Header'
-import Separator from '../Separator'
-import useTerminal from './useTerminal'
-import SpinnerIcon from '../SpinnerIcon'
+import useTerminal from 'utils/useTerminal'
+import useCodeSnippetSession from 'utils/useCodeSnippetSession'
+import Spinner from './icons/Spinner'
 
 export interface Props {
-  devbook: Pick<ReturnType<typeof useDevbook>, 'terminal' | 'status'>
+  terminalManager?: TerminalManager
   height?: string
-  lightTheme?: boolean
-  title?: string
   autofocus?: boolean
   onStart?: (handler: Handler) => (Promise<void> | void)
 }
@@ -29,18 +28,16 @@ export interface Handler {
 }
 
 const Terminal = forwardRef<Handler, Props>(({
-  devbook,
+  terminalManager,
   height,
-  lightTheme,
   onStart,
   autofocus,
-  title = '> Terminal',
 }, ref) => {
   const terminalEl = useRef<HTMLDivElement>(null)
-  const { terminal, session } = useTerminal({ devbook, lightTheme })
+  const { terminal, terminalSession } = useTerminal({ terminalManager })
   const [isLoading, setIsLoading] = useState(true)
 
-  const handleInput = useCallback((input: string) => session?.sendData(input), [session])
+  const handleInput = useCallback((input: string) => terminalSession?.sendData(input), [terminalSession])
 
   useImperativeHandle(ref, () => ({
     handleInput,
@@ -102,21 +99,10 @@ const Terminal = forwardRef<Handler, Props>(({
 
   return (
     <div
-      className={`rounded flex flex-col min-w-0 flex-1 ${lightTheme ? '' : 'dark'}`}
+      className="rounded flex flex-col min-w-0 flex-1 dark"
     >
-      {title &&
-        <>
-          <Header
-            filepath={title}
-          />
-          <Separator
-            variant={Separator.variant.CodeEditor}
-            dir={Separator.dir.Horizontal}
-          />
-        </>
-      }
       <div
-        className={`flex flex-1 min-w-0 bg-gray-300 dark:bg-black-650 pl-4 ${title ? 'rounded-b pt-2' : 'rounded pt-4'}`}
+        className="flex flex-1 min-w-0 bg-black-650 pl-4 rounded pt-4"
         style={{
           ...height && { minHeight: height, maxHeight: height },
         }}
@@ -127,9 +113,9 @@ const Terminal = forwardRef<Handler, Props>(({
         >
           {isLoading &&
             <div
-              className={`flex flex-1 justify-center items-center max-h-full min-w-0 ${title ? '' : 'pb-2'}`}
+              className="flex flex-1 justify-center items-center max-h-full min-w-0 pb-2"
             >
-              <SpinnerIcon />
+              <Spinner />
             </div>
           }
         </div>
@@ -137,5 +123,7 @@ const Terminal = forwardRef<Handler, Props>(({
     </div>
   )
 })
+
+Terminal.displayName = 'Terminal'
 
 export default Terminal

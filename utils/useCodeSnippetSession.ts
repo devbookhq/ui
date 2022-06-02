@@ -7,7 +7,6 @@ import {
 import {
   Session,
   CodeSnippetState,
-  SessionHandlers,
 } from '@devbookhq/sdk'
 
 export interface CodeSnippetOutput {
@@ -15,81 +14,83 @@ export interface CodeSnippetOutput {
   value: string
 }
 
+export type SessionState = 'open' | 'closed'
+
 function useCodeSnippetSession(
   /**
    * If the `codeSnippetID` is undefined the session will not be initialized.
    */
   codeSnippetID?: string,
-  /**
-   * Handlers are excluded from the dependency array of the session,
-   * when you change them the session won't restart and rerender.
-   */
-  handlers?: SessionHandlers,
+  saveFSChanges?: boolean,
 ) {
   const [sessionState, setSessionState] = useState<{
-    session: Session,
-    connecting?: Promise<void>,
-  }>()
-  const [state, setState] = useState<CodeSnippetState>('stopped')
-  const [output, setOutput] = useState<CodeSnippetOutput[]>([])
+    session?: Session,
+    openingPromise?: Promise<void>,
+    state: SessionState,
+  }>({ state: 'closed' })
+  const [csState, setCSState] = useState<CodeSnippetState>('stopped')
+  const [csOutput, setCSOutput] = useState<CodeSnippetOutput[]>([])
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
 
-    const newSession = new Session(
-      codeSnippetID,
-      {
+    const newSession = new Session({
+      id: codeSnippetID,
+      codeSnippet: {
         onStateChange(state) {
-          setState(state)
-          handlers?.onStateChange?.(state)
+          setCSState(state)
         },
         onStderr(stderr) {
-          setOutput(o => [...o, { type: 'stderr', value: stderr }])
-          handlers?.onStderr?.(stderr)
+          setCSOutput(o => [...o, { type: 'stderr', value: stderr }])
         },
         onStdout(stdout) {
-          setOutput(o => [...o, { type: 'stdout', value: stdout }])
-          handlers?.onStdout?.(stdout)
-        },
-        onClose() {
-          handlers?.onClose?.()
+          setCSOutput(o => [...o, { type: 'stdout', value: stdout }])
         },
       },
-      true,
-    )
+      onClose() {
+        setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
+      },
+      saveFSChanges,
+      debug: true,
+    })
 
-    const connecting = newSession.connect()
+    const openingPromise = newSession.open()
+      .then(() => {
+        setSessionState(s => s.session === newSession ? { ...s, state: 'open' } : s)
+      })
       .catch(err => {
         console.error(err)
       })
 
-    setSessionState({ session: newSession, connecting })
+    setSessionState({ session: newSession, state: 'closed', openingPromise })
 
     return () => {
-      newSession.disconnect()
+      newSession.close()
     }
   },
     // We are excluding handlers from dep array, 
     // because they may have been defined as inlined functions and their identity would change with every rerender.
-    [codeSnippetID],
-  )
+    [
+      codeSnippetID,
+      saveFSChanges
+    ])
 
   const stop = useCallback(async () => {
-    if (!sessionState) return
-    await sessionState.connecting
-    await sessionState.session.stop()
+    if (!sessionState.session) return
+    await sessionState.openingPromise
+    await sessionState.session.codeSnippet()?.stop()
   }, [sessionState])
 
   const run = useCallback(async (code: string) => {
-    if (!sessionState) return
-    await sessionState.connecting
-    setOutput([])
-    await sessionState.session.run(code)
+    if (!sessionState.session) return
+    await sessionState.openingPromise
+    setCSOutput([])
+    await sessionState.session.codeSnippet()?.run(code)
   }, [sessionState])
 
   const getHostname = useCallback(async (port?: number) => {
-    if (!sessionState) return
-    await sessionState.connecting
+    if (!sessionState.session) return
+    await sessionState.openingPromise
     return sessionState.session.getHostname(port)
   }, [sessionState])
 
@@ -97,14 +98,18 @@ function useCodeSnippetSession(
     stop,
     run,
     getHostname,
-    state,
-    output,
+    csState,
+    terminalManager: sessionState.session?.terminal,
+    csOutput,
+    state: sessionState.state,
   }), [
     stop,
     getHostname,
     run,
-    state,
-    output,
+    sessionState.session?.terminal,
+    csState,
+    csOutput,
+    sessionState.state,
   ])
 }
 
