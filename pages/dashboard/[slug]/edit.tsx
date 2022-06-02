@@ -165,9 +165,10 @@ function CodeSnippetEditor({
   }, [codeSnippet])
 
   const {
-    output: csOutput,
-    state: csState,
+    csOutput,
+    csState,
     run,
+    state,
     stop,
   } = useCodeSnippetSession(env.state == 'Done' ? codeSnippet.id : undefined)
 
@@ -310,7 +311,7 @@ function CodeSnippetEditor({
                 />
               ))}
             </div>
-            <CSEditorContent
+            < CSEditorContent
               code={code}
               output={csOutput}
               title={title}

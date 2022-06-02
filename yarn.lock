@@ -233,10 +233,10 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@devbookhq/sdk@2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.0.6.tgz#e9e75accadcf18c04f9cd8975aa933c035b56080"
-  integrity sha512-c6DBnpv20/uzMx9nalzfWdCu+DsOv6KE+B6GjIqF7YxozRw+1wSk5p8Iomw0BPvOI2iS7xGMML72HRifxmAzkQ==
+"@devbookhq/sdk@2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.0.7.tgz#8e3233b6acd456cd9689cf5efe29579f28d20369"
+  integrity sha512-F/qoEdd3pa62PpjVwUhbvX/xHDwHXQvNL/BLAn1UUjFMwcHi5gdLnCzVCQ7hAH+FYhLxOEc0GPfgDkqHAA9Miw==
   dependencies:
     cross-fetch "^3.1.5"
     openapi-typescript-fetch "^1.1.3"
@@ -2638,6 +2638,21 @@ xtend@^4.0.2:
   version "4.0.2"
   resolved "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
+
+xterm-addon-fit@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/xterm-addon-fit/-/xterm-addon-fit-0.5.0.tgz#2d51b983b786a97dcd6cde805e700c7f913bc596"
+  integrity sha512-DsS9fqhXHacEmsPxBJZvfj2la30Iz9xk+UKjhQgnYNkrUIN5CYLbw7WEfz117c7+S86S/tpHPfvNxJsF5/G8wQ==
+
+xterm-addon-web-links@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/xterm-addon-web-links/-/xterm-addon-web-links-0.5.1.tgz#73bfa3ed567af98fba947f638bd12093ee2a0bc6"
+  integrity sha512-dBjbOIrCNmxAcUQkkSrKj9BM6yLpmqUpZ9SOCUuZe/sznPl4d8OBZQClK7VcdZ0vf0+5i5Fce2rUUrew/XTZTg==
+
+xterm@^4.18.0:
+  version "4.18.0"
+  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.18.0.tgz#a1f6ab2c330c3918fb094ae5f4c2562987398ea1"
+  integrity sha512-JQoc1S0dti6SQfI0bK1AZvGnAxH4MVw45ZPFSO6FHTInAiau3Ix77fSxNx3mX4eh9OL4AYa8+4C8f5UvnSfppQ==
 
 yaeti@^0.0.6:
   version "0.0.6"
