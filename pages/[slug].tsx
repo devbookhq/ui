@@ -109,9 +109,9 @@ function CodeSnippet({
     setExecState(csState)
   }, [csState])
 
-  function runCode(code: string) {
+  function runCode() {
     setExecState(CodeSnippetExecState.Loading)
-    run(code)
+    run(cs?.code || '')
   }
 
   function stopCode() {
@@ -152,7 +152,7 @@ function CodeSnippet({
             <ExecutionButton
               className="mb-4"
               state={execState}
-              onRunClick={() => runCode(cs.code || '')}
+              onRunClick={runCode}
               onStopClick={stopCode}
             />
 

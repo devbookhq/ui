@@ -1,8 +1,8 @@
+import { CodeSnippetExecState } from '@devbookhq/sdk'
 import Button from 'components/Button'
 import PlayCircleIcon from 'components/icons/PlayCircle'
 import StopIcon from 'components/icons/Stop'
 import SpinnerIcon from 'components/icons/Spinner'
-import { CodeSnippetExecState } from '@devbookhq/sdk'
 
 interface Props {
   className?: string

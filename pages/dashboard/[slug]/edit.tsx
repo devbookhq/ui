@@ -9,7 +9,6 @@ import {
   withAuthRequired,
   supabaseServerClient,
   supabaseClient,
-  withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
 
@@ -180,12 +179,10 @@ function CodeSnippetEditor({
   }, [error])
 
   useEffect(function onSessionStateChange() {
-    console.log('onSessionStateChange', state)
     setExecState(CodeSnippetExecState.Stopped)
   }, [state])
 
   useEffect(function onCSStateChange() {
-    console.log('onCSStateChange', csState)
     setExecState(csState)
   }, [csState])
 
@@ -336,6 +333,7 @@ function CodeSnippetEditor({
             />
             <CSEditorSidebar
               codeSnippet={codeSnippet}
+              latestCode={code}
               env={env}
             />
           </div>

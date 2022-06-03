@@ -41,7 +41,7 @@ export function UserContextProvider(props: Props) {
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
   const [codeSnippets, setCodeSnippets] = useState<CodeSnippet[]>([])
 
-  const getUserDetails = () => supabase.from<UserDetails>('users').select('*').single()
+  const getUserDetails = () => supabase.from<UserDetails>('users').select('*').eq('id', user?.id || '').single()
   const getCodeSnippets = () => supabase.from<CodeSnippet>('code_snippets').select('*').eq('creator_id', user?.id || '')
 
   useEffect(() => {
