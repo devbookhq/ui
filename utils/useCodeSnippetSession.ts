@@ -21,7 +21,7 @@ function useCodeSnippetSession(
    * If the `codeSnippetID` is undefined the session will not be initialized.
    */
   codeSnippetID?: string,
-  saveFSChanges?: boolean,
+  editEnabled?: boolean,
 ) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
@@ -50,7 +50,7 @@ function useCodeSnippetSession(
       onClose() {
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
       },
-      saveFSChanges,
+      editEnabled,
       debug: true,
     })
 
@@ -72,20 +72,20 @@ function useCodeSnippetSession(
     // because they may have been defined as inlined functions and their identity would change with every rerender.
     [
       codeSnippetID,
-      saveFSChanges
+      editEnabled,
     ])
 
   const stop = useCallback(async () => {
     if (!sessionState.session) return
     await sessionState.openingPromise
-    await sessionState.session.codeSnippet()?.stop()
+    await sessionState.session.codeSnippet?.stop()
   }, [sessionState])
 
   const run = useCallback(async (code: string) => {
     if (!sessionState.session) return
     await sessionState.openingPromise
     setCSOutput([])
-    await sessionState.session.codeSnippet()?.run(code)
+    await sessionState.session.codeSnippet?.run(code)
   }, [sessionState])
 
   const getHostname = useCallback(async (port?: number) => {
