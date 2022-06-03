@@ -2,31 +2,26 @@ import Button from 'components/Button'
 import PlayCircleIcon from 'components/icons/PlayCircle'
 import StopIcon from 'components/icons/Stop'
 import SpinnerIcon from 'components/icons/Spinner'
-
-export enum ExecutionState {
-  Running,
-  Stopped,
-  Loading,
-}
+import { CodeSnippetExecState } from '@devbookhq/sdk'
 
 interface Props {
   className?: string
-  state: ExecutionState
-  onClick: (e: any) => void
-  isDisabled?: boolean
+  state: CodeSnippetExecState
+  onRunClick: (e: any) => void
+  onStopClick: (e: any) => void
 }
 
 function ExecutionButton({
   className,
   state,
-  onClick,
-  isDisabled,
+  onRunClick,
+  onStopClick,
 }: Props) {
   let text = 'Loading...'
   let icon = <SpinnerIcon />
 
   switch (state) {
-    case ExecutionState.Stopped:
+    case CodeSnippetExecState.Stopped:
       text = 'Run'
       icon = (
         <PlayCircleIcon className="
@@ -34,22 +29,27 @@ function ExecutionButton({
         "/>
       )
     break
-    case ExecutionState.Running:
+    case CodeSnippetExecState.Running:
       text = 'Stop'
       icon = <StopIcon/>
     break
-    case ExecutionState.Loading:
+    case CodeSnippetExecState.Loading:
       text = 'Loading...'
       icon = <SpinnerIcon/>
     break
   }
 
+  function handleClick(e: any) {
+    if (state === CodeSnippetExecState.Stopped) onRunClick(e)
+    if (state === CodeSnippetExecState.Running) onStopClick(e)
+  }
+
   return (
     <Button
       className={className}
-      isDisabled={isDisabled}
+      isDisabled={state === CodeSnippetExecState.Loading}
       text={text}
-      onClick={onClick}
+      onClick={handleClick}
       icon={icon}
     />
   )

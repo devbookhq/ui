@@ -13,6 +13,11 @@ import {
   CodeSnippet,
 } from 'types'
 
+// Fetches a published code snippet from the DB, if such code snippet exists.
+function getPublishedCodeSnippet(codeSnippetID: string) {
+
+}
+
 interface Props {
   codeSnippet: CodeSnippet
   env: CodeEnvironment
@@ -77,7 +82,7 @@ function CSEditorSidebar({
         ">
           <Title
             size={Title.size.T2}
-            title="Public URL"
+            title="Published URL"
           />
           <a
             href={`http://localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}

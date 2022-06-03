@@ -9,14 +9,14 @@ import {
   supabaseServerClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
+import { CodeSnippetExecState } from '@devbookhq/sdk'
 
 import type {
   CodeSnippet,
 } from 'types'
 import Title from 'components/typography/Title'
-import Text from 'components/typography/Text'
 import CodeEditor from 'components/CodeEditor'
-import ExecutionButton, { ExecutionState } from 'components/ExecutionButton'
+import ExecutionButton from 'components/ExecutionButton'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import Output from 'components/Output'
 
@@ -88,7 +88,7 @@ function CodeSnippet({
   codeSnippet: cs,
 }: Props) {
   const [sizes, setSizes] = useState<number[]>([85, 15])
-  const [execState, setExecState] = useState<ExecutionState>(ExecutionState.Loading)
+  const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
 
   // TODO: Handle error from the server side props.
   // TODO: Handling undefined code snippet.
@@ -101,18 +101,21 @@ function CodeSnippet({
     stop,
   } = useCodeSnippetSession(cs?.id)
 
+  useEffect(function onSessionStateChange() {
+    setExecState(CodeSnippetExecState.Stopped)
+  }, [state])
+
   useEffect(function onCSStateChange() {
-    if (csState === 'running') setExecState(ExecutionState.Running)
-    else if (csState === 'stopped') setExecState(ExecutionState.Stopped)
+    setExecState(csState)
   }, [csState])
 
   function runCode(code: string) {
-    setExecState(ExecutionState.Loading)
+    setExecState(CodeSnippetExecState.Loading)
     run(code)
   }
 
   function stopCode() {
-    setExecState(ExecutionState.Loading)
+    setExecState(CodeSnippetExecState.Loading)
     stop()
   }
 
@@ -149,8 +152,8 @@ function CodeSnippet({
             <ExecutionButton
               className="mb-4"
               state={execState}
-              onClick={csState === 'running' ? stopCode : () => runCode(cs.code || '')}
-              isDisabled={execState === ExecutionState.Loading}
+              onRunClick={() => runCode(cs.code || '')}
+              onStopClick={stopCode}
             />
 
             <div className="

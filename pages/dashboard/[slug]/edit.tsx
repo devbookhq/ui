@@ -11,6 +11,7 @@ import {
   supabaseClient,
   withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
+import { CodeSnippetExecState } from '@devbookhq/sdk'
 
 import {
   CodeEnvironment,
@@ -22,11 +23,10 @@ import CSEditorContent from 'components/CSEditorContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
-import Button from 'components/Button'
 import ButtonLink from 'components/ButtonLink'
 import CSEditorSidebar from 'components/CSEditorSidebar'
-import PlayCircleIcon from 'components/icons/PlayCircle'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
+import ExecutionButton from 'components/ExecutionButton'
 
 export const getServerSideProps = withAuthRequired({
   redirectTo: '/signin',
@@ -150,6 +150,7 @@ function CodeSnippetEditor({
   error,
 }: Props) {
   const router = useRouter()
+  const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
@@ -178,6 +179,26 @@ function CodeSnippetEditor({
     }
   }, [error])
 
+  useEffect(function onSessionStateChange() {
+    console.log('onSessionStateChange', state)
+    setExecState(CodeSnippetExecState.Stopped)
+  }, [state])
+
+  useEffect(function onCSStateChange() {
+    console.log('onCSStateChange', csState)
+    setExecState(csState)
+  }, [csState])
+
+  function runCode() {
+    setExecState(CodeSnippetExecState.Loading)
+    run(code)
+  }
+
+  function stopCode() {
+    setExecState(CodeSnippetExecState.Loading)
+    stop()
+  }
+
   const handleCodeChange = useCallback(async (c: string) => {
     setCode(c)
 
@@ -201,6 +222,7 @@ function CodeSnippetEditor({
     await upsertCodeSnippet(newCS)
   }, [setTitle, codeSnippet])
 
+  const isCSRunning = csState === CodeSnippetExecState.Running
   return (
     <>
       {error && (
@@ -258,18 +280,12 @@ function CodeSnippetEditor({
             items-center
             space-x-2
           ">
-            <Button
-              isDisabled={env.state !== 'Done'}
-              text={csState === 'running' ? 'Stop' : 'Run'}
-              onClick={csState === 'running' ? stop : () => run(code)}
-              icon={
-                <PlayCircleIcon
-                  className="
-                    text-green-500
-                  "
-                />
-              }
+            <ExecutionButton
+              state={execState}
+              onRunClick={runCode}
+              onStopClick={stopCode}
             />
+
             {env.state !== 'Done' &&
               <Title
                 size={Title.size.T3}
@@ -311,7 +327,7 @@ function CodeSnippetEditor({
                 />
               ))}
             </div>
-            < CSEditorContent
+            <CSEditorContent
               code={code}
               output={csOutput}
               title={title}

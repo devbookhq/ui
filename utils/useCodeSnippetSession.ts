@@ -6,7 +6,7 @@ import {
 } from 'react'
 import {
   Session,
-  CodeSnippetState,
+  CodeSnippetExecState,
 } from '@devbookhq/sdk'
 
 export interface CodeSnippetOutput {
@@ -28,7 +28,7 @@ function useCodeSnippetSession(
     openingPromise?: Promise<void>,
     state: SessionState,
   }>({ state: 'closed' })
-  const [csState, setCSState] = useState<CodeSnippetState>('stopped')
+  const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Stopped)
   const [csOutput, setCSOutput] = useState<CodeSnippetOutput[]>([])
 
   useEffect(function initSession() {
@@ -68,7 +68,7 @@ function useCodeSnippetSession(
       newSession.close()
     }
   },
-    // We are excluding handlers from dep array, 
+    // We are excluding handlers from dep array,
     // because they may have been defined as inlined functions and their identity would change with every rerender.
     [
       codeSnippetID,
