@@ -25,7 +25,6 @@ function getPublishedCodeSnippet(codeSnippetID: string) {
   .from<PublishedCodeSnippet>('published_code_snippets')
   .select('*')
   .eq('code_snippet_id', codeSnippetID)
-  .single()
 }
 
 async function upsertPublishedCodeSnippet(cs: NewPublishedCodeSnippet) {
@@ -53,9 +52,14 @@ function CSEditorSidebar({
   useEffect(function getPublishedCS() {
     if (!codeSnippet) return
     getPublishedCodeSnippet(codeSnippet.id)
-    .then(response => {
-      // TODO: Check error
-      setPublishedCS(response.body)
+    .then(({ data, error }) => {
+      if (error) {
+        console.error(error)
+        showErrorNotif(`Error: ${error.message}`)
+      }
+      if (data && data.length > 0) {
+        setPublishedCS(data[0])
+      }
     })
   }, [codeSnippet])
 
