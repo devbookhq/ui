@@ -4,6 +4,8 @@ import type {
 } from 'next'
 import {
   getUser,
+  withApiAuth,
+  withAuthRequired,
   withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import randomstring from 'randomstring'
@@ -104,7 +106,7 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
   }
 }
 
-export default withPageAuth(async (req, res) => {
+export default withApiAuth(async (req, res) => {
   if (req.method === 'PUT') {
     await createCodeItem(req, res)
   } else if (req.method === 'POST') {
