@@ -6,16 +6,13 @@ export interface CodeSnippet {
   code?: string
 }
 
-export interface NewPublishedCodeSnippet {
+export interface PublishedCodeSnippet {
+  // When creating a new published code snippet, the ID and published date is generated automatically.
+  id?: string
+  published_at?: Date
   code_snippet_id: string
   title: string
   code: string
-}
-
-export interface PublishedCodeSnippet extends NewPublishedCodeSnippet {
-  // When creating a new published code snippet, the ID and published date is generated automatically.
-  id: string
-  published_at: Date
 }
 
 export interface CodeEnvironment {

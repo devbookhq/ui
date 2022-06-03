@@ -12,7 +12,7 @@ import Splitter, { SplitDirection } from '@devbookhq/splitter'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
 
 import type {
-  CodeSnippet,
+  PublishedCodeSnippet,
 } from 'types'
 import Title from 'components/typography/Title'
 import CodeEditor from 'components/CodeEditor'
@@ -37,9 +37,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   // Try to get a code snippet from the DB based on a ID in the slug.
   const { data, error } = await supabaseServerClient(ctx)
-    .from<CodeSnippet>('code_snippets')
+    .from<PublishedCodeSnippet>('published_code_snippets')
     .select('*')
-    .eq('id', id)
+    .eq('code_snippet_id', id)
 
 
   if (error) {
@@ -53,34 +53,35 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       notFound: true,
     }
   }
-  const codeSnippet = data[0]
+  const publishedCS = data[0]
 
   // We fetch the code snippet based on the ID at the end of a slug.
   // User can change the prefix however they want but we fix it once the page loads.
   // Example:
   // Correct slug: /code-snippet-name-:someid
   // User goes to: /foobar-:someid
-  if (slug !== codeSnippet.slug) {
+  const csSlug = `${publishedCS.title}-${publishedCS.code_snippet_id}`
+  if (slug !== csSlug) {
     return {
       redirect: {
-        destination: `/${codeSnippet.slug}`,
+        destination: `/${csSlug}`,
       },
       props: {
-        codeSnippet,
+        codeSnippet: publishedCS,
       },
     }
   }
 
   return {
     props: {
-      codeSnippet,
+      codeSnippet: publishedCS,
     },
   }
 }
 
 interface Props {
   error?: string
-  codeSnippet?: CodeSnippet
+  codeSnippet?: PublishedCodeSnippet
 }
 
 function CodeSnippet({

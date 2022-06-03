@@ -6,7 +6,6 @@ import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
 import type {
   PublishedCodeSnippet,
-  NewPublishedCodeSnippet,
   CodeSnippet,
 } from 'types'
 import {
@@ -27,11 +26,12 @@ function getPublishedCodeSnippet(codeSnippetID: string) {
   .eq('code_snippet_id', codeSnippetID)
 }
 
-async function upsertPublishedCodeSnippet(cs: NewPublishedCodeSnippet) {
-  const { error } = await supabaseClient
-    .from<NewPublishedCodeSnippet>('published_code_snippets')
+async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
+  const { body, error } = await supabaseClient
+    .from<PublishedCodeSnippet>('published_code_snippets')
     .upsert(cs)
   if (error) throw error
+  return body[0]
 }
 
 interface Props {
@@ -80,13 +80,16 @@ function CSEditorSidebar({
       if (isPublishing) return
       setIsPublishing(true)
 
-      const pcs: NewPublishedCodeSnippet = {
+      const newPCS: PublishedCodeSnippet = {
+        id: publishedCS?.id,
+        published_at: publishedCS?.published_at,
         code_snippet_id:  codeSnippet.id,
         title: codeSnippet.title,
         code: latestCode,
       }
-      console.log({ published: pcs })
-      //await upsertPublishedCodeSnippet(pcs)
+      const pcs = await upsertPublishedCodeSnippet(newPCS)
+      setPublishedCS(pcs)
+      alert('Code snippet published')
     } catch (err: any) {
       showErrorNotif(`Error: ${err.message}`)
     } finally {
@@ -133,7 +136,7 @@ function CSEditorSidebar({
           flex
           flex-col
           items-start
-          space-y-1
+          space-y-2
         ">
           <div className="
             w-full
@@ -155,7 +158,7 @@ function CSEditorSidebar({
           {publishedCS
           ? (
             <a
-              href={`http://localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}
+              href={`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
               className="
                 max-w-full
                 text-green-500
@@ -166,7 +169,7 @@ function CSEditorSidebar({
                 underline
               "
             >
-              {`localhost:3000/${encodeURIComponent(codeSnippet.slug)}`}
+              {`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
             </a>
           )
           : (
