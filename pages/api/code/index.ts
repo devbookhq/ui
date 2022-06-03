@@ -4,7 +4,7 @@ import type {
 } from 'next'
 import {
   getUser,
-  withAuthRequired,
+  withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import randomstring from 'randomstring'
 // docker-names pkg doesn't have types
@@ -104,7 +104,7 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
   }
 }
 
-export default withAuthRequired(async (req, res) => {
+export default withPageAuth(async (req, res) => {
   if (req.method === 'PUT') {
     await createCodeItem(req, res)
   } else if (req.method === 'POST') {

@@ -1,4 +1,4 @@
-import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
+import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
 import Title from 'components/typography/Title'
 import ButtonLink from 'components/ButtonLink'
@@ -6,7 +6,7 @@ import { useUser } from 'utils/useUser'
 import useAPIKey from 'utils/useAPIKey'
 import CopyIcon from 'components/icons/Copy'
 
-export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
+export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 function Settings() {
   const { user } = useUser()
   const { key, error, isLoading } = useAPIKey(user?.id)
@@ -80,7 +80,7 @@ function Settings() {
             "
             onClick={handleCopyClick}
           >
-            <CopyIcon/>
+            <CopyIcon />
           </div>
         </div>
       </div>

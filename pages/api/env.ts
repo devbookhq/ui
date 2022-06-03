@@ -1,8 +1,8 @@
 import {
-  withAuthRequired,
+  withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 
-export default withAuthRequired(async (req, res) => {
+export default withPageAuth(async (req, res) => {
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST'])
     res.status(405).end('Method Not Allowed')

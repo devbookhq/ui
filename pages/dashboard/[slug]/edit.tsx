@@ -6,7 +6,7 @@ import {
 import { useRouter } from 'next/router'
 import {
   getUser,
-  withAuthRequired,
+  withPageAuth,
   supabaseServerClient,
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
@@ -27,7 +27,7 @@ import CSEditorSidebar from 'components/CSEditorSidebar'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import ExecutionButton from 'components/ExecutionButton'
 
-export const getServerSideProps = withAuthRequired({
+export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
   async getServerSideProps(ctx) {
     try {

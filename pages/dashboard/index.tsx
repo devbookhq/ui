@@ -3,7 +3,7 @@ import {
   useEffect,
 } from 'react'
 import { useRouter } from 'next/router'
-import { withAuthRequired } from '@supabase/supabase-auth-helpers/nextjs'
+import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
 import type { Template } from 'types'
 import { useUser } from 'utils/useUser'
@@ -16,7 +16,7 @@ import SpinnerIcon from 'components/icons/Spinner'
 import NewCodeSnippetModal from 'components/NewCodeSnippetModal'
 import useCodeSnippets from 'utils/useCodeSnippets'
 
-export const getServerSideProps = withAuthRequired({ redirectTo: '/signin' })
+export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 function Dashboard() {
   const router = useRouter()
   const { user } = useUser()
