@@ -1,10 +1,11 @@
 import CodeIcon from 'components/icons/Code'
-import BoxIcon from 'components/icons/Box'
-
+//import BoxIcon from 'components/icons/Box'
+import PackageIcon from 'components/icons/Package'
 
 export enum Tab {
   Code = 'code',
   Env = 'env',
+  Deps = 'deps',
 }
 
 export const tabs = {
@@ -13,9 +14,14 @@ export const tabs = {
     title: 'Code',
     icon: <CodeIcon/>,
   },
-  [Tab.Env]: {
-    key: Tab.Env,
-    title: 'Environment',
-    icon: <BoxIcon/>,
+  [Tab.Deps]: {
+    key: Tab.Deps,
+    title: 'Dependencies',
+    icon: <PackageIcon/>,
   },
+  //[Tab.Env]: {
+  //  key: Tab.Env,
+  //  title: 'Environment',
+  //  icon: <BoxIcon/>,
+  //},
 }

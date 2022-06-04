@@ -1,7 +1,9 @@
 export interface CodeSnippet {
   id: string
   title: string
+  /////////////// REMOVE? ///////////////////////////
   slug: string
+  //////////////////////////////////////////////////
   creator_id: string
   code?: string
 }

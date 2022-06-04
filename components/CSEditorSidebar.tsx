@@ -13,9 +13,7 @@ import {
 } from 'types'
 import SpinnerIcon from 'components/icons/Spinner'
 import Button from 'components/Button'
-import Select from 'components/Select'
 import Title from 'components/typography/Title'
-import Text from 'components/typography/Text'
 import { showErrorNotif } from 'utils/notification'
 
 // Fetches a published code snippet from the DB, if such code snippet exists.
@@ -37,16 +35,16 @@ async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
 interface Props {
   codeSnippet: CodeSnippet
   latestCode: string
-  env: CodeEnvironment
+  latestTitle: string
 }
 
 function CSEditorSidebar({
   codeSnippet,
   latestCode,
-  env,
+  latestTitle,
 }: Props) {
   const [isPublishing, setIsPublishing] = useState(false)
-  const [stateTitle, setStateTitle] = useState('')
+  const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
   const [publishedCS, setPublishedCS] = useState<PublishedCodeSnippet | null>(null)
 
   useEffect(function getPublishedCS() {
@@ -60,19 +58,9 @@ function CSEditorSidebar({
       if (data && data.length > 0) {
         setPublishedCS(data[0])
       }
+      setIsLoadingPublishedCS(false)
     })
   }, [codeSnippet])
-
-  useEffect(function updateStateTitle() {
-    let t = 'Building environment...'
-    switch (env.state) {
-      case 'Failed':
-        t = 'Failed to build environment'
-      case 'Done':
-        t = 'Environment ready'
-    }
-    setStateTitle(t)
-  }, [env])
 
   async function publish() {
     try {
@@ -83,13 +71,13 @@ function CSEditorSidebar({
       const newPCS: PublishedCodeSnippet = {
         id: publishedCS?.id,
         published_at: publishedCS?.published_at,
-        code_snippet_id:  codeSnippet.id,
-        title: codeSnippet.title,
+        code_snippet_id: codeSnippet.id,
+        title: latestTitle,
         code: latestCode,
       }
       const pcs = await upsertPublishedCodeSnippet(newPCS)
       setPublishedCS(pcs)
-      alert('Code snippet published')
+      alert(`Code snippet '${latestTitle}' published`)
     } catch (err: any) {
       showErrorNotif(`Error: ${err.message}`)
     } finally {
@@ -115,22 +103,6 @@ function CSEditorSidebar({
         items-start
         space-y-4
       ">
-        {/*
-        <div className="
-          w-full
-          flex
-          flex-col
-          items-start
-          space-y-1
-        ">
-          <Title
-            size={Title.size.T2}
-            title="Template"
-          />
-          <Select/>
-        </div>
-        */}
-
         <div className="
           w-full
           flex
@@ -155,37 +127,40 @@ function CSEditorSidebar({
               onClick={publish}
             />
           </div>
-          {publishedCS
+          {isLoadingPublishedCS
           ? (
-            <a
-              href={`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
-              className="
-                max-w-full
-                text-green-500
-                overflow-hidden
-                truncate
-                text-sm
-                cursor-pointer
-                underline
-              "
-            >
-              {`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
-            </a>
+            <SpinnerIcon/>
           )
           : (
-            <Title
-              title="Not published yet"
-              size={Title.size.T3}
-              rank={Title.rank.Secondary}
-            />
+            <>
+              {publishedCS
+              ? (
+                <a
+                  href={`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
+                  className="
+                    max-w-full
+                    text-green-500
+                    overflow-hidden
+                    truncate
+                    text-sm
+                    cursor-pointer
+                    underline
+                  "
+                >
+                  {`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
+                </a>
+              )
+              : (
+                <Title
+                  title="Not published yet"
+                  size={Title.size.T3}
+                  rank={Title.rank.Secondary}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
-      <Title
-        size={Title.size.T3}
-        rank={Title.rank.Secondary}
-        title={stateTitle}
-      />
     </div>
   )
 }

@@ -13,19 +13,36 @@ import {
 import { CodeSnippetExecState } from '@devbookhq/sdk'
 
 import {
+  PublishedCodeSnippet,
   CodeEnvironment,
   CodeSnippet,
 } from 'types'
 import { showErrorNotif } from 'utils/notification'
-import { tabs, Tab } from 'utils/newCodeSnippetTabs'
+import { tabs } from 'utils/newCodeSnippetTabs'
 import CSEditorContent from 'components/CSEditorContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import ButtonLink from 'components/ButtonLink'
-import CSEditorSidebar from 'components/CSEditorSidebar'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import ExecutionButton from 'components/ExecutionButton'
+import CSEditorHeader from 'components/CSEditorHeader'
+
+// Fetches a published code snippet from the DB, if such code snippet exists.
+function getPublishedCodeSnippet(codeSnippetID: string) {
+  return supabaseClient
+  .from<PublishedCodeSnippet>('published_code_snippets')
+  .select('*')
+  .eq('code_snippet_id', codeSnippetID)
+}
+
+async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
+  const { body, error } = await supabaseClient
+    .from<PublishedCodeSnippet>('published_code_snippets')
+    .upsert(cs)
+  if (error) throw error
+  return body[0]
+}
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -219,7 +236,6 @@ function CodeSnippetEditor({
     await upsertCodeSnippet(newCS)
   }, [setTitle, codeSnippet])
 
-  const isCSRunning = csState === CodeSnippetExecState.Running
   return (
     <>
       {error && (
@@ -258,19 +274,11 @@ function CodeSnippetEditor({
           flex-col
           space-y-6
         ">
-          <div className="
-            flex
-            items-center
-            space-x-2
-            min-h-[48px]
-          ">
-            <TitleLink
-              href="/dashboard"
-              title="Code Snippets"
-            />
-            <Title title="/" />
-            <Title title="Edit" />
-          </div>
+          <CSEditorHeader
+            slug="slug"
+            onPublishClick={() => {}}
+            isPublishing={false}
+          />
 
           <div className="
             flex
@@ -331,11 +339,13 @@ function CodeSnippetEditor({
               onCodeChange={handleCodeChange}
               onTitleChange={handleTitleChange}
             />
+            {/*
             <CSEditorSidebar
               codeSnippet={codeSnippet}
               latestCode={code}
-              env={env}
+              latestTitle={title}
             />
+            */}
           </div>
         </div>
       )}
