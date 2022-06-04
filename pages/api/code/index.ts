@@ -5,8 +5,6 @@ import type {
 import {
   getUser,
   withApiAuth,
-  withAuthRequired,
-  withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import randomstring from 'randomstring'
 // docker-names pkg doesn't have types
