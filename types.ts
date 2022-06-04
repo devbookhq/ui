@@ -1,3 +1,5 @@
+import type { components } from '@devbookhq/sdk'
+
 export interface CodeSnippet {
   id: string
   title: string
@@ -20,12 +22,12 @@ export interface PublishedCodeSnippet {
 export interface CodeEnvironment {
   id: string
   code_snippet_id: string
-  template: 'Nodejs'
+  template: components['schemas']['Template']
   deps: string[]
-  state: 'None' | 'Building' | 'Failed' | 'Done'
+  state: 'None' | components['schemas']['EnvironmentState']
 }
 
 export interface Template {
   name: string
-  value: string
+  value: components['schemas']['Template']
 }

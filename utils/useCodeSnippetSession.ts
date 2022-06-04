@@ -84,7 +84,6 @@ function useCodeSnippetSession(
   const run = useCallback(async (code: string) => {
     if (!sessionState.session) return
     await sessionState.openingPromise
-    setCSOutput([])
     await sessionState.session.codeSnippet?.run(code)
   }, [sessionState])
 

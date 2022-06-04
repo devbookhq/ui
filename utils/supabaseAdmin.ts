@@ -1,6 +1,7 @@
 import {
   createClient,
 } from '@supabase/supabase-js'
+import { api } from '@devbookhq/sdk'
 
 import type {
   CodeEnvironment,
@@ -30,27 +31,6 @@ async function upsertEnv(env: CodeEnvironment) {
   if (error) throw error
 }
 
-async function registerEnvJob({
-  codeSnippetID,
-  template,
-}: {
-  codeSnippetID: string,
-  template: string,
-}) {
-  const api = 'https://ondevbook.com'
-  const body = JSON.stringify({ codeSnippetID, template: 'nodejs', deps: [], })
-
-  const response = await fetch(`${api}/envs`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body,
-  })
-  if (response.status >= 400) {
-    const data = await response.json()
-    throw new Error(JSON.stringify(data))
-  }
-}
-
 async function deleteCodeSnippet(id: string) {
   const { error } = await supabaseAdmin
     .from<CodeSnippet>('code_snippets')
@@ -59,26 +39,15 @@ async function deleteCodeSnippet(id: string) {
   if (error) throw error
 }
 
-// Deletes an environment based on the code snippet ID.
-async function deleteEnv({ codeSnippetID }: { codeSnippetID: string }) {
-  const api = 'https://ondevbook.com'
-  const body = JSON.stringify({ codeSnippetID })
-
-  const response = await fetch(`${api}/envs`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    body,
-  })
-  if (response.status >= 400) {
-    const data = await response.json()
-    throw new Error(JSON.stringify(data))
-  }
-}
+const publishEnvJob = api.path('/envs/{codeSnippetID}/publish').method('post').create()
+const createEnvJob = api.path('/envs/{codeSnippetID}').method('post').create()
+const deleteEnvJob = api.path('/envs/{codeSnippetID}').method('delete').create()
 
 export {
   upsertCodeSnippet,
-  registerEnvJob,
+  publishEnvJob,
+  createEnvJob,
+  deleteEnvJob,
   upsertEnv,
-  deleteEnv,
   deleteCodeSnippet,
 }

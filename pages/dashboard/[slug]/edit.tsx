@@ -27,13 +27,16 @@ import ButtonLink from 'components/ButtonLink'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import ExecutionButton from 'components/ExecutionButton'
 import CSEditorHeader from 'components/CSEditorHeader'
+import { api } from '@devbookhq/sdk'
+
+const publishEnvJob = api.path('/envs/{codeSnippetID}/publish').method('post').create()
 
 // Fetches a published code snippet from the DB, if such code snippet exists.
 function getPublishedCodeSnippet(codeSnippetID: string) {
   return supabaseClient
-  .from<PublishedCodeSnippet>('published_code_snippets')
-  .select('*')
-  .eq('code_snippet_id', codeSnippetID)
+    .from<PublishedCodeSnippet>('published_code_snippets')
+    .select('*')
+    .eq('code_snippet_id', codeSnippetID)
 }
 
 async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
@@ -187,7 +190,10 @@ function CodeSnippetEditor({
     run,
     state,
     stop,
-  } = useCodeSnippetSession(env.state == 'Done' ? codeSnippet.id : undefined)
+  } = useCodeSnippetSession(
+    env.state == 'Done' ? codeSnippet.id : undefined,
+    true,
+  )
 
   useEffect(function checkForError() {
     if (error) {
@@ -236,6 +242,12 @@ function CodeSnippetEditor({
     await upsertCodeSnippet(newCS)
   }, [setTitle, codeSnippet])
 
+  function handlePublish() {
+    publishEnvJob({
+      codeSnippetID: codeSnippet.id,
+    })
+  }
+
   return (
     <>
       {error && (
@@ -276,7 +288,7 @@ function CodeSnippetEditor({
         ">
           <CSEditorHeader
             slug="slug"
-            onPublishClick={() => {}}
+            onPublishClick={handlePublish}
             isPublishing={false}
           />
 

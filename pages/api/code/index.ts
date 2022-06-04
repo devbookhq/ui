@@ -8,19 +8,19 @@ import {
 } from '@supabase/supabase-auth-helpers/nextjs'
 import randomstring from 'randomstring'
 // docker-names pkg doesn't have types
-const dockerNames: any = require('docker-names')
-
+const dockerNames = require('docker-names')
 
 import type {
   CodeSnippet,
   CodeEnvironment,
+  Template,
 } from 'types'
 import {
   upsertCodeSnippet,
   upsertEnv,
-  registerEnvJob,
   deleteCodeSnippet,
-  deleteEnv,
+  createEnvJob,
+  deleteEnvJob,
 } from 'utils/supabaseAdmin'
 
 interface ErrorRes {
@@ -34,7 +34,7 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
     if (!user) throw new Error('could not get user')
 
     let { template, title }: {
-      template: string,
+      template: Template,
       title: string,
     } = req.body
 
@@ -56,12 +56,16 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
     const env: CodeEnvironment = {
       id: envID,
       code_snippet_id: csID,
-      template: 'Nodejs',
+      template: template.value,
       deps: [],
       state: 'None',
     }
     await upsertEnv(env)
-    await registerEnvJob({ codeSnippetID: codeSnippet.id, template })
+    await createEnvJob({
+      codeSnippetID: codeSnippet.id,
+      template: template.value,
+      deps: [],
+    })
 
     res.status(200).json(codeSnippet)
   } catch (err: any) {
@@ -94,7 +98,7 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
     // Before we delete a code_snippet, we have to delete a code snippet's environment.
     // Then we need to register a Nomad job that deletes an environment files.
     const { codeSnippetID } = req.body as { codeSnippetID: string }
-    await deleteEnv({ codeSnippetID })
+    await deleteEnvJob({ codeSnippetID })
     await deleteCodeSnippet(codeSnippetID)
 
     res.status(200).json({ codeSnippetID })

@@ -42,13 +42,15 @@ function NewCodeSnippetModal({
   isLoading,
 }: Props) {
   const [title, setTitle] = useState('')
-  const [selectedTmpl, setSelectedTmpl] = useState(templates[0])
+  const [selectedTmpl, setSelectedTmpl] = useState(templates.find(t => t.value === 'Nodejs'))
 
   function handleTitleChange(e: any) {
     setTitle(e.target.value)
   }
 
   function handleCreateButtonClick() {
+    if (!selectedTmpl) return
+
     onCreateCodeSnippetClick({
       template: selectedTmpl,
       title,
@@ -93,8 +95,8 @@ function NewCodeSnippetModal({
         </div>
         <Button
           variant={Button.variant.Full}
-          text={isLoading ? 'Creating...' : 'Create Code Snippet' }
-          icon={isLoading ? <SpinnerIcon/> : null}
+          text={isLoading ? 'Creating...' : 'Create Code Snippet'}
+          icon={isLoading ? <SpinnerIcon /> : null}
           isDisabled={isLoading}
           onClick={handleCreateButtonClick}
         />
