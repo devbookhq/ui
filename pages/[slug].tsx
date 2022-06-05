@@ -100,7 +100,9 @@ function CodeSnippet({
     run,
     state,
     stop,
-  } = useCodeSnippetSession(cs?.id)
+  } = useCodeSnippetSession({
+    codeSnippetID: cs?.id,
+  })
 
   useEffect(function onSessionStateChange() {
     setExecState(CodeSnippetExecState.Stopped)
