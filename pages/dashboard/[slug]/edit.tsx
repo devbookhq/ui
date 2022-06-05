@@ -34,7 +34,7 @@ import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import ExecutionButton from 'components/ExecutionButton'
 import CSEditorHeader from 'components/CSEditorHeader'
 
-const deployPublishEnvJob = api.path('/envs/{codeSnippetID}/publish').method('post').create()
+const deployEditedEnvJob = api.path('/envs/{codeSnippetID}').method('patch').create()
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -194,16 +194,16 @@ function CodeSnippetEditor({
   useEffect(function getPublishedCS() {
     if (!codeSnippet) return
     getPublishedCodeSnippet(codeSnippet.id)
-    .then(({ data, error }) => {
-      if (error) {
-        console.error(error)
-        showErrorNotif(`Error: ${error.message}`)
-      }
-      if (data && data.length > 0) {
-        setPublishedCS(data[0])
-      }
-      setIsLoadingPublishedCS(false)
-    })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error)
+          showErrorNotif(`Error: ${error.message}`)
+        }
+        if (data && data.length > 0) {
+          setPublishedCS(data[0])
+        }
+        setIsLoadingPublishedCS(false)
+      })
   }, [codeSnippet])
 
   const handleCodeChange = useCallback(async (c: string) => {
@@ -252,7 +252,7 @@ function CodeSnippetEditor({
         title,
         code,
       }
-      const p1 = deployPublishEnvJob({
+      const p1 = deployEditedEnvJob({
         codeSnippetID: codeSnippet.id,
       })
       const p2 = upsertPublishedCodeSnippet(newPCS)

@@ -83,6 +83,7 @@ function useCodeSnippetSession({
     [
       codeSnippetID,
       persistentEdits,
+      debug,
     ])
 
   const stop = useCallback(async () => {

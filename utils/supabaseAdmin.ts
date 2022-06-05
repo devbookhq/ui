@@ -39,13 +39,11 @@ async function deleteCodeSnippet(id: string) {
   if (error) throw error
 }
 
-const publishEnvJob = api.path('/envs/{codeSnippetID}/publish').method('post').create()
 const createEnvJob = api.path('/envs/{codeSnippetID}').method('post').create()
 const deleteEnvJob = api.path('/envs/{codeSnippetID}').method('delete').create()
 
 export {
   upsertCodeSnippet,
-  publishEnvJob,
   createEnvJob,
   deleteEnvJob,
   upsertEnv,
