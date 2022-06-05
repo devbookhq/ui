@@ -14,6 +14,7 @@ import { CodeSnippetExecState } from '@devbookhq/sdk'
 import type {
   PublishedCodeSnippet,
 } from 'types'
+import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import CodeEditor from 'components/CodeEditor'
 import ExecutionButton from 'components/ExecutionButton'
@@ -81,18 +82,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 interface Props {
   error?: string
-  codeSnippet?: PublishedCodeSnippet
+  publishedCodeSnippet: PublishedCodeSnippet
 }
 
 function CodeSnippet({
   error,
-  codeSnippet: cs,
+  publishedCodeSnippet: pcs,
 }: Props) {
   const [sizes, setSizes] = useState<number[]>([85, 15])
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
-
-  // TODO: Handle error from the server side props.
-  // TODO: Handling undefined code snippet.
 
   const {
     csOutput,
@@ -101,8 +99,14 @@ function CodeSnippet({
     state,
     stop,
   } = useCodeSnippetSession({
-    codeSnippetID: cs?.id,
+    codeSnippetID: pcs.id,
   })
+
+  useEffect(function checkForError() {
+    if (error) {
+      showErrorNotif(`Error: ${error}`)
+    }
+  }, [error])
 
   useEffect(function onSessionStateChange() {
     setExecState(CodeSnippetExecState.Stopped)
@@ -114,7 +118,7 @@ function CodeSnippet({
 
   function runCode() {
     setExecState(CodeSnippetExecState.Loading)
-    run(cs?.code || '')
+    run(pcs.code)
   }
 
   function stopCode() {
@@ -123,82 +127,78 @@ function CodeSnippet({
   }
 
   return (
-    <>
-      {cs && (
+    <div className="
+      flex-1
+      flex
+      flex-col
+      items-start
+    ">
+      <div className="
+        flex
+        flex-col
+        items-start
+        justify-start
+        min-h-[48px]
+        mb-6
+      ">
+        <Title
+          title={pcs.title}
+        />
+      </div>
+
+      <div className="
+        w-full
+        flex-1
+        flex
+        flex-col
+        items-center
+        justify-center
+      ">
+        <ExecutionButton
+          className="mb-4"
+          state={execState}
+          onRunClick={runCode}
+          onStopClick={stopCode}
+        />
+
         <div className="
+          w-full
           flex-1
           flex
           flex-col
-          items-start
+          rounded-lg
+          border
+          border-black-700
         ">
-          <div className="
-            flex
-            flex-col
-            items-start
-            justify-start
-            min-h-[48px]
-            mb-6
-          ">
-            <Title
-              title={cs.title}
-            />
-          </div>
-
-          <div className="
-            w-full
-            flex-1
-            flex
-            flex-col
-            items-center
-            justify-center
-          ">
-            <ExecutionButton
-              className="mb-4"
-              state={execState}
-              onRunClick={runCode}
-              onStopClick={stopCode}
-            />
-
+          <Splitter
+            direction={SplitDirection.Vertical}
+            classes={['flex min-h-0', 'flex min-h-0']}
+            initialSizes={sizes}
+            onResizeFinished={(_, sizes) => setSizes(sizes)}
+          >
             <div className="
-              w-full
+              rounded-t-lg
               flex-1
-              flex
-              flex-col
-              rounded-lg
-              border
-              border-black-700
+              relative
+              overflow-hidden
+              bg-black-800
             ">
-              <Splitter
-                direction={SplitDirection.Vertical}
-                classes={['flex min-h-0', 'flex min-h-0']}
-                initialSizes={sizes}
-                onResizeFinished={(_, sizes) => setSizes(sizes)}
-              >
-                <div className="
-                  rounded-t-lg
-                  flex-1
-                  relative
-                  overflow-hidden
-                  bg-black-800
-                ">
-                  <CodeEditor
-                    isReadOnly
-                    content={cs.code || ''}
-                    className="
-                      absolute
-                      inset-0
-                    "
-                  />
-                </div>
-                <Output
-                  output={csOutput}
-                />
-              </Splitter>
+              <CodeEditor
+                isReadOnly
+                content={pcs.code}
+                className="
+                  absolute
+                  inset-0
+                "
+              />
             </div>
-          </div>
+            <Output
+              output={csOutput}
+            />
+          </Splitter>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   )
 }
 
