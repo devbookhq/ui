@@ -15,6 +15,7 @@ import PlusIcon from 'components/icons/Plus'
 import SpinnerIcon from 'components/icons/Spinner'
 import NewCodeSnippetModal from 'components/NewCodeSnippetModal'
 import useCodeSnippets from 'utils/useCodeSnippets'
+import useAPIKey from 'utils/useAPIKey'
 
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 function Dashboard() {
@@ -22,6 +23,8 @@ function Dashboard() {
   const { user } = useUser()
   const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
   const [isCSModalOpened, setIsCSModalOpened] = useState(false)
+
+  const { key: apiKey } = useAPIKey(user?.id)
 
   const {
     codeSnippets,
@@ -48,7 +51,7 @@ function Dashboard() {
     fetch('/api/code', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ template, title }),
+      body: JSON.stringify({ template, title, apiKey }),
     })
       .then(response => response.json())
       .then((data: any) => {
