@@ -11,6 +11,7 @@ import {
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
+import { api } from '@devbookhq/sdk'
 
 import {
   PublishedCodeSnippet,
@@ -19,6 +20,11 @@ import {
 } from 'types'
 import { showErrorNotif } from 'utils/notification'
 import { tabs } from 'utils/newCodeSnippetTabs'
+import {
+  getPublishedCodeSnippet,
+  upsertPublishedCodeSnippet,
+  upsertCodeSnippet,
+} from 'utils/supabaseClient'
 import CSEditorContent from 'components/CSEditorContent'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
@@ -27,25 +33,8 @@ import ButtonLink from 'components/ButtonLink'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import ExecutionButton from 'components/ExecutionButton'
 import CSEditorHeader from 'components/CSEditorHeader'
-import { api } from '@devbookhq/sdk'
 
-const publishEnvJob = api.path('/envs/{codeSnippetID}/publish').method('post').create()
-
-// Fetches a published code snippet from the DB, if such code snippet exists.
-function getPublishedCodeSnippet(codeSnippetID: string) {
-  return supabaseClient
-    .from<PublishedCodeSnippet>('published_code_snippets')
-    .select('*')
-    .eq('code_snippet_id', codeSnippetID)
-}
-
-async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
-  const { body, error } = await supabaseClient
-    .from<PublishedCodeSnippet>('published_code_snippets')
-    .upsert(cs)
-  if (error) throw error
-  return body[0]
-}
+const deployPublishEnvJob = api.path('/envs/{codeSnippetID}/publish').method('post').create()
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -152,27 +141,30 @@ interface Props {
   error?: string
 }
 
-async function upsertCodeSnippet(cs: CodeSnippet) {
-  const response = await fetch('/api/code', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(cs)
-  })
-  return response.json()
-}
-
 function CodeSnippetEditor({
   codeSnippet,
   env: initialEnv,
   error,
 }: Props) {
   const router = useRouter()
+  const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
+  const {
+    csOutput,
+    csState,
+    run,
+    state,
+    stop,
+  } = useCodeSnippetSession({
+    codeSnippetID: env.state == 'Done' ? codeSnippet.id : undefined,
+    persistentEdits: true,
+    debug: true,
+  })
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
-  const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
+  const [isPublishing, setIsPublishing] = useState(false)
+  const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
+  const [publishedCS, setPublishedCS] = useState<PublishedCodeSnippet | null>(null)
   const currentTab = router.query.tab
 
   useEffect(function updateCodeSnippet() {
@@ -184,16 +176,6 @@ function CodeSnippetEditor({
       .subscribe()
   }, [codeSnippet])
 
-  const {
-    csOutput,
-    csState,
-    run,
-    state,
-    stop,
-  } = useCodeSnippetSession(
-    env.state == 'Done' ? codeSnippet.id : undefined,
-    true,
-  )
 
   useEffect(function checkForError() {
     if (error) {
@@ -209,15 +191,20 @@ function CodeSnippetEditor({
     setExecState(csState)
   }, [csState])
 
-  function runCode() {
-    setExecState(CodeSnippetExecState.Loading)
-    run(code)
-  }
-
-  function stopCode() {
-    setExecState(CodeSnippetExecState.Loading)
-    stop()
-  }
+  useEffect(function getPublishedCS() {
+    if (!codeSnippet) return
+    getPublishedCodeSnippet(codeSnippet.id)
+    .then(({ data, error }) => {
+      if (error) {
+        console.error(error)
+        showErrorNotif(`Error: ${error.message}`)
+      }
+      if (data && data.length > 0) {
+        setPublishedCS(data[0])
+      }
+      setIsLoadingPublishedCS(false)
+    })
+  }, [codeSnippet])
 
   const handleCodeChange = useCallback(async (c: string) => {
     setCode(c)
@@ -242,10 +229,41 @@ function CodeSnippetEditor({
     await upsertCodeSnippet(newCS)
   }, [setTitle, codeSnippet])
 
-  function handlePublish() {
-    publishEnvJob({
-      codeSnippetID: codeSnippet.id,
-    })
+  function runCode() {
+    setExecState(CodeSnippetExecState.Loading)
+    run(code)
+  }
+
+  function stopCode() {
+    setExecState(CodeSnippetExecState.Loading)
+    stop()
+  }
+
+  async function publishCodeSnippet() {
+    try {
+      if (!codeSnippet) throw new Error('Cannot publish code snippet - code snippet is undefined')
+      if (isPublishing) return
+      setIsPublishing(true)
+
+      const newPCS: PublishedCodeSnippet = {
+        id: publishedCS?.id,
+        published_at: publishedCS?.published_at,
+        code_snippet_id: codeSnippet.id,
+        title,
+        code,
+      }
+      const p1 = deployPublishEnvJob({
+        codeSnippetID: codeSnippet.id,
+      })
+      const p2 = upsertPublishedCodeSnippet(newPCS)
+      const [, pcs] = await Promise.all([p1, p2])
+      setPublishedCS(pcs)
+      alert(`Code snippet '${title}' published`)
+    } catch (err: any) {
+      showErrorNotif(`Error: ${err.message}`)
+    } finally {
+      setIsPublishing(false)
+    }
   }
 
   return (
@@ -257,9 +275,7 @@ function CodeSnippetEditor({
           items-center
           text-red
           space-y-16
-
           py-6
-
           w-full
           bg-transparent
           border
@@ -288,8 +304,8 @@ function CodeSnippetEditor({
         ">
           <CSEditorHeader
             slug="slug"
-            onPublishClick={handlePublish}
-            isPublishing={false}
+            onPublishClick={publishCodeSnippet}
+            isPublishing={isPublishing}
           />
 
           <div className="

@@ -16,13 +16,23 @@ export interface CodeSnippetOutput {
 
 export type SessionState = 'open' | 'closed'
 
-function useCodeSnippetSession(
+export interface Opts {
+  codeSnippetID?: string
+  persistentEdits?: boolean
+  debug?: boolean
+}
+
+function useCodeSnippetSession({
   /**
    * If the `codeSnippetID` is undefined the session will not be initialized.
    */
-  codeSnippetID?: string,
-  editEnabled?: boolean,
-) {
+  codeSnippetID,
+  /**
+   * If enabled, the edits to a VM's filesystem will be saved for the next session.
+   */
+  persistentEdits,
+  debug,
+}: Opts) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
     openingPromise?: Promise<void>,
@@ -50,8 +60,8 @@ function useCodeSnippetSession(
       onClose() {
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
       },
-      editEnabled,
-      debug: true,
+      editEnabled: persistentEdits,
+      debug,
     })
 
     const openingPromise = newSession.open()
@@ -72,7 +82,7 @@ function useCodeSnippetSession(
     // because they may have been defined as inlined functions and their identity would change with every rerender.
     [
       codeSnippetID,
-      editEnabled,
+      persistentEdits,
     ])
 
   const stop = useCallback(async () => {
