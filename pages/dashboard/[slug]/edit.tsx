@@ -33,8 +33,9 @@ import ButtonLink from 'components/ButtonLink'
 import useCodeSnippetSession from 'utils/useCodeSnippetSession'
 import ExecutionButton from 'components/ExecutionButton'
 import CSEditorHeader from 'components/CSEditorHeader'
+import useAPIKey from 'utils/useAPIKey'
 
-const deployEditedEnvJob = api.path('/envs/{codeSnippetID}').method('patch').create()
+const deployEditedEnvJob = api.path('/envs/{codeSnippetID}').method('patch').create({ api_key: true })
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -148,6 +149,9 @@ function CodeSnippetEditor({
   error,
 }: Props) {
   const router = useRouter()
+
+  const { key: apiKey } = useAPIKey(codeSnippet.creator_id)
+
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const {
     csOutput,
@@ -159,6 +163,7 @@ function CodeSnippetEditor({
     codeSnippetID: env.state == 'Done' ? codeSnippet.id : undefined,
     persistentEdits: true,
     debug: true,
+    apiKey,
   })
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
@@ -256,6 +261,7 @@ function CodeSnippetEditor({
       }
       const p1 = deployEditedEnvJob({
         codeSnippetID: codeSnippet.id,
+        api_key: apiKey,
       })
       const p2 = upsertPublishedCodeSnippet(newPCS)
       const [, pcs] = await Promise.all([p1, p2])

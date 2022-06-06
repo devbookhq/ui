@@ -20,6 +20,7 @@ export interface Opts {
   codeSnippetID?: string
   persistentEdits?: boolean
   debug?: boolean
+  apiKey?: string
 }
 
 function useCodeSnippetSession({
@@ -32,6 +33,7 @@ function useCodeSnippetSession({
    */
   persistentEdits,
   debug,
+  apiKey,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
@@ -43,8 +45,12 @@ function useCodeSnippetSession({
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
+    if (!apiKey) return
+
+    console.log('apiKey', apiKey)
 
     const newSession = new Session({
+      apiKey,
       id: codeSnippetID,
       codeSnippet: {
         onStateChange(state) {
@@ -84,6 +90,7 @@ function useCodeSnippetSession({
       codeSnippetID,
       persistentEdits,
       debug,
+      apiKey,
     ])
 
   const stop = useCallback(async () => {

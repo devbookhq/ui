@@ -33,9 +33,14 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
     const { user } = await getUser({ req, res })
     if (!user) throw new Error('could not get user')
 
-    let { template, title }: {
+    let {
+      template,
+      title,
+      apiKey,
+    }: {
       template: Template,
       title: string,
+      apiKey: string,
     } = req.body
 
     const csID = randomstring.generate({ length: 12, charset: 'alphanumeric' })
@@ -65,6 +70,7 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
       codeSnippetID: codeSnippet.id,
       template: template.value,
       deps: [],
+      api_key: apiKey,
     })
 
     res.status(200).json(codeSnippet)
@@ -97,8 +103,11 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
   try {
     // Before we delete a code_snippet, we have to delete a code snippet's environment.
     // Then we need to register a Nomad job that deletes an environment files.
-    const { codeSnippetID } = req.body as { codeSnippetID: string }
-    await deleteEnvJob({ codeSnippetID })
+    const {
+      codeSnippetID,
+      apiKey,
+    } = req.body as { codeSnippetID: string, apiKey: string }
+    await deleteEnvJob({ codeSnippetID, api_key: apiKey })
     await deleteCodeSnippet(codeSnippetID)
 
     res.status(200).json({ codeSnippetID })

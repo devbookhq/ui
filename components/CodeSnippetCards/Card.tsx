@@ -10,6 +10,7 @@ import CodeEditor from 'components/CodeEditor'
 import MoreVerticalIcon from 'components/icons/MoreVertical'
 import { showErrorNotif } from 'utils/notification'
 import useOnClickOutside from 'utils/useOnClickOutside'
+import useAPIKey from 'utils/useAPIKey'
 
 export interface Props {
   codeSnippet: CodeSnippet
@@ -30,6 +31,8 @@ function CodeSnippetCard({
     setShowDropdown(false)
   }, [])
 
+  const { key: apiKey } = useAPIKey(cs.creator_id)
+
   const lines = cs.code?.split('\n') || []
   const previewLines = lines.slice(0, previewLength)
 
@@ -45,7 +48,7 @@ function CodeSnippetCard({
   async function handleOnDeleteClick(_: any) {
     if (confirm(`Are you sure you want to delete '${cs.title}'? This cannot be reversed.`)) {
       try {
-        const body = JSON.stringify({ codeSnippetID: cs.id })
+        const body = JSON.stringify({ codeSnippetID: cs.id, apiKey })
         fetch('/api/code', {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
