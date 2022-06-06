@@ -1,5 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
+const codeSnippetIDScriptPlaceholder = '<<DBK_CODE_SNIPPET_ID>>'
+const codeSnippetCodeScriptPlaceholder = '<<DBK_CODE_SNIPPET_CODE>>'
+
+function escapeBacktics(str: string) {
+  return str.replace(/`/g, '\\`')
+}
+
 const db = createClient(
   SUPABASE_URL, // Replace with your project's URL
   SUPABASE_ANON_KEY, // Replace with your project's anon/service_role key
@@ -8,24 +15,29 @@ const db = createClient(
   }
 )
 
+// load from fs/import as a string after it is built, before deploy
+const scriptTemplate = ''
 
-// TODO: Get CS from Supabase
-// TODO: Update the script
-// TODO: Return script
-
-const script = `
-  import Devbook from '@devbookhq/sdk'
-`
-
+function getScriptContent(codeSnippetID: string, codeSnippetCode: string) {
+  return scriptTemplate
+    .replace(codeSnippetIDScriptPlaceholder, escapeBacktics(codeSnippetID))
+    .replace(codeSnippetCodeScriptPlaceholder, escapeBacktics(codeSnippetCode))
+}
 
 export async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url)
   console.log({ p: url.pathname })
   // `pathname` should be in the format of '/embed/:codeSnippetID'
   const splits = url.pathname.split('/') // ['', 'embed', :codeSnippetID]
-  const id = (splits.length && splits.length == 3) ? splits[2] : ''
+  const codeSnippetID = (splits.length && splits.length == 3) ? splits[2] : ''
 
-  const { data, error } = await db.from('code_snippets').select('*').eq('id', id)
+  const { data, error } = await db
+    .from('code_snippets')
+    .select('code')
+    .eq('code_snippet_id', codeSnippetID)
+    .order('published_at')
+    .limit(1)
+    .single()
 
   if (error) {
     console.error(error)
@@ -34,7 +46,10 @@ export async function handleRequest(request: Request): Promise<Response> {
     })
   }
 
-  return new Response(JSON.stringify(data), {
+  const codeSnippetCode = data.code as string
+  const scriptContent = getScriptContent(codeSnippetID, codeSnippetCode)
+
+  return new Response(JSON.stringify(scriptContent), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   })
