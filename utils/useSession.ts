@@ -14,7 +14,8 @@ export interface CodeSnippetOutput {
   value: string
 }
 
-export interface DepsOut {
+export interface DepsOutput {
+  type: 'stderr' | 'stdout'
   line: string
   dep: string
 }
@@ -48,8 +49,8 @@ function useSession({
   const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Stopped)
   const [csOutput, setCSOutput] = useState<CodeSnippetOutput[]>([])
 
-  const [depsStdout, setDepsStdout] = useState<DepsOut[]>([])
-  const [depstStderr, setDepsStderr] = useState<DepsOut[]>([])
+  const [depsOutput, setDepsOutput] = useState<DepsOutput[]>([])
+  const [deps, setDeps] = useState<string[]>([])
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
@@ -68,12 +69,15 @@ function useSession({
         onStdout(stdout) {
           setCSOutput(o => [...o, { type: 'stdout', value: stdout }])
         },
-        onDepsStdout(params) {
-          console.log('Deps Stdout', params)
+        onDepsStdout(stdout) {
+          setDepsOutput(o => [...o, { type: 'stdout', ...stdout }])
         },
-        onDepsStderr(params) {
-          console.log('Deps Stderr', params)
+        onDepsStderr(stderr) {
+          setDepsOutput(o => [...o, { type: 'stderr', ...stderr }])
         },
+        onDepsChange(deps) {
+          setDeps(deps)
+        }
       },
       onClose() {
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
@@ -126,7 +130,19 @@ function useSession({
   const installDep = useCallback(async (dep: string) => {
     if (!sessionState.session) return
     await sessionState.openingPromise
-    await sessionState.session.codeSnippet?.installDep(dep)
+    return sessionState.session.codeSnippet?.installDep(dep)
+  }, [sessionState])
+
+  const uninstallDep = useCallback(async (dep: string) => {
+    if (!sessionState.session) return
+    await sessionState.openingPromise
+    return sessionState.session.codeSnippet?.uninstallDep(dep)
+  }, [sessionState])
+
+  const listDeps = useCallback(async () => {
+    if (!sessionState.session) return
+    await sessionState.openingPromise
+    return sessionState.session.codeSnippet?.listDeps()
   }, [sessionState])
 
   return useMemo(() => ({
@@ -134,19 +150,27 @@ function useSession({
     run,
     getHostname,
     installDep,
+    listDeps,
+    uninstallDep,
     csState,
     terminalManager: sessionState.session?.terminal,
     csOutput,
+    depsOutput,
     state: sessionState.state,
+    deps,
   }), [
     stop,
     getHostname,
     run,
     installDep,
+    uninstallDep,
+    listDeps,
     sessionState.session?.terminal,
     csState,
     csOutput,
+    depsOutput,
     sessionState.state,
+    deps,
   ])
 }
 

@@ -68,14 +68,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         destination: `/${csSlug}`,
       },
       props: {
-        codeSnippet: publishedCS,
+        publishedCodeSnippet: publishedCS,
       },
     }
   }
 
   return {
     props: {
-      codeSnippet: publishedCS,
+      publishedCodeSnippet: publishedCS,
     },
   }
 }
@@ -99,7 +99,7 @@ function CodeSnippet({
     state,
     stop,
   } = useSession({
-    codeSnippetID: pcs.id,
+    codeSnippetID: pcs.code_snippet_id,
   })
 
   useEffect(function checkForError() {

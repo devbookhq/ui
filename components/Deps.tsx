@@ -2,6 +2,7 @@ import {
   useEffect,
   useState,
 } from 'react'
+import cn from 'classnames'
 
 import { useSharedSession } from 'utils/SessionContext'
 import { CodeSnippetOutput } from 'utils/useSession'
@@ -35,32 +36,34 @@ function Deps() {
   const session = useSharedSession()
   if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
 
+  session.getHostname().then(h => console.log('HOSTNAME', h))
+
   const [newDep, setNewDep] = useState('')
   const [isLoadingDeps, setIsLoadingDeps] = useState(true)
   const [deps, setDeps] = useState<string[]>([])
 
   const [jobs, setJobs] = useState<Job[]>([
-    {
-      type: JobType.Install,
-      state: JobState.Loading,
-      dep: 'dep1',
-      output: [{ type: 'stdout', value: 'val1'}, {type: 'stderr', value: 'val2'}],
-      isHidden: true,
-    },
-    {
-      type: JobType.Install,
-      state: JobState.Success,
-      dep: 'dep3',
-      output: [{ type: 'stdout', value: 'val1'}, {type: 'stderr', value: 'val2'}],
-      isHidden: true,
-    },
-    {
-      type: JobType.Install,
-      state: JobState.Fail,
-      dep: 'dep2',
-      output: [{ type: 'stdout', value: 'val1'}, {type: 'stderr', value: 'val2'}],
-      isHidden: true,
-    },
+    //{
+    //  type: JobType.Install,
+    //  state: JobState.Loading,
+    //  dep: 'dep1',
+    //  output: [{ type: 'stdout', value: 'val1'}, {type: 'stderr', value: 'val2'}],
+    //  isHidden: true,
+    //},
+    //{
+    //  type: JobType.Install,
+    //  state: JobState.Success,
+    //  dep: 'dep3',
+    //  output: [{ type: 'stdout', value: 'val1'}, {type: 'stderr', value: 'val2'}],
+    //  isHidden: true,
+    //},
+    //{
+    //  type: JobType.Install,
+    //  state: JobState.Fail,
+    //  dep: 'dep2',
+    //  output: [{ type: 'stdout', value: 'val1'}, {type: 'stderr', value: 'val2'}],
+    //  isHidden: true,
+    //},
   ])
 
   function isJobLoading(dep: string) {
@@ -69,13 +72,11 @@ function Deps() {
   }
 
   function toggleJobLogs(dep: string, isHidden: boolean) {
-    console.log('Toggle job logs', dep)
     const idx = jobs.findIndex(j => j.dep === dep)
-    console.log('found idx', idx)
     if (idx === -1) return
+
     setJobs(current => {
       const j = current[idx]
-      console.log(j)
       current[idx] = {
         ...j,
         isHidden,
@@ -86,76 +87,36 @@ function Deps() {
 
   function installDep(dep: string) {
     if (!dep) return
+
     const newJob: Job = {
       type: JobType.Install,
       state: JobState.Loading,
       dep,
-      output: [{ type: 'stdout', value: 'val1'}, {type: 'stderr', value: 'val2'}],
+      output: [],
       isHidden: true,
     }
     setJobs(j => [...j, newJob])
-    //setJobs(j => j.set(dep, newJob))
+
     session?.installDep(dep)
-    .then(response => {
-      console.log({ response })
+    .then(({ error }) => {
+      setJobs(jobs => {
+        const idx = jobs.findIndex(j => j.dep === dep)
+        if (idx === -1) return jobs
+
+        const j = jobs[idx]
+        jobs[idx] = {
+          ...j,
+          state: error ? JobState.Fail : JobState.Success,
+          output: error ? [...j.output, { type: 'stderr', value: error }] : j.output,
+        }
+        return [...jobs]
+      })
     })
     .catch(console.error)
   }
 
-  //useEffect(() => {
-  //  console.log({ jobs })
-  //  setTimeout(() => {
-  //    setInterval(() => {
-  //      const j = jobs.get('react')
-  //      console.log({ job: j })
-  //      if (!j) return
-
-  //      j.output = [...j.output, {
-  //        type: 'stdout',
-  //        value: 'lorem ipsum',
-  //      }]
-  //      setJobs(jj => jj.set('react', { ...j }))
-  //      //setJobs(jj => {
-  //      //  jj[0] = {...j}
-  //      //  return [...jj]
-  //      //})
-  //      //console.log({ jobs })
-  //    }, 430)
-  //  }, 2000)
-  //  new Promise<void>(resolve => {
-  //  })
-  //}, [jobs])
-  useEffect(() => {
-    if (!jobs.length) return
-    if (jobs[0].output.length > 3) return
-
-    console.log('START', { jobs })
-    setTimeout(() => {
-      setInterval(() => {
-        //setJobs(jobs => {
-        //  const j = jobs[0]
-        //  jobs[0] = {
-        //    ...j,
-        //    output: [...j.output, {
-        //      type: 'stdout',
-        //      value: 'lorem ipsum',
-        //    }]
-        //  }
-        //  j.output = [...j.output, {
-        //    type: 'stdout',
-        //    value: 'lorem ipsum',
-        //  }]
-        //  return [...jobs]
-        //})
-        //console.log({ jobs })
-      }, 430)
-    }, 2000)
-    new Promise<void>(resolve => {
-    })
-  }, [])
-
   function uninstallDep(dep: string) {
-
+    // TODO: Implement
   }
 
   function handleKeyDown(e: any) {
@@ -163,18 +124,38 @@ function Deps() {
     // TODO: Install dep
   }
 
+  // TODO: Useless?
   useEffect(function loadCurrentDeps() {
-    // TODO: Get the list of installed deps
-    new Promise<void>(resolve => {
-      setTimeout(() => {
-        resolve()
-      }, 2000)
+    session.listDeps()
+    .then(deps => {
+      if (deps) {
+        setDeps(deps)
+      }
     })
-    .then(() => {
-      setDeps(['dep1', 'dep2', 'dep3'])
-      setIsLoadingDeps(false)
-    })
+  setIsLoadingDeps(false)
   }, [])
+
+  useEffect(function onSessionDepsChange() {
+    if (!session.deps) return
+    setDeps(session.deps)
+  }, [session.deps])
+
+
+  useEffect(function onDepsStdoutChange() {
+    setJobs(jobs => {
+      session.depsOutput.forEach(out => {
+        const idx = jobs.findIndex(j => j.dep === out.dep)
+        if (idx === -1) return
+
+        const j = jobs[idx]
+        jobs[idx] = {
+          ...j,
+          output: [...j.output, { type: out.type, value: out.line }]
+        }
+      })
+      return [...jobs]
+    })
+  }, [session.depsOutput])
 
   return (
     <div className="
@@ -245,6 +226,13 @@ function Deps() {
               <SpinnerIcon/>
             </div>
           )}
+          {!isLoadingDeps && (!deps || deps.length === 0) && (
+            <Title
+              title="No installed packages"
+              rank={Title.rank.Secondary}
+              size={Title.size.T3}
+            />
+          )}
           {!isLoadingDeps && deps && deps.map(d => (
             <div
               key={d}
@@ -290,21 +278,30 @@ function Deps() {
             title="Jobs"
             size={Title.size.T2}
           />
-          {jobs.map((job) => (
+          {jobs.length === 0 && (
+            <Title
+              title="No running jobs"
+              rank={Title.rank.Secondary}
+              size={Title.size.T3}
+            />
+          )}
+          {jobs.length > 0 && jobs.map((job) => (
             <div
               key={job.dep}
               onClick={() => toggleJobLogs(job.dep, !job.isHidden)}
-              className="
-                p-2
-                w-full
-                flex
-                flex-col
-                items-start
-                justify-center
-                rounded-lg
-                hover:cursor-pointer
-                hover:bg-black-800
-              "
+              className={cn(
+                'p-2',
+                'w-full',
+                'flex',
+                'flex-col',
+                'space-y-2',
+                'items-start',
+                'justify-center',
+                'rounded-lg',
+                'hover:cursor-pointer',
+                'hover:bg-black-800',
+                { 'bg-black-800': !job.isHidden },
+              )}
             >
               <div className="
                 w-full
@@ -315,7 +312,7 @@ function Deps() {
               ">
                 <Title
                   className="font-mono"
-                  title={`${job.type === JobType.Install ? 'Installing' : 'Uninstallin'} ${job.dep}`}
+                  title={`${job.type === JobType.Install ? 'Installing' : 'Uninstalling'} ${job.dep}`}
                   size={Title.size.T3}
                 />
                 {job.state === JobState.Loading && <SpinnerIcon/>}

@@ -50,7 +50,7 @@ function CSEditorHeader({
           )
           : (
             <a
-              href={`localhost:3000/${slug}`}
+              href={`http://localhost:3000/${slug}`}
               className="
               max-w-full
               text-green-500

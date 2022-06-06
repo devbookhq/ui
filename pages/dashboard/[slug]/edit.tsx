@@ -10,6 +10,9 @@ import {
   supabaseServerClient,
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
+import {
+  useUser,
+} from '@supabase/supabase-auth-helpers/react'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
 import { api } from '@devbookhq/sdk'
 
@@ -151,7 +154,9 @@ function CodeSnippetEditor({
 }: Props) {
   const router = useRouter()
 
-  const { key: apiKey } = useAPIKey(codeSnippet.creator_id)
+
+  const { user } = useUser()
+  const { key: apiKey } = useAPIKey(user?.id)
 
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const session = useSession({

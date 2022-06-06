@@ -2,7 +2,9 @@ import {
   useState,
   useRef,
 } from 'react'
-import { useRouter } from 'next/router'
+import {
+  useUser,
+} from '@supabase/supabase-auth-helpers/react'
 
 import type { CodeSnippet } from 'types'
 import Text from 'components/typography/Text'
@@ -31,7 +33,8 @@ function CodeSnippetCard({
     setShowDropdown(false)
   }, [])
 
-  const { key: apiKey } = useAPIKey(cs.creator_id)
+  const { user } = useUser()
+  const { key: apiKey } = useAPIKey(user?.id)
 
   const lines = cs.code?.split('\n') || []
   const previewLines = lines.slice(0, previewLength)
