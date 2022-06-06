@@ -108,13 +108,13 @@ function useSession({
   const stop = useCallback(async () => {
     if (!sessionState.session) return
     await sessionState.openingPromise
-    await sessionState.session.codeSnippet?.stop()
+    return sessionState.session.codeSnippet?.stop()
   }, [sessionState])
 
   const run = useCallback(async (code: string) => {
     if (!sessionState.session) return
     await sessionState.openingPromise
-    await sessionState.session.codeSnippet?.run(code)
+    return sessionState.session.codeSnippet?.run(code)
   }, [sessionState])
 
   const getHostname = useCallback(async (port?: number) => {

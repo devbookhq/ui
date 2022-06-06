@@ -17,7 +17,7 @@ function Navbar() {
         justify-between
         items-center
     ">
-      <span/>
+      <span />
 
       <nav className="
         flex
@@ -26,12 +26,16 @@ function Navbar() {
         space-x-6
       ">
         <TitleLink
-          href="/dashboard"
+          href={{
+            pathname: '/dashboard',
+          }}
           title="Dashboard"
           size={TitleLink.size.T3}
         />
         <TitleLink
-          href="/dashboard/settings"
+          href={{
+            pathname: '/dashboard/settings',
+          }}
           title="Settings"
           size={TitleLink.size.T3}
         />
