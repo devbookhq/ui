@@ -29,7 +29,9 @@ function CSEditorHeader({
         min-h-[48px]
       ">
         <TitleLink
-          href="/dashboard"
+          href={{
+            pathname: '/dashboard',
+          }}
           title="Code Snippets"
         />
         <Title title="/" />
@@ -43,13 +45,13 @@ function CSEditorHeader({
         space-x-4
       ">
         {isLoadingPublishedCS
-        ? (
-          <SpinnerIcon/>
-        )
-        : (
-          <a
-            href={`localhost:3000/${slug}`}
-            className="
+          ? (
+            <SpinnerIcon />
+          )
+          : (
+            <a
+              href={`localhost:3000/${slug}`}
+              className="
               max-w-full
               text-green-500
               overflow-hidden
@@ -58,13 +60,13 @@ function CSEditorHeader({
               cursor-pointer
               underline
             "
-          >
-            {`localhost:3000/${slug}`}
-            {/*{`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}*/}
-          </a>
-        )}
+            >
+              {`localhost:3000/${slug}`}
+              {/*{`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}*/}
+            </a>
+          )}
         <Button
-          icon={isPublishing && <SpinnerIcon/>}
+          icon={isPublishing && <SpinnerIcon />}
           text={isPublishing ? 'Publishing...' : 'Publish'}
           onClick={onPublishClick}
         />
