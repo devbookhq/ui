@@ -76,6 +76,7 @@ export const getServerSideProps = withPageAuth({
       }
 
       const codeSnippet: CodeSnippet | null = csData && csData[0]
+      const csSlug = `${codeSnippet.title}-${codeSnippet.id}`
 
       // Also retrieve the code snippet's environment.
       const { data: env, error: envErr } = await supabaseServerClient(ctx)
@@ -104,12 +105,12 @@ export const getServerSideProps = withPageAuth({
         // Example:
         // Correct slug: /code-snippet-name-:someid
         // User goes to: /foobar-:someid
-        (slug !== codeSnippet.slug) ||
+        (slug !== csSlug) ||
         (!tab || !Object.entries(tabs).find(([_, val]) => val.key === tab))
       ) {
         return {
           redirect: {
-            destination: `/dashboard/${codeSnippet.slug}/edit?tab=${tabs.code.key}`,
+            destination: `/dashboard/${csSlug}/edit?tab=${tabs.code.key}`,
             permanent: false,
           },
           props: {
@@ -166,6 +167,7 @@ function CodeSnippetEditor({
   const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
   const [publishedCS, setPublishedCS] = useState<PublishedCodeSnippet | null>(null)
   const currentTab = router.query.tab
+  const slug = `${title}-${codeSnippet.id}`
 
   useEffect(function updateCodeSnippet() {
     supabaseClient
@@ -303,9 +305,10 @@ function CodeSnippetEditor({
           space-y-6
         ">
           <CSEditorHeader
-            slug="slug"
+            slug={slug}
             onPublishClick={publishCodeSnippet}
             isPublishing={isPublishing}
+            isLoadingPublishedCS={isLoadingPublishedCS}
           />
 
           <div className="
@@ -351,7 +354,7 @@ function CodeSnippetEditor({
               {Object.entries(tabs).map(([_, val]) => (
                 <TitleLink
                   key={val.key}
-                  href={`/dashboard/${encodeURIComponent(codeSnippet.slug)}/edit?tab=${val.key}`}
+                  href={`/dashboard/${encodeURIComponent(slug)}/edit?tab=${val.key}`}
                   title={val.title}
                   icon={val.icon}
                   size={TitleLink.size.T3}

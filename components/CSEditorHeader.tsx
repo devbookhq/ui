@@ -7,12 +7,14 @@ interface Props {
   slug: string
   onPublishClick: (e: any) => void
   isPublishing: boolean
+  isLoadingPublishedCS: boolean
 }
 
 function CSEditorHeader({
   slug,
   onPublishClick,
   isPublishing,
+  isLoadingPublishedCS,
 }: Props) {
   return (
     <div className="
@@ -40,22 +42,27 @@ function CSEditorHeader({
         justify-between
         space-x-4
       ">
-        <a
-          //href={`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}
-          href={`localhost:3000/${slug}`}
-          className="
-            max-w-full
-            text-green-500
-            overflow-hidden
-            truncate
-            text-sm
-            cursor-pointer
-            underline
-          "
-        >
-          {`localhost:3000/${slug}`}
-          {/*{`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}*/}
-        </a>
+        {isLoadingPublishedCS
+        ? (
+          <SpinnerIcon/>
+        )
+        : (
+          <a
+            href={`localhost:3000/${slug}`}
+            className="
+              max-w-full
+              text-green-500
+              overflow-hidden
+              truncate
+              text-sm
+              cursor-pointer
+              underline
+            "
+          >
+            {`localhost:3000/${slug}`}
+            {/*{`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}*/}
+          </a>
+        )}
         <Button
           icon={isPublishing && <SpinnerIcon/>}
           text={isPublishing ? 'Publishing...' : 'Publish'}

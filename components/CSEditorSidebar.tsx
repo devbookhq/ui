@@ -8,13 +8,10 @@ import type {
   PublishedCodeSnippet,
   CodeSnippet,
 } from 'types'
-import {
-  CodeEnvironment,
-} from 'types'
+import { showErrorNotif } from 'utils/notification'
 import SpinnerIcon from 'components/icons/Spinner'
 import Button from 'components/Button'
 import Title from 'components/typography/Title'
-import { showErrorNotif } from 'utils/notification'
 
 // Fetches a published code snippet from the DB, if such code snippet exists.
 function getPublishedCodeSnippet(codeSnippetID: string) {

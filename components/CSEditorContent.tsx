@@ -6,11 +6,11 @@ import { useRouter } from 'next/router'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
 
 import { Tab } from 'utils/newCodeSnippetTabs'
+import { CodeSnippetOutput } from 'utils/useCodeSnippetSession'
 import CodeEditor from 'components/CodeEditor'
 import EditIcon from 'components/icons/Edit'
-import { CodeSnippetOutput } from 'utils/useCodeSnippetSession'
-import Output from './Output'
-
+import Output from 'components/Output'
+import Deps from 'components/Deps'
 
 export interface Props {
   code: string
@@ -99,9 +99,9 @@ function CSEditorContent({
           </Splitter>
         </div>
       )
-    case Tab.Env:
+    case Tab.Deps:
       return (
-        <div />
+        <Deps/>
       )
     default:
       return <p>Unimplemented tab</p>
