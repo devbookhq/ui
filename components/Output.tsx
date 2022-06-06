@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { CodeSnippetOutput } from 'utils/useCodeSnippetSession'
+import { CodeSnippetOutput } from 'utils/useSession'
 
 export interface Props {
   output: CodeSnippetOutput[]

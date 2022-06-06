@@ -12,7 +12,7 @@ import type {
 } from '@devbookhq/sdk'
 
 import useTerminal from 'utils/useTerminal'
-import useCodeSnippetSession from 'utils/useCodeSnippetSession'
+import useSession from 'utils/useSession'
 import Spinner from './icons/Spinner'
 
 export interface Props {

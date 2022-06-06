@@ -30,10 +30,11 @@ import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import ButtonLink from 'components/ButtonLink'
-import useCodeSnippetSession from 'utils/useCodeSnippetSession'
+import useSession from 'utils/useSession'
 import ExecutionButton from 'components/ExecutionButton'
 import CSEditorHeader from 'components/CSEditorHeader'
 import useAPIKey from 'utils/useAPIKey'
+import { SessionProvider } from 'utils/SessionContext'
 
 const deployEditedEnvJob = api.path('/envs/{codeSnippetID}').method('patch').create({ api_key: true })
 
@@ -76,8 +77,8 @@ export const getServerSideProps = withPageAuth({
         }
       }
 
-      const codeSnippet: CodeSnippet | null = csData && csData[0]
-      const csSlug = `${codeSnippet.title}-${codeSnippet.id}`
+      const codeSnippet: CodeSnippet | undefined = csData && csData[0]
+      const csSlug = codeSnippet ? `${codeSnippet.title}-${codeSnippet.id}` : undefined
 
       // Also retrieve the code snippet's environment.
       const { data: env, error: envErr } = await supabaseServerClient(ctx)
@@ -153,18 +154,20 @@ function CodeSnippetEditor({
   const { key: apiKey } = useAPIKey(codeSnippet.creator_id)
 
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
-  const {
-    csOutput,
-    csState,
-    run,
-    state,
-    stop,
-  } = useCodeSnippetSession({
+  const session = useSession({
     codeSnippetID: env.state == 'Done' ? codeSnippet.id : undefined,
     persistentEdits: true,
     debug: true,
     apiKey,
   })
+
+  const {
+    csState,
+    run,
+    state,
+    stop,
+  } = session
+
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
@@ -303,41 +306,42 @@ function CodeSnippetEditor({
           />
         </div>
       )}
-      {!error && (
-        <div className="
+      {!error &&
+        <SessionProvider session={session}>
+          <div className="
           flex-1
           flex
           flex-col
           space-y-6
         ">
-          <CSEditorHeader
-            slug={slug}
-            onPublishClick={publishCodeSnippet}
-            isPublishing={isPublishing}
-            isLoadingPublishedCS={isLoadingPublishedCS}
-          />
+            <CSEditorHeader
+              slug={slug}
+              onPublishClick={publishCodeSnippet}
+              isPublishing={isPublishing}
+              isLoadingPublishedCS={isLoadingPublishedCS}
+            />
 
-          <div className="
+            <div className="
             flex
             items-center
             space-x-2
           ">
-            <ExecutionButton
-              state={execState}
-              onRunClick={runCode}
-              onStopClick={stopCode}
-            />
-
-            {env.state !== 'Done' &&
-              <Title
-                size={Title.size.T3}
-                rank={Title.rank.Secondary}
-                title='Building environment for a new code snippet...'
+              <ExecutionButton
+                state={execState}
+                onRunClick={runCode}
+                onStopClick={stopCode}
               />
-            }
-          </div>
 
-          <div className="
+              {env.state !== 'Done' &&
+                <Title
+                  size={Title.size.T3}
+                  rank={Title.rank.Secondary}
+                  title='Building environment for a new code snippet...'
+                />
+              }
+            </div>
+
+            <div className="
             flex-1
             flex
             flex-col
@@ -346,7 +350,7 @@ function CodeSnippetEditor({
             md:space-y-0
             md:space-x-4
           ">
-            <div className="
+              <div className="
               flex
               flex-row
               items-center
@@ -357,35 +361,41 @@ function CodeSnippetEditor({
               md:space-x-0
               md:space-y-4
             ">
-              {Object.entries(tabs).map(([_, val]) => (
-                <TitleLink
-                  key={val.key}
-                  href={`/dashboard/${encodeURIComponent(slug)}/edit?tab=${val.key}`}
-                  title={val.title}
-                  icon={val.icon}
-                  size={TitleLink.size.T3}
-                  active={val.key === currentTab}
-                  shallow
-                />
-              ))}
-            </div>
-            <CSEditorContent
-              code={code}
-              output={csOutput}
-              title={title}
-              onCodeChange={handleCodeChange}
-              onTitleChange={handleTitleChange}
-            />
-            {/*
+                {Object.values(tabs).map(val => (
+                  <TitleLink
+                    key={val.key}
+                    href={{
+                      pathname: '/dashboard/[slug]/edit',
+                      query: {
+                        slug,
+                        tab: val.key,
+                      },
+                    }}
+                    title={val.title}
+                    icon={val.icon}
+                    size={TitleLink.size.T3}
+                    active={val.key === currentTab}
+                    shallow
+                  />
+                ))}
+              </div>
+              <CSEditorContent
+                code={code}
+                title={title}
+                onCodeChange={handleCodeChange}
+                onTitleChange={handleTitleChange}
+              />
+              {/*
             <CSEditorSidebar
               codeSnippet={codeSnippet}
               latestCode={code}
               latestTitle={title}
             />
             */}
+            </div>
           </div>
-        </div>
-      )}
+        </SessionProvider>
+      }
     </>
   )
 }

@@ -18,7 +18,7 @@ import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import CodeEditor from 'components/CodeEditor'
 import ExecutionButton from 'components/ExecutionButton'
-import useCodeSnippetSession from 'utils/useCodeSnippetSession'
+import useSession from 'utils/useSession'
 import Output from 'components/Output'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -98,7 +98,7 @@ function CodeSnippet({
     run,
     state,
     stop,
-  } = useCodeSnippetSession({
+  } = useSession({
     codeSnippetID: pcs.id,
   })
 

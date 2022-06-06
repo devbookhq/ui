@@ -23,7 +23,7 @@ export interface Opts {
   apiKey?: string
 }
 
-function useCodeSnippetSession({
+function useSession({
   /**
    * If the `codeSnippetID` is undefined the session will not be initialized.
    */
@@ -128,4 +128,4 @@ function useCodeSnippetSession({
   ])
 }
 
-export default useCodeSnippetSession
+export default useSession

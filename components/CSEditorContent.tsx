@@ -6,24 +6,23 @@ import { useRouter } from 'next/router'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
 
 import { Tab } from 'utils/newCodeSnippetTabs'
-import { CodeSnippetOutput } from 'utils/useCodeSnippetSession'
+import { CodeSnippetOutput } from 'utils/useSession'
 import CodeEditor from 'components/CodeEditor'
 import EditIcon from 'components/icons/Edit'
 import Output from 'components/Output'
 import Deps from 'components/Deps'
+import { useSharedSession } from 'utils/SessionContext'
 
 export interface Props {
   code: string
   title: string
   onCodeChange: (code: string) => void
   onTitleChange: (title: string) => void
-  output: CodeSnippetOutput[]
 }
 
 function CSEditorContent({
   code,
   title,
-  output,
   onCodeChange,
   onTitleChange,
 }: Props) {
@@ -31,6 +30,10 @@ function CSEditorContent({
   const tab = router.query.tab
   const inputRef = useRef<HTMLInputElement>(null)
   const [sizes, setSizes] = useState<number[]>([85, 15])
+
+  const session = useSharedSession()
+  // No session context exists
+  if (!session) return null
 
   function handleEditClick() {
     if (!inputRef || !inputRef.current) return
@@ -94,14 +97,14 @@ function CSEditorContent({
               />
             </div>
             <Output
-              output={output}
+              output={session.csOutput}
             />
           </Splitter>
         </div>
       )
     case Tab.Deps:
       return (
-        <Deps/>
+        <Deps />
       )
     default:
       return <p>Unimplemented tab</p>
