@@ -47,8 +47,6 @@ function useCodeSnippetSession({
     if (!codeSnippetID) return
     if (!apiKey) return
 
-    console.log('apiKey', apiKey)
-
     const newSession = new Session({
       apiKey,
       id: codeSnippetID,

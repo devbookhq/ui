@@ -24,9 +24,9 @@ function TitleLink({
   return (
     <Link
       href={href}
+      shallow={shallow}
     >
       <a className="
-
         hover:no-underline
       ">
         <Title
