@@ -6,6 +6,7 @@ import { api } from '@devbookhq/sdk'
 import type {
   CodeEnvironment,
   CodeSnippet,
+  PublishedCodeSnippet,
 } from 'types'
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
@@ -39,6 +40,14 @@ async function deleteCodeSnippet(id: string) {
   if (error) throw error
 }
 
+async function deletePublishedCodeSnippet(codeSnippetID: string) {
+  const { error } = await supabaseAdmin
+    .from<PublishedCodeSnippet>('published_code_snippets')
+    .delete()
+    .eq('code_snippet_id', codeSnippetID)
+  if (error) throw error
+}
+
 const createEnvJob = api.path('/envs/{codeSnippetID}').method('post').create({ api_key: true })
 const deleteEnvJob = api.path('/envs/{codeSnippetID}').method('delete').create({ api_key: true })
 
@@ -48,4 +57,5 @@ export {
   deleteEnvJob,
   upsertEnv,
   deleteCodeSnippet,
+  deletePublishedCodeSnippet,
 }

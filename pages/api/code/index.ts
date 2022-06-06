@@ -19,6 +19,7 @@ import {
   upsertCodeSnippet,
   upsertEnv,
   deleteCodeSnippet,
+  deletePublishedCodeSnippet,
   createEnvJob,
   deleteEnvJob,
 } from 'utils/supabaseAdmin'
@@ -108,6 +109,7 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
       apiKey,
     } = req.body as { codeSnippetID: string, apiKey: string }
     await deleteEnvJob({ codeSnippetID, api_key: apiKey })
+    await deletePublishedCodeSnippet(codeSnippetID)
     await deleteCodeSnippet(codeSnippetID)
 
     res.status(200).json({ codeSnippetID })

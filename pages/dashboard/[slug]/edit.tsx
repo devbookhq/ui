@@ -348,7 +348,7 @@ function CodeSnippetEditor({
             space-y-4
             md:flex-row
             md:space-y-0
-            md:space-x-4
+            md:space-x-8
           ">
               <div className="
               flex

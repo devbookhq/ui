@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
 
 import { Tab } from 'utils/newCodeSnippetTabs'
-import { CodeSnippetOutput } from 'utils/useSession'
 import CodeEditor from 'components/CodeEditor'
 import EditIcon from 'components/icons/Edit'
 import Output from 'components/Output'
@@ -32,8 +31,7 @@ function CSEditorContent({
   const [sizes, setSizes] = useState<number[]>([85, 15])
 
   const session = useSharedSession()
-  // No session context exists
-  if (!session) return null
+  if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
 
   function handleEditClick() {
     if (!inputRef || !inputRef.current) return

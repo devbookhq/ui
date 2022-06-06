@@ -14,6 +14,11 @@ export interface CodeSnippetOutput {
   value: string
 }
 
+export interface DepsOut {
+  line: string
+  dep: string
+}
+
 export type SessionState = 'open' | 'closed'
 
 export interface Opts {
@@ -43,6 +48,9 @@ function useSession({
   const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Stopped)
   const [csOutput, setCSOutput] = useState<CodeSnippetOutput[]>([])
 
+  const [depsStdout, setDepsStdout] = useState<DepsOut[]>([])
+  const [depstStderr, setDepsStderr] = useState<DepsOut[]>([])
+
   useEffect(function initSession() {
     if (!codeSnippetID) return
     if (!apiKey) return
@@ -59,6 +67,12 @@ function useSession({
         },
         onStdout(stdout) {
           setCSOutput(o => [...o, { type: 'stdout', value: stdout }])
+        },
+        onDepsStdout(params) {
+          console.log('Deps Stdout', params)
+        },
+        onDepsStderr(params) {
+          console.log('Deps Stderr', params)
         },
       },
       onClose() {
@@ -109,10 +123,17 @@ function useSession({
     return sessionState.session.getHostname(port)
   }, [sessionState])
 
+  const installDep = useCallback(async (dep: string) => {
+    if (!sessionState.session) return
+    await sessionState.openingPromise
+    await sessionState.session.codeSnippet?.installDep(dep)
+  }, [sessionState])
+
   return useMemo(() => ({
     stop,
     run,
     getHostname,
+    installDep,
     csState,
     terminalManager: sessionState.session?.terminal,
     csOutput,
@@ -121,6 +142,7 @@ function useSession({
     stop,
     getHostname,
     run,
+    installDep,
     sessionState.session?.terminal,
     csState,
     csOutput,
