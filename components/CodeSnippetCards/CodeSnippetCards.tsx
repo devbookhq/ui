@@ -32,6 +32,7 @@ function CodeSnippetCards({
         tab: 'code',
         slug: cs.slug,
       },
+      
     })
   }
 

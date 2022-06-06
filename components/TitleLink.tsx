@@ -1,11 +1,12 @@
 import cn from 'classnames'
 import { ReactNode } from 'react'
 import Link from 'next/link'
+import { UrlObject } from 'url'
 
 import Title, { Size } from 'components/typography/Title'
 
 interface Props {
-  href: string
+  href: UrlObject
   title: string
   icon?: ReactNode
   size?: Size
