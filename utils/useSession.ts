@@ -8,14 +8,8 @@ import {
   Session,
   CodeSnippetExecState,
   OutResponse,
-  OutType,
+  DepOutResponse,
 } from '@devbookhq/sdk'
-
-export interface DepsOutput {
-  type: 'stderr' | 'stdout'
-  line: string
-  dep: string
-}
 
 export type SessionState = 'open' | 'closed'
 
@@ -46,7 +40,7 @@ function useSession({
   const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
 
-  const [depsOutput, setDepsOutput] = useState<DepsOutput[]>([])
+  const [depsOutput, setDepsOutput] = useState<DepOutResponse[]>([])
   const [deps, setDeps] = useState<string[]>()
 
   useEffect(function initSession() {
@@ -67,10 +61,10 @@ function useSession({
           setCSOutput(o => [...o, stdout])
         },
         onDepsStdout(stdout) {
-          setDepsOutput(o => [...o, { type: 'stdout', ...stdout }])
+          setDepsOutput(o => [...o, stdout])
         },
         onDepsStderr(stderr) {
-          setDepsOutput(o => [...o, { type: 'stderr', ...stderr }])
+          setDepsOutput(o => [...o, stderr])
         },
         onDepsChange(deps) {
           setDeps(deps)

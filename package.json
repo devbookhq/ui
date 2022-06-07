@@ -34,7 +34,7 @@
     "@codemirror/state": "^0.19.9",
     "@codemirror/stream-parser": "^0.19.7",
     "@codemirror/view": "^0.19.47",
-    "@devbookhq/sdk": "../devbook-sdk",
+    "@devbookhq/sdk": "^2.2.0",
     "@devbookhq/splitter": "^1.3.2",
     "@headlessui/react": "^1.6.3",
     "@heroicons/react": "^1.0.6",

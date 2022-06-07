@@ -3,9 +3,12 @@ import {
   useState,
 } from 'react'
 import cn from 'classnames'
+import {
+  OutType,
+  DepOutResponse,
+} from '@devbookhq/sdk'
 
 import { useSharedSession } from 'utils/SessionContext'
-import { CodeSnippetOutput } from 'utils/useSession'
 import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
@@ -29,7 +32,7 @@ interface Job {
   type: JobType
   state: JobState
   dep: string
-  output: CodeSnippetOutput[]
+  output: DepOutResponse[]
   isHidden: boolean
 }
 
@@ -113,7 +116,9 @@ function Deps() {
         jobs[idx] = {
           ...j,
           state: error ? JobState.Fail : JobState.Success,
-          output: error ? [...j.output, { type: 'stderr', value: error }] : j.output,
+          output: error
+          ? [...j.output, { type: OutType.Stderr, line: error, timestamp: Date.now() * 1_000_000, dep: j.dep }]
+          : j.output,
         }
         return [...jobs]
       })
@@ -150,7 +155,9 @@ function Deps() {
         jobs[idx] = {
           ...j,
           state: error ? JobState.Fail : JobState.Success,
-          output: error ? [...j.output, { type: 'stderr', value: error }] : j.output,
+          output: error
+          ? [...j.output, { type: OutType.Stderr, line: error, timestamp: Date.now() * 1_000_000, dep: j.dep }]
+          : j.output,
         }
         return [...jobs]
       })
@@ -162,15 +169,18 @@ function Deps() {
     // TODO: Install dep
   }
 
-  // TODO: Useless?
+  // TODO: Useless? We get a notif about current deps
+  // when we subscribe to deps changes
   useEffect(function loadCurrentDeps() {
+    if (!session) return
+
     session.listDeps()
     .then(deps => {
       if (deps) {
         setDeps(deps)
       }
     })
-  }, [])
+  }, [session])
 
   useEffect(function onSessionDepsChange() {
     if (!session.deps) return
@@ -187,7 +197,7 @@ function Deps() {
         const j = jobs[idx]
         jobs[idx] = {
           ...j,
-          output: [...j.output, { type: out.type, value: out.line }]
+          output: [...j.output, out]
         }
       })
       return [...jobs]
