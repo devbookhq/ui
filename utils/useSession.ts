@@ -51,7 +51,7 @@ function useSession({
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
-    if (!apiKey) return
+    if (!apiKey && persistentEdits) return
 
     const newSession = new Session({
       apiKey,
