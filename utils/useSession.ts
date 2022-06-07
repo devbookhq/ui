@@ -7,12 +7,9 @@ import {
 import {
   Session,
   CodeSnippetExecState,
+  OutResponse,
+  OutType,
 } from '@devbookhq/sdk'
-
-export interface CodeSnippetOutput {
-  type: 'stderr' | 'stdout'
-  value: string
-}
 
 export interface DepsOutput {
   type: 'stderr' | 'stdout'
@@ -46,8 +43,8 @@ function useSession({
     openingPromise?: Promise<void>,
     state: SessionState,
   }>({ state: 'closed' })
-  const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Stopped)
-  const [csOutput, setCSOutput] = useState<CodeSnippetOutput[]>([])
+  const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
+  const [csOutput, setCSOutput] = useState<OutResponse[]>([])
 
   const [depsOutput, setDepsOutput] = useState<DepsOutput[]>([])
   const [deps, setDeps] = useState<string[]>()
@@ -64,10 +61,10 @@ function useSession({
           setCSState(state)
         },
         onStderr(stderr) {
-          setCSOutput(o => [...o, { type: 'stderr', value: stderr }])
+          setCSOutput(o => [...o, stderr])
         },
         onStdout(stdout) {
-          setCSOutput(o => [...o, { type: 'stdout', value: stdout }])
+          setCSOutput(o => [...o, stdout])
         },
         onDepsStdout(stdout) {
           setDepsOutput(o => [...o, { type: 'stdout', ...stdout }])
@@ -118,6 +115,7 @@ function useSession({
   const run = useCallback(async (code: string) => {
     if (!sessionState.session) return
     await sessionState.openingPromise
+    setCSOutput([])
     return sessionState.session.codeSnippet?.run(code)
   }, [sessionState])
 

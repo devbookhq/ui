@@ -198,10 +198,6 @@ function CodeSnippetEditor({
     }
   }, [error])
 
-  useEffect(function onSessionStateChange() {
-    setExecState(CodeSnippetExecState.Stopped)
-  }, [state])
-
   useEffect(function onCSStateChange() {
     setExecState(csState)
   }, [csState])
@@ -247,11 +243,19 @@ function CodeSnippetEditor({
   function runCode() {
     setExecState(CodeSnippetExecState.Loading)
     run(code)
+    .then(state => {
+      if (!state) return
+      setExecState(state)
+    })
   }
 
   function stopCode() {
     setExecState(CodeSnippetExecState.Loading)
     stop()
+    .then(state => {
+      if (!state) return
+      setExecState(state)
+    })
   }
 
   async function publishCodeSnippet() {

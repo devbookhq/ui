@@ -1,19 +1,39 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import cn from 'classnames'
-
-import { CodeSnippetOutput } from 'utils/useSession'
+import {
+  OutResponse,
+  OutType,
+} from '@devbookhq/sdk'
 
 export interface Props {
-  output: CodeSnippetOutput[]
+  output: OutResponse[]
   className?: string
 }
+
+function parseTimestamp(t: number) {
+  // Timestamp is in nanoseconds.
+  const mili = t / 1_000_000
+  const d = new Date(mili)
+
+  const min = d.getMinutes()
+  const minStr = min < 10 ? `0${min}` : `${min}`
+
+  const h = d.getHours()
+  const hStr = h < 10 ? `0${h}` : `${h}`
+
+  const sec = d.getSeconds()
+  const secStr = sec < 10 ? `0${sec}` : `${sec}`
+
+  return `${hStr}:${minStr}:${secStr}:${d.getMilliseconds()}`
+}
+
 
 function Output({
   className,
   output,
 }: Props) {
   // We are recreating the output array when we add new outputs, so we can use it as a dependency here.
-  const reversedOutput = useMemo(() => output.slice().reverse(), [output])
+  const sorted = useMemo(() => output.sort((a, b) => b.timestamp - a.timestamp), [output])
 
   return (
     <div className={cn(
@@ -30,12 +50,24 @@ function Output({
       className,
     )}
     >
-      {reversedOutput.map((o, i) =>
+      {sorted.map(o =>
         <div
-          key={i}
-          className={o.type === 'stderr' ? 'text-red-400' : 'text-white-900'}
+          key={o.timestamp}
+          className="
+            flex
+            flex-row
+            items-center
+            space-x-2
+          "
         >
-          {o.value}
+          {/*
+          <span className="text-gray-600">{parseTimestamp(o.timestamp)}</span>
+          */}
+          <span
+            className={o.type === OutType.Stderr ? 'text-red-400' : 'text-white-900'}
+          >
+            {o.line}
+          </span>
         </div>
       )}
     </div>
