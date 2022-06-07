@@ -50,7 +50,7 @@ function useSession({
   const [csOutput, setCSOutput] = useState<CodeSnippetOutput[]>([])
 
   const [depsOutput, setDepsOutput] = useState<DepsOutput[]>([])
-  const [deps, setDeps] = useState<string[]>([])
+  const [deps, setDeps] = useState<string[]>()
 
   useEffect(function initSession() {
     if (!codeSnippetID) return

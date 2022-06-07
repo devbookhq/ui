@@ -6,6 +6,7 @@ import cn from 'classnames'
 
 import { useSharedSession } from 'utils/SessionContext'
 import { CodeSnippetOutput } from 'utils/useSession'
+import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
 import Output from 'components/Output'
@@ -36,12 +37,8 @@ function Deps() {
   const session = useSharedSession()
   if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
 
-  session.getHostname().then(h => console.log('HOSTNAME', h))
-
   const [newDep, setNewDep] = useState('')
-  const [isLoadingDeps, setIsLoadingDeps] = useState(true)
-  const [deps, setDeps] = useState<string[]>([])
-
+  const [deps, setDeps] = useState<string[]>()
   const [jobs, setJobs] = useState<Job[]>([
     //{
     //  type: JobType.Install,
@@ -87,6 +84,12 @@ function Deps() {
 
   function installDep(dep: string) {
     if (!dep) return
+    if (!session) {
+      showErrorNotif('Session is undefined')
+      return
+    }
+
+    setNewDep('')
 
     const newJob: Job = {
       type: JobType.Install,
@@ -112,11 +115,40 @@ function Deps() {
         return [...jobs]
       })
     })
-    .catch(console.error)
+    .catch(showErrorNotif)
   }
 
   function uninstallDep(dep: string) {
-    // TODO: Implement
+    if (!dep) return
+    if (!session) {
+      showErrorNotif('Session is undefined')
+      return
+    }
+
+    const newJob: Job = {
+      type: JobType.Uninstall,
+      state: JobState.Loading,
+      dep,
+      output: [],
+      isHidden: true,
+    }
+    setJobs(j => [...j, newJob])
+
+    session?.uninstallDep(dep)
+    .then(({ error }) => {
+      setJobs(jobs => {
+        const idx = jobs.findIndex(j => j.dep === dep)
+        if (idx === -1) return jobs
+
+        const j = jobs[idx]
+        jobs[idx] = {
+          ...j,
+          state: error ? JobState.Fail : JobState.Success,
+          output: error ? [...j.output, { type: 'stderr', value: error }] : j.output,
+        }
+        return [...jobs]
+      })
+    })
   }
 
   function handleKeyDown(e: any) {
@@ -132,7 +164,6 @@ function Deps() {
         setDeps(deps)
       }
     })
-  setIsLoadingDeps(false)
   }, [])
 
   useEffect(function onSessionDepsChange() {
@@ -216,7 +247,7 @@ function Deps() {
             title="Installed packages"
             size={Title.size.T2}
           />
-          {isLoadingDeps && (
+          {!deps && (
             <div className="
               w-full
               flex
@@ -226,14 +257,14 @@ function Deps() {
               <SpinnerIcon/>
             </div>
           )}
-          {!isLoadingDeps && (!deps || deps.length === 0) && (
+          {deps && deps.length === 0 && (
             <Title
               title="No installed packages"
               rank={Title.rank.Secondary}
               size={Title.size.T3}
             />
           )}
-          {!isLoadingDeps && deps && deps.map(d => (
+          {deps && deps.map(d => (
             <div
               key={d}
               className="
@@ -253,6 +284,7 @@ function Deps() {
                 icon={isJobLoading(d) ? <SpinnerIcon/> : undefined}
                 className="peer"
                 text="Remove"
+                onClick={() => uninstallDep(d)}
               />
               <span className="
                 w-full
