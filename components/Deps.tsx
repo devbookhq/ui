@@ -101,7 +101,10 @@ function Deps() {
     setJobs(j => [...j, newJob])
 
     session?.installDep(dep)
-    .then(({ error }) => {
+    .then(resp => {
+      if (!resp) return
+      const { error } = resp
+
       setJobs(jobs => {
         const idx = jobs.findIndex(j => j.dep === dep)
         if (idx === -1) return jobs
@@ -135,7 +138,10 @@ function Deps() {
     setJobs(j => [...j, newJob])
 
     session?.uninstallDep(dep)
-    .then(({ error }) => {
+    .then(resp => {
+      if (!resp) return
+      const { error } = resp
+
       setJobs(jobs => {
         const idx = jobs.findIndex(j => j.dep === dep)
         if (idx === -1) return jobs
