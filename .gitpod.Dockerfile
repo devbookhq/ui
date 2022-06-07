@@ -20,4 +20,4 @@ RUN bash -c ". .nvm/nvm.sh && nvm install 16.4.0 && nvm use 16.4.0 && nvm alias 
 
 RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
 
-RUN npm i apollo graphql depcheck npm-check-updates -g
+RUN npm i depcheck npm-check-updates -g
