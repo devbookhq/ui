@@ -10,9 +10,6 @@ import {
   supabaseServerClient,
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
-import {
-  useUser,
-} from '@supabase/supabase-auth-helpers/react'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
 import { api } from '@devbookhq/sdk'
 
@@ -36,8 +33,9 @@ import ButtonLink from 'components/ButtonLink'
 import useSession from 'utils/useSession'
 import ExecutionButton from 'components/ExecutionButton'
 import CSEditorHeader from 'components/CSEditorHeader'
-import useAPIKey from 'utils/useAPIKey'
-import { SessionProvider } from 'utils/SessionContext'
+
+import { SharedSessionProvider } from 'utils/useSharedSession'
+import useUserInfo from 'utils/useUserInfo'
 
 const deployEditedEnvJob = api.path('/envs/{codeSnippetID}').method('patch').create({ api_key: true })
 
@@ -154,9 +152,7 @@ function CodeSnippetEditor({
 }: Props) {
   const router = useRouter()
 
-
-  const { user } = useUser()
-  const { key: apiKey } = useAPIKey(user?.id)
+  const { apiKey } = useUserInfo()
 
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const session = useSession({
@@ -243,19 +239,19 @@ function CodeSnippetEditor({
   function runCode() {
     setExecState(CodeSnippetExecState.Loading)
     run(code)
-    .then(state => {
-      if (!state) return
-      setExecState(state)
-    })
+      .then(state => {
+        if (!state) return
+        setExecState(state)
+      })
   }
 
   function stopCode() {
     setExecState(CodeSnippetExecState.Loading)
     stop()
-    .then(state => {
-      if (!state) return
-      setExecState(state)
-    })
+      .then(state => {
+        if (!state) return
+        setExecState(state)
+      })
   }
 
   async function publishCodeSnippet() {
@@ -316,7 +312,7 @@ function CodeSnippetEditor({
         </div>
       )}
       {!error &&
-        <SessionProvider session={session}>
+        <SharedSessionProvider session={session}>
           <div className="
           flex-1
           flex
@@ -403,7 +399,7 @@ function CodeSnippetEditor({
             */}
             </div>
           </div>
-        </SessionProvider>
+        </SharedSessionProvider>
       }
     </>
   )

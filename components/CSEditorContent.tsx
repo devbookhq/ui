@@ -10,7 +10,7 @@ import CodeEditor from 'components/CodeEditor'
 import EditIcon from 'components/icons/Edit'
 import Output from 'components/Output'
 import Deps from 'components/Deps'
-import { useSharedSession } from 'utils/SessionContext'
+import useSharedSession from 'utils/useSharedSession'
 
 export interface Props {
   code: string

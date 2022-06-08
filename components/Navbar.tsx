@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
 
-import { useUser } from 'utils/useUser'
 import TitleLink from 'components/TitleLink'
+import useUserInfo from 'utils/useUserInfo'
 
 function Navbar() {
   const router = useRouter()
-  const { user, userDetails } = useUser()
+  const { user, userDetails } = useUserInfo()
 
   if (!user) return null
 

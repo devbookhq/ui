@@ -4,7 +4,7 @@ import {
 } from 'react'
 import useSession, { Opts as UseSessionOpts } from './useSession'
 
-interface SessionProviderProps {
+interface SharedSessionProviderProps {
   children: React.ReactNode | React.ReactNode[] | null
   opts?: UseSessionOpts
   /**
@@ -13,22 +13,28 @@ interface SessionProviderProps {
   session?: ReturnType<typeof useSession>
 }
 
-export const sessionContext = createContext<ReturnType<typeof useSession> | undefined>(undefined)
+export const sharedSessionContext = createContext<ReturnType<typeof useSession> | undefined>(undefined)
 
-export function SessionProvider({
+export function SharedSessionProvider({
   children,
   opts,
   session: existingSession,
-}: SessionProviderProps) {
+}: SharedSessionProviderProps) {
   const shouldCreateNewSession = !existingSession && !!opts
   const newSession = useSession(shouldCreateNewSession ? opts : {})
 
   const session = shouldCreateNewSession ? newSession : existingSession
   return (
-    <sessionContext.Provider value={session}>
+    <sharedSessionContext.Provider value={session}>
       {children}
-    </sessionContext.Provider>
+    </sharedSessionContext.Provider>
   )
 }
 
-export const useSharedSession = () => useContext(sessionContext)
+export default function useSharedSession() {
+  const ctx = useContext(sharedSessionContext)
+  if (ctx === undefined) {
+    throw new Error('useSharedSession must be used within a SharedSessionContextProvider.')
+  }
+  return ctx
+}

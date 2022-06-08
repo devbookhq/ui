@@ -4,8 +4,14 @@ import {
 } from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-function useAPIKey(userID?: string) {
-  const [key, setKey] = useState('')
+export interface UserDetails {
+  id: string
+  full_name?: string
+  avatar_url?: string
+}
+
+function useUserDetails(userID?: string) {
+  const [details, setDetails] = useState<UserDetails>()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isJobInProcess, setIsJobInProcess] = useState(false)
@@ -18,24 +24,25 @@ function useAPIKey(userID?: string) {
     setIsLoading(true)
 
     supabaseClient
-      .from<{ api_key: string, owner_id: string }>('api_keys')
-      .select('api_key')
-      .eq('owner_id', userID)
+      .from<UserDetails>('users')
+      .select('*')
+      .eq('id', userID)
       .single()
       .then(({ data, error: err }) => {
-        if (data) setKey(data.api_key || '')
+        if (data) setDetails(data)
         if (err) setError(err.message)
         setIsJobInProcess(false)
         setIsLoading(false)
       })
+
   }, [userID])
 
   return {
-    key,
+    details,
     error,
     isLoading,
   }
 }
 
 
-export default useAPIKey
+export default useUserDetails

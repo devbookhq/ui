@@ -2,21 +2,22 @@ import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
 import Title from 'components/typography/Title'
 import ButtonLink from 'components/ButtonLink'
-import { useUser } from 'utils/useUser'
-import useAPIKey from 'utils/useAPIKey'
 import CopyIcon from 'components/icons/Copy'
+import useUserInfo from 'utils/useUserInfo'
 
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 function Settings() {
-  const { user } = useUser()
-  const { key, error, isLoading } = useAPIKey(user?.id)
+
+  const { apiKey } = useUserInfo()
 
   // TODO: Handle loading
   // TODO: Handle error
 
   function handleCopyClick() {
-    navigator.clipboard.writeText(key)
-    // TODO: Show notit that key has been copied
+    if (apiKey) {
+      // TODO: Show notit that key has been copied
+      navigator.clipboard.writeText(apiKey)
+    }
   }
 
   return (
@@ -66,7 +67,7 @@ function Settings() {
               border-black-700
               truncate
             "
-            value={key}
+            value={apiKey}
             readOnly
           />
           <div

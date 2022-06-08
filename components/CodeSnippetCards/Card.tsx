@@ -2,9 +2,6 @@ import {
   useState,
   useRef,
 } from 'react'
-import {
-  useUser,
-} from '@supabase/supabase-auth-helpers/react'
 
 import type { CodeSnippet } from 'types'
 import Text from 'components/typography/Text'
@@ -12,7 +9,7 @@ import CodeEditor from 'components/CodeEditor'
 import MoreVerticalIcon from 'components/icons/MoreVertical'
 import { showErrorNotif } from 'utils/notification'
 import useOnClickOutside from 'utils/useOnClickOutside'
-import useAPIKey from 'utils/useAPIKey'
+import useUserInfo from 'utils/useUserInfo'
 
 export interface Props {
   codeSnippet: CodeSnippet
@@ -33,8 +30,7 @@ function CodeSnippetCard({
     setShowDropdown(false)
   }, [])
 
-  const { user } = useUser()
-  const { key: apiKey } = useAPIKey(user?.id)
+  const { apiKey } = useUserInfo()
 
   const lines = cs.code?.split('\n') || []
   const previewLines = lines.slice(0, previewLength)

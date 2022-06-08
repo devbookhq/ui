@@ -8,7 +8,7 @@ import {
   DepOutResponse,
 } from '@devbookhq/sdk'
 
-import { useSharedSession } from 'utils/SessionContext'
+import useSharedSession from 'utils/useSharedSession'
 import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
@@ -104,26 +104,26 @@ function Deps() {
     setJobs(j => [...j, newJob])
 
     session?.installDep(dep)
-    .then(resp => {
-      if (!resp) return
-      const { error } = resp
+      .then(resp => {
+        if (!resp) return
+        const { error } = resp
 
-      setJobs(jobs => {
-        const idx = jobs.findIndex(j => j.dep === dep)
-        if (idx === -1) return jobs
+        setJobs(jobs => {
+          const idx = jobs.findIndex(j => j.dep === dep)
+          if (idx === -1) return jobs
 
-        const j = jobs[idx]
-        jobs[idx] = {
-          ...j,
-          state: error ? JobState.Fail : JobState.Success,
-          output: error
-          ? [...j.output, { type: OutType.Stderr, line: error, timestamp: Date.now() * 1_000_000, dep: j.dep }]
-          : j.output,
-        }
-        return [...jobs]
+          const j = jobs[idx]
+          jobs[idx] = {
+            ...j,
+            state: error ? JobState.Fail : JobState.Success,
+            output: error
+              ? [...j.output, { type: OutType.Stderr, line: error, timestamp: Date.now() * 1_000_000, dep: j.dep }]
+              : j.output,
+          }
+          return [...jobs]
+        })
       })
-    })
-    .catch(showErrorNotif)
+      .catch(showErrorNotif)
   }
 
   function uninstallDep(dep: string) {
@@ -143,25 +143,25 @@ function Deps() {
     setJobs(j => [...j, newJob])
 
     session?.uninstallDep(dep)
-    .then(resp => {
-      if (!resp) return
-      const { error } = resp
+      .then(resp => {
+        if (!resp) return
+        const { error } = resp
 
-      setJobs(jobs => {
-        const idx = jobs.findIndex(j => j.dep === dep)
-        if (idx === -1) return jobs
+        setJobs(jobs => {
+          const idx = jobs.findIndex(j => j.dep === dep)
+          if (idx === -1) return jobs
 
-        const j = jobs[idx]
-        jobs[idx] = {
-          ...j,
-          state: error ? JobState.Fail : JobState.Success,
-          output: error
-          ? [...j.output, { type: OutType.Stderr, line: error, timestamp: Date.now() * 1_000_000, dep: j.dep }]
-          : j.output,
-        }
-        return [...jobs]
+          const j = jobs[idx]
+          jobs[idx] = {
+            ...j,
+            state: error ? JobState.Fail : JobState.Success,
+            output: error
+              ? [...j.output, { type: OutType.Stderr, line: error, timestamp: Date.now() * 1_000_000, dep: j.dep }]
+              : j.output,
+          }
+          return [...jobs]
+        })
       })
-    })
   }
 
   function handleKeyDown(e: any) {
@@ -175,11 +175,11 @@ function Deps() {
     if (!session) return
 
     session.listDeps()
-    .then(deps => {
-      if (deps) {
-        setDeps(deps)
-      }
-    })
+      .then(deps => {
+        if (deps) {
+          setDeps(deps)
+        }
+      })
   }, [session])
 
   useEffect(function onSessionDepsChange() {
@@ -270,7 +270,7 @@ function Deps() {
               items-center
               justify-center
             ">
-              <SpinnerIcon/>
+              <SpinnerIcon />
             </div>
           )}
           {deps && deps.length === 0 && (
@@ -297,7 +297,7 @@ function Deps() {
             >
               <Button
                 isDisabled={isJobLoading(d)}
-                icon={isJobLoading(d) ? <SpinnerIcon/> : undefined}
+                icon={isJobLoading(d) ? <SpinnerIcon /> : undefined}
                 className="peer"
                 text="Remove"
                 onClick={() => uninstallDep(d)}
@@ -363,9 +363,9 @@ function Deps() {
                   title={`${job.type === JobType.Install ? 'Installing' : 'Uninstalling'} ${job.dep}`}
                   size={Title.size.T3}
                 />
-                {job.state === JobState.Loading && <SpinnerIcon/>}
-                {job.state === JobState.Success && <CheckIcon className="text-green-200"/>}
-                {job.state === JobState.Fail && <CancelIcon className="text-red-400"/>}
+                {job.state === JobState.Loading && <SpinnerIcon />}
+                {job.state === JobState.Success && <CheckIcon className="text-green-200" />}
+                {job.state === JobState.Fail && <CancelIcon className="text-red-400" />}
               </div>
               {!job.isHidden &&
                 <Output

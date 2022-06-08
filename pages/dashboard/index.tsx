@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
 import type { Template } from 'types'
-import { useUser } from 'utils/useUser'
 import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
@@ -15,16 +14,15 @@ import PlusIcon from 'components/icons/Plus'
 import SpinnerIcon from 'components/icons/Spinner'
 import NewCodeSnippetModal from 'components/NewCodeSnippetModal'
 import useCodeSnippets from 'utils/useCodeSnippets'
-import useAPIKey from 'utils/useAPIKey'
+import useUserInfo from 'utils/useUserInfo'
 
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 function Dashboard() {
   const router = useRouter()
-  const { user } = useUser()
   const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
   const [isCSModalOpened, setIsCSModalOpened] = useState(false)
 
-  const { key: apiKey } = useAPIKey(user?.id)
+  const { apiKey, user } = useUserInfo()
 
   const {
     codeSnippets,
