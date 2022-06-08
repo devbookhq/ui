@@ -5,24 +5,29 @@ import cn from 'classnames'
 import Text from 'components/typography/Text'
 import { SelectorIcon } from '@heroicons/react/solid'
 
-const runtimes = [
-  { id: 1, name: 'Node.js' },
-  { id: 2, name: 'Deno' },
-  { id: 3, name: 'Python' },
-  { id: 4, name: 'GoLang' },
-  { id: 6, name: 'JS, HTML, CSS' },
-  { id: 5, name: 'Custom' },
-]
+interface Item {
+  value: string
+  name: string
+}
 
 interface Props {
   wrapperClassName?: string // Only present if `title` is set.
   title?: string
+  items: Item[]
+  value: Item
+  onChange: (i: Item) => void
 }
 
-function SelectEl() {
-  const [selected, setSelected] = useState(runtimes[0])
+function SelectEl({
+  items,
+  value,
+  onChange,
+}: Props) {
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox
+      value={value}
+      onChange={onChange}
+    >
       {({ open }) => (
         <div className={cn(
           'relative',
@@ -46,7 +51,7 @@ function SelectEl() {
           ">
             <Text
               className="block truncate"
-              text={selected.name}
+              text={value.name}
               size={Text.size.S1}
             />
             <span className="
@@ -78,7 +83,7 @@ function SelectEl() {
             border-black-700
             z-50
           ">
-            {runtimes.map((runtime) => (
+            {items.map((item) => (
               <Listbox.Option
                 className="
                   relative
@@ -90,14 +95,14 @@ function SelectEl() {
                   hover:bg-black-700
                   text-left
                 "
-                key={runtime.id}
-                value={runtime}
+                key={item.value}
+                value={item}
                 disabled={false}
               >
                 <Text
                   className="block truncate"
                   size={Text.size.S1}
-                  text={runtime.name}
+                  text={item.name}
                 />
               </Listbox.Option>
             ))}
@@ -109,7 +114,13 @@ function SelectEl() {
 }
 
 
-function Select({ wrapperClassName, title }: Props) {
+function Select({
+  wrapperClassName,
+  title,
+  items,
+  value,
+  onChange,
+}: Props) {
   return (
     <>
       {title
@@ -127,11 +138,19 @@ function Select({ wrapperClassName, title }: Props) {
           ">
             {title}
           </span>
-          <SelectEl/>
+          <SelectEl
+            items={items}
+            value={value}
+            onChange={onChange}
+          />
         </div>
       )
       : (
-        <SelectEl/>
+        <SelectEl
+          items={items}
+          value={value}
+          onChange={onChange}
+        />
       )}
     </>
   )

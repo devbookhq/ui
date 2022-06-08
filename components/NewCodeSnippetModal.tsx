@@ -9,31 +9,17 @@ import Select from 'components/Select'
 import Input from 'components/Input'
 import SpinnerIcon from 'components/icons/Spinner'
 
+const templates: Template[] = [
+  { name: 'Node.js', value: 'Nodejs' },
+  { name: 'Go', value: 'Go' },
+]
+
 interface Props {
   isOpen: boolean
   onClose: () => void
   onCreateCodeSnippetClick: ({ template, title }: { template: Template, title: string }) => void
   isLoading: boolean
 }
-
-const templates: Template[] = [
-  {
-    name: 'Bash',
-    value: 'Bash',
-  },
-  {
-    name: 'Go',
-    value: 'Golang',
-  },
-  {
-    name: 'NodeJS',
-    value: 'Nodejs',
-  },
-  {
-    name: 'Python',
-    value: 'Python',
-  },
-]
 
 function NewCodeSnippetModal({
   isOpen,
@@ -42,7 +28,8 @@ function NewCodeSnippetModal({
   isLoading,
 }: Props) {
   const [title, setTitle] = useState('')
-  const [selectedTmpl, setSelectedTmpl] = useState(templates.find(t => t.value === 'Nodejs'))
+  // TODO: allow selecting templates
+  const [selectedTmpl, setSelectedTmpl] = useState(templates[0])
 
   function handleTitleChange(e: any) {
     setTitle(e.target.value)
@@ -91,6 +78,9 @@ function NewCodeSnippetModal({
           <Select
             wrapperClassName="w-full"
             title="Template"
+            items={templates}
+            value={selectedTmpl}
+            onChange={i => setSelectedTmpl({ name: i.name, value: i.value as any })}
           />
         </div>
         <Button
