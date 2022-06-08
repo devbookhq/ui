@@ -156,7 +156,7 @@ function CodeSnippetEditor({
 
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const session = useSession({
-    codeSnippetID: env.state == 'Done' ? codeSnippet.id : undefined,
+    codeSnippetID: env.state !== 'None' ? codeSnippet.id : undefined,
     persistentEdits: true,
     debug: true,
     apiKey,
