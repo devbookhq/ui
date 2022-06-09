@@ -4,7 +4,6 @@ import type {
 } from 'next'
 import {
   getUser,
-  withApiAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import randomstring from 'randomstring'
 // docker-names pkg doesn't have types
@@ -16,6 +15,7 @@ import type {
   Template,
 } from 'types'
 import {
+  getAPIKeyInfo,
   upsertCodeSnippet,
   upsertEnv,
   deleteCodeSnippet,
@@ -29,19 +29,26 @@ interface ErrorRes {
   message: string
 }
 
+async function validateAPIKey(apiKey?: string) {
+  if (!apiKey) throw new Error('API key not specified')
+  const data = await getAPIKeyInfo(apiKey)
+  if (!data) throw new Error('Failed to retrieve the API key owner')
+  return data.owner_id
+}
+
 async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
-    const { user } = await getUser({ req, res })
-    if (!user) throw new Error('could not get user')
+    const { apiKey }: { apiKey: string } = req.body
+    const userID = await validateAPIKey(apiKey)
 
     let {
       template,
       title,
-      apiKey,
+      deps,
     }: {
-      template: Template,
+      template: Template['value'],
       title: string,
-      apiKey: string,
+      deps?: string[],
     } = req.body
 
     const csID = randomstring.generate({ length: 12, charset: 'alphanumeric' })
@@ -52,7 +59,7 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
       id: csID,
       title,
       slug,
-      creator_id: user.id,
+      creator_id: userID,
       code: '',
     }
 
@@ -62,14 +69,14 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
     const env: CodeEnvironment = {
       id: envID,
       code_snippet_id: csID,
-      template: template.value,
-      deps: [],
+      template,
+      deps: deps ?? [],
       state: 'None',
     }
     await upsertEnv(env)
     await createEnvJob({
       codeSnippetID: codeSnippet.id,
-      template: template.value,
+      template,
       deps: [],
       api_key: apiKey,
     })
@@ -83,11 +90,11 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
 
 async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
-    const cs = req.body as CodeSnippet
-    const { user } = await getUser({ req, res })
-    if (!user) throw new Error('could not get user')
+    const { apiKey }: { apiKey: string } = req.body
+    const userID = await validateAPIKey(apiKey)
 
-    if (user.id !== cs.creator_id) {
+    const cs = req.body as CodeSnippet
+    if (userID !== cs.creator_id) {
       res.status(405).end('Not allowed - user does not have write access')
       return
     }
@@ -108,6 +115,8 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
       codeSnippetID,
       apiKey,
     } = req.body as { codeSnippetID: string, apiKey: string }
+    await validateAPIKey(apiKey)
+
     await deleteEnvJob({ codeSnippetID, api_key: apiKey })
     await deletePublishedCodeSnippet(codeSnippetID)
     await deleteCodeSnippet(codeSnippetID)
@@ -119,7 +128,7 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
   }
 }
 
-export default withApiAuth(async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {
     await createCodeItem(req, res)
   } else if (req.method === 'POST') {
@@ -130,4 +139,4 @@ export default withApiAuth(async (req, res) => {
     res.setHeader('Allow', 'PUT, POST, DELETE')
     res.status(405).end('Method Not Allowed')
   }
-})
+}

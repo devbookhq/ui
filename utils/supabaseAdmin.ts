@@ -16,6 +16,17 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 )
 
+async function getAPIKeyInfo(apiKey: string) {
+  const { data, error } = await supabaseAdmin
+  .from<{ api_key: string, owner_id: string }>('api_keys')
+  .select('*')
+  .eq('api_key', apiKey)
+  .single()
+
+  if (error) throw error
+  return data
+}
+
 async function upsertCodeSnippet(cs: CodeSnippet) {
   const { error } = await supabaseAdmin
     .from<CodeSnippet>('code_snippets')
@@ -58,4 +69,5 @@ export {
   upsertEnv,
   deleteCodeSnippet,
   deletePublishedCodeSnippet,
+  getAPIKeyInfo,
 }

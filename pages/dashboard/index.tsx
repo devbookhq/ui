@@ -49,7 +49,7 @@ function Dashboard() {
     fetch('/api/code', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ template, title, apiKey }),
+      body: JSON.stringify({ template: template.value, title, apiKey }),
     })
       .then(response => response.json())
       .then((data: any) => {
