@@ -150,33 +150,43 @@ function CodeSnippetEditor({
   env: initialEnv,
   error,
 }: Props) {
-  const router = useRouter()
-
-  const { apiKey } = useUserInfo()
-
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
-  const session = useSession({
-    codeSnippetID: env.state === 'Done' ? codeSnippet.id : undefined,
-    persistentEdits: true,
-    debug: true,
-    apiKey,
-  })
-
-  const {
-    csState,
-    run,
-    state,
-    stop,
-  } = session
-
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
   const [title, setTitle] = useState(codeSnippet.title)
   const [isPublishing, setIsPublishing] = useState(false)
   const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
   const [publishedCS, setPublishedCS] = useState<PublishedCodeSnippet | null>(null)
+
+  const router = useRouter()
+
+  const { apiKey } = useUserInfo()
+  const session = useSession({
+    codeSnippetID: codeSnippet.id,
+    persistentEdits: true,
+    debug: true,
+    apiKey,
+    manualOpen: true,
+  })
+
+  const {
+    csState,
+    run,
+    stop,
+    open,
+  } = session
+
   const currentTab = router.query.tab
   const slug = `${title}-${codeSnippet.id}`
+
+  useEffect(function openSession() {
+    if (env.state === 'Done') {
+      open?.()
+    }
+  }, [
+    open,
+    env.state,
+  ])
 
   useEffect(function updateCodeSnippet() {
     supabaseClient

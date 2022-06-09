@@ -11,13 +11,14 @@ import {
   DepOutResponse,
 } from '@devbookhq/sdk'
 
-export type SessionState = 'none' | 'open' | 'closed'
+export type SessionState = 'open' | 'closed'
 
 export interface Opts {
   codeSnippetID?: string
   persistentEdits?: boolean
   debug?: boolean
   apiKey?: string
+  manualOpen?: boolean
 }
 
 function useSession({
@@ -31,28 +32,24 @@ function useSession({
   persistentEdits,
   debug,
   apiKey,
+  manualOpen = false,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
-    openingPromise?: Promise<void>,
     state: SessionState,
     id?: string,
-  }>({ state: 'none' })
+    open?: () => Promise<void>,
+  }>({ state: 'closed' })
+
   const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
 
   const [depsOutput, setDepsOutput] = useState<DepOutResponse[]>([])
   const [deps, setDeps] = useState<string[]>()
 
-  const shouldInitializeCodeSnippet =
-    sessionState.state === 'none'
-    && codeSnippetID !== undefined
-    && sessionState.id !== codeSnippetID
-
   useEffect(function initSession() {
-    if (!shouldInitializeCodeSnippet) return
     if (!codeSnippetID) return
-    if (!apiKey && persistentEdits) return
+    if (persistentEdits && !apiKey) return
 
     const newSession = new Session({
       apiKey,
@@ -84,64 +81,62 @@ function useSession({
       debug,
     })
 
-    const openingPromise = newSession.open()
-      .then(() => {
+    const open = async () => {
+      try {
+        await newSession.open()
         setSessionState(s => s.session === newSession ? { ...s, state: 'open' } : s)
-      })
-      .catch(err => {
-        console.error(err)
-      })
+      } catch (e) {
+      }
+    }
 
-    setSessionState({ session: newSession, state: 'closed', openingPromise, id: codeSnippetID })
+    if (manualOpen) {
+      setSessionState({ session: newSession, state: 'closed', id: codeSnippetID, open })
+    } else {
+      setSessionState({ session: newSession, state: 'closed', id: codeSnippetID })
+      open()
+    }
 
     return () => {
-      setSessionState(s => s.session === newSession ? { state: 'none' } : s)
       newSession.close()
     }
   },
-    // The codeSnippetID is intentionally missing - we instead use 'shouldInitializeCodeSnippet' to trigger the useEffect at the right time
     [
-      shouldInitializeCodeSnippet,
+      codeSnippetID,
       persistentEdits,
       debug,
       apiKey,
+      manualOpen,
     ])
 
   const stop = useCallback(async () => {
-    if (!sessionState.session) return
-    await sessionState.openingPromise
-    return sessionState.session.codeSnippet?.stop()
+    if (sessionState.state !== 'open') return
+    return sessionState.session?.codeSnippet?.stop()
   }, [sessionState])
 
   const run = useCallback(async (code: string) => {
-    if (!sessionState.session) return
-    await sessionState.openingPromise
+    if (sessionState.state !== 'open') return
     setCSOutput([])
-    return sessionState.session.codeSnippet?.run(code)
+    return sessionState.session?.codeSnippet?.run(code)
   }, [sessionState])
 
   const getHostname = useCallback(async (port?: number) => {
-    if (!sessionState.session) return
-    await sessionState.openingPromise
-    return sessionState.session.getHostname(port)
+    if (sessionState.state !== 'open') return
+    return sessionState.session?.getHostname(port)
   }, [sessionState])
 
   const installDep = useCallback(async (dep: string) => {
-    if (!sessionState.session) return
-    await sessionState.openingPromise
-    return sessionState.session.codeSnippet?.installDep(dep)
+    if (sessionState.state !== 'open') return
+    return sessionState.session?.codeSnippet?.installDep(dep)
   }, [sessionState])
 
   const uninstallDep = useCallback(async (dep: string) => {
-    if (!sessionState.session) return
-    await sessionState.openingPromise
-    return sessionState.session.codeSnippet?.uninstallDep(dep)
+    if (sessionState.state !== 'open') return
+    return sessionState.session?.codeSnippet?.uninstallDep(dep)
   }, [sessionState])
 
   const listDeps = useCallback(async () => {
-    if (!sessionState.session) return
-    await sessionState.openingPromise
-    return sessionState.session.codeSnippet?.listDeps()
+    if (sessionState.state !== 'open') return
+    return sessionState.session?.codeSnippet?.listDeps()
   }, [sessionState])
 
   return useMemo(() => ({
@@ -155,6 +150,7 @@ function useSession({
     terminalManager: sessionState.session?.terminal,
     csOutput,
     depsOutput,
+    open: sessionState.open,
     state: sessionState.state,
     deps,
   }), [
@@ -167,6 +163,7 @@ function useSession({
     sessionState.session?.terminal,
     csState,
     csOutput,
+    sessionState.open,
     depsOutput,
     sessionState.state,
     deps,
