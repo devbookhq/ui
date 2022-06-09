@@ -1,3 +1,6 @@
+import {
+  PublishedCodeSnippet,
+} from 'types'
 import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
@@ -8,6 +11,7 @@ interface Props {
   onPublishClick: (e: any) => void
   isPublishing: boolean
   isLoadingPublishedCS: boolean
+  publishedCS?: PublishedCodeSnippet
 }
 
 function CSEditorHeader({
@@ -15,6 +19,7 @@ function CSEditorHeader({
   onPublishClick,
   isPublishing,
   isLoadingPublishedCS,
+  publishedCS,
 }: Props) {
   return (
     <div className="
@@ -48,22 +53,31 @@ function CSEditorHeader({
           ? (
             <SpinnerIcon />
           )
-          : (
-            <a
-              href={`http://localhost:3000/${slug}`}
-              className="
-              max-w-full
-              text-green-500
-              overflow-hidden
-              truncate
-              text-sm
-              cursor-pointer
-              underline
-            "
-            >
-              {`localhost:3000/${slug}`}
-              {/*{`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}*/}
-            </a>
+          : (publishedCS
+            ? (
+              <a
+                href={`http://localhost:3000/${slug}`}
+                className="
+                max-w-full
+                text-green-500
+                overflow-hidden
+                truncate
+                text-sm
+                cursor-pointer
+                underline
+              "
+              >
+                {`localhost:3000/${slug}`}
+                {/*{`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}*/}
+              </a>
+            )
+            : (
+              <Title
+                title="Not published yet"
+                size={Title.size.T3}
+                rank={Title.rank.Secondary}
+              />
+            )
           )}
         <Button
           icon={isPublishing && <SpinnerIcon />}

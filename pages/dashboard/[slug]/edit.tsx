@@ -165,7 +165,6 @@ function CodeSnippetEditor({
   const {
     csState,
     run,
-    state,
     stop,
   } = session
 
@@ -174,7 +173,7 @@ function CodeSnippetEditor({
   const [title, setTitle] = useState(codeSnippet.title)
   const [isPublishing, setIsPublishing] = useState(false)
   const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
-  const [publishedCS, setPublishedCS] = useState<PublishedCodeSnippet | null>(null)
+  const [publishedCS, setPublishedCS] = useState<PublishedCodeSnippet>()
   const currentTab = router.query.tab
   const slug = `${title}-${codeSnippet.id}`
 
@@ -186,7 +185,6 @@ function CodeSnippetEditor({
       })
       .subscribe()
   }, [codeSnippet])
-
 
   useEffect(function checkForError() {
     if (error) {
@@ -273,6 +271,7 @@ function CodeSnippetEditor({
       })
       const p2 = upsertPublishedCodeSnippet(newPCS)
       const [, pcs] = await Promise.all([p1, p2])
+      console.log('published CS', pcs)
       setPublishedCS(pcs)
       alert(`Code snippet '${title}' published`)
     } catch (err: any) {
@@ -324,6 +323,7 @@ function CodeSnippetEditor({
               onPublishClick={publishCodeSnippet}
               isPublishing={isPublishing}
               isLoadingPublishedCS={isLoadingPublishedCS}
+              publishedCS={publishedCS}
             />
 
             <div className="
