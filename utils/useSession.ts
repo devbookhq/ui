@@ -11,7 +11,7 @@ import {
   DepOutResponse,
 } from '@devbookhq/sdk'
 
-export type SessionState = 'open' | 'closed'
+export type SessionState = 'none' | 'open' | 'closed'
 
 export interface Opts {
   codeSnippetID?: string
@@ -36,14 +36,21 @@ function useSession({
     session?: Session,
     openingPromise?: Promise<void>,
     state: SessionState,
-  }>({ state: 'closed' })
+    id?: string,
+  }>({ state: 'none' })
   const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
 
   const [depsOutput, setDepsOutput] = useState<DepOutResponse[]>([])
   const [deps, setDeps] = useState<string[]>()
 
+  const shouldInitializeCodeSnippet =
+    sessionState.state === 'none'
+    && codeSnippetID !== undefined
+    && sessionState.id !== codeSnippetID
+
   useEffect(function initSession() {
+    if (!shouldInitializeCodeSnippet) return
     if (!codeSnippetID) return
     if (!apiKey && persistentEdits) return
 
@@ -85,16 +92,16 @@ function useSession({
         console.error(err)
       })
 
-    setSessionState({ session: newSession, state: 'closed', openingPromise })
+    setSessionState({ session: newSession, state: 'closed', openingPromise, id: codeSnippetID })
 
     return () => {
+      setSessionState(s => s.session === newSession ? { state: 'none' } : s)
       newSession.close()
     }
   },
-    // We are excluding handlers from dep array,
-    // because they may have been defined as inlined functions and their identity would change with every rerender.
+    // The codeSnippetID is intentionally missing - we instead use 'shouldInitializeCodeSnippet' to trigger the useEffect at the right time
     [
-      codeSnippetID,
+      shouldInitializeCodeSnippet,
       persistentEdits,
       debug,
       apiKey,
