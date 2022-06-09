@@ -23,7 +23,6 @@ import Output from 'components/Output'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = ctx.query.slug as string | undefined
-  console.log({ slug })
   if (!slug) {
     return {
       notFound: true,
@@ -31,7 +30,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
   const splits = slug.split('-')
   const id = splits[splits.length - 1]
-  console.log({ id })
   if (!id) {
     return {
       notFound: true,
