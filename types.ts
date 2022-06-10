@@ -1,19 +1,31 @@
 import type { components } from '@devbookhq/sdk'
 
+export interface ErrorRes {
+  statusCode: number
+  message: string
+}
+
+// Used when creating a new code snippet.
+export interface NewCodeSnippet {
+  template: Template['value']
+  title?: string
+  deps?: string[]
+  code?: string
+}
+
 export interface CodeSnippet {
   id: string
   title: string
-  /////////////// REMOVE? ///////////////////////////
-  slug: string
-  //////////////////////////////////////////////////
   creator_id: string
   code?: string
+  created_at: Date
 }
 
 export interface PublishedCodeSnippet {
   // When creating a new published code snippet, the ID and published date is generated automatically.
   id?: string
   published_at?: Date
+
   code_snippet_id: string
   title: string
   code: string

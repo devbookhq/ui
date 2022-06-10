@@ -5,6 +5,7 @@ import {
 
 import type { CodeSnippet } from 'types'
 import Text from 'components/typography/Text'
+import Title from 'components/typography/Title'
 import CodeEditor from 'components/CodeEditor'
 import MoreVerticalIcon from 'components/icons/MoreVertical'
 import { showErrorNotif } from 'utils/notification'
@@ -102,7 +103,7 @@ function CodeSnippetCard({
           ">
             <CodeEditor
               isReadOnly
-              className="preview rounded-lg"
+              className="preview rounded-t-lg"
               height="174px"
               content={shortened}
             />
@@ -113,13 +114,14 @@ function CodeSnippetCard({
             flex
             items-center
             justify-between
-            bg-black-800
+            bg-black-700
             p-2
             rounded-b-lg
             truncate
           ">
-            <Text
-              text={cs.title}
+            <Title
+              size={Title.size.T2}
+              title={cs.title}
             />
             <div
               className="

@@ -24,11 +24,12 @@ function CodeSnippetCards({
   const sorted = useMemo(() => codeSnippets.sort((a, b) => sortSnippets(a, b)), [codeSnippets])
 
   function openCodeSnippet(cs: CodeSnippet) {
+    const slug = `${cs.title}-${cs.id}`
     router.push({
       pathname: '/dashboard/[slug]/edit',
       query: {
         tab: 'code',
-        slug: cs.slug,
+        slug: slug,
       },
 
     })

@@ -21,10 +21,9 @@ async function getAPIKeyInfo(apiKey: string) {
   .from<{ api_key: string, owner_id: string }>('api_keys')
   .select('*')
   .eq('api_key', apiKey)
-  .single()
 
   if (error) throw error
-  return data
+  return data ? data[0] : null
 }
 
 async function upsertCodeSnippet(cs: CodeSnippet) {

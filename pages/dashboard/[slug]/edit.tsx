@@ -23,7 +23,7 @@ import { tabs } from 'utils/newCodeSnippetTabs'
 import {
   getPublishedCodeSnippet,
   upsertPublishedCodeSnippet,
-  upsertCodeSnippet,
+  updateCodeSnippet,
 } from 'utils/supabaseClient'
 import CSEditorContent from 'components/CSEditorContent'
 import TitleLink from 'components/TitleLink'
@@ -230,7 +230,7 @@ function CodeSnippetEditor({
       ...codeSnippet,
       code: c,
     }
-    await upsertCodeSnippet(newCS, apiKey)
+    await updateCodeSnippet(newCS, apiKey)
   }, [setCode, codeSnippet, apiKey])
 
   const handleTitleChange = useCallback(async (t: string) => {
@@ -244,7 +244,7 @@ function CodeSnippetEditor({
       title: t,
       slug: `${t.replace(/\s+/g, '-').toLowerCase()}-${codeSnippet.id}`,
     }
-    await upsertCodeSnippet(newCS, apiKey)
+    await updateCodeSnippet(newCS, apiKey)
   }, [setTitle, codeSnippet, apiKey])
 
   function runCode() {

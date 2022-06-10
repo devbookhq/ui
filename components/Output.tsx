@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react'
+import { useMemo } from 'react'
 import cn from 'classnames'
 import {
   OutResponse,
@@ -50,9 +50,9 @@ function Output({
       className,
     )}
     >
-      {sorted.map(o =>
+      {sorted.map((o, idx) =>
         <div
-          key={o.timestamp}
+          key={idx}
           className="
             flex
             flex-row
@@ -60,9 +60,7 @@ function Output({
             space-x-2
           "
         >
-          {/*
           <span className="text-gray-600">{parseTimestamp(o.timestamp)}</span>
-          */}
           <span
             className={o.type === OutType.Stderr ? 'text-red-400' : 'text-white-900'}
           >

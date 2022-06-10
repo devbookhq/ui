@@ -5,7 +5,8 @@ import {
 import { useRouter } from 'next/router'
 import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
-import type { Template } from 'types'
+import type { NewCodeSnippet, Template } from 'types'
+import { createCodeSnippet } from 'utils/supabaseClient'
 import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
@@ -38,27 +39,28 @@ function Dashboard() {
     setIsCSModalOpened(true)
   }
 
-  async function createNewCodeSnippet({ template, title }: {
+  async function handleCreateCodeSnippetClick({ template, title }: {
     template: Template,
     title: string,
   }) {
+    if (!apiKey) throw new Error('API key is undefined')
     setIsLoadingNewSnippet(true)
-    fetch('/api/code', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ template: template.value, title, apiKey }),
-    })
-      .then(response => response.json())
+    const newCS: NewCodeSnippet = {
+      template: template.value,
+      title,
+    }
+    createCodeSnippet(newCS, apiKey)
       .then((data: any) => {
         if (data.statusCode === 500 && data.message) {
           throw new Error(data.message)
         }
+        const slug = `${data.title}-${data.id}`
 
         router.push({
           pathname: '/dashboard/[slug]/edit',
           query: {
             tab: 'code',
-            slug: data.slug,
+            slug: slug,
           },
         })
       })
@@ -79,7 +81,7 @@ function Dashboard() {
         isOpen={isCSModalOpened}
         isLoading={isLoadingNewSnippet}
         onClose={closeCSModal}
-        onCreateCodeSnippetClick={createNewCodeSnippet}
+        onCreateCodeSnippetClick={handleCreateCodeSnippetClick}
       />
       <div className="
         flex-1

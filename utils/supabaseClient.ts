@@ -5,6 +5,8 @@ import {
 import {
   PublishedCodeSnippet,
   CodeSnippet,
+  ErrorRes,
+  NewCodeSnippet,
 } from 'types'
 
 function getPublishedCodeSnippet(codeSnippetID: string) {
@@ -22,7 +24,7 @@ async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
   return body[0]
 }
 
-async function upsertCodeSnippet(codeSnippet: CodeSnippet, apiKey: string) {
+async function updateCodeSnippet(codeSnippet: CodeSnippet, apiKey: string) {
   const response = await fetch('/api/code', {
     method: 'POST',
     headers: {
@@ -36,9 +38,24 @@ async function upsertCodeSnippet(codeSnippet: CodeSnippet, apiKey: string) {
   return response.json()
 }
 
+async function createCodeSnippet(codeSnippet: NewCodeSnippet, apiKey: string) {
+  const response = await fetch('/api/code', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      apiKey,
+      codeSnippet,
+    }),
+  })
+  return response.json() as Promise<CodeSnippet | ErrorRes>
+}
+
 
 export {
   getPublishedCodeSnippet,
   upsertPublishedCodeSnippet,
-  upsertCodeSnippet,
+  updateCodeSnippet,
+  createCodeSnippet
 }
