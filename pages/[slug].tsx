@@ -90,6 +90,7 @@ function CodeSnippet({
 }: Props) {
   const [sizes, setSizes] = useState<number[]>([85, 15])
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
+  const [hostname, setHostname] = useState<string>()
 
   const {
     csOutput,
@@ -97,9 +98,17 @@ function CodeSnippet({
     run,
     state,
     stop,
+    getHostname,
   } = useSession({
     codeSnippetID: pcs.code_snippet_id,
   })
+
+  useEffect(function obtainHostname() {
+    getHostname().then(h => {
+      if (!h) return
+      setHostname(h)
+    })
+  }, [getHostname])
 
   useEffect(function checkForError() {
     if (error) {
@@ -153,12 +162,30 @@ function CodeSnippet({
         items-center
         justify-center
       ">
-        <ExecutionButton
-          className="mb-4"
-          state={execState}
-          onRunClick={runCode}
-          onStopClick={stopCode}
-        />
+        <div className="
+          mb-4
+          flex
+          flex-col
+          items-center
+          space-y-2
+        ">
+          <ExecutionButton
+            state={execState}
+            onRunClick={runCode}
+            onStopClick={stopCode}
+          />
+
+          {execState === CodeSnippetExecState.Running &&
+            <>
+              {!hostname && <span>Loading URL...</span>}
+              {hostname &&
+                <a href={`https://4000-${hostname}`} target="_blank" rel="noopener noreferrer">
+                  {`https://4000-${hostname}`}
+                </a>
+              }
+            </>
+          }
+        </div>
 
         <div className="
           w-full
