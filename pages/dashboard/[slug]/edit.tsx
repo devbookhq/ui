@@ -223,16 +223,18 @@ function CodeSnippetEditor({
   }, [codeSnippet])
 
   const handleCodeChange = useCallback(async (c: string) => {
+    if (!apiKey) throw new Error('API key is undefined')
     setCode(c)
 
     const newCS = {
       ...codeSnippet,
       code: c,
     }
-    await upsertCodeSnippet(newCS)
-  }, [setCode, codeSnippet])
+    await upsertCodeSnippet(newCS, apiKey)
+  }, [setCode, codeSnippet, apiKey])
 
   const handleTitleChange = useCallback(async (t: string) => {
+    if (!apiKey) throw new Error('API key is undefined')
     setTitle(t)
 
     if (!t) return
@@ -242,8 +244,8 @@ function CodeSnippetEditor({
       title: t,
       slug: `${t.replace(/\s+/g, '-').toLowerCase()}-${codeSnippet.id}`,
     }
-    await upsertCodeSnippet(newCS)
-  }, [setTitle, codeSnippet])
+    await upsertCodeSnippet(newCS, apiKey)
+  }, [setTitle, codeSnippet, apiKey])
 
   function runCode() {
     setExecState(CodeSnippetExecState.Loading)

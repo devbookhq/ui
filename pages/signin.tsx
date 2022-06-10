@@ -31,7 +31,7 @@ function SignIn() {
     if (user) {
       router.replace('/')
     }
-  }, [user])
+  }, [user, router])
 
   if (!user) {
     return (

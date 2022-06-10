@@ -22,13 +22,16 @@ async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
   return body[0]
 }
 
-async function upsertCodeSnippet(cs: CodeSnippet) {
+async function upsertCodeSnippet(codeSnippet: CodeSnippet, apiKey: string) {
   const response = await fetch('/api/code', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(cs)
+    body: JSON.stringify({
+      apiKey,
+      codeSnippet,
+    }),
   })
   return response.json()
 }

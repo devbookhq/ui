@@ -90,17 +90,16 @@ async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
 
 async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
-    const { apiKey }: { apiKey: string } = req.body
+    const { apiKey, codeSnippet }: { apiKey: string, codeSnippet: CodeSnippet } = req.body
     const userID = await validateAPIKey(apiKey)
 
-    const cs = req.body as CodeSnippet
-    if (userID !== cs.creator_id) {
+    if (userID !== codeSnippet.creator_id) {
       res.status(405).end('Not allowed - user does not have write access')
       return
     }
 
-    await upsertCodeSnippet(cs)
-    res.status(200).json(cs)
+    await upsertCodeSnippet(codeSnippet)
+    res.status(200).json(codeSnippet)
   } catch (err: any) {
     console.error(err)
     res.status(500).json({ statusCode: 500, message: err.message })
@@ -128,7 +127,7 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
   }
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+async function main(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PUT') {
     await createCodeItem(req, res)
   } else if (req.method === 'POST') {
@@ -140,3 +139,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end('Method Not Allowed')
   }
 }
+
+export default main
