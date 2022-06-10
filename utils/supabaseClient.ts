@@ -52,7 +52,6 @@ async function createCodeSnippet(codeSnippet: NewCodeSnippet, apiKey: string) {
   return response.json() as Promise<CodeSnippet | ErrorRes>
 }
 
-
 export {
   getPublishedCodeSnippet,
   upsertPublishedCodeSnippet,

@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { CodeSnippet } from 'types'
 import CodeSnippetCard from './Card'
 
-
 export interface Props {
   codeSnippets: CodeSnippet[]
 }
@@ -14,7 +13,6 @@ export interface Props {
 function CodeSnippetCards({
   codeSnippets,
 }: Props) {
-  console.log({ codeSnippets })
   const router = useRouter()
   const sorted = useMemo(() => codeSnippets.sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()),

@@ -11,7 +11,6 @@ import {
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
-import { api } from '@devbookhq/sdk'
 
 import {
   PublishedCodeSnippet,
@@ -33,11 +32,9 @@ import ButtonLink from 'components/ButtonLink'
 import useSession from 'utils/useSession'
 import ExecutionButton from 'components/ExecutionButton'
 import CSEditorHeader from 'components/CSEditorHeader'
-
 import { SharedSessionProvider } from 'utils/useSharedSession'
 import useUserInfo from 'utils/useUserInfo'
-
-const deployEditedEnvJob = api.path('/envs/{codeSnippetID}').method('patch').create({ api_key: true })
+import { updateEnv } from 'utils/api'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -259,10 +256,10 @@ function CodeSnippetEditor({
   function stopCode() {
     setExecState(CodeSnippetExecState.Loading)
     stop()
-      .then(state => {
-        if (!state) return
-        setExecState(state)
-      })
+    .then(state => {
+      if (!state) return
+      setExecState(state)
+    })
   }
 
   async function publishCodeSnippet() {
@@ -278,15 +275,13 @@ function CodeSnippetEditor({
         title,
         code,
       }
-      const p1 = deployEditedEnvJob({
+      const p1 = updateEnv({
         codeSnippetID: codeSnippet.id,
         api_key: apiKey,
       })
       const p2 = upsertPublishedCodeSnippet(newPCS)
       const [, pcs] = await Promise.all([p1, p2])
-      console.log('published CS', pcs)
       setPublishedCS(pcs)
-      alert(`Code snippet '${title}' published`)
     } catch (err: any) {
       showErrorNotif(`Error: ${err.message}`)
     } finally {

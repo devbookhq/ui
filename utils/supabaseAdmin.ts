@@ -16,6 +16,19 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 )
 
+async function getCodeSnippet(params: { csID: string, userID: string }) {
+  const { csID, userID } = params
+
+  const { data, error } = await supabaseAdmin
+  .from<CodeSnippet>('code_snippets')
+  .select('*')
+  .eq('id', csID)
+  .eq('creator_id', userID)
+
+  if (error) throw error
+  return data && data.length ? data[0] : null
+}
+
 async function getAPIKeyInfo(apiKey: string) {
   const { data, error } = await supabaseAdmin
   .from<{ api_key: string, owner_id: string }>('api_keys')
@@ -23,7 +36,7 @@ async function getAPIKeyInfo(apiKey: string) {
   .eq('api_key', apiKey)
 
   if (error) throw error
-  return data ? data[0] : null
+  return data && data.length ? data[0] : null
 }
 
 async function upsertCodeSnippet(cs: CodeSnippet) {
@@ -50,6 +63,13 @@ async function deleteCodeSnippet(id: string) {
   if (error) throw error
 }
 
+async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
+  const { error } = await supabaseAdmin
+    .from<PublishedCodeSnippet>('published_code_snippets')
+    .upsert(cs)
+  if (error) throw error
+}
+
 async function deletePublishedCodeSnippet(codeSnippetID: string) {
   const { error } = await supabaseAdmin
     .from<PublishedCodeSnippet>('published_code_snippets')
@@ -58,15 +78,12 @@ async function deletePublishedCodeSnippet(codeSnippetID: string) {
   if (error) throw error
 }
 
-const createEnvJob = api.path('/envs/{codeSnippetID}').method('post').create({ api_key: true })
-const deleteEnvJob = api.path('/envs/{codeSnippetID}').method('delete').create({ api_key: true })
-
 export {
+  getCodeSnippet,
   upsertCodeSnippet,
-  createEnvJob,
-  deleteEnvJob,
   upsertEnv,
   deleteCodeSnippet,
+  upsertPublishedCodeSnippet,
   deletePublishedCodeSnippet,
   getAPIKeyInfo,
 }

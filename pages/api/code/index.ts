@@ -11,6 +11,7 @@ import type {
   CodeSnippet,
   CodeEnvironment,
   NewCodeSnippet,
+  PublishedCodeSnippet,
 } from 'types'
 import {
   getAPIKeyInfo,
@@ -18,9 +19,15 @@ import {
   upsertEnv,
   deleteCodeSnippet,
   deletePublishedCodeSnippet,
-  createEnvJob,
-  deleteEnvJob,
+  upsertPublishedCodeSnippet,
+  getCodeSnippet,
 } from 'utils/supabaseAdmin'
+
+import {
+  createEnv,
+  deleteEnv,
+  updateEnv,
+} from 'utils/api'
 
 interface NewOrUpdateCodeSnippet extends Omit<CodeSnippet, 'id'> {
   id?: string
@@ -40,25 +47,55 @@ async function validateAPIKey(params: { res: NextApiResponse, apiKey?: string })
   return data.owner_id
 }
 
-async function updateCodeSnippet(params: { userID: string, cs: CodeSnippet, res: NextApiResponse }) {
+async function updateCodeSnippet(params: {
+  userID: string,
+  isPublished: boolean,
+  newCS: Partial<CodeSnippet> & { id: string },
+  res: NextApiResponse
+}) {
   const {
     userID,
-    cs,
+    isPublished,
+    newCS,
     res,
   } = params
 
-  if (userID !== cs.creator_id) {
-    res.status(405).end(`No write access for code snippet '${cs.id}'`)
+  const cs = await getCodeSnippet({ csID: newCS.id, userID })
+  if (!cs) {
+    res.status(404).end(`User '${userID}' doesn't have access to code snippet '${newCS.id}' or it doesn't exist`)
     return
   }
-  await upsertCodeSnippet(cs)
+
+  const p = [upsertCodeSnippet(cs)]
+  if (isPublished) {
+    const pcs: PublishedCodeSnippet = {
+      code_snippet_id: cs.id,
+      title: cs.title,
+      code: cs.code || '',
+    }
+    p.push(
+      upsertPublishedCodeSnippet(pcs)
+    )
+  } else {
+    p.push(
+      deletePublishedCodeSnippet(cs.id)
+    )
+  }
+  await Promise.all(p)
   res.status(200).json(cs)
 }
 
-async function createCodeSnippet(params: { userID: string, apiKey: string, newCS: NewCodeSnippet, res: NextApiResponse }) {
+async function createCodeSnippet(params: {
+  userID: string,
+  apiKey: string,
+  isPublished: boolean,
+  newCS: NewCodeSnippet,
+  res: NextApiResponse
+}) {
   const {
     userID,
     apiKey,
+    isPublished,
     newCS,
     res,
   } = params
@@ -91,20 +128,36 @@ async function createCodeSnippet(params: { userID: string, apiKey: string, newCS
 
   await upsertCodeSnippet(codeSnippet)
   await upsertEnv(env)
-  await createEnvJob({
+  if (isPublished) {
+    const pcs: PublishedCodeSnippet = {
+      code_snippet_id: codeSnippet.id,
+      title: codeSnippet.title,
+      code: codeSnippet.code || '',
+    }
+    await upsertPublishedCodeSnippet(pcs)
+  }
+  await createEnv({
     codeSnippetID: codeSnippet.id,
     template,
     deps,
     api_key: apiKey,
   })
+
   res.status(200).json(codeSnippet)
 }
 
 async function createOrUpdateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
-    const { apiKey, codeSnippet }: { apiKey: string, codeSnippet: NewCodeSnippet | CodeSnippet } = req.body
-    //const userID = await validateAPIKey(res, apiKey)
-    //if (!userID) return
+    const {
+      apiKey,
+      isPublished = false,
+      codeSnippet,
+    }: {
+      apiKey: string
+      codeSnippet: NewCodeSnippet | CodeSnippet
+      isPublished?: boolean
+    } = req.body
+
     let userID: string | undefined
     if (!(userID = await validateAPIKey({ apiKey, res }))) return
 
@@ -114,6 +167,7 @@ async function createOrUpdateCodeItem(req: NextApiRequest, res: NextApiResponse<
         userID,
         apiKey,
         res,
+        isPublished,
         newCS: codeSnippet as NewCodeSnippet,
       })
     } else {
@@ -121,7 +175,8 @@ async function createOrUpdateCodeItem(req: NextApiRequest, res: NextApiResponse<
       updateCodeSnippet({
         userID,
         res,
-        cs: codeSnippet as CodeSnippet
+        isPublished,
+        newCS: codeSnippet as Partial<CodeSnippet> & { id: string }
       })
     }
   } catch (err: any) {
@@ -140,7 +195,7 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
     } = req.body as { codeSnippetID: string, apiKey: string }
     if (!(await validateAPIKey({ apiKey, res }))) return
 
-    await deleteEnvJob({ codeSnippetID, api_key: apiKey })
+    await deleteEnv({ codeSnippetID, api_key: apiKey })
     await deletePublishedCodeSnippet(codeSnippetID)
     await deleteCodeSnippet(codeSnippetID)
 
