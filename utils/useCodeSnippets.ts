@@ -13,11 +13,6 @@ function useCodeSnippets(userID?: string) {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isJobInProcess, setIsJobInProcess] = useState(false)
-  const [val, setVal] = useState(0)
-
-  function reload() {
-    setVal(c => c+1)
-  }
 
   useEffect(function fetchCodeSnippets() {
     if (!userID) return
@@ -25,6 +20,41 @@ function useCodeSnippets(userID?: string) {
 
     setIsJobInProcess(true)
     setIsLoading(true)
+
+    supabaseClient
+      .from<CodeSnippet>(`code_snippets:creator_id=eq.${userID}`)
+      .on('INSERT', payload => {
+        const { new: cs, errors } = payload
+        if (errors) {
+          let err = errors.join('\n')
+          setError(err)
+        }
+        if (cs) setCS(c => [...c, cs])
+      })
+      .on('UPDATE', payload => {
+        const { new: cs, errors } = payload
+        if (errors) {
+          let err = errors.join('\n')
+          setError(err)
+        }
+        if (cs) setCS(current => {
+          const idx = current.findIndex(el => el.id === cs.id)
+          if (idx == -1) return current
+          current[idx] = {
+            ...cs,
+          }
+          return [...current]
+        })
+      })
+      .on('DELETE', payload => {
+        const { old: cs, errors } = payload
+        if (errors) {
+          let err = errors.join('\n')
+          setError(err)
+        }
+        if (cs) setCS(els => els.filter(el => el.id !== cs.id))
+      })
+      .subscribe()
 
     supabaseClient
       .from<CodeSnippet>('code_snippets')
@@ -36,13 +66,12 @@ function useCodeSnippets(userID?: string) {
         setIsJobInProcess(false)
         setIsLoading(false)
       })
-  }, [userID, val])
+  }, [userID])
 
   return {
     codeSnippets: cs,
     error,
     isLoading,
-    reload,
   }
 }
 

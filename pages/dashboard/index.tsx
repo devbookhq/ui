@@ -28,7 +28,6 @@ function Dashboard() {
     codeSnippets,
     isLoading,
     error: csError,
-    reload: reloadCS,
   } = useCodeSnippets(user?.id || '')
 
   function closeCSModal() {
@@ -43,8 +42,6 @@ function Dashboard() {
     template: Template,
     title: string,
   }) {
-    // TODO: Template
-    // TODO: Code snippet takes a template
     setIsLoadingNewSnippet(true)
     fetch('/api/code', {
       method: 'PUT',
@@ -69,10 +66,6 @@ function Dashboard() {
         showErrorNotif(`Error: ${err.message}`)
         setIsLoadingNewSnippet(false)
       })
-  }
-
-  function handleCodeSnippetDeletion() {
-    reloadCS()
   }
 
   useEffect(function checkCSError() {
@@ -133,7 +126,6 @@ function Dashboard() {
         {!isLoading && codeSnippets.length > 0 && (
           <CodeSnippetCards
             codeSnippets={codeSnippets}
-            onCodeSnippetDeletion={handleCodeSnippetDeletion}
           />
         )}
 

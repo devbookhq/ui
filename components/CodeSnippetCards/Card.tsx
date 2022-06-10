@@ -22,7 +22,6 @@ const previewLength = 8
 function CodeSnippetCard({
   codeSnippet: cs,
   onClick,
-  onDelete,
 }: Props) {
   const [showDropdown, setShowDropdown] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -56,7 +55,6 @@ function CodeSnippetCard({
           .then(async response => {
             const data = await response.json()
             if (response.status >= 400) throw new Error(JSON.stringify(data))
-            onDelete?.(cs)
           })
           .catch(err => {
             showErrorNotif(`Error: ${err.message}`)
