@@ -18,7 +18,7 @@ export interface CodeSnippet {
   title: string
   creator_id: string
   code?: string
-  created_at: Date
+  created_at: Date | string // Date string
 }
 
 export interface PublishedCodeSnippet {

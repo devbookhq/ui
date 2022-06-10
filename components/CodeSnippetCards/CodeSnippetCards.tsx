@@ -11,17 +11,15 @@ export interface Props {
   codeSnippets: CodeSnippet[]
 }
 
-function sortSnippets(a: CodeSnippet, b: CodeSnippet) {
-  if (a.title < b.title) return -1
-  if (a.title > b.title) return 1
-  return 0
-}
-
 function CodeSnippetCards({
   codeSnippets,
 }: Props) {
+  console.log({ codeSnippets })
   const router = useRouter()
-  const sorted = useMemo(() => codeSnippets.sort((a, b) => sortSnippets(a, b)), [codeSnippets])
+  const sorted = useMemo(() => codeSnippets.sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()),
+    [codeSnippets],
+  )
 
   function openCodeSnippet(cs: CodeSnippet) {
     const slug = `${cs.title}-${cs.id}`
