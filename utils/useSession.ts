@@ -9,6 +9,7 @@ import {
   CodeSnippetExecState,
   OutResponse,
   DepOutResponse,
+  OpenedPort,
 } from '@devbookhq/sdk'
 
 export type SessionState = 'open' | 'closed'
@@ -45,7 +46,28 @@ function useSession({
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
 
   const [depsOutput, setDepsOutput] = useState<DepOutResponse[]>([])
-  const [deps, setDeps] = useState<string[]>()
+  const [deps, setDeps] = useState<string[]>() // Intentionally set to `undefined` as an initial value.
+  const [ports, setPorts] = useState<OpenedPort[]>([])
+
+  //const updatePorts = useCallback((newPorts: OpenedPort[]) => {
+  //  if (newPorts.length !== ports.length) {
+  //    setPorts(newPorts)
+  //  } else {
+  //    // Compare two arrays and break
+  //    // the first time we don't find
+  //    // a new port in current ports.
+  //    for (const np of newPorts) {
+  //      console.log('Comparing NP', { np })
+  //      const found = ports.find(p => p.Ip === np.Ip && p.Port === np.Port)
+  //      console.log('\tFound?', { found })
+  //      if (!found) {
+  //        setPorts(newPorts)
+  //        break
+  //      }
+  //    }
+  //  }
+
+  //}, [ports])
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
@@ -72,6 +94,37 @@ function useSession({
         },
         onDepsChange(deps) {
           setDeps(deps)
+        },
+        onScanPorts(newPorts) {
+          // TODO: If we were running devbookd as an other user than root this could be
+          // easilly filtered like so: p.User === 'user'
+          const validPorts = newPorts.filter(
+            p => (
+              p.State === 'LISTEN' &&
+              p.Ip === '0.0.0.0' &&
+              // This is devbookd
+              p.Port !== 8010 &&
+              // ssh daemon
+              p.Port !== 22
+            )
+          )
+          // TODO: This triggers re-render on each `onScanPorts` callback.
+          setPorts(validPorts)
+          //if (validPorts.length !== ports.length) {
+          //  setPorts(validPorts)
+          //} else {
+          //  // Compare two arrays and break
+          //  // the first time we don't find
+          //  // a new port in current ports.
+          //  for (const vp of validPorts) {
+          //    console.log('Comparing VP', { vp })
+          //    const found = ports.find(p => p.Ip === vp.Ip && p.Port === vp.Port)
+          //    console.log('\tFound?', { found })
+          //    if (!found) {
+          //      setPorts(validPorts)
+          //    }
+          //  }
+          //}
         }
       },
       onClose() {
@@ -153,6 +206,7 @@ function useSession({
     open: sessionState.open,
     state: sessionState.state,
     deps,
+    ports,
   }), [
     stop,
     getHostname,
@@ -167,6 +221,7 @@ function useSession({
     depsOutput,
     sessionState.state,
     deps,
+    ports,
   ])
 }
 

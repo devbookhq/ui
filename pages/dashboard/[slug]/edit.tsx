@@ -154,6 +154,7 @@ function CodeSnippetEditor({
   const [isPublishing, setIsPublishing] = useState(false)
   const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
   const [publishedCS, setPublishedCS] = useState<PublishedCodeSnippet>()
+  const [hostname, setHostname] = useState('')
 
   const router = useRouter()
 
@@ -171,6 +172,9 @@ function CodeSnippetEditor({
     run,
     stop,
     open,
+    ports,
+    state,
+    getHostname,
   } = session
 
   const currentTab = router.query.tab
@@ -185,13 +189,21 @@ function CodeSnippetEditor({
     env.state,
   ])
 
+  useEffect(function obtainHostname() {
+    if (state !== 'open') return
+    getHostname().then(h => setHostname(h || ''))
+  }, [state, getHostname])
+
   useEffect(function subscribeToEnv() {
-    supabaseClient
+    const sub = supabaseClient
       .from<CodeEnvironment>(`envs:code_snippet_id=eq.${codeSnippet.id}`)
       .on('UPDATE', payload => {
         setEnv(payload.new)
       })
       .subscribe()
+    return () => {
+      supabaseClient.removeSubscription(sub)
+    }
   }, [codeSnippet])
 
   useEffect(function checkForError() {
@@ -392,6 +404,33 @@ function CodeSnippetEditor({
                     shallow
                   />
                 ))}
+                <div className="
+                  flex
+                  flex-col
+                  items-start
+                  justify-start
+                ">
+                  <Title
+                    size={Title.size.T2}
+                    title="Opened ports"
+                  />
+                  {hostname && ports.map(p => (
+                    <a
+                      key={`${p.Ip}-${p.Port}`}
+                      href={`https://${p.Port}-${hostname}`}
+                      className="
+                      max-w-full
+                      text-green-500
+                      overflow-hidden
+                      truncate
+                      cursor-pointer
+                      underline
+                    "
+                    >
+                      {`:${p.Port}`}
+                    </a>
+                  ))}
+                </div>
               </div>
               <CSEditorContent
                 code={code}

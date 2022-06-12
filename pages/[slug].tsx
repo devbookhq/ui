@@ -99,6 +99,7 @@ function CodeSnippet({
     state,
     stop,
     getHostname,
+    ports,
   } = useSession({
     codeSnippetID: pcs.code_snippet_id,
   })
@@ -158,16 +159,47 @@ function CodeSnippet({
         w-full
         flex-1
         flex
-        flex-col
-        items-center
-        justify-center
+        items-start
+        space-x-4
       ">
         <div className="
-          mb-4
+          flex
+          flex-col
+          items-start
+          justify-start
+        ">
+          <Title
+            size={Title.size.T2}
+            title="Opened ports"
+          />
+          {hostname && ports.map(p => (
+            <a
+              key={`${p.Ip}-${p.Port}`}
+              href={`https://${p.Port}-${hostname}`}
+              className="
+              max-w-full
+              text-green-500
+              overflow-hidden
+              truncate
+              cursor-pointer
+              underline
+            "
+            >
+              {`:${p.Port}`}
+            </a>
+          ))}
+        </div>
+
+
+        <div className="
+          h-full
+          w-full
+          flex-1
           flex
           flex-col
           items-center
-          space-y-2
+          justify-center
+          space-y-4
         ">
           <ExecutionButton
             state={execState}
@@ -175,55 +207,46 @@ function CodeSnippet({
             onStopClick={stopCode}
           />
 
-          {execState === CodeSnippetExecState.Running &&
-            <>
-              {!hostname && <span>Loading URL...</span>}
-              {hostname &&
-                <a href={`https://4000-${hostname}`} target="_blank" rel="noopener noreferrer">
-                  {`https://4000-${hostname}`}
-                </a>
-              }
-            </>
-          }
-        </div>
-
-        <div className="
-          w-full
-          flex-1
-          flex
-          flex-col
-          rounded-lg
-          border
-          border-black-700
-        ">
-          <Splitter
-            direction={SplitDirection.Vertical}
-            classes={['flex min-h-0', 'flex min-h-0']}
-            initialSizes={sizes}
-            onResizeFinished={(_, sizes) => setSizes(sizes)}
-          >
-            <div className="
-              rounded-t-lg
-              flex-1
-              relative
-              overflow-hidden
-              bg-black-800
-            ">
-              <CodeEditor
-                isReadOnly
-                content={pcs.code}
-                className="
-                  absolute
-                  inset-0
-                "
+          <div className="
+            h-full
+            w-full
+            flex-1
+            flex
+            flex-col
+            rounded-lg
+            border
+            border-black-700
+          ">
+            <Splitter
+              direction={SplitDirection.Vertical}
+              classes={['flex min-h-0', 'flex min-h-0']}
+              initialSizes={sizes}
+              onResizeFinished={(_, sizes) => setSizes(sizes)}
+            >
+              <div className="
+                rounded-t-lg
+                flex-1
+                relative
+                overflow-hidden
+                bg-black-800
+              ">
+                <CodeEditor
+                  isReadOnly
+                  content={pcs.code}
+                  className="
+                    absolute
+                    inset-0
+                  "
+                />
+              </div>
+              <Output
+                output={csOutput}
               />
-            </div>
-            <Output
-              output={csOutput}
-            />
-          </Splitter>
+            </Splitter>
+          </div>
         </div>
       </div>
+
     </div>
   )
 }

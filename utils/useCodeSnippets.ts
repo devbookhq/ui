@@ -21,7 +21,7 @@ function useCodeSnippets(userID?: string) {
     setIsJobInProcess(true)
     setIsLoading(true)
 
-    supabaseClient
+    const sub = supabaseClient
       .from<CodeSnippet>(`code_snippets:creator_id=eq.${userID}`)
       .on('INSERT', payload => {
         const { new: cs, errors } = payload
@@ -66,6 +66,10 @@ function useCodeSnippets(userID?: string) {
         setIsJobInProcess(false)
         setIsLoading(false)
       })
+
+    return () => {
+      supabaseClient.removeSubscription(sub)
+    }
   }, [userID])
 
   return {
