@@ -6,8 +6,10 @@ import {
   PublishedCodeSnippet,
   CodeSnippet,
   ErrorRes,
-  NewCodeSnippet,
+  CodeEnvironment,
 } from 'types'
+
+type Env = Pick<CodeEnvironment, 'template' | 'deps'>
 
 function getPublishedCodeSnippet(codeSnippetID: string) {
   return supabaseClient
@@ -24,7 +26,7 @@ async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
   return body[0]
 }
 
-async function updateCodeSnippet(codeSnippet: CodeSnippet, apiKey: string) {
+async function updateCodeSnippet(apiKey: string, codeSnippet: { id: string, title?: string, code?: string }, env?: Env) {
   const response = await fetch('/api/code', {
     method: 'POST',
     headers: {
@@ -33,20 +35,22 @@ async function updateCodeSnippet(codeSnippet: CodeSnippet, apiKey: string) {
     body: JSON.stringify({
       apiKey,
       codeSnippet,
+      env,
     }),
   })
   return response.json()
 }
 
-async function createCodeSnippet(codeSnippet: NewCodeSnippet, apiKey: string) {
+async function createCodeSnippet(apiKey: string, codeSnippet: { title?: string, code?: string }, env: Env) {
   const response = await fetch('/api/code', {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       apiKey,
       codeSnippet,
+      env,
     }),
   })
   return response.json() as Promise<CodeSnippet | ErrorRes>

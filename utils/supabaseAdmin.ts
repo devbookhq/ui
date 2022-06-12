@@ -39,7 +39,7 @@ async function getAPIKeyInfo(apiKey: string) {
   return data && data.length ? data[0] : null
 }
 
-async function upsertCodeSnippet(cs: CodeSnippet) {
+async function upsertCodeSnippet(cs: Partial<CodeSnippet>) {
   const { error } = await supabaseAdmin
     .from<CodeSnippet>('code_snippets')
     .upsert(cs)

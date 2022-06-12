@@ -5,7 +5,7 @@ import {
 import { useRouter } from 'next/router'
 import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
-import type { NewCodeSnippet, Template } from 'types'
+import type { Template } from 'types'
 import { createCodeSnippet } from 'utils/supabaseClient'
 import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
@@ -45,11 +45,7 @@ function Dashboard() {
   }) {
     if (!apiKey) throw new Error('API key is undefined')
     setIsLoadingNewSnippet(true)
-    const newCS: NewCodeSnippet = {
-      template: template.value,
-      title,
-    }
-    createCodeSnippet(newCS, apiKey)
+    createCodeSnippet(apiKey, { title }, { template: template.value, deps: [] })
       .then((data: any) => {
         if (data.statusCode === 500 && data.message) {
           throw new Error(data.message)

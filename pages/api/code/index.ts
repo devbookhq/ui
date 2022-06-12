@@ -10,7 +10,6 @@ import type {
   ErrorRes,
   CodeSnippet,
   CodeEnvironment,
-  NewCodeSnippet,
   PublishedCodeSnippet,
 } from 'types'
 import {
@@ -26,12 +25,9 @@ import {
 import {
   createEnv,
   deleteEnv,
-  updateEnv,
 } from 'utils/api'
 
-interface NewOrUpdateCodeSnippet extends Omit<CodeSnippet, 'id'> {
-  id?: string
-}
+type Env = Pick<CodeEnvironment, 'template' | 'deps'>
 
 async function validateAPIKey(params: { res: NextApiResponse, apiKey?: string }) {
   const { res, apiKey } = params
@@ -48,62 +44,76 @@ async function validateAPIKey(params: { res: NextApiResponse, apiKey?: string })
 }
 
 async function updateCodeSnippet(params: {
+  apiKey: string
   userID: string,
   isPublished: boolean,
-  newCS: Partial<CodeSnippet> & { id: string },
-  res: NextApiResponse
+  env?: Env,
+  newCS: { id: string, title?: string, code?: string },
+  originalCS: CodeSnippet,
 }) {
   const {
+    apiKey,
     userID,
     isPublished,
     newCS,
-    res,
+    originalCS,
+    env,
   } = params
 
-  const cs = await getCodeSnippet({ csID: newCS.id, userID })
-  if (!cs) {
-    res.status(404).end(`User '${userID}' doesn't have access to code snippet '${newCS.id}' or it doesn't exist`)
-    return
+  const updatedCS: CodeSnippet = {
+    id: originalCS.id,
+    // Code snippet cannot be without title.
+    title: newCS.title || originalCS.title,
+    creator_id: userID,
+    code: newCS.code,
+    created_at: originalCS.created_at,
   }
+  const p: Promise<any>[] = [upsertCodeSnippet(updatedCS)]
 
-  const p = [upsertCodeSnippet(cs)]
   if (isPublished) {
     const pcs: PublishedCodeSnippet = {
-      code_snippet_id: cs.id,
-      title: cs.title,
-      code: cs.code || '',
+      code_snippet_id: updatedCS.id,
+      title: updatedCS.title,
+      code: updatedCS.code || '',
     }
     p.push(
       upsertPublishedCodeSnippet(pcs)
     )
   } else {
     p.push(
-      deletePublishedCodeSnippet(cs.id)
+      deletePublishedCodeSnippet(updatedCS.id)
     )
   }
+
   await Promise.all(p)
-  res.status(200).json(cs)
+  if (env) {
+    await createEnv({
+      codeSnippetID: updatedCS.id,
+      template: env.template,
+      deps: env.deps,
+      api_key: apiKey,
+    })
+  }
+  return updatedCS
 }
 
 async function createCodeSnippet(params: {
   userID: string,
   apiKey: string,
   isPublished: boolean,
-  newCS: NewCodeSnippet,
-  res: NextApiResponse
+  env: Env,
+  newCS: { title?: string, code?: string },
 }) {
   const {
     userID,
     apiKey,
     isPublished,
     newCS,
-    res,
+    env,
   } = params
 
   let {
-    template,
     title = '',
-    deps = [],
     code = '',
   } = newCS
 
@@ -118,16 +128,16 @@ async function createCodeSnippet(params: {
   }
 
   const envID = randomstring.generate({ length: 12, charset: 'alphanumeric' })
-  const env: CodeEnvironment = {
+  const newEnv: CodeEnvironment = {
     id: envID,
     code_snippet_id: csID,
-    template,
-    deps,
+    template: env.template,
+    deps: env.deps,
     state: 'None',
   }
 
   await upsertCodeSnippet(codeSnippet)
-  await upsertEnv(env)
+  await upsertEnv(newEnv)
   if (isPublished) {
     const pcs: PublishedCodeSnippet = {
       code_snippet_id: codeSnippet.id,
@@ -138,47 +148,79 @@ async function createCodeSnippet(params: {
   }
   await createEnv({
     codeSnippetID: codeSnippet.id,
-    template,
-    deps,
+    template: env.template,
+    deps: env.deps,
     api_key: apiKey,
   })
-
-  res.status(200).json(codeSnippet)
+  return codeSnippet
 }
 
-async function createOrUpdateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
+async function createCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
   try {
     const {
       apiKey,
       isPublished = false,
       codeSnippet,
+      env,
     }: {
       apiKey: string
-      codeSnippet: NewCodeSnippet | CodeSnippet
+      codeSnippet: { title?: string, code?: string }
+      env: Env,
       isPublished?: boolean
     } = req.body
 
     let userID: string | undefined
     if (!(userID = await validateAPIKey({ apiKey, res }))) return
 
-    if (!(codeSnippet as NewOrUpdateCodeSnippet).id) {
-      // Creating new code snippet.
-      createCodeSnippet({
-        userID,
-        apiKey,
-        res,
-        isPublished,
-        newCS: codeSnippet as NewCodeSnippet,
-      })
-    } else {
-      // Updating code snippet.
-      updateCodeSnippet({
-        userID,
-        res,
-        isPublished,
-        newCS: codeSnippet as Partial<CodeSnippet> & { id: string }
-      })
+    // Creating new code snippet.
+    const createdCodeSnippet = await createCodeSnippet({
+      userID,
+      apiKey,
+      isPublished,
+      env,
+      newCS: codeSnippet,
+    })
+    res.status(200).json(createdCodeSnippet)
+  } catch (err: any) {
+    console.error(err)
+    res.status(500).json({ statusCode: 500, message: err.message })
+  }
+}
+
+async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnippet | ErrorRes>) {
+  try {
+    const {
+      apiKey,
+      isPublished = false,
+      codeSnippet,
+      env,
+    }: {
+      apiKey: string
+      codeSnippet: { id: string, title?: string, code?: string }
+      env?: Env,
+      isPublished?: boolean
+    } = req.body
+
+    let userID: string | undefined
+    if (!(userID = await validateAPIKey({ apiKey, res }))) return
+
+    // First we check if the user has access to the code snippet.
+    const originalCS = await getCodeSnippet({ csID: codeSnippet.id, userID })
+    if (!originalCS) {
+      res.status(404).end(`User '${userID}' doesn't have access to code snippet '${codeSnippet.id}' or it doesn't exist`)
+      return
     }
+
+    const updatedCodeSnippet = await updateCodeSnippet({
+      apiKey,
+      userID,
+      isPublished,
+      env,
+      // TS error here without the `as` clause is wtf since we are checking if `id` is defined above.
+      newCS: codeSnippet,
+      originalCS,
+    })
+    res.status(200).json(updatedCodeSnippet)
   } catch (err: any) {
     console.error(err)
     res.status(500).json({ statusCode: 500, message: err.message })
@@ -207,13 +249,15 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
 }
 
 async function main(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    await createOrUpdateCodeItem(req, res)
+  if (req.method === 'PUT') {
+    await createCodeItem(req, res)
+  } else if (req.method === 'POST') {
+    await updateCodeItem(req, res)
   } else if (req.method === 'DELETE') {
     await deleteCodeItem(req, res)
   } else {
-    res.setHeader('Allow', 'POST, DELETE')
-    res.status(405).end('Method Not Allowed')
+    res.setHeader('Allow', 'PUT, POST, DELETE')
+    res.status(405).json({ statusCode: 405, message: 'Method Not Allowed' })
   }
 }
 

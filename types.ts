@@ -6,13 +6,6 @@ export interface ErrorRes {
 }
 
 // Used when creating a new code snippet.
-export interface NewCodeSnippet {
-  template: Template['value']
-  title?: string
-  deps?: string[]
-  code?: string
-}
-
 export interface CodeSnippet {
   id: string
   title: string

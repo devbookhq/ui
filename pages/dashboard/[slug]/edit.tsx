@@ -185,7 +185,7 @@ function CodeSnippetEditor({
     env.state,
   ])
 
-  useEffect(function updateCodeSnippet() {
+  useEffect(function subscribeToEnv() {
     supabaseClient
       .from<CodeEnvironment>(`envs:code_snippet_id=eq.${codeSnippet.id}`)
       .on('UPDATE', payload => {
@@ -224,10 +224,11 @@ function CodeSnippetEditor({
     setCode(c)
 
     const newCS = {
-      ...codeSnippet,
+      id: codeSnippet.id,
+      title: codeSnippet.title,
       code: c,
     }
-    await updateCodeSnippet(newCS, apiKey)
+    await updateCodeSnippet(apiKey, newCS)
   }, [setCode, codeSnippet, apiKey])
 
   const handleTitleChange = useCallback(async (t: string) => {
@@ -241,7 +242,7 @@ function CodeSnippetEditor({
       title: t,
       slug: `${t.replace(/\s+/g, '-').toLowerCase()}-${codeSnippet.id}`,
     }
-    await updateCodeSnippet(newCS, apiKey)
+    await updateCodeSnippet(apiKey, newCS)
   }, [setTitle, codeSnippet, apiKey])
 
   function runCode() {
