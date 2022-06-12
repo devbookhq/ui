@@ -66,7 +66,7 @@ async function deleteCodeSnippet(id: string) {
 async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
   const { error } = await supabaseAdmin
     .from<PublishedCodeSnippet>('published_code_snippets')
-    .upsert(cs)
+    .upsert(cs, { onConflict: 'code_snippet_id' })
   if (error) throw error
 }
 
