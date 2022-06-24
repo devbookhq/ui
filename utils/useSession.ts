@@ -10,6 +10,7 @@ import {
   OutResponse,
   DepOutResponse,
   OpenedPort,
+  EnvVars,
 } from '@devbookhq/sdk'
 
 export type SessionState = 'open' | 'closed'
@@ -166,10 +167,10 @@ function useSession({
     return sessionState.session?.codeSnippet?.stop()
   }, [sessionState])
 
-  const run = useCallback(async (code: string) => {
+  const run = useCallback(async (code: string, envVars?: EnvVars) => {
     if (sessionState.state !== 'open') return
     setCSOutput([])
-    return sessionState.session?.codeSnippet?.run(code)
+    return sessionState.session?.codeSnippet?.run(code, envVars)
   }, [sessionState])
 
   const getHostname = useCallback(async (port?: number) => {

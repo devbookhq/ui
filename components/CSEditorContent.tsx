@@ -11,10 +11,14 @@ import EditIcon from 'components/icons/Edit'
 import Output from 'components/Output'
 import Deps from 'components/Deps'
 import useSharedSession from 'utils/useSharedSession'
+import Env from './Env'
+import { EnvVars } from '@devbookhq/sdk'
 
 export interface Props {
   code: string
+  envVars?: EnvVars
   title: string
+  onEnvVarsChange: (envVars: EnvVars) => void
   onCodeChange: (code: string) => void
   onTitleChange: (title: string) => void
 }
@@ -22,8 +26,10 @@ export interface Props {
 function CSEditorContent({
   code,
   title,
+  envVars,
   onCodeChange,
   onTitleChange,
+  onEnvVarsChange,
 }: Props) {
   const router = useRouter()
   const tab = router.query.tab
@@ -103,6 +109,13 @@ function CSEditorContent({
     case Tab.Deps:
       return (
         <Deps />
+      )
+    case Tab.Env:
+      return (
+        <Env
+          envVars={envVars}
+          onEnvVarsChange={onEnvVarsChange}
+        />
       )
     default:
       return <p>Unimplemented tab</p>

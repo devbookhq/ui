@@ -1,3 +1,4 @@
+import { EnvVars } from '@devbookhq/sdk'
 import {
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
@@ -26,7 +27,7 @@ async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
   return body[0]
 }
 
-async function updateCodeSnippet(apiKey: string, codeSnippet: { id: string, title?: string, code?: string }, env?: Env) {
+async function updateCodeSnippet(apiKey: string, codeSnippet: { id: string, title?: string, code?: string, env_vars: string }, env?: Env) {
   const response = await fetch('/api/code', {
     method: 'POST',
     headers: {

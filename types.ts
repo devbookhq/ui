@@ -8,20 +8,21 @@ export interface ErrorRes {
 // Used when creating a new code snippet.
 export interface CodeSnippet {
   id: string
+  created_at: Date | string // Date string
   title: string
   creator_id: string
   code?: string
-  created_at: Date | string // Date string
+  env_vars: string
 }
 
 export interface PublishedCodeSnippet {
   // When creating a new published code snippet, the ID and published date is generated automatically.
   id?: string
   published_at?: Date
-
   code_snippet_id: string
   title: string
   code: string
+  env_vars: string
 }
 
 export interface CodeEnvironment {

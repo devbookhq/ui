@@ -16,9 +16,9 @@ import Title from 'components/typography/Title'
 // Fetches a published code snippet from the DB, if such code snippet exists.
 function getPublishedCodeSnippet(codeSnippetID: string) {
   return supabaseClient
-  .from<PublishedCodeSnippet>('published_code_snippets')
-  .select('*')
-  .eq('code_snippet_id', codeSnippetID)
+    .from<PublishedCodeSnippet>('published_code_snippets')
+    .select('*')
+    .eq('code_snippet_id', codeSnippetID)
 }
 
 async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
@@ -33,11 +33,13 @@ interface Props {
   codeSnippet: CodeSnippet
   latestCode: string
   latestTitle: string
+  latestEnvVars: string
 }
 
 function CSEditorSidebar({
   codeSnippet,
   latestCode,
+  latestEnvVars,
   latestTitle,
 }: Props) {
   const [isPublishing, setIsPublishing] = useState(false)
@@ -47,16 +49,16 @@ function CSEditorSidebar({
   useEffect(function getPublishedCS() {
     if (!codeSnippet) return
     getPublishedCodeSnippet(codeSnippet.id)
-    .then(({ data, error }) => {
-      if (error) {
-        console.error(error)
-        showErrorNotif(`Error: ${error.message}`)
-      }
-      if (data && data.length > 0) {
-        setPublishedCS(data[0])
-      }
-      setIsLoadingPublishedCS(false)
-    })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error)
+          showErrorNotif(`Error: ${error.message}`)
+        }
+        if (data && data.length > 0) {
+          setPublishedCS(data[0])
+        }
+        setIsLoadingPublishedCS(false)
+      })
   }, [codeSnippet])
 
   async function publish() {
@@ -69,6 +71,7 @@ function CSEditorSidebar({
         id: publishedCS?.id,
         published_at: publishedCS?.published_at,
         code_snippet_id: codeSnippet.id,
+        env_vars: latestEnvVars,
         title: latestTitle,
         code: latestCode,
       }
@@ -119,22 +122,22 @@ function CSEditorSidebar({
               title="Published URL"
             />
             <Button
-              icon={isPublishing && <SpinnerIcon/>}
+              icon={isPublishing && <SpinnerIcon />}
               text={isPublishing ? 'Publishing...' : 'Publish'}
               onClick={publish}
             />
           </div>
           {isLoadingPublishedCS
-          ? (
-            <SpinnerIcon/>
-          )
-          : (
-            <>
-              {publishedCS
-              ? (
-                <a
-                  href={`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
-                  className="
+            ? (
+              <SpinnerIcon />
+            )
+            : (
+              <>
+                {publishedCS
+                  ? (
+                    <a
+                      href={`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
+                      className="
                     max-w-full
                     text-green-500
                     overflow-hidden
@@ -143,19 +146,19 @@ function CSEditorSidebar({
                     cursor-pointer
                     underline
                   "
-                >
-                  {`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
-                </a>
-              )
-              : (
-                <Title
-                  title="Not published yet"
-                  size={Title.size.T3}
-                  rank={Title.rank.Secondary}
-                />
-              )}
-            </>
-          )}
+                    >
+                      {`localhost:3000/${encodeURIComponent(publishedCS.title)}-${publishedCS.code_snippet_id}`}
+                    </a>
+                  )
+                  : (
+                    <Title
+                      title="Not published yet"
+                      size={Title.size.T3}
+                      rank={Title.rank.Secondary}
+                    />
+                  )}
+              </>
+            )}
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import {
   supabaseServerClient,
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
-import { CodeSnippetExecState } from '@devbookhq/sdk'
+import { CodeSnippetExecState, EnvVars } from '@devbookhq/sdk'
 
 import {
   PublishedCodeSnippet,
@@ -150,6 +150,14 @@ function CodeSnippetEditor({
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
+  const [envVars, setEnvVars] = useState<EnvVars | undefined>(() => {
+    try {
+      return JSON.parse(codeSnippet.env_vars)
+    } catch (err) {
+      console.error('Error parsing code snippet\'s env vars', codeSnippet.env_vars)
+      return undefined
+    }
+  })
   const [title, setTitle] = useState(codeSnippet.title)
   const [isPublishing, setIsPublishing] = useState(false)
   const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
@@ -236,12 +244,24 @@ function CodeSnippetEditor({
     setCode(c)
 
     const newCS = {
+      ...codeSnippet,
       id: codeSnippet.id,
       title: codeSnippet.title,
       code: c,
     }
     await updateCodeSnippet(apiKey, newCS)
   }, [setCode, codeSnippet, apiKey])
+
+  const handleEnvVarsChange = useCallback(async (e: EnvVars) => {
+    if (!apiKey) throw new Error('API key is undefined')
+    setEnvVars(e)
+
+    const newCS: CodeSnippet = {
+      ...codeSnippet,
+      env_vars: JSON.stringify(e)
+    }
+    await updateCodeSnippet(apiKey, newCS)
+  }, [setEnvVars, codeSnippet, apiKey])
 
   const handleTitleChange = useCallback(async (t: string) => {
     if (!apiKey) throw new Error('API key is undefined')
@@ -259,7 +279,7 @@ function CodeSnippetEditor({
 
   function runCode() {
     setExecState(CodeSnippetExecState.Loading)
-    run(code)
+    run(code, envVars)
       .then(state => {
         if (!state) return
         setExecState(state)
@@ -269,10 +289,10 @@ function CodeSnippetEditor({
   function stopCode() {
     setExecState(CodeSnippetExecState.Loading)
     stop()
-    .then(state => {
-      if (!state) return
-      setExecState(state)
-    })
+      .then(state => {
+        if (!state) return
+        setExecState(state)
+      })
   }
 
   async function publishCodeSnippet() {
@@ -285,6 +305,7 @@ function CodeSnippetEditor({
         id: publishedCS?.id,
         published_at: publishedCS?.published_at,
         code_snippet_id: codeSnippet.id,
+        env_vars: JSON.stringify(envVars),
         title,
         code,
       }
@@ -435,6 +456,8 @@ function CodeSnippetEditor({
               <CSEditorContent
                 code={code}
                 title={title}
+                envVars={envVars}
+                onEnvVarsChange={handleEnvVarsChange}
                 onCodeChange={handleCodeChange}
                 onTitleChange={handleTitleChange}
               />
