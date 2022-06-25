@@ -16,57 +16,59 @@ import SpinnerIcon from 'components/icons/Spinner'
 import CheckIcon from 'components/icons/Check'
 import CancelIcon from 'components/icons/Cancel'
 
+interface EnvVarItem {
+  key: string
+  value: string
+}
+
 export interface Props {
   envVars?: EnvVars
   onEnvVarsChange: (envVars: EnvVars) => void
 }
 
+function getEnvVarItems(vars: EnvVars): EnvVarItem[] {
+  return Object.entries(vars).map(([key, value]) => ({ key, value }))
+}
+
+function getEnvVarsMap(items: EnvVarItem[]): EnvVars {
+  return items.reduce<EnvVars>((prev, curr) => {
+    prev[curr.key] = curr.value
+    return prev
+  }, {})
+}
+
 function Env({
-  envVars,
+  envVars: initEnvVars = {},
   onEnvVarsChange,
 }: Props) {
-  const [newDep, setNewDep] = useState('')
-  const [deps, setDeps] = useState<string[]>()
+  const [envVarsList, setEnvVarsList] = useState<EnvVarItem[]>(() => getEnvVarItems(initEnvVars))
 
-  function handleKeyDown(e: any) {
-    if (e.key !== 'Enter') return
-    // TODO: Install dep
+  function handleSaveEnvVars() {
+    const vars = getEnvVarsMap(envVarsList)
+    onEnvVarsChange(vars)
   }
 
-  // TODO: Useless? We get a notif about current deps
-  // when we subscribe to deps changes
-  useEffect(function loadCurrentDeps() {
-    if (!session) return
-
-    session.listDeps()
-      .then(deps => {
-        if (deps) {
-          setDeps(deps)
-        }
-      })
-  }, [session])
-
-  useEffect(function onSessionDepsChange() {
-    if (!session.deps) return
-    setDeps(session.deps)
-  }, [session.deps])
-
-
-  useEffect(function onDepsStdoutChange() {
-    setJobs(jobs => {
-      session.depsOutput.forEach(out => {
-        const idx = jobs.findIndex(j => j.dep === out.dep)
-        if (idx === -1) return
-
-        const j = jobs[idx]
-        jobs[idx] = {
-          ...j,
-          output: [...j.output, out]
-        }
-      })
-      return [...jobs]
+  function changeEnvVarValue(index: number, value: string) {
+    setEnvVarsList(e => {
+      e[index].value = value
+      return [...e]
     })
-  }, [session.depsOutput])
+  }
+
+  function changeEnvVarKey(index: number, key: string) {
+    setEnvVarsList(e => {
+      e[index].key = key
+      return [...e]
+    })
+  }
+
+  function addEnvVar() {
+    setEnvVarsList(e => [...e, { key: '', value: '' }])
+  }
+
+  function deleteEnvVar(index: number) {
+    setEnvVarsList(e => e.filter((_, i) => i === index))
+  }
 
   return (
     <div className="
@@ -77,7 +79,7 @@ function Env({
       space-y-4
     ">
       <Title
-        title="Install new NPM package"
+        title="Environment"
         size={Title.size.T2}
       />
 
@@ -91,43 +93,16 @@ function Env({
         <div className="
           w-full
           flex
-          flex-row
-          space-x-4
-        ">
-          <input
-            className="
-              flex-1
-              bg-transparent
-              border-b
-              border-black-700
-              font-mono
-              outline-none
-              active:border-green-200
-              focus:border-green-200
-            "
-            value={newDep}
-            onChange={e => setNewDep(e.target.value)}
-            placeholder="package, package@v4.2.0, @scope/package"
-            onKeyDown={handleKeyDown}
-          />
-          <Button
-            text="Install"
-            onClick={() => installDep(newDep)}
-          />
-        </div>
-        <div className="
-          w-full
-          flex
           flex-col
           items-start
           justify-center
           space-y-4
         ">
           <Title
-            title="Installed packages"
+            title="Environment variables"
             size={Title.size.T2}
           />
-          {!deps && (
+          {!envVars && (
             <div className="
               w-full
               flex
@@ -137,16 +112,9 @@ function Env({
               <SpinnerIcon />
             </div>
           )}
-          {deps && deps.length === 0 && (
-            <Title
-              title="No installed packages"
-              rank={Title.rank.Secondary}
-              size={Title.size.T3}
-            />
-          )}
-          {deps && deps.map(d => (
+          {envVars && Object.entries(envVars).map(([key, value]) => (
             <div
-              key={d}
+              key={key}
               className="
                 pb-2
                 w-full
@@ -156,87 +124,24 @@ function Env({
                 border-black-700
                 hover:border-green-200
                 group
-                block
               "
             >
-              <Button
-                isDisabled={isJobLoading(d)}
-                icon={isJobLoading(d) ? <SpinnerIcon /> : undefined}
-                className="peer"
-                text="Remove"
-                onClick={() => uninstallDep(d)}
-              />
               <span className="
                 w-full
                 font-mono
                 peer-hover:text-green-200
                 group-hover:text-green-200
               ">
-                {d}
+                {key}
               </span>
-            </div>
-          ))}
-        </div>
-
-        <div className="
-          w-full
-          flex
-          flex-col
-          items-start
-          justify-center
-          space-y-4
-        ">
-          <Title
-            title="Jobs"
-            size={Title.size.T2}
-          />
-          {jobs.length === 0 && (
-            <Title
-              title="No running jobs"
-              rank={Title.rank.Secondary}
-              size={Title.size.T3}
-            />
-          )}
-          {jobs.length > 0 && jobs.map((job) => (
-            <div
-              key={job.dep}
-              onClick={() => toggleJobLogs(job.dep, !job.isHidden)}
-              className={cn(
-                'p-2',
-                'w-full',
-                'flex',
-                'flex-col',
-                'space-y-2',
-                'items-start',
-                'justify-center',
-                'rounded-lg',
-                'hover:cursor-pointer',
-                'hover:bg-black-800',
-                { 'bg-black-800': !job.isHidden },
-              )}
-            >
-              <div className="
+              <span className="
                 w-full
-                flex
-                flex-row
-                items-center
-                justify-between
+                font-mono
+                peer-hover:text-green-200
+                group-hover:text-green-200
               ">
-                <Title
-                  className="font-mono"
-                  title={`${job.type === JobType.Install ? 'Installing' : 'Uninstalling'} ${job.dep}`}
-                  size={Title.size.T3}
-                />
-                {job.state === JobState.Loading && <SpinnerIcon />}
-                {job.state === JobState.Success && <CheckIcon className="text-green-200" />}
-                {job.state === JobState.Fail && <CancelIcon className="text-red-400" />}
-              </div>
-              {!job.isHidden &&
-                <Output
-                  className="w-full max-h-[300px]"
-                  output={job.output}
-                />
-              }
+                {value}
+              </span>
             </div>
           ))}
         </div>
