@@ -1,11 +1,12 @@
 import cn from 'classnames'
+import { ChangeEvent } from 'react'
 
 interface Props {
   wrapperClassName?: string // Only present if `title` is set.
   className?: string
   title?: string
   value?: string
-  onChange?: (e: any) => void
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   onEnterDown?: () => void
 }
@@ -36,36 +37,36 @@ function InputEl({ className, onEnterDown, ...rest }: Props) {
   )
 }
 
-function Input({title, wrapperClassName, className, ...rest}: Props) {
+function Input({ title, wrapperClassName, className, ...rest }: Props) {
   return (
     <>
       {title
-      ? (
-        <div className={cn(
-          'flex',
-          'flex-col',
-          'items-start',
-          'space-y-1',
-          wrapperClassName,
-        )}>
-          <span className="
+        ? (
+          <div className={cn(
+            'flex',
+            'flex-col',
+            'items-start',
+            'space-y-1',
+            wrapperClassName,
+          )}>
+            <span className="
             font-sm
             text-gray-600
           ">
-            {title}
-          </span>
-          <InputEl
-            className={cn(
-              'w-full',
-              className,
-            )}
-            {...rest}
-          />
-        </div>
-      )
-      : (
-        <InputEl {...rest}/>
-      )}
+              {title}
+            </span>
+            <InputEl
+              className={cn(
+                'w-full',
+                className,
+              )}
+              {...rest}
+            />
+          </div>
+        )
+        : (
+          <InputEl {...rest} />
+        )}
     </>
   )
 }

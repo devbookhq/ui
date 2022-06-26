@@ -95,15 +95,6 @@ function CodeSnippet({
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [hostname, setHostname] = useState<string>()
 
-  const [envVars, setEnvVars] = useState<EnvVars | undefined>(() => {
-    try {
-      return JSON.parse(pcs.env_vars)
-    } catch (err) {
-      console.error('Error parsing code snippet\'s env vars', pcs.env_vars)
-      return undefined
-    }
-  })
-
   const {
     csOutput,
     csState,
@@ -139,7 +130,7 @@ function CodeSnippet({
 
   function runCode() {
     setExecState(CodeSnippetExecState.Loading)
-    run(pcs.code, envVars)
+    run(pcs.code, pcs.env_vars)
   }
 
   function stopCode() {
@@ -182,7 +173,7 @@ function CodeSnippet({
         ">
           <Title
             size={Title.size.T2}
-            title="Opened ports"
+            title="Open ports"
           />
           {hostname && ports.map(p => (
             <a

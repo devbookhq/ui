@@ -8,6 +8,7 @@ import {
   CodeSnippet,
   ErrorRes,
   CodeEnvironment,
+  CodeSnippetUpdate,
 } from 'types'
 
 type Env = Pick<CodeEnvironment, 'template' | 'deps'>
@@ -27,7 +28,8 @@ async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
   return body[0]
 }
 
-async function updateCodeSnippet(apiKey: string, codeSnippet: { id: string, title?: string, code?: string, env_vars: string }, env?: Env) {
+
+async function updateCodeSnippet(apiKey: string, codeSnippet: CodeSnippetUpdate, env?: Env) {
   const response = await fetch('/api/code', {
     method: 'POST',
     headers: {

@@ -11,6 +11,7 @@ import type {
   CodeSnippet,
   CodeEnvironment,
   PublishedCodeSnippet,
+  CodeSnippetUpdate,
 } from 'types'
 import {
   getAPIKeyInfo,
@@ -48,7 +49,7 @@ async function updateCodeSnippet(params: {
   userID: string,
   isPublished: boolean,
   env?: Env,
-  newCS: { id: string, title?: string, code?: string },
+  newCS: CodeSnippetUpdate,
   originalCS: CodeSnippet,
 }) {
   const {
@@ -67,23 +68,27 @@ async function updateCodeSnippet(params: {
     creator_id: userID,
     code: newCS.code,
     created_at: originalCS.created_at,
+    env_vars: newCS.env_vars || originalCS.env_vars,
   }
   const p: Promise<any>[] = [upsertCodeSnippet(updatedCS)]
 
-  if (isPublished) {
-    const pcs: PublishedCodeSnippet = {
-      code_snippet_id: updatedCS.id,
-      title: updatedCS.title,
-      code: updatedCS.code || '',
-    }
-    p.push(
-      upsertPublishedCodeSnippet(pcs)
-    )
-  } else {
-    p.push(
-      deletePublishedCodeSnippet(updatedCS.id)
-    )
-  }
+  // TODO: Why delete or update published code snippet on any code snippet update?
+  
+  // if (isPublished) {
+  //   const pcs: PublishedCodeSnippet = {
+  //     code_snippet_id: updatedCS.id,
+  //     title: updatedCS.title,
+  //     code: updatedCS.code || '',
+  //     env_vars: updatedCS.env_vars,
+  //   }
+  //   p.push(
+  //     upsertPublishedCodeSnippet(pcs)
+  //   )
+  // } else {
+  //   p.push(
+  //     deletePublishedCodeSnippet(updatedCS.id)
+  //   )
+  // }
 
   await Promise.all(p)
   if (env) {
@@ -124,6 +129,7 @@ async function createCodeSnippet(params: {
     title,
     creator_id: userID,
     code,
+    env_vars: {},
     created_at: new Date(),
   }
 
@@ -143,6 +149,7 @@ async function createCodeSnippet(params: {
       code_snippet_id: codeSnippet.id,
       title: codeSnippet.title,
       code: codeSnippet.code || '',
+      env_vars: codeSnippet.env_vars,
     }
     await upsertPublishedCodeSnippet(pcs)
   }

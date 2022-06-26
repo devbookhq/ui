@@ -150,14 +150,7 @@ function CodeSnippetEditor({
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
   const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
-  const [envVars, setEnvVars] = useState<EnvVars | undefined>(() => {
-    try {
-      return JSON.parse(codeSnippet.env_vars)
-    } catch (err) {
-      console.error('Error parsing code snippet\'s env vars', codeSnippet.env_vars)
-      return undefined
-    }
-  })
+  const [envVars, setEnvVars] = useState<EnvVars>(codeSnippet.env_vars || {})
   const [title, setTitle] = useState(codeSnippet.title)
   const [isPublishing, setIsPublishing] = useState(false)
   const [isLoadingPublishedCS, setIsLoadingPublishedCS] = useState(true)
@@ -241,41 +234,46 @@ function CodeSnippetEditor({
 
   const handleCodeChange = useCallback(async (c: string) => {
     if (!apiKey) throw new Error('API key is undefined')
+
     setCode(c)
 
-    const newCS = {
-      ...codeSnippet,
+    await updateCodeSnippet(apiKey, {
       id: codeSnippet.id,
-      title: codeSnippet.title,
       code: c,
-    }
-    await updateCodeSnippet(apiKey, newCS)
-  }, [setCode, codeSnippet, apiKey])
+    })
+  }, [
+    codeSnippet.id,
+    apiKey,
+  ])
 
   const handleEnvVarsChange = useCallback(async (e: EnvVars) => {
     if (!apiKey) throw new Error('API key is undefined')
+
     setEnvVars(e)
 
-    const newCS: CodeSnippet = {
-      ...codeSnippet,
-      env_vars: JSON.stringify(e)
-    }
-    await updateCodeSnippet(apiKey, newCS)
-  }, [setEnvVars, codeSnippet, apiKey])
+    await updateCodeSnippet(apiKey, {
+      id: codeSnippet.id,
+      env_vars: e,
+    })
+  }, [
+    codeSnippet.id,
+    apiKey,
+  ])
 
   const handleTitleChange = useCallback(async (t: string) => {
     if (!apiKey) throw new Error('API key is undefined')
+    if (!t) return
+
     setTitle(t)
 
-    if (!t) return
-    // Convert whitespace to '-', make it lowercase and append code snippet ID.
-    const newCS = {
-      ...codeSnippet,
+    await updateCodeSnippet(apiKey, {
+      id: codeSnippet.id,
       title: t,
-      slug: `${t.replace(/\s+/g, '-').toLowerCase()}-${codeSnippet.id}`,
-    }
-    await updateCodeSnippet(apiKey, newCS)
-  }, [setTitle, codeSnippet, apiKey])
+    })
+  }, [
+    codeSnippet.id,
+    apiKey,
+  ])
 
   function runCode() {
     setExecState(CodeSnippetExecState.Loading)
@@ -305,7 +303,7 @@ function CodeSnippetEditor({
         id: publishedCS?.id,
         published_at: publishedCS?.published_at,
         code_snippet_id: codeSnippet.id,
-        env_vars: JSON.stringify(envVars),
+        env_vars: envVars,
         title,
         code,
       }
@@ -426,6 +424,7 @@ function CodeSnippetEditor({
                   />
                 ))}
                 <div className="
+                  pt-2
                   flex
                   flex-col
                   items-start
@@ -433,7 +432,7 @@ function CodeSnippetEditor({
                 ">
                   <Title
                     size={Title.size.T2}
-                    title="Opened ports"
+                    title="Open ports"
                   />
                   {hostname && ports.map(p => (
                     <a
@@ -461,13 +460,6 @@ function CodeSnippetEditor({
                 onCodeChange={handleCodeChange}
                 onTitleChange={handleTitleChange}
               />
-              {/*
-            <CSEditorSidebar
-              codeSnippet={codeSnippet}
-              latestCode={code}
-              latestTitle={title}
-            />
-            */}
             </div>
           </div>
         </SharedSessionProvider>

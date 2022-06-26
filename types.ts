@@ -1,9 +1,11 @@
-import type { components } from '@devbookhq/sdk'
+import type { components, EnvVars } from '@devbookhq/sdk'
 
 export interface ErrorRes {
   statusCode: number
   message: string
 }
+
+export type CodeSnippetUpdate = Pick<CodeSnippet, 'id'> & Partial<Pick<CodeSnippet, 'code' | 'title' | 'env_vars'>>
 
 // Used when creating a new code snippet.
 export interface CodeSnippet {
@@ -12,7 +14,7 @@ export interface CodeSnippet {
   title: string
   creator_id: string
   code?: string
-  env_vars: string
+  env_vars: EnvVars
 }
 
 export interface PublishedCodeSnippet {
@@ -22,7 +24,7 @@ export interface PublishedCodeSnippet {
   code_snippet_id: string
   title: string
   code: string
-  env_vars: string
+  env_vars: EnvVars
 }
 
 export interface CodeEnvironment {

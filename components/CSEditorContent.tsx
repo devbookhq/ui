@@ -16,7 +16,7 @@ import { EnvVars } from '@devbookhq/sdk'
 
 export interface Props {
   code: string
-  envVars?: EnvVars
+  envVars: EnvVars
   title: string
   onEnvVarsChange: (envVars: EnvVars) => void
   onCodeChange: (code: string) => void
