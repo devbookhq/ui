@@ -30,6 +30,7 @@ function Button({
   if (variant === Variant.Full) {
     return (
       <button
+        type="submit"
         className={cn(
           'py-1.5',
           'px-4',

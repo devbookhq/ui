@@ -1,75 +1,79 @@
 import {
   useEffect,
-  useState,
 } from 'react'
 import { useRouter } from 'next/router'
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import {
   useUser,
 } from '@supabase/supabase-auth-helpers/react'
 
-import GitHubButton from 'components/GitHubButton'
-import Title from 'components/typography/Title'
 import SpinnerIcon from 'components/icons/Spinner'
+import SignInForm from 'components/SignInForm'
+import TitleLink from 'components/TitleLink'
+import SignUpForm from 'components/SignUpForm'
 
 function SignIn() {
   const router = useRouter()
   const { user } = useUser()
-  const [isLoading, setIsLoading] = useState(false)
-  const [errMessage, setErrMessage] = useState('')
-
-  async function signInWithGitHub() {
-    setIsLoading(true)
-    const { error } = await supabaseClient.auth.signIn({ provider: 'github' })
-    if (error) {
-      setErrMessage(error.message)
-    }
-    setIsLoading(false)
-  }
+  const isSignUp = router.query.signup === 'true'
 
   useEffect(() => {
     if (user) {
-      router.replace('/')
+      router.replace('/dashboard')
     }
   }, [user, router])
 
-  if (!user) {
-    return (
-      <div className="
-        m-auto
-        flex
-        rounded
-      ">
-        <div className="
-          p-4
-          w-[300px]
-          flex
-          flex-col
-          space-y-16
-          items-center
-          bg-black-800
-        ">
-          <Title
-            title="Sign In"
-            size={Title.size.T2}
-          />
-          <GitHubButton
-            onClick={signInWithGitHub}
-          />
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="
-      flex-1
-      flex
-      items-center
-      justify-center
-    ">
-      <SpinnerIcon />
-    </div>
+    <>
+      {user &&
+        <div className="
+          flex-1
+          flex
+          items-center
+          justify-center
+        ">
+          <SpinnerIcon />
+        </div>
+      }
+      {!user &&
+        <div className="
+            m-auto
+            flex
+            flex-col
+            rounded
+            space-y-4
+          ">
+          {!isSignUp &&
+            <>
+              <SignInForm />
+              <TitleLink
+                size={TitleLink.size.T3}
+                title="Create a new account"
+                shallow
+                href={{
+                  pathname: router.pathname,
+                  query: {
+                    signup: 'true',
+                  },
+                }}
+              />
+            </>
+          }
+          {isSignUp &&
+            <>
+              <SignUpForm />
+              <TitleLink
+                size={TitleLink.size.T3}
+                title="Sign in with an existing account"
+                shallow
+                href={{
+                  pathname: router.pathname,
+                }}
+              />
+            </>
+          }
+        </div>
+      }
+    </>
   )
 }
 

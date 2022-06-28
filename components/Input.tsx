@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, HTMLInputTypeAttribute } from 'react'
 
 interface Props {
   wrapperClassName?: string // Only present if `title` is set.
@@ -9,12 +9,16 @@ interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   onEnterDown?: () => void
+  type?: HTMLInputTypeAttribute
+  autoFocus?: boolean
+  autoComplete?: string
 }
 
 function InputEl({ className, onEnterDown, ...rest }: Props) {
   function handleKeyDown(e: any) {
     if (e.key === 'Enter') onEnterDown?.()
   }
+
   return (
     <input
       {...rest}
