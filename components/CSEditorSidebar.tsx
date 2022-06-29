@@ -3,6 +3,7 @@ import {
   useState,
 } from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import type { EnvVars } from '@devbookhq/sdk'
 
 import type {
   PublishedCodeSnippet,
@@ -33,7 +34,7 @@ interface Props {
   codeSnippet: CodeSnippet
   latestCode: string
   latestTitle: string
-  latestEnvVars: string
+  latestEnvVars: EnvVars
 }
 
 function CSEditorSidebar({

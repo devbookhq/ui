@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 
 import TitleLink from 'components/TitleLink'
+import UserIndicator from 'components/UserIndicator'
 import useUserInfo from 'utils/useUserInfo'
 
 function Navbar() {
@@ -40,8 +41,9 @@ function Navbar() {
           size={TitleLink.size.T3}
         />
 
-        <div
-          className="
+        {userDetails?.avatar_url &&
+          <div
+            className="
             relative
             w-[32px]
             h-[32px]
@@ -56,11 +58,19 @@ function Navbar() {
             hover:shadow-lg
             hover:shadow-green-500/50
           "
-          style={{
-            backgroundImage: `url(${userDetails?.avatar_url})`,
-          }}
-          onClick={() => router.push('/dashboard/settings')}
-        />
+            style={{
+              backgroundImage: `url(${userDetails?.avatar_url})`,
+            }}
+            onMouseDown={() => router.push('/dashboard/settings')}
+          />
+        }
+        {!userDetails?.avatar_url &&
+          <UserIndicator
+            onMouseDown={() => router.push('/dashboard/settings')}
+            userDisplayName={user.email}
+            size={UserIndicator.size.Large}
+          />
+        }
       </nav>
     </header>
   )
