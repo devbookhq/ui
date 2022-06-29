@@ -7,9 +7,8 @@ import {
 } from '@supabase/supabase-auth-helpers/react'
 
 import SpinnerIcon from 'components/icons/Spinner'
-import SignInForm from 'components/SignInForm'
 import TitleLink from 'components/TitleLink'
-import SignUpForm from 'components/SignUpForm'
+import AuthForm from 'components/AuthForm'
 
 function SignIn() {
   const router = useRouter()
@@ -44,7 +43,9 @@ function SignIn() {
           ">
           {!isSignUp &&
             <>
-              <SignInForm />
+              <AuthForm
+                authType={AuthForm.type.SignIn}
+              />
               <TitleLink
                 size={TitleLink.size.T3}
                 title="Create a new account"
@@ -60,7 +61,9 @@ function SignIn() {
           }
           {isSignUp &&
             <>
-              <SignUpForm />
+              <AuthForm
+                authType={AuthForm.type.SignUp}
+              />
               <TitleLink
                 size={TitleLink.size.T3}
                 title="Sign in with an existing account"

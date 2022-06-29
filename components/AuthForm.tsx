@@ -2,6 +2,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  KeyboardEvent,
 } from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import cn from 'classnames'
@@ -11,7 +12,18 @@ import SpinnerIcon from 'components/icons/Spinner'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
 
-function SignInForm() {
+export enum AuthFormType {
+  SignIn,
+  SignUp,
+}
+
+export interface Props {
+  authType: AuthFormType
+}
+
+function AuthForm({
+  authType,
+}: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const [errMessage, setErrMessage] = useState('\n')
 
@@ -19,25 +31,22 @@ function SignInForm() {
   const passwordRef = useRef<HTMLInputElement>(null)
 
   useLayoutEffect(function autofocusEmailInput() {
-    if (errMessage !== '') {
-      if (!emailRef.current?.value) {
-        emailRef.current?.focus()
-      } else if (!passwordRef.current?.value) {
-        passwordRef.current?.focus()
-      } else {
-        emailRef.current?.focus()
-      }
-      return
+    if (isLoading) return
+
+    if (!emailRef.current?.value) {
+      emailRef.current?.focus()
+    } else if (!passwordRef.current?.value) {
+      passwordRef.current?.focus()
+    } else {
+      emailRef.current?.focus()
     }
+  }, [isLoading])
 
-    emailRef.current?.focus()
-  }, [errMessage, isLoading])
-
-  function handleKeyDown(e: any) {
-    if (e.key === 'Enter') signInWithEmail()
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') authWithEmail()
   }
 
-  async function signInWithEmail() {
+  async function authWithEmail() {
     setIsLoading(true)
 
     const email = emailRef.current?.value
@@ -45,25 +54,47 @@ function SignInForm() {
 
     if (!email) {
       setErrMessage('Email must not be empty')
+      emailRef.current?.focus()
       setIsLoading(false)
       return
     }
 
     if (!password) {
+      passwordRef.current?.focus()
       setErrMessage('Password must not be empty')
       setIsLoading(false)
       return
     }
 
-    const { error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-    })
+    const { error } = authType === AuthFormType.SignUp
+      ? await supabaseClient.auth.signUp({
+        email,
+        password,
+      })
+      : await supabaseClient.auth.signIn({
+        email,
+        password,
+      })
+
     if (error) {
+      emailRef.current?.focus()
       setErrMessage(error.message)
     }
+
     setIsLoading(false)
   }
+
+  const title = authType === AuthFormType.SignUp
+    ? 'Create a new account'
+    : 'Sign in'
+
+  const buttonLabel = authType === AuthFormType.SignUp
+    ? 'Sign up'
+    : 'Sign in'
+
+  const passwordAutocomplete = authType === AuthFormType.SignUp
+    ? 'new-password'
+    : 'current-password'
 
   return (
     <div className="
@@ -79,7 +110,7 @@ function SignInForm() {
         bg-black-800
       ">
       <Title
-        title="Create a new account"
+        title={title}
         size={Title.size.T1}
       />
       <div className="flex flex-col px-16 space-y-8">
@@ -130,7 +161,7 @@ function SignInForm() {
             )}
             name="password"
             type="password"
-            autoComplete="new-password"
+            autoComplete={passwordAutocomplete}
             placeholder="Password"
           />
         </div>
@@ -138,8 +169,8 @@ function SignInForm() {
           <Button
             isDisabled={isLoading}
             className="self-center"
-            text="Sign up"
-            onClick={signInWithEmail}
+            text={buttonLabel}
+            onClick={authWithEmail}
             variant={Button.variant.Full}
           />
           {!isLoading && <Text
@@ -164,4 +195,6 @@ function SignInForm() {
   )
 }
 
-export default SignInForm
+AuthForm.type = AuthFormType
+
+export default AuthForm

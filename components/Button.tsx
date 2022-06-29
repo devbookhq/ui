@@ -47,7 +47,7 @@ function Button({
           { 'cursor-not-allowed': isDisabled },
           className,
         )}
-        onMouseDown={!isDisabled ? onClick : () => { }}
+        onClick={!isDisabled ? onClick : () => { }}
       >
         <div className="
           flex
