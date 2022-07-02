@@ -24,7 +24,7 @@ function parseTimestamp(t: number) {
   const sec = d.getSeconds()
   const secStr = sec < 10 ? `0${sec}` : `${sec}`
 
-  return `${hStr}:${minStr}:${secStr}:${d.getMilliseconds()}`
+  return `${hStr}:${minStr}:${secStr}`
 }
 
 
@@ -45,7 +45,7 @@ function Output({
       'flex-1',
       'flex-col-reverse',
       'overflow-auto',
-      'whitespace-pre',
+      'whitespace-pre-wrap',
       'leading-tight',
       className,
     )}

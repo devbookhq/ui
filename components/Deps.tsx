@@ -292,7 +292,6 @@ function Deps() {
                 border-black-700
                 hover:border-green-200
                 group
-                block
               "
             >
               <Button

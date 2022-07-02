@@ -2,7 +2,6 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  KeyboardEvent,
 } from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import cn from 'classnames'
@@ -25,7 +24,7 @@ function AuthForm({
   authType,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false)
-  const [errMessage, setErrMessage] = useState('\n')
+  const [errMessage, setErrMessage] = useState('')
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -41,10 +40,6 @@ function AuthForm({
       emailRef.current?.focus()
     }
   }, [isLoading])
-
-  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') authWithEmail()
-  }
 
   async function authWithEmail() {
     setIsLoading(true)
@@ -79,6 +74,7 @@ function AuthForm({
     if (error) {
       emailRef.current?.focus()
       setErrMessage(error.message)
+      console.error(error.message)
     }
 
     setIsLoading(false)
@@ -92,12 +88,23 @@ function AuthForm({
     ? 'Sign up'
     : 'Sign in'
 
+  const buttonLoadingLabel = authType === AuthFormType.SignUp
+    ? 'Signing up...'
+    : 'Signing in...'
+
   const passwordAutocomplete = authType === AuthFormType.SignUp
     ? 'new-password'
     : 'current-password'
 
   return (
-    <div className="
+    <form
+      autoComplete="on"
+      onSubmit={(e) => {
+        e.preventDefault()
+        authWithEmail()
+      }}
+    >
+      <div className="
         py-12
         px-4
         w-[450px]
@@ -109,89 +116,86 @@ function AuthForm({
         rounded
         bg-black-800
       ">
-      <Title
-        title={title}
-        size={Title.size.T1}
-      />
-      <div className="flex flex-col px-16 space-y-8">
-        <div className="flex flex-col space-y-2 min-w-0">
-          <input
-            ref={emailRef}
-            onKeyDown={handleKeyDown}
-            disabled={isLoading}
-            className={cn(
-              'px-2.5',
-              'py-2',
-              'rounded-lg',
-              'border',
-              'border-black-700',
-              { 'bg-black-900': !isLoading },
-              { 'bg-black-800': isLoading },
-              'outline-none',
-              'focus:border-green-200',
-              'text-sm',
-              'font-semibold',
-              'placeholder:text-gray-600',
-            )}
-            name="email"
-            autoComplete="username email"
-            placeholder="Email"
-            type="text"
-          />
-          <input
-            disabled={isLoading}
-            ref={passwordRef}
-            onKeyDown={handleKeyDown}
-            className={cn(
-              'px-2.5',
-              'py-2',
-              'rounded-lg',
-              'border',
-              'flex',
-              'min-w-0',
-              'flex-1',
-              'border-black-700',
-              { 'bg-black-900': !isLoading },
-              { 'bg-black-800': isLoading },
-              'outline-none',
-              'focus:border-green-200',
-              'text-sm',
-              'font-semibold',
-              'placeholder:text-gray-600',
-            )}
-            name="password"
-            type="password"
-            autoComplete={passwordAutocomplete}
-            placeholder="Password"
-          />
-        </div>
-        <div className="flex flex-col space-y-4 flex-shrink-0">
-          <Button
-            isDisabled={isLoading}
-            className="self-center"
-            text={buttonLabel}
-            onClick={authWithEmail}
-            variant={Button.variant.Full}
-          />
-          {!isLoading && <Text
-            text={errMessage}
-            size={Text.size.S2}
-            className="text-red-400 self-center"
-          />
-          }
-          {isLoading &&
-            <div className="
-              flex-1
-              flex
-              items-center
-              justify-center
-            ">
-              <SpinnerIcon />
-            </div>
-          }
+        <Title
+          title={title}
+          size={Title.size.T1}
+        />
+        <div className="flex flex-col px-16 space-y-8">
+          <div className="flex flex-col space-y-2 min-w-0">
+            <input
+              ref={emailRef}
+              autoCorrect="off"
+              autoCapitalize="off"
+              disabled={isLoading}
+              required
+              className={cn(
+                'px-2.5',
+                'py-2',
+                'rounded-lg',
+                'border',
+                'border-black-700',
+                { 'bg-black-900': !isLoading },
+                { 'bg-black-800': isLoading },
+                'outline-none',
+                'focus:border-green-200',
+                'text-sm',
+                'font-medium',
+                'placeholder:text-gray-600',
+              )}
+              name="email"
+              autoComplete="email"
+              placeholder="Email"
+              type="email"
+            />
+            <input
+              disabled={isLoading}
+              ref={passwordRef}
+              autoCorrect="off"
+              required
+              className={cn(
+                'px-2.5',
+                'py-2',
+                'rounded-lg',
+                'border',
+                'flex',
+                'min-w-0',
+                'flex-1',
+                'border-black-700',
+                { 'bg-black-900': !isLoading },
+                { 'bg-black-800': isLoading },
+                'outline-none',
+                'focus:border-green-200',
+                'text-sm',
+                'font-medium',
+                'placeholder:text-gray-600',
+              )}
+              name="password"
+              type="password"
+              autoComplete={passwordAutocomplete}
+              placeholder="Password"
+            />
+          </div>
+          <input type="submit" hidden />
+          <div className="flex flex-col space-y-4">
+            <Button
+              type="submit"
+              isDisabled={isLoading}
+              className="self-center whitespace-nowrap"
+              text={isLoading ? buttonLoadingLabel : buttonLabel}
+              onClick={authWithEmail}
+              variant={Button.variant.Full}
+            />
+            {!isLoading && !!errMessage &&
+              <Text
+                text={errMessage}
+                size={Text.size.S2}
+                className="text-red-400 self-center"
+              />
+            }
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 

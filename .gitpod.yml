@@ -13,3 +13,8 @@ image:
 vscode:
   extensions:
     - bradlc.vscode-tailwindcss
+
+ports:
+  # This port for the Nextjs app needs to be public, otherwise the Supabase Realtime functionality is not working because it is using WS.
+  - port: 3000
+    visibility: public

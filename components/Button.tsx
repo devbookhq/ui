@@ -17,6 +17,7 @@ interface Props {
   icon?: ReactNode
   onClick?: (e: any) => void
   isDisabled?: boolean
+  type?: 'submit'
 }
 
 function Button({
@@ -25,12 +26,13 @@ function Button({
   variant = Variant.Outline,
   icon,
   onClick,
+  type,
   isDisabled
 }: Props) {
   if (variant === Variant.Full) {
     return (
       <button
-        type="submit"
+        type={type}
         className={cn(
           'py-1.5',
           'px-4',
@@ -68,6 +70,7 @@ function Button({
 
   return (
     <button
+      type={type}
       className={cn(
         'p-[2px]',
         'rounded-lg',

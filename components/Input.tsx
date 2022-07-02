@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import { ChangeEvent, HTMLInputTypeAttribute } from 'react'
+import { ChangeEvent } from 'react'
 
 interface Props {
   wrapperClassName?: string // Only present if `title` is set.
@@ -9,9 +9,6 @@ interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   onEnterDown?: () => void
-  type?: HTMLInputTypeAttribute
-  autoFocus?: boolean
-  autoComplete?: string
 }
 
 function InputEl({ className, onEnterDown, ...rest }: Props) {

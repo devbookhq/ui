@@ -13,7 +13,7 @@ import AuthForm from 'components/AuthForm'
 function SignIn() {
   const router = useRouter()
   const { user } = useUser()
-  const isSignUp = router.query.signup === 'true'
+  const isCreatingNewAccount = router.query.signup === 'true'
 
   useEffect(() => {
     if (user) {
@@ -41,7 +41,7 @@ function SignIn() {
             rounded
             space-y-4
           ">
-          {!isSignUp &&
+          {!isCreatingNewAccount &&
             <>
               <AuthForm
                 authType={AuthForm.type.SignIn}
@@ -59,7 +59,7 @@ function SignIn() {
               />
             </>
           }
-          {isSignUp &&
+          {isCreatingNewAccount &&
             <>
               <AuthForm
                 authType={AuthForm.type.SignUp}

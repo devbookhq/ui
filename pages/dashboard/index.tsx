@@ -18,6 +18,7 @@ import useCodeSnippets from 'utils/useCodeSnippets'
 import useUserInfo from 'utils/useUserInfo'
 
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
+
 function Dashboard() {
   const router = useRouter()
   const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
