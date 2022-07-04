@@ -100,6 +100,8 @@ function AuthForm({
     <form
       autoComplete="on"
       onSubmit={(e) => {
+        console.log('SUBMITTING')
+
         e.preventDefault()
         authWithEmail()
       }}
@@ -175,7 +177,7 @@ function AuthForm({
               placeholder="Password"
             />
           </div>
-          <input type="submit" hidden />
+          {/* <input type="submit" hidden /> */}
           <div className="flex flex-col space-y-4">
             <Button
               type="submit"

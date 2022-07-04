@@ -40,37 +40,11 @@ function Navbar() {
           title="Settings"
           size={TitleLink.size.T3}
         />
-
-        {userDetails?.avatar_url &&
-          <div
-            className="
-            relative
-            w-[32px]
-            h-[32px]
-            bg-cover
-            bg-no-repeat
-            bg-center
-            rounded-[100%]
-            cursor-pointer
-            border-2
-            border-white-900
-            hover:border-green-500
-            hover:shadow-lg
-            hover:shadow-green-500/50
-          "
-            style={{
-              backgroundImage: `url(${userDetails?.avatar_url})`,
-            }}
-            onMouseDown={() => router.push('/dashboard/settings')}
-          />
-        }
-        {!userDetails?.avatar_url &&
-          <UserIndicator
-            onMouseDown={() => router.push('/dashboard/settings')}
-            userDisplayName={user.email}
-            size={UserIndicator.size.Large}
-          />
-        }
+        <UserIndicator
+          onMouseDown={() => router.push('/dashboard/settings')}
+          userDisplayName={user.email}
+          size={UserIndicator.size.Large}
+        />
       </nav>
     </header>
   )

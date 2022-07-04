@@ -9,10 +9,10 @@ import { Tab } from 'utils/newCodeSnippetTabs'
 import CodeEditor from 'components/CodeEditor'
 import EditIcon from 'components/icons/Edit'
 import Output from 'components/Output'
-import Deps from 'components/Deps'
 import useSharedSession from 'utils/useSharedSession'
 import Env from './Env'
 import { EnvVars } from '@devbookhq/sdk'
+import DepsTerminal from './DepsTerminal'
 
 export interface Props {
   code: string
@@ -108,7 +108,7 @@ function CSEditorContent({
       )
     case Tab.Deps:
       return (
-        <Deps />
+        <DepsTerminal />
       )
     case Tab.Env:
       return (

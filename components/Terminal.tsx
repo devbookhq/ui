@@ -11,8 +11,8 @@ import type {
   TerminalManager,
 } from '@devbookhq/sdk'
 
+import Text from './typography/Text'
 import useTerminal from 'utils/useTerminal'
-import useSession from 'utils/useSession'
 import Spinner from './icons/Spinner'
 
 export interface Props {
@@ -34,7 +34,11 @@ const Terminal = forwardRef<Handler, Props>(({
   autofocus,
 }, ref) => {
   const terminalEl = useRef<HTMLDivElement>(null)
-  const { terminal, terminalSession } = useTerminal({ terminalManager })
+  const {
+    terminal,
+    terminalSession,
+    error: errMessage,
+  } = useTerminal({ terminalManager })
   const [isLoading, setIsLoading] = useState(true)
 
   const handleInput = useCallback((input: string) => terminalSession?.sendData(input), [terminalSession])
@@ -99,10 +103,10 @@ const Terminal = forwardRef<Handler, Props>(({
 
   return (
     <div
-      className="rounded flex flex-col min-w-0 flex-1 dark"
+      className="rounded flex flex-col min-w-0 flex-1 dark w-full"
     >
       <div
-        className="flex flex-1 min-w-0 bg-black-650 pl-4 rounded pt-4"
+        className="flex flex-1 min-w-0 bg-black-800 border border-black-700 pl-4 rounded-lg pt-4"
         style={{
           ...height && { minHeight: height, maxHeight: height },
         }}
@@ -111,11 +115,22 @@ const Terminal = forwardRef<Handler, Props>(({
           className="flex flex-1 min-w-0"
           ref={terminalEl}
         >
-          {isLoading &&
+          {isLoading && !errMessage &&
             <div
               className="flex flex-1 justify-center items-center max-h-full min-w-0 pb-2"
             >
               <Spinner />
+            </div>
+          }
+          {!!errMessage &&
+            <div
+              className="flex flex-1 justify-center items-center max-h-full min-w-0 pb-2 px-4"
+            >
+              <Text
+                text={errMessage}
+                size={Text.size.S2}
+                className="text-red-400"
+              />
             </div>
           }
         </div>

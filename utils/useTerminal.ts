@@ -18,6 +18,7 @@ function useTerminal({
 }: Opts) {
   const [terminal, setTerminal] = useState<XTermTerminal>()
   const [terminalSession, setTerminalSession] = useState<TerminalSession>()
+  const [error, setError] = useState<string>()
 
   useEffect(function initialize() {
     async function init() {
@@ -34,18 +35,25 @@ function useTerminal({
           cursor: '#E9E9E9',
         },
       })
-      const session = await terminalManager.createSession((data) => term.write(data))
 
-      term.onData((data) => session.sendData(data))
-      term.onResize((size) => session.resize(size))
+      try {
+        const session = await terminalManager.createSession((data) => term.write(data))
 
-      setTerminal(term)
-      setTerminalSession(session)
+        term.onData((data) => session.sendData(data))
+        term.onResize((size) => session.resize(size))
 
-      return () => {
-        term.dispose()
-        session.destroy()
-        setTerminal(undefined)
+        setTerminal(term)
+        setTerminalSession(session)
+        setError(undefined)
+
+        return () => {
+          term.dispose()
+          session.destroy()
+          setTerminal(undefined)
+        }
+      } catch (err: any) {
+        console.error(err.message)
+        setError(err.message)
       }
     }
 
@@ -60,9 +68,11 @@ function useTerminal({
     return {
       terminal,
       terminalSession,
+      error,
     }
   }, [
     terminal,
+    error,
     terminalSession,
   ])
 }
