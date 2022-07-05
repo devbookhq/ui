@@ -1,5 +1,5 @@
 import CodeIcon from 'components/icons/Code'
-import BoxIcon from 'components/icons/Box'
+import KeyIcon from 'components/icons/Key'
 import PackageIcon from 'components/icons/Package'
 
 export enum Tab {
@@ -21,7 +21,7 @@ export const tabs = {
   },
   [Tab.Env]: {
     key: Tab.Env,
-    title: 'Environment',
-    icon: <BoxIcon />,
+    title: 'Env variables',
+    icon: <KeyIcon />,
   },
 }

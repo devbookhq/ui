@@ -10,7 +10,7 @@ import CodeEditor from 'components/CodeEditor'
 import EditIcon from 'components/icons/Edit'
 import Output from 'components/Output'
 import useSharedSession from 'utils/useSharedSession'
-import Env from './Env'
+import EnvVariables from './EnvVariables'
 import { EnvVars } from '@devbookhq/sdk'
 import DepsTerminal from './DepsTerminal'
 
@@ -112,7 +112,7 @@ function CSEditorContent({
       )
     case Tab.Env:
       return (
-        <Env
+        <EnvVariables
           envVars={envVars}
           onEnvVarsChange={onEnvVarsChange}
         />

@@ -16,7 +16,8 @@ import Output from 'components/Output'
 import SpinnerIcon from 'components/icons/Spinner'
 import CheckIcon from 'components/icons/Check'
 import CancelIcon from 'components/icons/Cancel'
-import Input from './Input'
+import Input from '../Input'
+import EnvVariable from './EnvVariable'
 
 interface EnvVarItem {
   key: string
@@ -41,7 +42,7 @@ function getEnvVarsMap(items: EnvVarItem[]): EnvVars {
   }, {})
 }
 
-function Env({
+function EnvVariables({
   envVars,
   onEnvVarsChange,
 }: Props) {
@@ -49,9 +50,6 @@ function Env({
 
   useEffect(function init() {
     const newList = getEnvVarItems(envVars)
-    if (newList.length === 0) {
-      newList.push({ key: '', value: '' })
-    }
     setEnvVarsList(newList)
   }, [])
 
@@ -63,6 +61,7 @@ function Env({
   function changeEnvVarValue(index: number, value: string) {
     envVarsList[index].value = value
     const newList = [...envVarsList]
+
     setEnvVarsList(newList)
     handleSaveEnvVars(newList)
   }
@@ -70,20 +69,21 @@ function Env({
   function changeEnvVarKey(index: number, key: string) {
     envVarsList[index].key = key
     const newList = [...envVarsList]
+
     setEnvVarsList(newList)
     handleSaveEnvVars(newList)
   }
 
-  function addEnvVar() {
-    const newList = [...envVarsList, { key: '', value: '' }]
+  function addEnvVar(key: string, value: string = '') {
+    const newList = [...envVarsList, { key, value }]
+
     setEnvVarsList(newList)
+    handleSaveEnvVars(newList)
   }
 
   function deleteEnvVar(index: number) {
     const newList = envVarsList.filter((_, i) => i !== index)
-    if (newList.length === 0) {
-      newList.push({ key: '', value: '' })
-    }
+
     setEnvVarsList(newList)
     handleSaveEnvVars(newList)
   }
@@ -103,64 +103,27 @@ function Env({
           justify-center
           space-y-4
         ">
-        <div className="flex space-x-4 items-center pb-4">
-          <Title
-            title="Environment variables"
-            size={Title.size.T2}
-          />
-          <Button
-            text="Add"
-            onClick={addEnvVar}
-          />
-        </div>
+        <Title
+          title="Manage environment variables"
+          size={Title.size.T2}
+          className="pb-4"
+        />
         {envVarsList.map(({ key, value }, i) => (
-          <div
+          <EnvVariable
             key={i}
-            className="
-                w-full
-                flex
-                flex-1
-                items-center
-              "
-          >
-            <div
-              className="flex space-x-2 pr-4"
-            >
-              <Title
-                className="text-gray-500"
-                title="Name"
-                size={Title.size.T3}
-              />
-              <Input
-                value={key}
-                onChange={(e) => changeEnvVarKey(i, e.target.value)}
-              />
-            </div>
-            <div
-              className="flex space-x-2 pr-2"
-            >
-              <Title
-                className="text-gray-500"
-                title="Value"
-                size={Title.size.T3}
-              />
-              <Input
-                value={value}
-                onChange={(e) => changeEnvVarValue(i, e.target.value)}
-              />
-            </div>
-            <div
-              onClick={() => deleteEnvVar(i)}
-              className="text-black-700 cursor-pointer hover:text-red-400"
-            >
-              <CancelIcon
-              />
-            </div>
-          </div>
+            onDelete={() => deleteEnvVar(i)}
+            varKey={key}
+            varValue={value}
+            onVarKeyChange={(key) => changeEnvVarKey(i, key)}
+            onVarValueChange={(value) => changeEnvVarValue(i, value)}
+          />
         ))}
+        <EnvVariable
+          onAdd={addEnvVar}
+        />
       </div>
     </div>
   )
 }
 
-export default Env
+export default EnvVariables
