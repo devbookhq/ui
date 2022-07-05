@@ -43,11 +43,11 @@ function EnvVariable({
   return (
     <div
       className="
-                w-full
-                flex
-                flex-1
-                items-center
-              "
+        w-full
+        flex
+        flex-1
+        items-center
+      "
     >
       <div
         className="flex space-x-2 pr-4"

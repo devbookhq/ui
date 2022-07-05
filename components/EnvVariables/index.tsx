@@ -1,22 +1,12 @@
 import {
   useEffect,
   useState,
-  memo,
 } from 'react'
-import cn from 'classnames'
 import {
   EnvVars,
 } from '@devbookhq/sdk'
 
-import useSharedSession from 'utils/useSharedSession'
-import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
-import Button from 'components/Button'
-import Output from 'components/Output'
-import SpinnerIcon from 'components/icons/Spinner'
-import CheckIcon from 'components/icons/Check'
-import CancelIcon from 'components/icons/Cancel'
-import Input from '../Input'
 import EnvVariable from './EnvVariable'
 
 interface EnvVarItem {
