@@ -10,10 +10,12 @@ import {
 import type {
   TerminalManager,
 } from '@devbookhq/sdk'
+import { useResizeDetector } from 'react-resize-detector'
 
 import Text from './typography/Text'
 import useTerminal from 'utils/useTerminal'
 import Spinner from './icons/Spinner'
+import type { FitAddon } from 'xterm-addon-fit'
 
 export interface Props {
   terminalManager?: TerminalManager
@@ -38,8 +40,18 @@ const Terminal = forwardRef<Handler, Props>(({
     terminal,
     terminalSession,
     error: errMessage,
+    isLoading,
   } = useTerminal({ terminalManager })
-  const [isLoading, setIsLoading] = useState(true)
+  const [fitAddon, setFitAddon] = useState<FitAddon>()
+
+  const onResize = useCallback(() => fitAddon?.fit(), [fitAddon])
+
+  const { ref: sizeRef } = useResizeDetector({
+    refreshMode: 'debounce',
+    skipOnMount: true,
+    refreshRate: 110,
+    onResize,
+  })
 
   const handleInput = useCallback((input: string) => terminalSession?.sendData(input), [terminalSession])
 
@@ -52,7 +64,7 @@ const Terminal = forwardRef<Handler, Props>(({
   ])
 
   useLayoutEffect(function attachTerminal() {
-    async function attach() {
+    (async function () {
       if (!terminalEl.current) return
       if (!terminal) return
 
@@ -67,20 +79,10 @@ const Terminal = forwardRef<Handler, Props>(({
       terminal.open(terminalEl.current)
       fitAddon.fit()
 
-      setIsLoading(false)
+      setFitAddon(fitAddon)
 
       if (autofocus) terminal.focus()
-
-      return () => {
-        setIsLoading(true)
-      }
-    }
-
-    const res = attach()
-
-    return () => {
-      res.then(r => r?.())
-    }
+    })()
   }, [
     terminal,
     autofocus,
@@ -106,10 +108,11 @@ const Terminal = forwardRef<Handler, Props>(({
       className="rounded flex flex-col min-w-0 flex-1 dark w-full"
     >
       <div
-        className="flex flex-1 min-w-0 bg-black-800 border border-black-700 pl-4 rounded-lg pt-4"
+        className="flex flex-1 min-w-0 bg-black-800 border border-black-700 pl-2 rounded-lg pt-2"
         style={{
           ...height && { minHeight: height, maxHeight: height },
         }}
+        ref={sizeRef}
       >
         <div
           className="flex flex-1 min-w-0"

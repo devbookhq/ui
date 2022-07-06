@@ -19,25 +19,30 @@ function useTerminal({
   const [terminal, setTerminal] = useState<XTermTerminal>()
   const [terminalSession, setTerminalSession] = useState<TerminalSession>()
   const [error, setError] = useState<string>()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(function initialize() {
     async function init() {
       if (!terminalManager) return
 
+      setIsLoading(true)
       const xterm = await import('xterm')
 
       const term = new xterm.Terminal({
         bellStyle: 'none',
         cursorStyle: 'block',
         theme: {
-          background: '#292929',
+          background: '#1A191D',
           foreground: '#E9E9E9',
           cursor: '#E9E9E9',
         },
       })
 
       try {
-        const session = await terminalManager.createSession((data) => term.write(data))
+        const session = await terminalManager.createSession((data) => term.write(data), {
+          cols: term.cols,
+          rows: term.rows,
+        })
 
         term.onData((data) => session.sendData(data))
         term.onResize((size) => session.resize(size))
@@ -45,6 +50,7 @@ function useTerminal({
         setTerminal(term)
         setTerminalSession(session)
         setError(undefined)
+        setIsLoading(false)
 
         return () => {
           term.dispose()
@@ -54,6 +60,8 @@ function useTerminal({
       } catch (err: any) {
         console.error(err.message)
         setError(err.message)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -69,9 +77,11 @@ function useTerminal({
       terminal,
       terminalSession,
       error,
+      isLoading,
     }
   }, [
     terminal,
+    isLoading,
     error,
     terminalSession,
   ])

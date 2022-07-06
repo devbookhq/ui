@@ -1,4 +1,5 @@
 @import "./codemirror.css";
+@import './xterm.css';
 
 @tailwind base;
 @tailwind components;
