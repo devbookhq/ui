@@ -1,5 +1,6 @@
 import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
+import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
 import ButtonLink from 'components/ButtonLink'
 import CopyIcon from 'components/icons/Copy'
@@ -8,7 +9,7 @@ import useUserInfo from 'utils/useUserInfo'
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 function Settings() {
 
-  const { apiKey } = useUserInfo()
+  const { apiKey, user } = useUserInfo()
 
   // TODO: Handle loading
   // TODO: Handle error
@@ -44,6 +45,23 @@ function Settings() {
         justify-start
         space-y-2
       ">
+        <Title
+          size={Title.size.T2}
+          title="Email"
+        />
+        <div className="
+          flex
+          flex-row
+          items-center
+          space-x-2
+          px-2
+        ">
+          <Text
+            text={user?.email || ''}
+            size={Text.size.S1}
+          />
+        </div>
+
         <Title
           size={Title.size.T2}
           title="API Key"
