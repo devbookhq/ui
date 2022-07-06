@@ -72,24 +72,6 @@ async function updateCodeSnippet(params: {
   }
   const p: Promise<any>[] = [upsertCodeSnippet(updatedCS)]
 
-  // TODO: Why delete or update published code snippet on any code snippet update?
-  
-  // if (isPublished) {
-  //   const pcs: PublishedCodeSnippet = {
-  //     code_snippet_id: updatedCS.id,
-  //     title: updatedCS.title,
-  //     code: updatedCS.code || '',
-  //     env_vars: updatedCS.env_vars,
-  //   }
-  //   p.push(
-  //     upsertPublishedCodeSnippet(pcs)
-  //   )
-  // } else {
-  //   p.push(
-  //     deletePublishedCodeSnippet(updatedCS.id)
-  //   )
-  // }
-
   await Promise.all(p)
   if (env) {
     await createEnv({

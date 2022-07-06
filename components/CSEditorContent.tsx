@@ -12,7 +12,7 @@ import Output from 'components/Output'
 import useSharedSession from 'utils/useSharedSession'
 import EnvVariables from './EnvVariables'
 import { EnvVars } from '@devbookhq/sdk'
-import DepsTerminal from './DepsTerminal'
+import Deps from './Deps'
 
 export interface Props {
   code: string
@@ -108,7 +108,7 @@ function CSEditorContent({
       )
     case Tab.Deps:
       return (
-        <DepsTerminal />
+        <Deps />
       )
     case Tab.Env:
       return (

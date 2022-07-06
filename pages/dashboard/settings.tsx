@@ -7,8 +7,8 @@ import CopyIcon from 'components/icons/Copy'
 import useUserInfo from 'utils/useUserInfo'
 
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
-function Settings() {
 
+function Settings() {
   const { apiKey, user } = useUserInfo()
 
   // TODO: Handle loading

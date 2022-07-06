@@ -8,7 +8,6 @@ import {
   Session,
   CodeSnippetExecState,
   OutResponse,
-  DepOutResponse,
   OpenedPort,
   EnvVars,
 } from '@devbookhq/sdk'
@@ -45,30 +44,7 @@ function useSession({
 
   const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
-
-  const [depsOutput, setDepsOutput] = useState<DepOutResponse[]>([])
-  const [deps, setDeps] = useState<string[]>() // Intentionally set to `undefined` as an initial value.
   const [ports, setPorts] = useState<OpenedPort[]>([])
-
-  //const updatePorts = useCallback((newPorts: OpenedPort[]) => {
-  //  if (newPorts.length !== ports.length) {
-  //    setPorts(newPorts)
-  //  } else {
-  //    // Compare two arrays and break
-  //    // the first time we don't find
-  //    // a new port in current ports.
-  //    for (const np of newPorts) {
-  //      console.log('Comparing NP', { np })
-  //      const found = ports.find(p => p.Ip === np.Ip && p.Port === np.Port)
-  //      console.log('\tFound?', { found })
-  //      if (!found) {
-  //        setPorts(newPorts)
-  //        break
-  //      }
-  //    }
-  //  }
-
-  //}, [ports])
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
@@ -87,15 +63,6 @@ function useSession({
         onStdout(stdout) {
           setCSOutput(o => [...o, stdout])
         },
-        onDepsStdout(stdout) {
-          setDepsOutput(o => [...o, stdout])
-        },
-        onDepsStderr(stderr) {
-          setDepsOutput(o => [...o, stderr])
-        },
-        onDepsChange(deps) {
-          setDeps(deps)
-        },
         onScanPorts(newPorts) {
           // TODO: If we were running devbookd as an other user than root this could be
           // easilly filtered like so: p.User === 'user'
@@ -109,23 +76,17 @@ function useSession({
               p.Port !== 22
             )
           )
-          // TODO: This triggers re-render on each `onScanPorts` callback.
-          setPorts(validPorts)
-          //if (validPorts.length !== ports.length) {
-          //  setPorts(validPorts)
-          //} else {
-          //  // Compare two arrays and break
-          //  // the first time we don't find
-          //  // a new port in current ports.
-          //  for (const vp of validPorts) {
-          //    console.log('Comparing VP', { vp })
-          //    const found = ports.find(p => p.Ip === vp.Ip && p.Port === vp.Port)
-          //    console.log('\tFound?', { found })
-          //    if (!found) {
-          //      setPorts(validPorts)
-          //    }
-          //  }
-          //}
+          setPorts(ps => {
+            if (ps.length !== validPorts.length) {
+              return validPorts
+            }
+
+            // Update ports if the new ports differ in anything from the old ports
+            if (!ps.some(p1 => !!validPorts.find(p2 => p2.Ip === p1.Ip && p2.Port === p1.Port && p2.State === p1.State))) {
+              return validPorts
+            }
+            return ps
+          })
         }
       },
       onClose() {
@@ -178,50 +139,25 @@ function useSession({
     return sessionState.session?.getHostname(port)
   }, [sessionState])
 
-  const installDep = useCallback(async (dep: string) => {
-    if (sessionState.state !== 'open') return
-    return sessionState.session?.codeSnippet?.installDep(dep)
-  }, [sessionState])
-
-  const uninstallDep = useCallback(async (dep: string) => {
-    if (sessionState.state !== 'open') return
-    return sessionState.session?.codeSnippet?.uninstallDep(dep)
-  }, [sessionState])
-
-  const listDeps = useCallback(async () => {
-    if (sessionState.state !== 'open') return
-    return sessionState.session?.codeSnippet?.listDeps()
-  }, [sessionState])
-
   return useMemo(() => ({
     stop,
     run,
     getHostname,
-    installDep,
-    listDeps,
-    uninstallDep,
     csState,
     terminalManager: sessionState.session?.terminal,
     csOutput,
-    depsOutput,
     open: sessionState.open,
     state: sessionState.state,
-    deps,
     ports,
   }), [
     stop,
     getHostname,
     run,
-    installDep,
-    uninstallDep,
-    listDeps,
     sessionState.session?.terminal,
     csState,
     csOutput,
     sessionState.open,
-    depsOutput,
     sessionState.state,
-    deps,
     ports,
   ])
 }
