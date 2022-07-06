@@ -1,4 +1,3 @@
-import { EnvVars } from '@devbookhq/sdk'
 import {
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'

@@ -1,7 +1,6 @@
 import {
   createClient,
 } from '@supabase/supabase-js'
-import { api } from '@devbookhq/sdk'
 
 import type {
   CodeEnvironment,
@@ -20,10 +19,10 @@ async function getCodeSnippet(params: { csID: string, userID: string }) {
   const { csID, userID } = params
 
   const { data, error } = await supabaseAdmin
-  .from<CodeSnippet>('code_snippets')
-  .select('*')
-  .eq('id', csID)
-  .eq('creator_id', userID)
+    .from<CodeSnippet>('code_snippets')
+    .select('*')
+    .eq('id', csID)
+    .eq('creator_id', userID)
 
   if (error) throw error
   return data && data.length ? data[0] : null
@@ -31,9 +30,9 @@ async function getCodeSnippet(params: { csID: string, userID: string }) {
 
 async function getAPIKeyInfo(apiKey: string) {
   const { data, error } = await supabaseAdmin
-  .from<{ api_key: string, owner_id: string }>('api_keys')
-  .select('*')
-  .eq('api_key', apiKey)
+    .from<{ api_key: string, owner_id: string }>('api_keys')
+    .select('*')
+    .eq('api_key', apiKey)
 
   if (error) throw error
   return data && data.length ? data[0] : null

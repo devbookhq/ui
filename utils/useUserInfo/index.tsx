@@ -9,12 +9,10 @@ import {
 } from '@supabase/supabase-auth-helpers/react'
 
 import useAPIKey from './useAPIKey'
-import useUserDetails, { UserDetails } from './useUserDetails'
 
 type UserInfoContextType = {
   accessToken: string | null
   user: User | null
-  userDetails?: UserDetails
   apiKey?: string
   isLoading: boolean
   errors?: string[]
@@ -39,38 +37,26 @@ export function UserInfoContextProvider({ children }: Props) {
     key: apiKey,
   } = useAPIKey(user?.id)
 
-  const {
-    error: userDetailsError,
-    isLoading: isLoadingUserDetails,
-    details: userDetails,
-  } = useUserDetails(user?.id)
-
-  const isLoading = isLoadingUser || isLoadingAPIKey || isLoadingUserDetails
+  const isLoading = isLoadingUser || isLoadingAPIKey
 
   const errors = useMemo(() => {
     const errs: string[] = []
 
-    if (userDetailsError) {
-      errs.push(`error retrieving user details: ${userDetailsError}`)
-    }
-
     if (apiKeyError) {
-      errs.push(`error retrieving api key: ${userDetailsError}`)
+      errs.push(`error retrieving api key: ${apiKeyError}`)
     }
 
     return errs.length > 0 ? errs : undefined
-  }, [userDetailsError, apiKeyError])
+  }, [apiKeyError])
 
   const value = useMemo(() => ({
     apiKey,
-    userDetails,
     user,
     accessToken,
     isLoading,
     errors,
   }), [
     apiKey,
-    userDetails,
     user,
     accessToken,
     isLoading,

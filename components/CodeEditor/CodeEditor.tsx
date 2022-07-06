@@ -2,21 +2,19 @@ import {
   useRef,
   memo,
   useEffect,
-  useState,
 } from 'react'
 import { EditorView } from '@codemirror/view'
-import { EditorState } from '@codemirror/state'
 
 import {
   Language,
-} from './language'
+} from 'types'
 import createEditorState from './createEditorState'
 
 export interface Props {
   content?: string
   isReadOnly?: boolean
   onContentChange?: (content: string) => void
-  language?: Language
+  language: Language
   height?: string
   className?: string
 }

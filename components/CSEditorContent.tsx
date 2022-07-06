@@ -4,6 +4,8 @@ import {
 } from 'react'
 import { useRouter } from 'next/router'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
+import type { EnvVars } from '@devbookhq/sdk'
+import type { Language } from 'types'
 
 import { Tab } from 'utils/newCodeSnippetTabs'
 import CodeEditor from 'components/CodeEditor'
@@ -11,13 +13,15 @@ import EditIcon from 'components/icons/Edit'
 import Output from 'components/Output'
 import useSharedSession from 'utils/useSharedSession'
 import EnvVariables from './EnvVariables'
-import { EnvVars } from '@devbookhq/sdk'
 import Deps from './Deps'
+
+
 
 export interface Props {
   code: string
   envVars: EnvVars
   title: string
+  language: Language
   onEnvVarsChange: (envVars: EnvVars) => void
   onCodeChange: (code: string) => void
   onTitleChange: (title: string) => void
@@ -27,6 +31,7 @@ function CSEditorContent({
   code,
   title,
   envVars,
+  language,
   onCodeChange,
   onTitleChange,
   onEnvVarsChange,
@@ -95,6 +100,7 @@ function CSEditorContent({
           >
             <div className="flex flex-1 overflow-hidden">
               <CodeEditor
+                language={language}
                 content={code}
                 onContentChange={onCodeChange}
                 className="flex flex-1 overflow-hidden"

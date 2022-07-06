@@ -7,6 +7,8 @@ export interface ErrorRes {
 
 export type CodeSnippetUpdate = Pick<CodeSnippet, 'id'> & Partial<Pick<CodeSnippet, 'code' | 'title' | 'env_vars'>>
 
+export type Language = components['schemas']['Template']
+
 // Used when creating a new code snippet.
 export interface CodeSnippet {
   id: string
@@ -15,6 +17,7 @@ export interface CodeSnippet {
   creator_id: string
   code?: string
   env_vars: EnvVars
+  template: Language
 }
 
 export interface PublishedCodeSnippet {
@@ -25,17 +28,18 @@ export interface PublishedCodeSnippet {
   title: string
   code: string
   env_vars: EnvVars
+  template: Language
 }
 
 export interface CodeEnvironment {
   id: string
   code_snippet_id: string
-  template: components['schemas']['Template']
+  template: Language
   deps: string[]
   state: 'None' | components['schemas']['EnvironmentState']
 }
 
 export interface Template {
   name: string
-  value: components['schemas']['Template']
+  value: Language
 }

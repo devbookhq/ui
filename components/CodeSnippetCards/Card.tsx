@@ -103,6 +103,7 @@ function CodeSnippetCard({
           ">
             <CodeEditor
               isReadOnly
+              language={cs.template}
               className="preview rounded-t-lg"
               height="174px"
               content={shortened}

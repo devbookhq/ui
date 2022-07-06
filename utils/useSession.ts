@@ -82,7 +82,7 @@ function useSession({
             }
 
             // Update ports if the new ports differ in anything from the old ports
-            if (!ps.some(p1 => !!validPorts.find(p2 => p2.Ip === p1.Ip && p2.Port === p1.Port && p2.State === p1.State))) {
+            if (!ps.every(p1 => !!validPorts.find(p2 => p2.Ip === p1.Ip && p2.Port === p1.Port && p2.State === p1.State))) {
               return validPorts
             }
             return ps

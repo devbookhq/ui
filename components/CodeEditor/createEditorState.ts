@@ -37,9 +37,9 @@ import { commentKeymap } from '@codemirror/comment'
 
 import {
   getLanguageExtension,
-  Language,
 } from './language'
 
+import type { Language } from 'types'
 
 const disableSpellchecking = {
   'data-gramm': 'false',
@@ -50,7 +50,7 @@ export interface Options {
   content?: string
   isReadOnly?: boolean
   onContentChange?: (content: string) => void
-  language?: Language
+  language: Language
 }
 
 function createEditorState({

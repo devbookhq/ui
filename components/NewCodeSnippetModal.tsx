@@ -12,6 +12,8 @@ import SpinnerIcon from 'components/icons/Spinner'
 const templates: Template[] = [
   { name: 'Node.js', value: 'Nodejs' },
   { name: 'Go', value: 'Go' },
+  { name: 'Bash', value: 'Bash' },
+  { name: 'Python3', value: 'Python3' },
 ]
 
 interface Props {

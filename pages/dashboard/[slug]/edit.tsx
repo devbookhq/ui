@@ -306,6 +306,7 @@ function CodeSnippetEditor({
         env_vars: envVars,
         title,
         code,
+        template: codeSnippet.template,
       }
       const p1 = updateEnv({
         codeSnippetID: codeSnippet.id,
@@ -456,6 +457,7 @@ function CodeSnippetEditor({
                 code={code}
                 title={title}
                 envVars={envVars}
+                language={codeSnippet.template}
                 onEnvVarsChange={handleEnvVarsChange}
                 onCodeChange={handleCodeChange}
                 onTitleChange={handleTitleChange}

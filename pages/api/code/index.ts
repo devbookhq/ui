@@ -47,7 +47,6 @@ async function validateAPIKey(params: { res: NextApiResponse, apiKey?: string })
 async function updateCodeSnippet(params: {
   apiKey: string
   userID: string,
-  isPublished: boolean,
   env?: Env,
   newCS: CodeSnippetUpdate,
   originalCS: CodeSnippet,
@@ -55,7 +54,6 @@ async function updateCodeSnippet(params: {
   const {
     apiKey,
     userID,
-    isPublished,
     newCS,
     originalCS,
     env,
@@ -69,6 +67,7 @@ async function updateCodeSnippet(params: {
     code: newCS.code,
     created_at: originalCS.created_at,
     env_vars: newCS.env_vars || originalCS.env_vars,
+    template: env?.template || originalCS.template,
   }
   const p: Promise<any>[] = [upsertCodeSnippet(updatedCS)]
 
@@ -113,6 +112,7 @@ async function createCodeSnippet(params: {
     code,
     env_vars: {},
     created_at: new Date(),
+    template: env.template,
   }
 
   const envID = randomstring.generate({ length: 12, charset: 'alphanumeric' })
@@ -132,6 +132,7 @@ async function createCodeSnippet(params: {
       title: codeSnippet.title,
       code: codeSnippet.code || '',
       env_vars: codeSnippet.env_vars,
+      template: env.template,
     }
     await upsertPublishedCodeSnippet(pcs)
   }
@@ -180,7 +181,6 @@ async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
   try {
     const {
       apiKey,
-      isPublished = false,
       codeSnippet,
       env,
     }: {
@@ -203,7 +203,6 @@ async function updateCodeItem(req: NextApiRequest, res: NextApiResponse<CodeSnip
     const updatedCodeSnippet = await updateCodeSnippet({
       apiKey,
       userID,
-      isPublished,
       env,
       // TS error here without the `as` clause is wtf since we are checking if `id` is defined above.
       newCS: codeSnippet,

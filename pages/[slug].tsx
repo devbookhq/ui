@@ -235,6 +235,7 @@ function CodeSnippet({
               ">
                 <CodeEditor
                   isReadOnly
+                  language={pcs.template}
                   content={pcs.code}
                   className="
                     absolute

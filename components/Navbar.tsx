@@ -6,7 +6,7 @@ import useUserInfo from 'utils/useUserInfo'
 
 function Navbar() {
   const router = useRouter()
-  const { user, userDetails } = useUserInfo()
+  const { user } = useUserInfo()
 
   if (!user) return null
 

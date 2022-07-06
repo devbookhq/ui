@@ -1,5 +1,6 @@
 import useSharedSession from 'utils/useSharedSession'
 import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 import Terminal from 'components/Terminal'
 
 function Deps() {
@@ -18,6 +19,9 @@ function Deps() {
       <Title
         title="Customize dependencies"
         size={Title.size.T2}
+      />
+      <Text
+        text="Update ... by ..."
       />
       <Terminal
         height="450px"

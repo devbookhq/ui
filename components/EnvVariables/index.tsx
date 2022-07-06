@@ -6,6 +6,7 @@ import {
   EnvVars,
 } from '@devbookhq/sdk'
 
+import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
 import EnvVariable from './EnvVariable'
 
@@ -96,7 +97,6 @@ function EnvVariables({
         <Title
           title="Manage environment variables"
           size={Title.size.T2}
-          className="pb-4"
         />
         {envVarsList.map(({ key, value }, i) => (
           <EnvVariable
