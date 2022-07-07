@@ -14,6 +14,12 @@ import {
 
 export type SessionState = 'open' | 'closed'
 
+export enum CodeSnippetExtendedState {
+  Failed = 'Failed'
+}
+
+export type CodeSnippetState = CodeSnippetExecState | CodeSnippetExecState
+
 export interface Opts {
   codeSnippetID?: string
   persistentEdits?: boolean
@@ -41,8 +47,7 @@ function useSession({
     id?: string,
     open?: () => Promise<void>,
   }>({ state: 'closed' })
-
-  const [csState, setCSState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
+  const [csState, setCSState] = useState<CodeSnippetState>(CodeSnippetExecState.Loading)
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
   const [ports, setPorts] = useState<OpenedPort[]>([])
 

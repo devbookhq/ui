@@ -14,8 +14,7 @@ import Output from 'components/Output'
 import useSharedSession from 'utils/useSharedSession'
 import EnvVariables from './EnvVariables'
 import Deps from './Deps'
-
-
+import Code from './Code'
 
 export interface Props {
   code: string
@@ -38,94 +37,43 @@ function CSEditorContent({
 }: Props) {
   const router = useRouter()
   const tab = router.query.tab
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [sizes, setSizes] = useState<number[]>([85, 15])
 
   const session = useSharedSession()
   if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
 
-  function handleEditClick() {
-    if (!inputRef || !inputRef.current) return
-    inputRef.current.focus()
-  }
-
-  switch (tab) {
-    case Tab.Code:
-      return (
-        <div className="
-          flex
-          flex-1
-          flex-col
-          overflow-hidden
-          border
-          border-black-700
-          rounded-lg
-        ">
-          <div className="
-            flex
-            flex-row
-            space-x-1
-            py-1.5
-            px-2
-            rounded-t-lg
-            bg-black-700
-          ">
-            <div
-              className="
-                p-1
-                rounded
-                cursor-pointer
-                text-white-900/50
-                hover:text-white-900
-              "
-              onClick={handleEditClick}
-            >
-              <EditIcon />
-            </div>
-            <input
-              ref={inputRef}
-              className="
-                flex-1
-                bg-transparent
-              "
-              value={title}
-              onChange={e => onTitleChange(e.target.value)}
-            />
-          </div>
-          <Splitter
-            direction={SplitDirection.Vertical}
-            classes={['flex overflow-hidden min-h-0', 'flex overflow-hidden']}
-            initialSizes={sizes}
-            onResizeFinished={(_, sizes) => setSizes(sizes)}
-          >
-            <div className="flex flex-1 overflow-hidden">
-              <CodeEditor
-                language={language}
-                content={code}
-                onContentChange={onCodeChange}
-                className="flex flex-1 overflow-hidden"
-              />
-            </div>
-            <Output
-              output={session.csOutput}
-            />
-          </Splitter>
-        </div>
-      )
-    case Tab.Deps:
-      return (
-        <Deps />
-      )
-    case Tab.Env:
-      return (
+  return (
+    <div className="flex flex-1">
+      <div
+        style={{ display: tab === Tab.Code ? 'flex' : 'none' }}
+        className="flex-1"
+      >
+        <Code
+          language={language}
+          onTitleChange={onTitleChange}
+          onCodeChange={onCodeChange}
+          title={title}
+          code={code}
+        />
+      </div>
+      <div
+        style={{ display: tab === Tab.Deps ? 'flex' : 'none' }}
+        className="flex-1"
+      >
+        <Deps
+          language={language}
+        />
+      </div>
+      <div
+        style={{ display: tab === Tab.Env ? 'flex' : 'none' }}
+        className="flex-1"
+      >
         <EnvVariables
           envVars={envVars}
           onEnvVarsChange={onEnvVarsChange}
         />
-      )
-    default:
-      return <p>Unimplemented tab</p>
-  }
+      </div>
+    </div >
+  )
 }
 
 export default CSEditorContent

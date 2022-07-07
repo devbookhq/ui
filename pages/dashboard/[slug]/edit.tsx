@@ -373,6 +373,7 @@ function CodeSnippetEditor({
             space-x-2
           ">
               <ExecutionButton
+                sessionState={state}
                 state={execState}
                 onRunClick={runCode}
                 onStopClick={stopCode}

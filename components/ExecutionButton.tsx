@@ -1,24 +1,30 @@
 import { CodeSnippetExecState } from '@devbookhq/sdk'
+import { ReactNode } from 'react'
+import cn from 'classnames'
+
 import Button from 'components/Button'
 import PlayCircleIcon from 'components/icons/PlayCircle'
 import StopIcon from 'components/icons/Stop'
 import SpinnerIcon from 'components/icons/Spinner'
+import { SessionState } from 'utils/useSession'
 
 interface Props {
   className?: string
   state: CodeSnippetExecState
   onRunClick: (e: any) => void
   onStopClick: (e: any) => void
+  sessionState: SessionState
 }
 
 function ExecutionButton({
   className,
   state,
+  sessionState,
   onRunClick,
   onStopClick,
 }: Props) {
   let text = 'Loading...'
-  let icon = <SpinnerIcon />
+  let icon: ReactNode = <SpinnerIcon />
 
   switch (state) {
     case CodeSnippetExecState.Stopped:
@@ -28,15 +34,22 @@ function ExecutionButton({
           text-green-500
         "/>
       )
-    break
+      break
     case CodeSnippetExecState.Running:
       text = 'Stop'
-      icon = <StopIcon/>
-    break
+      icon = <StopIcon />
+      break
     case CodeSnippetExecState.Loading:
       text = 'Loading...'
-      icon = <SpinnerIcon/>
-    break
+      icon = <SpinnerIcon />
+      break
+  }
+
+  const sessionError = sessionState === 'closed' && state !== CodeSnippetExecState.Loading
+
+  if (sessionError) {
+    icon = null
+    text = 'Error'
   }
 
   function handleClick(e: any) {
@@ -46,8 +59,8 @@ function ExecutionButton({
 
   return (
     <Button
-      className={className}
-      isDisabled={state === CodeSnippetExecState.Loading}
+      className={cn(className, { 'text-red-400': sessionError })}
+      isDisabled={state === CodeSnippetExecState.Loading || sessionState === 'closed'}
       text={text}
       onClick={handleClick}
       icon={icon}

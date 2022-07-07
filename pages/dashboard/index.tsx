@@ -128,7 +128,7 @@ function Dashboard() {
           />
         )}
 
-        {!isLoading && !codeSnippets.length && (
+        {!isLoading && codeSnippets.length === 0 && (
           <div className="
             flex
             flex-col

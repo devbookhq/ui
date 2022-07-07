@@ -44,7 +44,7 @@ function CodeSnippetCards({
       md:space-y-0
       md:gap-4
     ">
-      {codeSnippets.length && sorted.map(cs => (
+      {codeSnippets.length > 0 && sorted.map(cs => (
         <CodeSnippetCard
           key={cs.id}
           codeSnippet={cs}

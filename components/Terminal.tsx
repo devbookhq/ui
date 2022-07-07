@@ -44,7 +44,15 @@ const Terminal = forwardRef<Handler, Props>(({
   } = useTerminal({ terminalManager })
   const [fitAddon, setFitAddon] = useState<FitAddon>()
 
-  const onResize = useCallback(() => fitAddon?.fit(), [fitAddon])
+  const onResize = useCallback(() => {
+    if (!fitAddon) return
+
+    const dim = fitAddon.proposeDimensions()
+    if (isNaN(dim.cols) || isNaN(dim.rows)) return
+
+    console.log('dim', fitAddon.proposeDimensions())
+    fitAddon.fit()
+  }, [fitAddon])
 
   const { ref: sizeRef } = useResizeDetector({
     refreshMode: 'debounce',
