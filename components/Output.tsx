@@ -55,7 +55,7 @@ function Output({
           className="
             flex
             flex-row
-            items-center
+            items-start
             space-x-2
           "
         >
