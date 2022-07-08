@@ -148,7 +148,6 @@ function CodeSnippetEditor({
   error,
 }: Props) {
   const [env, setEnv] = useState<CodeEnvironment>(initialEnv)
-  const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [code, setCode] = useState(codeSnippet.code || '')
   const [envVars, setEnvVars] = useState<EnvVars>(codeSnippet.env_vars || {})
   const [title, setTitle] = useState(codeSnippet.title)
@@ -213,10 +212,6 @@ function CodeSnippetEditor({
     }
   }, [error])
 
-  useEffect(function onCSStateChange() {
-    setExecState(csState)
-  }, [csState])
-
   useEffect(function getPublishedCS() {
     if (!codeSnippet) return
     getPublishedCodeSnippet(codeSnippet.id)
@@ -276,21 +271,11 @@ function CodeSnippetEditor({
   ])
 
   function runCode() {
-    setExecState(CodeSnippetExecState.Loading)
     run(code, envVars)
-      .then(state => {
-        if (!state) return
-        setExecState(state)
-      })
   }
 
   function stopCode() {
-    setExecState(CodeSnippetExecState.Loading)
     stop()
-      .then(state => {
-        if (!state) return
-        setExecState(state)
-      })
   }
 
   async function publishCodeSnippet() {
@@ -373,8 +358,7 @@ function CodeSnippetEditor({
             space-x-2
           ">
               <ExecutionButton
-                sessionState={state}
-                state={execState}
+                state={csState}
                 onRunClick={runCode}
                 onStopClick={stopCode}
               />

@@ -1,21 +1,23 @@
 import useSharedSession from 'utils/useSharedSession'
 import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
-import Terminal from 'components/Terminal'
+import Terminal, { Handler as TerminalHandler } from 'components/Terminal'
 import { Language } from 'types'
+import { forwardRef } from 'react'
 
 const depsInstructions: { [lang in Language]: string } = {
-  Bash: 'To install packages use..',
-  Go: 'To install packages use..',
+  Bash: 'To install Bash dependencies use "apk add <dependency>". To remove them use "apk remove <dependency>".',
+  Go: 'To install Go packages use..',
   Nodejs: 'To install packages use..',
   Python3: 'To install packages use..',
 }
 
 export interface Props {
   language: Language
+  initialized?: boolean
 }
 
-function Deps({ language }: Props) {
+const Deps = forwardRef<TerminalHandler, Props>(({ language, initialized }, ref) => {
   const session = useSharedSession()
   if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
 
@@ -36,12 +38,15 @@ function Deps({ language }: Props) {
         text={depsInstructions[language]}
       />
       <Terminal
+        ref={ref}
         height="450px"
         autofocus={true}
-        terminalManager={session.terminalManager}
+        terminalManager={initialized ? session.terminalManager : undefined}
       />
     </div>
   )
-}
+})
+
+Deps.displayName = 'Deps'
 
 export default Deps

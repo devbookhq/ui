@@ -6,20 +6,18 @@ import Button from 'components/Button'
 import PlayCircleIcon from 'components/icons/PlayCircle'
 import StopIcon from 'components/icons/Stop'
 import SpinnerIcon from 'components/icons/Spinner'
-import { SessionState } from 'utils/useSession'
+import { CodeSnippetState, CodeSnippetExtendedState } from 'utils/useSession'
 
 interface Props {
   className?: string
-  state: CodeSnippetExecState
+  state: CodeSnippetState
   onRunClick: (e: any) => void
   onStopClick: (e: any) => void
-  sessionState: SessionState
 }
 
 function ExecutionButton({
   className,
   state,
-  sessionState,
   onRunClick,
   onStopClick,
 }: Props) {
@@ -39,17 +37,14 @@ function ExecutionButton({
       text = 'Stop'
       icon = <StopIcon />
       break
-    case CodeSnippetExecState.Loading:
+    case CodeSnippetExtendedState.Loading:
       text = 'Loading...'
       icon = <SpinnerIcon />
       break
-  }
-
-  const sessionError = sessionState === 'closed' && state !== CodeSnippetExecState.Loading
-
-  if (sessionError) {
-    icon = null
-    text = 'Error'
+    case CodeSnippetExtendedState.Failed:
+      icon = null
+      text = 'Error'
+      break
   }
 
   function handleClick(e: any) {
@@ -59,8 +54,8 @@ function ExecutionButton({
 
   return (
     <Button
-      className={cn(className, { 'text-red-400': sessionError })}
-      isDisabled={state === CodeSnippetExecState.Loading || sessionState === 'closed'}
+      className={cn(className, { 'text-red-400': state === CodeSnippetExtendedState.Failed })}
+      isDisabled={state === CodeSnippetExtendedState.Loading || state === CodeSnippetExtendedState.Failed}
       text={text}
       onClick={handleClick}
       icon={icon}

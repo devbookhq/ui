@@ -1,9 +1,10 @@
 import React, {
   ChangeEvent,
   useState,
+  forwardRef,
 } from 'react'
 
-import Input from 'components/Input'
+import Input, { Handler as InputHandler } from 'components/Input'
 import Title from 'components/typography/Title'
 import CancelIcon from 'components/icons/Cancel'
 import Button from 'components/Button'
@@ -17,14 +18,14 @@ export interface Props {
   onVarValueChange?: (value: string) => void
 }
 
-function EnvVariable({
+const EnvVariable = forwardRef<HTMLInputElement, Props>(({
   varKey = '',
   varValue = '',
   onVarKeyChange,
   onDelete,
   onAdd,
   onVarValueChange,
-}: Props) {
+}, ref) => {
   const [key, setKey] = useState(varKey)
   const [value, setValue] = useState(varValue)
 
@@ -58,6 +59,7 @@ function EnvVariable({
           size={Title.size.T3}
         />
         <Input
+          ref={ref}
           value={key}
           onChange={handleKeyChange}
         />
@@ -99,6 +101,8 @@ function EnvVariable({
       }
     </div>
   )
-}
+})
+
+EnvVariable.displayName = 'EnvVariable'
 
 export default EnvVariable

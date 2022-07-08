@@ -9,7 +9,6 @@ import {
 } from '@codemirror/view'
 import {
   EditorState,
-  Transaction,
 } from '@codemirror/state'
 import {
   history,
@@ -59,7 +58,6 @@ function createEditorState({
   isReadOnly = false,
   language,
 }: Options) {
-
   const changeWatcher = EditorView.updateListener.of(update => {
     if (update.docChanged) {
       onContentChange?.(update.state.doc.toString())
@@ -71,18 +69,6 @@ function createEditorState({
   const state = EditorState.create({
     doc: content,
     extensions: [
-      EditorView.domEventHandlers({
-        blur: (_, view) => {
-          view.dispatch({
-            selection: {
-              anchor: 0,
-              head: 0,
-            },
-            annotations: Transaction.remote.of(true),
-            filter: false,
-          })
-        },
-      }),
       EditorView.contentAttributes.of(disableSpellchecking),
       EditorState.readOnly.of(isReadOnly),
       EditorView.editable.of(!isReadOnly),

@@ -1,9 +1,9 @@
-import { useRef } from 'react'
+import { forwardRef, useRef } from 'react'
 
 import EditIcon from 'components/icons/Edit'
 import type { Language } from 'types'
 import Output from 'components/Output'
-import CodeEditor from 'components/CodeEditor'
+import CodeEditor, { Handler as CodeEditorHandler } from 'components/CodeEditor'
 import useSharedSession from 'utils/useSharedSession'
 
 export interface Props {
@@ -14,16 +14,15 @@ export interface Props {
   onTitleChange: (title: string) => void
 }
 
-function Code({
+const Code = forwardRef<CodeEditorHandler, Props>(({
   code,
   title,
   language,
   onCodeChange,
   onTitleChange,
-}: Props) {
+}, ref) => {
   const session = useSharedSession()
   if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
-
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -53,12 +52,12 @@ function Code({
     ">
         <div
           className="
-          p-1
-          rounded
-          cursor-pointer
-          text-white-900/50
-          hover:text-white-900
-        "
+            p-1
+            rounded
+            cursor-pointer
+            text-white-900/50
+            hover:text-white-900
+          "
           onClick={handleEditClick}
         >
           <EditIcon />
@@ -66,14 +65,16 @@ function Code({
         <input
           ref={inputRef}
           className="
-          flex-1
-          bg-transparent
-        "
+            flex-1
+            bg-transparent
+          "
           value={title}
           onChange={e => onTitleChange(e.target.value)}
         />
       </div>
       <CodeEditor
+        autofocus={true}
+        ref={ref}
         language={language}
         content={code}
         onContentChange={onCodeChange}
@@ -84,6 +85,8 @@ function Code({
       />
     </div>
   )
-}
+})
+
+Code.displayName = 'Code'
 
 export default Code

@@ -27,6 +27,7 @@ export interface Props {
 export interface Handler {
   handleInput: (input: string) => void
   focus: () => void
+  resize: () => void
 }
 
 const Terminal = forwardRef<Handler, Props>(({
@@ -48,9 +49,10 @@ const Terminal = forwardRef<Handler, Props>(({
     if (!fitAddon) return
 
     const dim = fitAddon.proposeDimensions()
+
+    if (!dim) return
     if (isNaN(dim.cols) || isNaN(dim.rows)) return
 
-    console.log('dim', fitAddon.proposeDimensions())
     fitAddon.fit()
   }, [fitAddon])
 
@@ -63,12 +65,20 @@ const Terminal = forwardRef<Handler, Props>(({
 
   const handleInput = useCallback((input: string) => terminalSession?.sendData(input), [terminalSession])
 
+  const focus = useCallback(() => {
+    terminal?.focus()
+  }, [
+    terminal,
+  ])
+
   useImperativeHandle(ref, () => ({
     handleInput,
-    focus: () => terminal?.focus(),
+    focus,
+    resize: onResize,
   }), [
     handleInput,
-    terminal,
+    focus,
+    onResize,
   ])
 
   useLayoutEffect(function attachTerminal() {
@@ -98,17 +108,19 @@ const Terminal = forwardRef<Handler, Props>(({
 
   useEffect(function handleOnStart() {
     if (!onStart) return
-    if (!terminal) return
+    if (!focus) return
     if (!handleInput) return
 
     onStart({
       handleInput,
-      focus: () => terminal.focus(),
+      focus,
+      resize: onResize,
     })
   }, [
     onStart,
-    terminal,
+    focus,
     handleInput,
+    onResize,
   ])
 
   return (

@@ -9,10 +9,6 @@ import {
   supabaseServerClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
 import Splitter, { SplitDirection } from '@devbookhq/splitter'
-import {
-  CodeSnippetExecState,
-  EnvVars,
-} from '@devbookhq/sdk'
 
 import type {
   PublishedCodeSnippet,
@@ -92,7 +88,6 @@ function CodeSnippet({
   publishedCodeSnippet: pcs,
 }: Props) {
   const [sizes, setSizes] = useState<number[]>([85, 15])
-  const [execState, setExecState] = useState<CodeSnippetExecState>(CodeSnippetExecState.Loading)
   const [hostname, setHostname] = useState<string>()
 
   const {
@@ -120,21 +115,11 @@ function CodeSnippet({
     }
   }, [error])
 
-  useEffect(function onSessionStateChange() {
-    setExecState(CodeSnippetExecState.Stopped)
-  }, [state])
-
-  useEffect(function onCSStateChange() {
-    setExecState(csState)
-  }, [csState])
-
   function runCode() {
-    setExecState(CodeSnippetExecState.Loading)
     run(pcs.code, pcs.env_vars)
   }
 
   function stopCode() {
-    setExecState(CodeSnippetExecState.Loading)
     stop()
   }
 
@@ -205,7 +190,7 @@ function CodeSnippet({
           space-y-4
         ">
           <ExecutionButton
-            state={execState}
+            state={csState}
             onRunClick={runCode}
             onStopClick={stopCode}
           />

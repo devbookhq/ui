@@ -100,8 +100,6 @@ function AuthForm({
     <form
       autoComplete="on"
       onSubmit={(e) => {
-        console.log('SUBMITTING')
-
         e.preventDefault()
         authWithEmail()
       }}

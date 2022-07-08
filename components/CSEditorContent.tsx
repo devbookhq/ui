@@ -1,20 +1,21 @@
 import {
-  useState,
+  useLayoutEffect,
   useRef,
+  useState,
 } from 'react'
 import { useRouter } from 'next/router'
-import Splitter, { SplitDirection } from '@devbookhq/splitter'
 import type { EnvVars } from '@devbookhq/sdk'
-import type { Language } from 'types'
 
+import type { Language } from 'types'
+import type { Handler as CodeEditorHandler } from 'components/CodeEditor'
+import type { Handler as TerminalHandler } from 'components/Terminal'
+import type { Handler as InputHandler } from 'components/Input'
 import { Tab } from 'utils/newCodeSnippetTabs'
-import CodeEditor from 'components/CodeEditor'
-import EditIcon from 'components/icons/Edit'
-import Output from 'components/Output'
 import useSharedSession from 'utils/useSharedSession'
 import EnvVariables from './EnvVariables'
 import Deps from './Deps'
 import Code from './Code'
+
 
 export interface Props {
   code: string
@@ -38,8 +39,29 @@ function CSEditorContent({
   const router = useRouter()
   const tab = router.query.tab
 
+  const [termInitialized, setTermInitialized] = useState(false)
+
+  const codeEditorRef = useRef<CodeEditorHandler>(null)
+  const terminalRef = useRef<TerminalHandler>(null)
+  const emptyEnvRef = useRef<InputHandler>(null)
+
   const session = useSharedSession()
   if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
+
+  useLayoutEffect(function autofocus() {
+    switch (tab) {
+      case Tab.Code:
+        codeEditorRef.current?.focus()
+        break
+      case Tab.Deps:
+        setTermInitialized(true)
+        terminalRef.current?.focus()
+        break
+      case Tab.Env:
+        emptyEnvRef.current?.focus()
+        break
+    }
+  }, [tab])
 
   return (
     <div className="flex flex-1">
@@ -48,6 +70,7 @@ function CSEditorContent({
         className="flex-1"
       >
         <Code
+          ref={codeEditorRef}
           language={language}
           onTitleChange={onTitleChange}
           onCodeChange={onCodeChange}
@@ -60,6 +83,8 @@ function CSEditorContent({
         className="flex-1"
       >
         <Deps
+          initialized={termInitialized}
+          ref={terminalRef}
           language={language}
         />
       </div>
@@ -68,6 +93,7 @@ function CSEditorContent({
         className="flex-1"
       >
         <EnvVariables
+          ref={emptyEnvRef}
           envVars={envVars}
           onEnvVarsChange={onEnvVarsChange}
         />

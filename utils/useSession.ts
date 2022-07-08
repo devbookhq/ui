@@ -15,10 +15,11 @@ import {
 export type SessionState = 'open' | 'closed'
 
 export enum CodeSnippetExtendedState {
-  Failed = 'Failed'
+  Failed = 'Failed',
+  Loading = 'Loading',
 }
 
-export type CodeSnippetState = CodeSnippetExecState | CodeSnippetExecState
+export type CodeSnippetState = CodeSnippetExtendedState | CodeSnippetExecState
 
 export interface Opts {
   codeSnippetID?: string
@@ -47,7 +48,7 @@ function useSession({
     id?: string,
     open?: () => Promise<void>,
   }>({ state: 'closed' })
-  const [csState, setCSState] = useState<CodeSnippetState>(CodeSnippetExecState.Loading)
+  const [csState, setCSState] = useState<CodeSnippetState>(CodeSnippetExtendedState.Loading)
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
   const [ports, setPorts] = useState<OpenedPort[]>([])
 
@@ -94,8 +95,17 @@ function useSession({
           })
         }
       },
+      onDisconnect() {
+        setCSState(CodeSnippetExtendedState.Failed)
+        setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
+      },
+      onReconnect() {
+        setCSState(CodeSnippetExecState.Stopped)
+        setSessionState(s => s.session === newSession ? { ...s, state: 'open' } : s)
+      },
       onClose() {
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
+        setCSState(CodeSnippetExtendedState.Failed)
       },
       editEnabled: persistentEdits,
       debug,
@@ -130,13 +140,21 @@ function useSession({
 
   const stop = useCallback(async () => {
     if (sessionState.state !== 'open') return
-    return sessionState.session?.codeSnippet?.stop()
+    setCSState(CodeSnippetExtendedState.Loading)
+    const newCSState = await sessionState.session?.codeSnippet?.stop()
+    if (newCSState) {
+      setCSState(newCSState)
+    }
   }, [sessionState])
 
   const run = useCallback(async (code: string, envVars?: EnvVars) => {
     if (sessionState.state !== 'open') return
     setCSOutput([])
-    return sessionState.session?.codeSnippet?.run(code, envVars)
+    setCSState(CodeSnippetExtendedState.Loading)
+    const newCSState = await sessionState.session?.codeSnippet?.run(code, envVars)
+    if (newCSState) {
+      setCSState(newCSState)
+    }
   }, [sessionState])
 
   const getHostname = useCallback(async (port?: number) => {

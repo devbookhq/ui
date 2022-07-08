@@ -1,7 +1,12 @@
 import cn from 'classnames'
-import { ChangeEvent } from 'react'
+import {
+  ChangeEvent,
+  forwardRef,
+  useRef,
+  useImperativeHandle,
+} from 'react'
 
-interface Props {
+export interface Props {
   wrapperClassName?: string // Only present if `title` is set.
   className?: string
   title?: string
@@ -11,7 +16,11 @@ interface Props {
   onEnterDown?: () => void
 }
 
-function InputEl({ className, onEnterDown, ...rest }: Props) {
+export interface Handler {
+  focus: () => void
+}
+
+const InputEl = forwardRef<HTMLInputElement, Props>(({ className, onEnterDown, ...rest }, ref) => {
   function handleKeyDown(e: any) {
     if (e.key === 'Enter') onEnterDown?.()
   }
@@ -19,6 +28,7 @@ function InputEl({ className, onEnterDown, ...rest }: Props) {
   return (
     <input
       {...rest}
+      ref={ref}
       onKeyDown={handleKeyDown}
       className={cn(
         'px-2.5',
@@ -36,9 +46,11 @@ function InputEl({ className, onEnterDown, ...rest }: Props) {
       )}
     />
   )
-}
+})
 
-function Input({ title, wrapperClassName, className, ...rest }: Props) {
+InputEl.displayName = 'InputEl'
+
+const Input = forwardRef<HTMLInputElement, Props>(({ title, wrapperClassName, className, ...rest }, ref) => {
   return (
     <>
       {title
@@ -57,6 +69,7 @@ function Input({ title, wrapperClassName, className, ...rest }: Props) {
               {title}
             </span>
             <InputEl
+              ref={ref}
               className={cn(
                 'w-full',
                 className,
@@ -66,10 +79,12 @@ function Input({ title, wrapperClassName, className, ...rest }: Props) {
           </div>
         )
         : (
-          <InputEl {...rest} />
+          <InputEl {...rest} ref={ref} />
         )}
     </>
   )
-}
+})
+
+Input.displayName = 'Input'
 
 export default Input

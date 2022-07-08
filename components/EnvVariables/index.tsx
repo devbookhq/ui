@@ -1,12 +1,16 @@
 import {
   useEffect,
   useState,
+  useRef,
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
 } from 'react'
 import {
   EnvVars,
 } from '@devbookhq/sdk'
 
-import Text from 'components/typography/Text'
+import type { Handler as InputHandler } from 'components/Input'
 import Title from 'components/typography/Title'
 import EnvVariable from './EnvVariable'
 
@@ -33,11 +37,20 @@ function getEnvVarsMap(items: EnvVarItem[]): EnvVars {
   }, {})
 }
 
-function EnvVariables({
+const EnvVariables = forwardRef<InputHandler, Props>(({
   envVars,
   onEnvVarsChange,
-}: Props) {
+}, ref) => {
   const [envVarsList, setEnvVarsList] = useState<EnvVarItem[]>([])
+
+  const inputRef = useRef<HTMLInputElement>(null)
+  const focus = useCallback(() => inputRef.current?.focus(), [inputRef])
+
+  useImperativeHandle(ref, () => ({
+    focus,
+  }), [
+    focus,
+  ])
 
   useEffect(function init() {
     const newList = getEnvVarItems(envVars)
@@ -70,6 +83,10 @@ function EnvVariables({
 
     setEnvVarsList(newList)
     handleSaveEnvVars(newList)
+
+
+    setTimeout(() => focus())
+    focus()
   }
 
   function deleteEnvVar(index: number) {
@@ -86,7 +103,8 @@ function EnvVariables({
       flex-col
       items-start
     ">
-      <div className="
+      <div
+        className="
           w-full
           flex
           flex-col
@@ -109,11 +127,14 @@ function EnvVariables({
           />
         ))}
         <EnvVariable
+          ref={inputRef}
           onAdd={addEnvVar}
         />
       </div>
     </div>
   )
-}
+})
+
+EnvVariables.displayName = 'EnvVariables'
 
 export default EnvVariables
