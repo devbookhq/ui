@@ -10,29 +10,30 @@ export interface Props {
   className?: string
 }
 
-function parseTimestamp(t: number) {
-  // Timestamp is in nanoseconds.
-  const mili = t / 1_000_000
-  const d = new Date(mili)
+// TODO: Due to the clock drift the timestamps will be almost always showing wrong time.
+// function parseTimestamp(t: number) {
+//   // Timestamp is in nanoseconds.
+//   const mili = t / 1_000_000
+//   const d = new Date(mili)
 
-  const min = d.getMinutes()
-  const minStr = min < 10 ? `0${min}` : `${min}`
+//   const min = d.getMinutes()
+//   const minStr = min < 10 ? `0${min}` : `${min}`
 
-  const h = d.getHours()
-  const hStr = h < 10 ? `0${h}` : `${h}`
+//   const h = d.getHours()
+//   const hStr = h < 10 ? `0${h}` : `${h}`
 
-  const sec = d.getSeconds()
-  const secStr = sec < 10 ? `0${sec}` : `${sec}`
+//   const sec = d.getSeconds()
+//   const secStr = sec < 10 ? `0${sec}` : `${sec}`
 
-  return `${hStr}:${minStr}:${secStr}:${d.getMilliseconds()}`
-}
+//   return `${hStr}:${minStr}:${secStr}:${d.getMilliseconds()}`
+// }
 
 function Output({
   className,
   output,
 }: Props) {
   // We are recreating the output array when we add new outputs, so we can use it as a dependency here.
-  const sorted = useMemo(() => output.sort((a, b) => b.timestamp - a.timestamp), [output])
+  const sorted = useMemo(() => output.reverse().sort((a, b) => b.timestamp - a.timestamp).reverse(), [output])
 
   return (
     <div className={cn(
@@ -59,7 +60,7 @@ function Output({
             space-x-2
           "
         >
-          <span className="text-gray-600">{parseTimestamp(o.timestamp)}</span>
+          {/* <span className="text-gray-600">{parseTimestamp(o.timestamp)}</span> */}
           <span
             className={o.type === OutType.Stderr ? 'text-red-400' : 'text-white-900'}
           >

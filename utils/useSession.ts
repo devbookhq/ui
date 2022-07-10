@@ -150,7 +150,7 @@ function useSession({
   const run = useCallback(async (code: string, envVars?: EnvVars) => {
     if (sessionState.state !== 'open') return
     setCSOutput([])
-    setCSState(CodeSnippetExtendedState.Loading)
+    setCSState(CodeSnippetExecState.Running)
     const newCSState = await sessionState.session?.codeSnippet?.run(code, envVars)
     if (newCSState) {
       setCSState(newCSState)
