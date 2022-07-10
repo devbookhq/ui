@@ -33,7 +33,7 @@ function Output({
   output,
 }: Props) {
   // We are recreating the output array when we add new outputs, so we can use it as a dependency here.
-  const sorted = useMemo(() => output.reverse().sort((a, b) => b.timestamp - a.timestamp).reverse(), [output])
+  const sorted = useMemo(() => output.sort((a, b) => b.timestamp - a.timestamp), [output])
 
   return (
     <div className={cn(

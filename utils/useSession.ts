@@ -51,6 +51,21 @@ function useSession({
   const [csState, setCSState] = useState<CodeSnippetState>(CodeSnippetExtendedState.Loading)
   const [csOutput, setCSOutput] = useState<OutResponse[]>([])
   const [ports, setPorts] = useState<OpenedPort[]>([])
+  const [runTrigger, setRunTrigger] = useState<{ code: string, envVars?: EnvVars }>()
+
+  useEffect(function triggerRun() {
+    (async function () {
+      if (!runTrigger || csOutput.length > 0) return
+      const newCSState = await sessionState.session?.codeSnippet?.run(runTrigger.code, runTrigger.envVars)
+      if (newCSState) {
+        setCSState(newCSState)
+      }
+    })()
+  }, [
+    runTrigger,
+    sessionState.session?.codeSnippet,
+    csOutput,
+  ])
 
   useEffect(function initSession() {
     if (!codeSnippetID) return
@@ -151,10 +166,7 @@ function useSession({
     if (sessionState.state !== 'open') return
     setCSOutput([])
     setCSState(CodeSnippetExecState.Running)
-    const newCSState = await sessionState.session?.codeSnippet?.run(code, envVars)
-    if (newCSState) {
-      setCSState(newCSState)
-    }
+    setRunTrigger({ code, envVars })
   }, [sessionState])
 
   const getHostname = useCallback(async (port?: number) => {

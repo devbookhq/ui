@@ -3,14 +3,53 @@ import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import Terminal, { Handler as TerminalHandler } from 'components/Terminal'
 import { Language } from 'types'
-import { forwardRef } from 'react'
+import { forwardRef, ReactNode } from 'react'
 
-const depsInstructions: { [lang in Language]: string } = {
-  Bash: 'To install Bash dependencies use "apk add <dependency>" in the terminal. sTo remove them use "apk remove <dependency>".',
-  Go: 'To install Go dependencies use "go get <dependency>" in the terminal. To remove unused dependencies use "go mod tidy".',
-  Nodejs: 'To install Node.js dependencies use "npm install <dependency>" in the terminal. To remove them use "npm uninstall <dependency>".',
-  Python3: 'To install Python3 dependencies use "poetry install <dependency>" in the terminal. To remove them use "poetry remove <dependency>".',
+
+function InfoText({ text }: { text: string }) {
+  return <Text className="text-gray-800" text={text} />
 }
+
+function InfoCodeText({ text }: { text: string }) {
+  return <Text className="text-gray-500 bg-black-700 py-[2px] px-[4px] rounded" text={text} mono={true} />
+}
+
+const depsInstructions: { [lang in Language]: ReactNode } = {
+  Bash:
+    <>
+      <InfoText text="To install Bash dependencies use " />
+      <InfoCodeText text="apk add <dependency>" />
+      <InfoText text=" in the terminal. To remove them use " />
+      <InfoCodeText text="apk remove <dependency>" />
+    </>,
+  Go:
+    <>
+      <InfoText text="To install Go dependencies use " />
+      <InfoCodeText text="go get <dependency>" />
+      <InfoText text=" in the terminal. To remove them use " />
+      <InfoCodeText text="go mod tidy" />
+    </>,
+  Nodejs:
+    <>
+      <InfoText text="To install Node.js dependencies use " />
+      <InfoCodeText text="npm install <dependency>" />
+      <InfoText text=" in the terminal. To remove them use " />
+      <InfoCodeText text="npm uninstall <dependency>" />
+    </>,
+  Python3:
+    <>
+      <InfoText text="To install Python 3 dependencies use " />
+      <InfoCodeText text="poetry install <dependency>" />
+      <InfoText text=" in the terminal. To remove them use " />
+      <InfoCodeText text="poetry remove <dependency" />
+    </>,
+}
+
+const generalInstructions = <>
+  <InfoText text="Your code is saved and executed in the " />
+  <InfoCodeText text="/code" />
+  <InfoText text=" directory." />
+</>
 
 export interface Props {
   language: Language
@@ -34,11 +73,14 @@ const Deps = forwardRef<TerminalHandler, Props>(({ language, initialized }, ref)
         title="Customize dependencies"
         size={Title.size.T2}
       />
-      <Text
-        text={depsInstructions[language]}
-        size={Text.size.S2}
-        className="text-gray-800"
-      />
+      <div className="flex flex-col">
+        <span>
+          {generalInstructions}
+        </span>
+        <span>
+          {depsInstructions[language]}
+        </span>
+      </div>
       <Terminal
         ref={ref}
         height="450px"
