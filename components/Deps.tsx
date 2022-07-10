@@ -6,10 +6,10 @@ import { Language } from 'types'
 import { forwardRef } from 'react'
 
 const depsInstructions: { [lang in Language]: string } = {
-  Bash: 'To install Bash dependencies use "apk add <dependency>". To remove them use "apk remove <dependency>".',
-  Go: 'To install Go packages use..',
-  Nodejs: 'To install packages use..',
-  Python3: 'To install packages use..',
+  Bash: 'To install Bash dependencies use "apk add <dependency>" in the terminal. sTo remove them use "apk remove <dependency>".',
+  Go: 'To install Go dependencies use "go get <dependency>" in the terminal. To remove unused dependencies use "go mod tidy".',
+  Nodejs: 'To install Node.js dependencies use "npm install <dependency>" in the terminal. To remove them use "npm uninstall <dependency>".',
+  Python3: 'To install Python3 dependencies use "poetry install <dependency>" in the terminal. To remove them use "poetry remove <dependency>".',
 }
 
 export interface Props {
@@ -36,6 +36,8 @@ const Deps = forwardRef<TerminalHandler, Props>(({ language, initialized }, ref)
       />
       <Text
         text={depsInstructions[language]}
+        size={Text.size.S2}
+        className="text-gray-800"
       />
       <Terminal
         ref={ref}
