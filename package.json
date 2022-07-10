@@ -42,7 +42,7 @@
     "@tailwindcss/line-clamp": "^0.4.0",
     "classnames": "^2.3.1",
     "docker-names": "^1.2.1",
-    "next": "latest",
+    "next": "12.2.2",
     "randomcolor": "^0.6.2",
     "randomstring": "^1.2.2",
     "react": "18.1.0",
