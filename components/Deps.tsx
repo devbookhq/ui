@@ -11,7 +11,7 @@ function InfoText({ text }: { text: string }) {
 }
 
 function InfoCodeText({ text }: { text: string }) {
-  return <Text className="text-gray-500 bg-black-700 py-[2px] px-[4px] rounded" text={text} mono={true} />
+  return <Text className="text-gray-500 bg-black-800 border border-black-700 py-[2px] px-[4px] rounded" text={text} mono={true} />
 }
 
 const depsInstructions: { [lang in Language]: ReactNode } = {
@@ -39,7 +39,7 @@ const depsInstructions: { [lang in Language]: ReactNode } = {
   Python3:
     <>
       <InfoText text="To install Python 3 dependencies use " />
-      <InfoCodeText text="poetry install <dependency>" />
+      <InfoCodeText text="poetry add <dependency>" />
       <InfoText text=" in the terminal. To remove them use " />
       <InfoCodeText text="poetry remove <dependency" />
     </>,

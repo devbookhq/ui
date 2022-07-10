@@ -1,10 +1,14 @@
-import { forwardRef, useRef } from 'react'
+import {
+  forwardRef,
+  useRef,
+} from 'react'
 
 import EditIcon from 'components/icons/Edit'
 import type { Language } from 'types'
 import Output from 'components/Output'
 import CodeEditor, { Handler as CodeEditorHandler } from 'components/CodeEditor'
 import useSharedSession from 'utils/useSharedSession'
+import VerticalResizer from './VerticalResizer'
 
 export interface Props {
   code: string
@@ -21,10 +25,10 @@ const Code = forwardRef<CodeEditorHandler, Props>(({
   onCodeChange,
   onTitleChange,
 }, ref) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const session = useSharedSession()
   if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
-
-  const inputRef = useRef<HTMLInputElement>(null)
 
   function handleEditClick() {
     if (!inputRef || !inputRef.current) return
@@ -33,23 +37,22 @@ const Code = forwardRef<CodeEditorHandler, Props>(({
 
   return (
     <div className="
-    flex
-    flex-1
-    flex-col
-    overflow-hidden
-    border
-    border-black-700
-    rounded-lg
+      flex
+      flex-col
+      flex-1
+      border
+      border-black-700
+      rounded-lg
   ">
       <div className="
-      flex
-      flex-row
-      space-x-1
-      py-1.5
-      px-2
-      rounded-t-lg
-      bg-black-700
-    ">
+        flex
+        flex-row
+        space-x-1
+        py-1.5
+        px-2
+        rounded-t-lg
+        bg-black-700
+        ">
         <div
           className="
             p-1
@@ -72,17 +75,38 @@ const Code = forwardRef<CodeEditorHandler, Props>(({
           onChange={e => onTitleChange(e.target.value)}
         />
       </div>
-      <CodeEditor
-        autofocus={true}
-        ref={ref}
-        language={language}
-        content={code}
-        onContentChange={onCodeChange}
-        className="overflow-hidden flex flex-1"
-      />
-      <Output
-        output={session.csOutput}
-      />
+      <VerticalResizer initHeight={400}>
+        <div className="
+                rounded-t-lg
+                flex-1
+                relative
+                overflow-hidden
+                bg-black-800
+              ">
+          <CodeEditor
+            autofocus={true}
+            ref={ref}
+            language={language}
+            content={code}
+            onContentChange={onCodeChange}
+            className="absolute inset-0"
+          />
+        </div>
+      </VerticalResizer>
+      <div className="
+                rounded-t-lg
+                flex-1
+                relative
+                overflow-hidden
+              ">
+        <Output
+          output={session.csOutput}
+          className="
+                absolute
+                inset-0
+              "
+        />
+      </div>
     </div>
   )
 })

@@ -111,7 +111,7 @@ function useSession({
         }
       },
       onDisconnect() {
-        setCSState(CodeSnippetExtendedState.Failed)
+        setCSState(CodeSnippetExtendedState.Loading)
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
       },
       onReconnect() {

@@ -8,7 +8,6 @@ import {
 import {
   supabaseServerClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
-import Splitter, { SplitDirection } from '@devbookhq/splitter'
 
 import type {
   PublishedCodeSnippet,
@@ -19,6 +18,7 @@ import CodeEditor from 'components/CodeEditor'
 import ExecutionButton from 'components/ExecutionButton'
 import useSession from 'utils/useSession'
 import Output from 'components/Output'
+import VerticalResizer from 'components/VerticalResizer'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = ctx.query.slug as string | undefined
@@ -87,14 +87,12 @@ function CodeSnippet({
   error,
   publishedCodeSnippet: pcs,
 }: Props) {
-  const [sizes, setSizes] = useState<number[]>([85, 15])
   const [hostname, setHostname] = useState<string>()
 
   const {
     csOutput,
     csState,
     run,
-    state,
     stop,
     getHostname,
     ports,
@@ -202,15 +200,11 @@ function CodeSnippet({
             flex
             flex-col
             rounded-lg
+            overflow-hidden
             border
             border-black-700
           ">
-            <Splitter
-              direction={SplitDirection.Vertical}
-              classes={['flex min-h-0', 'flex min-h-0']}
-              initialSizes={sizes}
-              onResizeFinished={(_, sizes) => setSizes(sizes)}
-            >
+            <VerticalResizer initHeight={400}>
               <div className="
                 rounded-t-lg
                 flex-1
@@ -228,15 +222,25 @@ function CodeSnippet({
                   "
                 />
               </div>
+            </VerticalResizer>
+            <div className="
+                rounded-t-lg
+                flex-1
+                relative
+                overflow-hidden
+              ">
               <Output
                 output={csOutput}
+                className="
+                absolute
+                inset-0
+              "
               />
-            </Splitter>
+            </div>
           </div>
         </div>
-      </div>
-
-    </div>
+      </div >
+    </div >
   )
 }
 

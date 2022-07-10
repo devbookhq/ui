@@ -16,7 +16,6 @@ import EnvVariables from './EnvVariables'
 import Deps from './Deps'
 import Code from './Code'
 
-
 export interface Props {
   code: string
   envVars: EnvVars
@@ -45,9 +44,6 @@ function CSEditorContent({
   const terminalRef = useRef<TerminalHandler>(null)
   const emptyEnvRef = useRef<InputHandler>(null)
 
-  const session = useSharedSession()
-  if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
-
   useLayoutEffect(function autofocus() {
     switch (tab) {
       case Tab.Code:
@@ -62,6 +58,9 @@ function CSEditorContent({
         break
     }
   }, [tab])
+
+  const session = useSharedSession()
+  if (!session) throw new Error('Undefined session but it should be defined. Are you missing SessionContext in parent component?')
 
   return (
     <div className="flex flex-1">
