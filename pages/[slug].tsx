@@ -145,24 +145,41 @@ function CodeSnippet({
         w-full
         flex-1
         flex
-        items-start
-        space-x-4
+        flex-col
+        justify-center
+        items-center
+        space-y-4
       ">
+        <ExecutionButton
+          state={csState}
+          onRunClick={runCode}
+          onStopClick={stopCode}
+        />
         <div className="
+          h-full
+          w-full
+          flex-1
+          flex
+          flex-row
+          items-start
+          justify-start
+          space-x-4
+        ">
+          <div className="
           flex
           flex-col
           items-start
           justify-start
         ">
-          <Title
-            size={Title.size.T2}
-            title="Open ports"
-          />
-          {hostname && ports.map(p => (
-            <a
-              key={`${p.Ip}-${p.Port}`}
-              href={`https://${p.Port}-${hostname}`}
-              className="
+            <Title
+              size={Title.size.T2}
+              title="Open ports"
+            />
+            {hostname && ports.map(p => (
+              <a
+                key={`${p.Ip}-${p.Port}`}
+                href={`https://${p.Port}-${hostname}`}
+                className="
               max-w-full
               text-green-500
               overflow-hidden
@@ -170,28 +187,11 @@ function CodeSnippet({
               cursor-pointer
               underline
             "
-            >
-              {`:${p.Port}`}
-            </a>
-          ))}
-        </div>
-
-
-        <div className="
-          h-full
-          w-full
-          flex-1
-          flex
-          flex-col
-          items-center
-          justify-center
-          space-y-4
-        ">
-          <ExecutionButton
-            state={csState}
-            onRunClick={runCode}
-            onStopClick={stopCode}
-          />
+              >
+                {`:${p.Port}`}
+              </a>
+            ))}
+          </div>
 
           <div className="
             h-full
