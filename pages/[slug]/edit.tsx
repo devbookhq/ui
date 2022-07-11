@@ -10,7 +10,7 @@ import {
   supabaseServerClient,
   supabaseClient,
 } from '@supabase/supabase-auth-helpers/nextjs'
-import { CodeSnippetExecState, EnvVars } from '@devbookhq/sdk'
+import { EnvVars } from '@devbookhq/sdk'
 
 import {
   PublishedCodeSnippet,
@@ -110,7 +110,7 @@ export const getServerSideProps = withPageAuth({
       ) {
         return {
           redirect: {
-            destination: `/dashboard/${csSlug}/edit?tab=${tabs.code.key}`,
+            destination: `/${csSlug}/edit?tab=${tabs.code.key}`,
             permanent: false,
           },
           props: {
@@ -331,7 +331,7 @@ function CodeSnippetEditor({
             text={error}
           />
           <ButtonLink
-            href="/dashboard"
+            href="/"
             text="Go Home"
           />
         </div>
@@ -351,27 +351,6 @@ function CodeSnippetEditor({
               isLoadingPublishedCS={isLoadingPublishedCS}
               publishedCS={publishedCS}
             />
-
-            <div className="
-            flex
-            items-center
-            space-x-2
-          ">
-              <ExecutionButton
-                state={csState}
-                onRunClick={runCode}
-                onStopClick={stopCode}
-              />
-
-              {env.state !== 'Done' &&
-                <Title
-                  size={Title.size.T3}
-                  rank={Title.rank.Secondary}
-                  title='Building environment for a new code snippet...'
-                />
-              }
-            </div>
-
             <div className="
             flex-1
             flex
@@ -392,11 +371,31 @@ function CodeSnippetEditor({
               md:space-x-0
               md:space-y-4
             ">
+
+                <div className="
+              flex
+              items-center
+              space-x-2
+            ">
+                  <ExecutionButton
+                    state={csState}
+                    onRunClick={runCode}
+                    onStopClick={stopCode}
+                  />
+
+                  {env.state !== 'Done' &&
+                    <Title
+                      size={Title.size.T3}
+                      rank={Title.rank.Secondary}
+                      title='Building environment for a new code snippet...'
+                    />
+                  }
+                </div>
                 {Object.values(tabs).map(val => (
                   <TitleLink
                     key={val.key}
                     href={{
-                      pathname: '/dashboard/[slug]/edit',
+                      pathname: '/[slug]/edit',
                       query: {
                         slug,
                         tab: val.key,

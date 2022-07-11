@@ -28,20 +28,20 @@ function Navbar() {
       ">
         <TitleLink
           href={{
-            pathname: '/dashboard',
+            pathname: '/',
           }}
           title="Dashboard"
           size={TitleLink.size.T3}
         />
         <TitleLink
           href={{
-            pathname: '/dashboard/settings',
+            pathname: '/settings',
           }}
           title="Settings"
           size={TitleLink.size.T3}
         />
         <UserIndicator
-          onMouseDown={() => router.push('/dashboard/settings')}
+          onMouseDown={() => router.push('/settings')}
           userDisplayName={user.email}
           size={UserIndicator.size.Large}
         />

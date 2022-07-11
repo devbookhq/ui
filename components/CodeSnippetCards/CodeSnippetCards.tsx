@@ -22,7 +22,7 @@ function CodeSnippetCards({
   function openCodeSnippet(cs: CodeSnippet) {
     const slug = `${cs.title}-${cs.id}`
     router.push({
-      pathname: '/dashboard/[slug]/edit',
+      pathname: '/[slug]/edit',
       query: {
         tab: 'code',
         slug: slug,

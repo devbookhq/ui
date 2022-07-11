@@ -35,7 +35,7 @@ function CSEditorHeader({
       ">
         <TitleLink
           href={{
-            pathname: '/dashboard',
+            pathname: '/',
           }}
           title="Code Snippets"
         />
