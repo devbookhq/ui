@@ -44,6 +44,7 @@ const depsInstructions: { [lang in Language]: ReactNode } = {
       <br />
       <InfoText text="To remove them use " />
       <InfoCodeText text="apk remove <dependency>" clipboard={true} />
+      <InfoText text="." />
     </>,
   Go:
     <>
@@ -53,6 +54,7 @@ const depsInstructions: { [lang in Language]: ReactNode } = {
       <br />
       <InfoText text="To remove them use " />
       <InfoCodeText text="go mod tidy" clipboard={true} />
+      <InfoText text="." />
     </>,
   Nodejs:
     <>
@@ -62,6 +64,7 @@ const depsInstructions: { [lang in Language]: ReactNode } = {
       <br />
       <InfoText text="To remove them use " />
       <InfoCodeText text="npm uninstall <dependency>" clipboard={true} />
+      <InfoText text="." />
     </>,
   Python3:
     <>
@@ -71,6 +74,7 @@ const depsInstructions: { [lang in Language]: ReactNode } = {
       <br />
       <InfoText text="To remove them use " />
       <InfoCodeText text="poetry remove <dependency>" clipboard={true} />
+      <InfoText text="." />
     </>,
 }
 

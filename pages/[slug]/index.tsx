@@ -177,6 +177,8 @@ function CodeSnippet({
             />
             {hostname && ports.map(p => (
               <a
+                rel="noreferrer"
+                target="_blank"
                 key={`${p.Ip}-${p.Port}`}
                 href={`https://${p.Port}-${hostname}`}
                 className="

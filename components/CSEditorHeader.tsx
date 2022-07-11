@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import {
   PublishedCodeSnippet,
 } from 'types'
@@ -21,6 +23,17 @@ function CSEditorHeader({
   isLoadingPublishedCS,
   publishedCS,
 }: Props) {
+  const [publishedURL, setPublishedURL] = useState<{ address: string, protocol: string }>()
+
+  useEffect(function getPublishedURL() {
+    if (typeof window === 'undefined') return
+    if (!publishedCS) return
+
+    const address = `${window.location.host}${!!window.location.port ? ':' + window.location.port : ''}/${slug}`
+    const protocol = window.location.protocol
+    setPublishedURL({ address, protocol })
+  }, [slug, publishedCS])
+
   return (
     <div className="
       flex
@@ -53,10 +66,12 @@ function CSEditorHeader({
           ? (
             <SpinnerIcon />
           )
-          : (publishedCS
+          : (publishedURL
             ? (
               <a
-                href={`http://localhost:3000/${slug}`}
+                rel="noreferrer"
+                target="_blank"
+                href={`${publishedURL.protocol}//${publishedURL.address}`}
                 className="
                 max-w-full
                 text-green-500
@@ -67,8 +82,7 @@ function CSEditorHeader({
                 underline
               "
               >
-                {`localhost:3000/${slug}`}
-                {/*{`localhost:3000/${encodeURIComponent(codeSnippet.title)}-${codeSnippet.id}`}*/}
+                {publishedURL.address}
               </a>
             )
             : (

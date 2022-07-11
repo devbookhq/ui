@@ -371,18 +371,16 @@ function CodeSnippetEditor({
               md:space-x-0
               md:space-y-4
             ">
-
                 <div className="
-              flex
-              items-center
-              space-x-2
-            ">
+                  flex
+                  items-center
+                  space-x-2
+                  ">
                   <ExecutionButton
                     state={csState}
                     onRunClick={runCode}
                     onStopClick={stopCode}
                   />
-
                   {env.state !== 'Done' &&
                     <Title
                       size={Title.size.T3}
@@ -421,6 +419,8 @@ function CodeSnippetEditor({
                   />
                   {hostname && ports.map(p => (
                     <a
+                      rel="noreferrer"
+                      target="_blank"
                       key={`${p.Ip}-${p.Port}`}
                       href={`https://${p.Port}-${hostname}`}
                       className="
