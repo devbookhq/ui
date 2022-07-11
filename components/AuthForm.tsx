@@ -7,7 +7,6 @@ import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import cn from 'classnames'
 
 import Text from 'components/typography/Text'
-import SpinnerIcon from 'components/icons/Spinner'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
 
@@ -75,6 +74,8 @@ function AuthForm({
       emailRef.current?.focus()
       setErrMessage(error.message)
       console.error(error.message)
+    } else {
+      setErrMessage(undefined)
     }
 
     setIsLoading(false)
@@ -175,14 +176,12 @@ function AuthForm({
               placeholder="Password"
             />
           </div>
-          {/* <input type="submit" hidden /> */}
           <div className="flex flex-col space-y-4">
             <Button
               type="submit"
               isDisabled={isLoading}
               className="self-center whitespace-nowrap"
               text={isLoading ? buttonLoadingLabel : buttonLabel}
-              onClick={authWithEmail}
               variant={Button.variant.Full}
             />
             {!isLoading && !!errMessage &&
