@@ -352,6 +352,25 @@ function CodeSnippetEditor({
               publishedCS={publishedCS}
             />
             <div className="
+            flex
+            items-center
+            justify-center
+            space-x-2
+            ">
+              <ExecutionButton
+                state={csState}
+                onRunClick={runCode}
+                onStopClick={stopCode}
+              />
+              {env.state !== 'Done' &&
+                <Title
+                  size={Title.size.T3}
+                  rank={Title.rank.Secondary}
+                  title='Building environment for a new code snippet...'
+                />
+              }
+            </div>
+            <div className="
             flex-1
             flex
             flex-col
@@ -371,24 +390,6 @@ function CodeSnippetEditor({
               md:space-x-0
               md:space-y-4
             ">
-                <div className="
-                  flex
-                  items-center
-                  space-x-2
-                  ">
-                  <ExecutionButton
-                    state={csState}
-                    onRunClick={runCode}
-                    onStopClick={stopCode}
-                  />
-                  {env.state !== 'Done' &&
-                    <Title
-                      size={Title.size.T3}
-                      rank={Title.rank.Secondary}
-                      title='Building environment for a new code snippet...'
-                    />
-                  }
-                </div>
                 {Object.values(tabs).map(val => (
                   <TitleLink
                     key={val.key}
