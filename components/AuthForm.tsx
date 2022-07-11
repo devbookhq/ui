@@ -75,7 +75,7 @@ function AuthForm({
       setErrMessage(error.message)
       console.error(error.message)
     } else {
-      setErrMessage(undefined)
+      setErrMessage('')
     }
 
     setIsLoading(false)
