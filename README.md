@@ -1,8 +1,7 @@
 # Devbook Dashboard
 
 ## Setup
-**Node.js 14.x** is preferred for development in this repository.
-> **_NOTE:_** Everything will probably work even with Node.js 16, but the latest version of Node.js on *Vercel* is 14.
+**Node.js 16.x** is preferred for development in this repository.
 
 Run the following command after you clone the repo to **install dependencies**:
 ```bash
