@@ -7,6 +7,7 @@ import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
 import SpinnerIcon from 'components/icons/Spinner'
+import Copy from './icons/Copy'
 
 interface Props {
   slug: string
@@ -23,15 +24,19 @@ function CSEditorHeader({
   isLoadingPublishedCS,
   publishedCS,
 }: Props) {
-  const [publishedURL, setPublishedURL] = useState<{ address: string, protocol: string }>()
+  const [publishedURL, setPublishedURL] = useState<{ address: string, protocol: string, embedCode: string }>()
 
   useEffect(function getPublishedURL() {
     if (typeof window === 'undefined') return
     if (!publishedCS) return
+    if (!publishedCS.code_snippet_id) return
 
     const address = `${window.location.host}${!!window.location.port ? ':' + window.location.port : ''}/${slug}`
     const protocol = window.location.protocol
-    setPublishedURL({ address, protocol })
+
+    const embedCode = `<script src="https://embed.usedevbook.com/${publishedCS.code_snippet_id}" async readonly></script>`
+
+    setPublishedURL({ address, protocol, embedCode })
   }, [slug, publishedCS])
 
   return (
@@ -68,11 +73,12 @@ function CSEditorHeader({
           )
           : (publishedURL
             ? (
-              <a
-                rel="noreferrer"
-                target="_blank"
-                href={`${publishedURL.protocol}//${publishedURL.address}`}
-                className="
+              <>
+                <a
+                  rel="noreferrer"
+                  target="_blank"
+                  href={`${publishedURL.protocol}//${publishedURL.address}`}
+                  className="
                 max-w-full
                 text-green-500
                 overflow-hidden
@@ -81,9 +87,18 @@ function CSEditorHeader({
                 cursor-pointer
                 underline
               "
-              >
-                {publishedURL.address}
-              </a>
+                >
+                  {publishedURL.address}
+                </a>
+                <Button
+                  className="whitespace-nowrap"
+                  text="Copy embed code"
+                  icon={<Copy></Copy>}
+                  onClick={() => {
+                    navigator.clipboard.writeText(publishedURL.embedCode)
+                  }}
+                />
+              </>
             )
             : (
               <Title
