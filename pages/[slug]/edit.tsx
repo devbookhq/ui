@@ -354,7 +354,7 @@ function CodeSnippetEditor({
             <div className="
             flex
             items-center
-            justify-center
+            justify-start
             space-x-2
             ">
               <ExecutionButton

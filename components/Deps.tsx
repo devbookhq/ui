@@ -6,33 +6,10 @@ import Title from 'components/typography/Title'
 import Text from 'components/typography/Text'
 import Terminal, { Handler as TerminalHandler } from 'components/Terminal'
 import { Language } from 'types'
-import CopyIcon from './icons/Copy'
+import InfoCodeText from './InfoCodeText'
 
 function InfoText({ text }: { text: string }) {
   return <Text className="text-gray-800" text={text} />
-}
-
-function InfoCodeText({ text, clipboard }: { text: string, clipboard?: boolean }) {
-  function copy() {
-    if (clipboard && text) {
-      const clipboardText = text.replace('<dependency>', '')
-      navigator.clipboard.writeText(clipboardText)
-    }
-  }
-
-  return (
-    <div
-      className={cn('text-gray-800 bg-black-800 border border-black-700 py-[1px] px-2 rounded items-center flex-row inline-flex', { 'hover:cursor-pointer hover:bg-black-700 space-x-2': clipboard })}
-      onClick={copy}
-    >
-      <Text
-        className="text-gray-500"
-        text={text}
-        mono={true}
-      />
-      {clipboard && <CopyIcon />}
-    </div>
-  )
 }
 
 const depsInstructions: { [lang in Language]: ReactNode } = {

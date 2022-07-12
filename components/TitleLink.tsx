@@ -32,7 +32,7 @@ function TitleLink({
       ">
         <Title
           rank={active ? Title.rank.Primary : Title.rank.Secondary}
-          className="hover:text-white-900"
+          className="hover:text-white-900 whitespace-nowrap"
           size={size}
           title={title}
           icon={icon}
