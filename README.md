@@ -37,4 +37,4 @@ npm run analyze
 ## Deployment (Vercel)
 The app is **automatically deployed** to production via *Vercel* when you push a new commit to the **master** branch. When you push commit any other branch you can view the preview deployment via *Vercel* too.
 
-The app is deployed on https://<>.
+The app is deployed on https://dash.usedevbook.com
