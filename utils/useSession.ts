@@ -19,6 +19,11 @@ export enum CodeSnippetExtendedState {
   Loading = 'Loading',
 }
 
+const validPortIPs = [
+  '0.0.0.0',
+  '127.0.0.1',
+]
+
 export type CodeSnippetState = CodeSnippetExtendedState | CodeSnippetExecState
 
 export interface Opts {
@@ -90,7 +95,7 @@ function useSession({
           const validPorts = newPorts.filter(
             p => (
               p.State === 'LISTEN' &&
-              p.Ip === '0.0.0.0' &&
+              validPortIPs.includes(p.Ip) &&
               // This is devbookd
               p.Port !== 8010 &&
               // ssh daemon
