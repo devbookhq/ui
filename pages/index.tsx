@@ -103,7 +103,7 @@ function Dashboard() {
 
           {codeSnippets.length > 0 && (
             <Button
-              text="New Code Snippet"
+              text="New code snippet"
               icon={isLoadingNewSnippet ? <SpinnerIcon /> : <PlusIcon />}
               onClick={openCSModal}
               isDisabled={isLoadingNewSnippet}
@@ -153,7 +153,7 @@ function Dashboard() {
             <Button
               variant={Button.variant.Full}
               icon={isLoadingNewSnippet ? <SpinnerIcon /> : null}
-              text="New Code Snippet"
+              text="New code snippet"
               onClick={openCSModal}
               isDisabled={isLoadingNewSnippet}
             />
