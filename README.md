@@ -126,5 +126,6 @@ export default function ExampleTerminal() {
 }
 ```
 
+
 ## Example projects
 * [React example](examples/react-app)
