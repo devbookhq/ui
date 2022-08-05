@@ -2,8 +2,6 @@ import cn from 'classnames'
 import {
   ChangeEvent,
   forwardRef,
-  useRef,
-  useImperativeHandle,
 } from 'react'
 
 export interface Props {

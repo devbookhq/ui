@@ -8,6 +8,7 @@ import {
   ErrorRes,
   CodeEnvironment,
   CodeSnippetUpdate,
+  UserFeedback,
 } from 'types'
 
 type Env = Pick<CodeEnvironment, 'template' | 'deps'>
@@ -27,6 +28,13 @@ async function upsertPublishedCodeSnippet(cs: PublishedCodeSnippet) {
   return body[0]
 }
 
+async function upsertUserFeedback(userID: string, feedback: string) {
+  const { body, error } = await supabaseClient
+    .from<UserFeedback>('user_feedback')
+    .upsert({ user_id: userID, feedback })
+  if (error) throw error
+  return body[0]
+}
 
 async function updateCodeSnippet(apiKey: string, codeSnippet: CodeSnippetUpdate, env?: Env) {
   const response = await fetch('/api/code', {
@@ -62,5 +70,6 @@ export {
   getPublishedCodeSnippet,
   upsertPublishedCodeSnippet,
   updateCodeSnippet,
-  createCodeSnippet
+  createCodeSnippet,
+  upsertUserFeedback,
 }

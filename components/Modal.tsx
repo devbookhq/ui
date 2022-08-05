@@ -1,7 +1,6 @@
 import {
   ReactNode,
   Fragment,
-  useState,
 } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
@@ -40,8 +39,6 @@ function Modal({
           inset-0
           flex
           justify-center
-          fixed
-          inset-0
           overflow-y-auto
         ">
           <div className="
@@ -69,6 +66,7 @@ function Modal({
                 flex
                 flex-col
                 items-start
+                space-y-4
                 w-full
                 max-w-full
                 transform

@@ -1,7 +1,21 @@
-function Spinner() {
+import cn from 'classnames'
+
+export interface Props {
+  className?: string
+}
+
+function Spinner({
+  className,
+}: Props) {
   return (
     <svg
-      className="animate-spin h-5 w-5 text-white-900"
+      className={cn(
+        'animate-spin',
+        'h-5',
+        'w-5',
+        'text-white-900',
+        className
+      )}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
