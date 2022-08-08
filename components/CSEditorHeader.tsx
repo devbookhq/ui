@@ -34,7 +34,7 @@ function CSEditorHeader({
     const address = `${window.location.host}${!!window.location.port ? ':' + window.location.port : ''}/${slug}`
     const protocol = window.location.protocol
 
-    const embedCode = `<script src="https://embed.usedevbook.com/${publishedCS.code_snippet_id}" async readonly></script>`
+    const embedCode = `<script src="https://embed.usedevbook.com/${publishedCS.code_snippet_id}" async></script>`
 
     setPublishedURL({ address, protocol, embedCode })
   }, [slug, publishedCS])
