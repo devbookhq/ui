@@ -366,7 +366,7 @@ function CodeSnippetEditor({
                 <Title
                   size={Title.size.T3}
                   rank={Title.rank.Secondary}
-                  title='Building environment for a new code snippet...'
+                  title='Rebuilding after publish...'
                 />
               }
             </div>
