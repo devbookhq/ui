@@ -43,7 +43,7 @@ function Button({
 
           'rounded-lg',
           'bg-green-500',
-          'hover:shadow-lg',
+          'hover:shadow',
           { 'hover:shadow-green-500/50': !isDisabled },
           { 'opacity-70': isDisabled },
           { 'cursor-not-allowed': isDisabled },

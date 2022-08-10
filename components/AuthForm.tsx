@@ -112,6 +112,7 @@ function AuthForm({
         flex
         flex-1
         flex-col
+        items-center
         space-y-8
         self-start
         rounded
@@ -119,9 +120,8 @@ function AuthForm({
       ">
         <Title
           title={title}
-          size={Title.size.T1}
         />
-        <div className="flex flex-col px-16 space-y-8">
+        <div className="w-full flex flex-col px-16 space-y-8">
           <div className="flex flex-col space-y-2 min-w-0">
             <input
               ref={emailRef}
@@ -130,6 +130,7 @@ function AuthForm({
               disabled={isLoading}
               required
               className={cn(
+                'w-full',
                 'px-2.5',
                 'py-2',
                 'rounded-lg',
@@ -140,7 +141,6 @@ function AuthForm({
                 'outline-none',
                 'focus:border-green-200',
                 'text-sm',
-                'font-medium',
                 'placeholder:text-gray-600',
               )}
               name="email"

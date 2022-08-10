@@ -38,6 +38,7 @@ function SignIn() {
             m-auto
             flex
             flex-col
+            items-center
             rounded
             space-y-4
           ">

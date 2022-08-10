@@ -25,11 +25,12 @@ function SidebarLink({
         'pr-8',
         'py-1.5',
         'hover:bg-white-900/5',
-        'font-bold',
         'border-l-2',
         {'border-transparent': !active},
         {'border-green-500': active},
         {'bg-white-900/5': active},
+        {'font-normal': !active},
+        {'font-semibold': active},
       )}
       href={href}
       active={active}
