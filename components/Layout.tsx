@@ -23,8 +23,6 @@ export default function Layout({ children, meta: pageMeta }: Props) {
     cardImage: '/og.png',
     ...pageMeta
   }
-  console.log(router)
-
   return (
     <>
       <Head>

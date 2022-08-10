@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import cn from 'classnames'
 import TitleLink from 'components//TitleLink'
 import { UrlObject } from 'url'
@@ -6,12 +7,14 @@ export interface Props {
   active: boolean
   title: string
   href: UrlObject | string
+  icon: ReactNode,
 }
 
 function SidebarLink({
   active,
   title,
   href,
+  icon,
 }: Props) {
   return (
     <TitleLink
@@ -34,6 +37,7 @@ function SidebarLink({
       active={active}
       title={title}
       size={TitleLink.size.T3}
+      icon={icon}
       shallow
     />
   )

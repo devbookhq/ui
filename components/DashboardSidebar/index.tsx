@@ -1,5 +1,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import {
+  CodeIcon,
+  GearIcon,
+  BarChartIcon,
+} from '@radix-ui/react-icons'
 
 import Button from 'components/Button'
 import FeedbackModal from 'components/FeedbackModal'
@@ -10,12 +15,14 @@ const pages = [
   {
     title: 'Code Snippets',
     href: '/',
-    activeOnPathnames: ['/', '/[slug]/edit']
+    activeOnPathnames: ['/', '/[slug]/edit'],
+    icon: <CodeIcon/>,
   },
   {
     title: 'Analytics',
     href: '/analytics',
-    activeOnPathnames: ['/analytics', '/analytics/[slug]']
+    activeOnPathnames: ['/analytics', '/analytics/[slug]'],
+    icon: <BarChartIcon/>,
   },
 ]
 
@@ -55,6 +62,7 @@ function DashboardSidebar() {
               title={p.title}
               href={p.href}
               active={p.activeOnPathnames.includes(router.pathname)}
+              icon={p.icon}
             />
           ))}
         </div>
@@ -71,8 +79,10 @@ function DashboardSidebar() {
             title="Settings"
             href="/settings"
             active={router.pathname === '/settings'}
+            icon={<GearIcon/>}
           />
           <Button
+            className="mx-2"
             text="Share feedback"
             onClick={() => setIsFeedbackVisible(true)}
           />
