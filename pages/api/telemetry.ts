@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+
+import { allowCors } from 'utils/api'
 import {
   upsertCodeSnippetEmbedRun,
 } from 'utils/supabaseAdmin'
@@ -26,7 +28,7 @@ async function runCodeEmbedTelemetry(req: NextApiRequest, res: NextApiResponse) 
   }
 }
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
@@ -41,3 +43,5 @@ export default async function handler(
     await runCodeEmbedTelemetry(req, res)
   }
 }
+
+export default allowCors(handler)
