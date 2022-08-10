@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import Navbar from 'components/Navbar'
+import DashboardSidebar from 'components/DashboardSidebar'
 
 export interface PageMeta {
   title: string;
@@ -23,40 +23,45 @@ export default function Layout({ children, meta: pageMeta }: Props) {
     cardImage: '/og.png',
     ...pageMeta
   }
+  console.log(router)
 
-    return (
-      <>
-        <Head>
-          <title>{meta.title}</title>
-          <meta name="robots" content="follow, index" />
-          <link href="/favicon.ico" rel="shortcut icon" />
-          <meta content={meta.description} name="description" />
-          <meta property="og:url" content={`https://dash.usedevbook.com${router.asPath}`} />
-          <meta property="og:type" content="website" />
-          <meta property="og:site_name" content={meta.title} />
-          <meta property="og:description" content={meta.description} />
-          <meta property="og:title" content={meta.title} />
-          <meta property="og:image" content={meta.cardImage} />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@devbookhq" />
-          <meta name="twitter:title" content={meta.title} />
-          <meta name="twitter:description" content={meta.description} />
-          <meta name="twitter:image" content={meta.cardImage} />
-        </Head>
+  return (
+    <>
+      <Head>
+        <title>{meta.title}</title>
+        <meta name="robots" content="follow, index" />
+        <link href="/favicon.ico" rel="shortcut icon" />
+        <meta content={meta.description} name="description" />
+        <meta property="og:url" content={`https://dash.usedevbook.com${router.asPath}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={meta.title} />
+        <meta property="og:description" content={meta.description} />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:image" content={meta.cardImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@devbookhq" />
+        <meta name="twitter:title" content={meta.title} />
+        <meta name="twitter:description" content={meta.description} />
+        <meta name="twitter:image" content={meta.cardImage} />
+      </Head>
 
+      <div className="
+        w-full
+        flex-1
+        flex
+        item-start
+      ">
+        <DashboardSidebar/>
         <div className="
-          p-4
+          py-2
+          px-4
           flex-1
           flex
           flex-col
-          space-y-6
-          max-w-[1160px]
-          w-full
         ">
-          <Navbar/>
           {children}
         </div>
-      </>
+      </div>
+    </>
   )
 }
-

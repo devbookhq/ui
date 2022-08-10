@@ -41,7 +41,6 @@ function Title({
     'flex',
     'flex-row',
     'items-center',
-    'justify-center',
     'space-x-2',
     'text-left',
     rank !== undefined ? Ranks[rank] : undefined,

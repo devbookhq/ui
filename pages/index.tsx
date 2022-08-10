@@ -85,7 +85,6 @@ function Dashboard() {
         flex
         flex-col
         space-y-6
-        px-2
       ">
         <div className="
           flex

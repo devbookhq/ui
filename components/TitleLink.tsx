@@ -1,12 +1,14 @@
-import cn from 'classnames'
 import { ReactNode } from 'react'
+import cn from 'classnames'
 import Link from 'next/link'
 import { UrlObject } from 'url'
 
 import Title, { Size } from 'components/typography/Title'
 
 interface Props {
-  href: UrlObject
+  className?: string
+  wrapperClassName?: string
+  href: UrlObject | string
   title: string
   icon?: ReactNode
   size?: Size
@@ -15,6 +17,8 @@ interface Props {
 }
 
 function TitleLink({
+  className,
+  wrapperClassName,
   href,
   title,
   icon,
@@ -27,12 +31,20 @@ function TitleLink({
       href={href}
       shallow={shallow}
     >
-      <a className="
-        hover:no-underline
-      ">
+      <a
+        className={cn(
+          'hover:no-underline',
+          wrapperClassName,
+        )}
+      >
         <Title
           rank={active ? Title.rank.Primary : Title.rank.Secondary}
-          className="hover:text-white-900 whitespace-nowrap"
+          className={cn(
+            'hover:text-white-900',
+            'whitespace-nowrap',
+            'transition-colors',
+            className,
+          )}
           size={size}
           title={title}
           icon={icon}
