@@ -1,9 +1,9 @@
 import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
+import { CopyIcon } from '@radix-ui/react-icons'
 
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
 import ButtonLink from 'components/ButtonLink'
-import CopyIcon from 'components/icons/Copy'
 import useUserInfo from 'utils/useUserInfo'
 
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
@@ -28,15 +28,9 @@ function Settings() {
       items-start
       space-y-6
     ">
-      <div className="
-        min-h-[48px]
-        flex
-        justify-start
-      ">
-        <Title
-          title="Settings"
-        />
-      </div>
+      <Title
+        title="Settings"
+      />
 
       <div className="
         flex
@@ -84,6 +78,7 @@ function Settings() {
               border
               border-black-700
               truncate
+              text-sm
             "
             value={apiKey}
             readOnly

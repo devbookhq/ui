@@ -35,7 +35,7 @@ function Button({
         type={type}
         className={cn(
           'py-1.5',
-          'px-4',
+          'px-2',
 
           'flex',
           'items-center',
@@ -56,11 +56,11 @@ function Button({
           flex-row
           items-center
           justify-center
-          space-x-2
+          space-x-1.5
           bg-green-500
         ">
           <Text
-            size={Text.size.S1}
+            size={Text.size.S2}
             text={text}
           />
         </div>
@@ -72,11 +72,11 @@ function Button({
     <button
       type={type}
       className={cn(
-        'p-[2px]',
+        'p-[1px]',
         'rounded-lg',
         'bg-black-700',
         'hover:bg-green-gradient',
-        'hover:shadow-lg',
+        'hover:shadow',
         { 'hover:shadow-green-500/50': !isDisabled },
         { 'opacity-70': isDisabled },
         { 'cursor-not-allowed': isDisabled },
@@ -85,21 +85,21 @@ function Button({
       onMouseDown={!isDisabled ? onClick : () => { }}
     >
       <div className="
-        py-[4px]
-        px-[10px]
+        py-1
+        px-2
 
         flex
         flex-row
         items-center
         justify-center
-        space-x-2
+        space-x-1.5
 
         rounded-lg
         bg-black-900
       ">
         {icon}
         <Text
-          size={Text.size.S1}
+          size={Text.size.S2}
           text={text}
         />
       </div>

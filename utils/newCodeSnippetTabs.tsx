@@ -1,6 +1,8 @@
-import CodeIcon from 'components/icons/Code'
-import KeyIcon from 'components/icons/Key'
-import PackageIcon from 'components/icons/Package'
+import {
+  CodeIcon,
+  CubeIcon,
+  LockClosedIcon,
+} from '@radix-ui/react-icons'
 
 export enum Tab {
   Code = 'code',
@@ -17,11 +19,11 @@ export const tabs = {
   [Tab.Deps]: {
     key: Tab.Deps,
     title: 'Dependencies',
-    icon: <PackageIcon />,
+    icon: <CubeIcon />,
   },
   [Tab.Env]: {
     key: Tab.Env,
     title: 'Env variables',
-    icon: <KeyIcon />,
+    icon: <LockClosedIcon />,
   },
 }

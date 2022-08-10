@@ -30,7 +30,7 @@ const InputEl = forwardRef<HTMLInputElement, Props>(({ className, onEnterDown, .
       onKeyDown={handleKeyDown}
       className={cn(
         'px-2.5',
-        'py-2',
+        'py-1',
         'rounded-lg',
         'border',
         'border-black-700',

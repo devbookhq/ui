@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import CopyIcon from './icons/Copy'
+import { CopyIcon } from '@radix-ui/react-icons'
 
 import Text from './typography/Text'
 

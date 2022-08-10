@@ -2,8 +2,8 @@ import {
   forwardRef,
   useRef,
 } from 'react'
+import { Pencil2Icon } from '@radix-ui/react-icons'
 
-import EditIcon from 'components/icons/Edit'
 import type { Language } from 'types'
 import Output from 'components/Output'
 import CodeEditor, { Handler as CodeEditorHandler } from 'components/CodeEditor'
@@ -43,16 +43,17 @@ const Code = forwardRef<CodeEditorHandler, Props>(({
       border
       border-black-700
       rounded-lg
-  ">
+    ">
       <div className="
         flex
         flex-row
+        items-center
         space-x-1
-        py-1.5
+        py-1
         px-2
         rounded-t-lg
         bg-black-700
-        ">
+      ">
         <div
           className="
             p-1
@@ -63,13 +64,14 @@ const Code = forwardRef<CodeEditorHandler, Props>(({
           "
           onClick={handleEditClick}
         >
-          <EditIcon />
+          <Pencil2Icon />
         </div>
         <input
           ref={inputRef}
           className="
             flex-1
             bg-transparent
+            text-sm
           "
           value={title}
           onChange={e => onTitleChange(e.target.value)}
@@ -77,12 +79,12 @@ const Code = forwardRef<CodeEditorHandler, Props>(({
       </div>
       <VerticalResizer initHeight={400}>
         <div className="
-                rounded-t-lg
-                flex-1
-                relative
-                overflow-hidden
-                bg-black-800
-              ">
+          rounded-t-lg
+          flex-1
+          relative
+          overflow-hidden
+          bg-black-800
+        ">
           <CodeEditor
             autofocus={true}
             ref={ref}
@@ -94,17 +96,17 @@ const Code = forwardRef<CodeEditorHandler, Props>(({
         </div>
       </VerticalResizer>
       <div className="
-                rounded-t-lg
-                flex-1
-                relative
-                overflow-hidden
-              ">
+        rounded-t-lg
+        flex-1
+        relative
+        overflow-hidden
+      ">
         <Output
           output={session.csOutput}
           className="
-                absolute
-                inset-0
-              "
+            absolute
+            inset-0
+          "
         />
       </div>
     </div>

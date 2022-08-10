@@ -4,6 +4,7 @@ import {
 } from 'react'
 import { useRouter } from 'next/router'
 import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
+import { PlusIcon } from '@radix-ui/react-icons'
 
 import type { Template } from 'types'
 import { createCodeSnippet } from 'utils/supabaseClient'
@@ -11,7 +12,6 @@ import { showErrorNotif } from 'utils/notification'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
 import CodeSnippetCards from 'components/CodeSnippetCards'
-import PlusIcon from 'components/icons/Plus'
 import SpinnerIcon from 'components/icons/Spinner'
 import NewCodeSnippetModal from 'components/NewCodeSnippetModal'
 import useCodeSnippets from 'utils/useCodeSnippets'
@@ -89,12 +89,13 @@ function Dashboard() {
         <div className="
           flex
           flex-col
+          items-center
           space-y-2
-          min-h-[48px]
 
           sm:flex-row
           sm:justify-between
           sm:items-center
+          sm:space-y-0
         ">
           <Title
             title="Code Snippets"

@@ -9,7 +9,7 @@ import { Language } from 'types'
 import InfoCodeText from './InfoCodeText'
 
 function InfoText({ text }: { text: string }) {
-  return <Text className="text-gray-800" text={text} />
+  return <Text className="text-gray-800" text={text} size={Text.size.S1}/>
 }
 
 const depsInstructions: { [lang in Language]: ReactNode } = {
@@ -77,20 +77,26 @@ const Deps = forwardRef<TerminalHandler, Props>(({ language, initialized }, ref)
       w-full
       flex-col
       items-start
-      space-y-4
     ">
       <Title
         title="Customize dependencies"
         size={Title.size.T2}
       />
-      <div className="flex flex-col">
-        <span>
+      <div className="
+        mt-1
+        mb-4
+        flex
+        flex-col
+        items-start
+      ">
+        <div>
           {generalInstructions}
-        </span>
-        <span>
+        </div>
+        <div>
           {depsInstructions[language]}
-        </span>
+        </div>
       </div>
+
       <Terminal
         ref={ref}
         height="400px"

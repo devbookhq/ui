@@ -3,10 +3,10 @@ import React, {
   useState,
   forwardRef,
 } from 'react'
+import { Cross2Icon } from '@radix-ui/react-icons'
 
-import Input, { Handler as InputHandler } from 'components/Input'
+import Input from 'components/Input'
 import Title from 'components/typography/Title'
-import CancelIcon from 'components/icons/Cancel'
 import Button from 'components/Button'
 
 export interface Props {
@@ -82,8 +82,7 @@ const EnvVariable = forwardRef<HTMLInputElement, Props>(({
           onClick={onDelete}
           className="text-black-700 cursor-pointer hover:text-red-400"
         >
-          <CancelIcon
-          />
+          <Cross2Icon/>
         </div>
       }
       {!!onAdd &&

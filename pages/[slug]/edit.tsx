@@ -339,11 +339,11 @@ function CodeSnippetEditor({
       {!error &&
         <SharedSessionProvider session={session}>
           <div className="
-          flex-1
-          flex
-          flex-col
-          space-y-6
-        ">
+            flex-1
+            flex
+            flex-col
+            space-y-6
+          ">
             <CSEditorHeader
               slug={slug}
               onPublishClick={publishCodeSnippet}
@@ -352,34 +352,29 @@ function CodeSnippetEditor({
               publishedCS={publishedCS}
             />
             <div className="
-            flex
-            items-center
-            justify-start
-            space-x-2
+              flex
+              items-center
+              justify-start
+              space-x-2
             ">
-              <ExecutionButton
-                state={csState}
-                onRunClick={runCode}
-                onStopClick={stopCode}
-              />
               {env.state !== 'Done' &&
                 <Title
                   size={Title.size.T3}
                   rank={Title.rank.Secondary}
-                  title='Rebuilding after publish...'
+                  title='Rebuilding...'
                 />
               }
             </div>
             <div className="
-            flex-1
-            flex
-            flex-col
-            space-y-4
-            md:flex-row
-            md:space-y-0
-            md:space-x-8
-          ">
-              <div className="
+              flex-1
+              flex
+              flex-col
+              space-y-4
+              md:flex-row
+              md:space-y-0
+              md:space-x-8
+            ">
+            <div className="
               flex
               flex-row
               items-center
@@ -390,6 +385,11 @@ function CodeSnippetEditor({
               md:space-x-0
               md:space-y-4
             ">
+              <ExecutionButton
+                state={csState}
+                onRunClick={runCode}
+                onStopClick={stopCode}
+              />
                 {Object.values(tabs).map(val => (
                   <TitleLink
                     key={val.key}
@@ -420,18 +420,18 @@ function CodeSnippetEditor({
                   />
                   {hostname && ports.map(p => (
                     <a
+                      className="
+                        max-w-full
+                        text-green-500
+                        overflow-hidden
+                        truncate
+                        cursor-pointer
+                        underline
+                      "
                       rel="noreferrer"
                       target="_blank"
                       key={`${p.Ip}-${p.Port}`}
                       href={`https://${p.Port}-${hostname}`}
-                      className="
-                      max-w-full
-                      text-green-500
-                      overflow-hidden
-                      truncate
-                      cursor-pointer
-                      underline
-                    "
                     >
                       {`:${p.Port}`}
                     </a>

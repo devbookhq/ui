@@ -2,12 +2,12 @@ import {
   useState,
   useRef,
 } from 'react'
+import { DotsVerticalIcon } from '@radix-ui/react-icons'
 
 import type { CodeSnippet } from 'types'
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
 import CodeEditor from 'components/CodeEditor'
-import MoreVerticalIcon from 'components/icons/MoreVertical'
 import { showErrorNotif } from 'utils/notification'
 import useOnClickOutside from 'utils/useOnClickOutside'
 import useUserInfo from 'utils/useUserInfo'
@@ -126,13 +126,13 @@ function CodeSnippetCard({
             />
             <div
               className="
-                p-1
+                p-2
                 rounded
-                hover:bg-black-700
+                hover:bg-white-900/5
               "
               onClick={handleOnMoreClick}
             >
-              <MoreVerticalIcon />
+              <DotsVerticalIcon />
             </div>
           </div>
 

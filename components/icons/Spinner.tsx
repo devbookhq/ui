@@ -11,8 +11,8 @@ function Spinner({
     <svg
       className={cn(
         'animate-spin',
-        'h-5',
-        'w-5',
+        'h-3',
+        'w-3',
         'text-white-900',
         className
       )}

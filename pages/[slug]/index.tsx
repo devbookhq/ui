@@ -150,11 +150,6 @@ function CodeSnippet({
         items-center
         space-y-4
       ">
-        <ExecutionButton
-          state={csState}
-          onRunClick={runCode}
-          onStopClick={stopCode}
-        />
         <div className="
           h-full
           w-full

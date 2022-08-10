@@ -28,9 +28,7 @@ function SidebarLink({
         'font-bold',
         'border-l-2',
         {'border-transparent': !active},
-        {'hover:text-green-500': active},
         {'border-green-500': active},
-        {'text-green-500': active},
         {'bg-white-900/5': active},
       )}
       href={href}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { CopyIcon } from '@radix-ui/react-icons'
 
 import {
   PublishedCodeSnippet,
@@ -7,7 +8,6 @@ import TitleLink from 'components/TitleLink'
 import Title from 'components/typography/Title'
 import Button from 'components/Button'
 import SpinnerIcon from 'components/icons/Spinner'
-import Copy from './icons/Copy'
 
 interface Props {
   slug: string
@@ -65,7 +65,7 @@ function CSEditorHeader({
         flex
         items-center
         justify-between
-        space-x-4
+        space-x-2
       ">
         {isLoadingPublishedCS
           ? (
@@ -79,21 +79,21 @@ function CSEditorHeader({
                   target="_blank"
                   href={`${publishedURL.protocol}//${publishedURL.address}`}
                   className="
-                max-w-full
-                text-green-500
-                overflow-hidden
-                truncate
-                text-sm
-                cursor-pointer
-                underline
-              "
+                    max-w-full
+                    text-green-500
+                    overflow-hidden
+                    truncate
+                    text-sm
+                    cursor-pointer
+                    underline
+                  "
                 >
                   {publishedURL.address}
                 </a>
                 <Button
                   className="whitespace-nowrap"
                   text="Copy embed code"
-                  icon={<Copy></Copy>}
+                  icon={<CopyIcon/>}
                   onClick={() => {
                     navigator.clipboard.writeText(publishedURL.embedCode)
                   }}

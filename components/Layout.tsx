@@ -51,8 +51,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
       ">
         <DashboardSidebar/>
         <div className="
-          py-2
-          px-4
+          p-4
           flex-1
           flex
           flex-col

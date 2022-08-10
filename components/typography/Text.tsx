@@ -6,8 +6,8 @@ export enum Size {
 }
 
 const Sizes = {
-  [Size.S1]: 'text-sm font-semibold',
-  [Size.S2]: 'text-sm',
+  [Size.S1]: 'text-sm',
+  [Size.S2]: 'text-xs',
 }
 
 interface Props {

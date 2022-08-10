@@ -1,10 +1,9 @@
 import { CodeSnippetExecState } from '@devbookhq/sdk'
 import { ReactNode } from 'react'
 import cn from 'classnames'
+import { PlayIcon, StopIcon } from '@radix-ui/react-icons'
 
 import Button from 'components/Button'
-import PlayCircleIcon from 'components/icons/PlayCircle'
-import StopIcon from 'components/icons/Stop'
 import SpinnerIcon from 'components/icons/Spinner'
 import { CodeSnippetState, CodeSnippetExtendedState } from 'utils/useSession'
 
@@ -28,7 +27,7 @@ function ExecutionButton({
     case CodeSnippetExecState.Stopped:
       text = 'Run'
       icon = (
-        <PlayCircleIcon className="
+        <PlayIcon className="
           text-green-500
         "/>
       )
