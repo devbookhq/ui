@@ -10,7 +10,11 @@ enum TelemetryType {
 }
 
 async function runCodeEmbedTelemetry(req: NextApiRequest, res: NextApiResponse) {
-  const { codeSnippetID } = req.body as { codeSnippetID: string }
+  const { codeSnippetID, host, path } = req.body as {
+    codeSnippetID: string
+    host: string
+    path: string
+  }
 
   if (!codeSnippetID) {
     const err = new Error('Missing code snippet ID')
@@ -20,7 +24,7 @@ async function runCodeEmbedTelemetry(req: NextApiRequest, res: NextApiResponse) 
   }
 
   try {
-    await upsertCodeSnippetEmbedRun(codeSnippetID)
+    await upsertCodeSnippetEmbedRun({ codeSnippetID, host, path })
     res.status(200).send('')
   } catch(err: any) {
     console.error(err)

@@ -77,10 +77,15 @@ async function deletePublishedCodeSnippet(codeSnippetID: string) {
   if (error) throw error
 }
 
-async function upsertCodeSnippetEmbedRun(codeSnippetID: string) {
+async function upsertCodeSnippetEmbedRun(args: {
+  codeSnippetID: string
+  host: string
+  path: string
+}) {
+  const { codeSnippetID, host, path } = args
   const { error } = await supabaseAdmin
     .from('code_snippet_embed_runs')
-    .upsert({ code_snippet_id: codeSnippetID })
+    .upsert({ code_snippet_id: codeSnippetID, host, path })
   if (error) throw error
 }
 
