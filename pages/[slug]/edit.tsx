@@ -402,7 +402,7 @@ function CodeSnippetEditor({
                     }}
                     title={val.title}
                     icon={val.icon}
-                    size={TitleLink.size.T2}
+                    size={TitleLink.size.T3}
                     active={val.key === currentTab}
                     shallow
                   />

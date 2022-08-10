@@ -54,7 +54,7 @@ function DashboardSidebar() {
           flex-col
           items-start
           justify-start
-          space-y-4
+          space-y-2
         ">
           {pages.map(p => (
             <SidebarLink

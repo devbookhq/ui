@@ -29,13 +29,11 @@ function SidebarLink({
         {'border-transparent': !active},
         {'border-green-500': active},
         {'bg-white-900/5': active},
-        {'font-normal': !active},
-        {'font-semibold': active},
       )}
       href={href}
       active={active}
       title={title}
-      size={TitleLink.size.T2}
+      size={TitleLink.size.T3}
       icon={icon}
       shallow
     />

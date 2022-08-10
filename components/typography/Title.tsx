@@ -21,11 +21,13 @@ const Ranks = {
 export enum Size {
   T1,
   T2,
+  T3,
 }
 
 const Sizes = {
   [Size.T1]: 'text-base font-semibold',
   [Size.T2]: 'text-sm font-semibold',
+  [Size.T3]: 'text-sm',
 }
 
 function Title({
