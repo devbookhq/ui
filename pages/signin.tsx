@@ -47,7 +47,7 @@ function SignIn() {
                 authType={AuthForm.type.SignIn}
               />
               <TitleLink
-                size={TitleLink.size.T3}
+                size={TitleLink.size.T2}
                 title="Create a new account"
                 shallow
                 href={{
@@ -65,7 +65,7 @@ function SignIn() {
                 authType={AuthForm.type.SignUp}
               />
               <TitleLink
-                size={TitleLink.size.T3}
+                size={TitleLink.size.T2}
                 title="Sign in with an existing account"
                 shallow
                 href={{

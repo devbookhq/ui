@@ -116,7 +116,8 @@ function CodeSnippetCard({
             items-center
             justify-between
             bg-black-700
-            p-2
+            py-1
+            px-2
             rounded-b-lg
             truncate
           ">

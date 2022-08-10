@@ -56,7 +56,7 @@ const EnvVariable = forwardRef<HTMLInputElement, Props>(({
         <Title
           className="text-gray-500"
           title="Name"
-          size={Title.size.T3}
+          size={Title.size.T2}
         />
         <Input
           ref={ref}
@@ -70,7 +70,7 @@ const EnvVariable = forwardRef<HTMLInputElement, Props>(({
         <Title
           className="text-gray-500"
           title="Value"
-          size={Title.size.T3}
+          size={Title.size.T2}
         />
         <Input
           value={value}

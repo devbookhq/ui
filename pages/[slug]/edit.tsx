@@ -359,7 +359,7 @@ function CodeSnippetEditor({
             ">
               {env.state !== 'Done' &&
                 <Title
-                  size={Title.size.T3}
+                  size={Title.size.T2}
                   rank={Title.rank.Secondary}
                   title='Rebuilding...'
                 />
@@ -402,7 +402,7 @@ function CodeSnippetEditor({
                     }}
                     title={val.title}
                     icon={val.icon}
-                    size={TitleLink.size.T3}
+                    size={TitleLink.size.T2}
                     active={val.key === currentTab}
                     shallow
                   />

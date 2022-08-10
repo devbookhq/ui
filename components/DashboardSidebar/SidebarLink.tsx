@@ -34,7 +34,7 @@ function SidebarLink({
       href={href}
       active={active}
       title={title}
-      size={TitleLink.size.T3}
+      size={TitleLink.size.T2}
       icon={icon}
       shallow
     />

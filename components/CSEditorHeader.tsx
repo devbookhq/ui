@@ -103,7 +103,7 @@ function CSEditorHeader({
             : (
               <Title
                 title="Not published yet"
-                size={Title.size.T3}
+                size={Title.size.T2}
                 rank={Title.rank.Secondary}
               />
             )
