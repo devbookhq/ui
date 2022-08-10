@@ -77,6 +77,13 @@ async function deletePublishedCodeSnippet(codeSnippetID: string) {
   if (error) throw error
 }
 
+async function upsertCodeSnippetEmbedRun(codeSnippetID: string) {
+  const { error } = await supabaseAdmin
+    .from('code_snippet_embed_runs')
+    .upsert({ code_snippet_id: codeSnippetID })
+  if (error) throw error
+}
+
 export {
   getCodeSnippet,
   upsertCodeSnippet,
@@ -85,4 +92,5 @@ export {
   upsertPublishedCodeSnippet,
   deletePublishedCodeSnippet,
   getAPIKeyInfo,
+  upsertCodeSnippetEmbedRun,
 }
