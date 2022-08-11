@@ -18,6 +18,7 @@ import CodeEditor from 'components/CodeEditor'
 import ExecutionButton from 'components/ExecutionButton'
 import useSession from 'utils/useSession'
 import Output from 'components/Output'
+import { SharedSessionProvider } from 'utils/useSharedSession'
 import VerticalResizer from 'components/VerticalResizer'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -98,6 +99,7 @@ function CodeSnippet({
     ports,
   } = useSession({
     codeSnippetID: pcs.code_snippet_id,
+    debug: true,
   })
 
   useEffect(function obtainHostname() {
@@ -122,122 +124,129 @@ function CodeSnippet({
   }
 
   return (
-    <div className="
-      flex-1
-      flex
-      flex-col
-      items-start
-    ">
+    <SharedSessionProvider>
       <div className="
-        flex
-        flex-col
-        items-start
-        justify-start
-        min-h-[48px]
-        mb-6
-      ">
-        <Title
-          title={pcs.title}
-        />
-      </div>
-
-      <div className="
-        w-full
         flex-1
         flex
         flex-col
-        justify-center
-        items-center
-        space-y-4
+        items-start
       ">
         <div className="
-          h-full
-          w-full
-          flex-1
-          flex
-          flex-row
-          items-start
-          justify-start
-          space-x-4
-        ">
-          <div className="
           flex
           flex-col
           items-start
           justify-start
+          min-h-[48px]
+          mb-6
         ">
-            <Title
-              size={Title.size.T2}
-              title="Open ports"
-            />
-            {hostname && ports.map(p => (
-              <a
-                rel="noreferrer"
-                target="_blank"
-                key={`${p.Ip}-${p.Port}`}
-                href={`https://${p.Port}-${hostname}`}
-                className="
-              max-w-full
-              text-green-500
-              overflow-hidden
-              truncate
-              cursor-pointer
-              underline
-            "
-              >
-                {`:${p.Port}`}
-              </a>
-            ))}
-          </div>
+          <Title
+            title={pcs.title}
+          />
+        </div>
 
+        <div className="
+          w-full
+          flex-1
+          flex
+          flex-col
+          justify-center
+          items-center
+          space-y-4
+        ">
+          <ExecutionButton
+            state={csState}
+            onRunClick={runCode}
+            onStopClick={stopCode}
+          />
           <div className="
             h-full
             w-full
             flex-1
             flex
-            flex-col
-            rounded-lg
-            overflow-hidden
-            border
-            border-black-700
+            flex-row
+            items-start
+            justify-start
+            space-x-4
           ">
-            <VerticalResizer initHeight={400}>
-              <div className="
-                rounded-t-lg
-                flex-1
-                relative
-                overflow-hidden
-                bg-black-800
-              ">
-                <CodeEditor
-                  isReadOnly
-                  language={pcs.template}
-                  content={pcs.code}
+            <div className="
+              flex
+              flex-col
+              items-start
+              justify-start
+            ">
+              <Title
+                size={Title.size.T2}
+                title="Open ports"
+              />
+              {hostname && ports.map(p => (
+                <a
+                  rel="noreferrer"
+                  target="_blank"
+                  key={`${p.Ip}-${p.Port}`}
+                  href={`https://${p.Port}-${hostname}`}
                   className="
-                    absolute
-                    inset-0
-                  "
+                max-w-full
+                text-green-500
+                overflow-hidden
+                truncate
+                cursor-pointer
+                underline
+              "
+                >
+                  {`:${p.Port}`}
+                </a>
+              ))}
+            </div>
+
+            <div className="
+              h-full
+              w-full
+              flex-1
+              flex
+              flex-col
+              rounded-lg
+              overflow-hidden
+              border
+              border-black-700
+            ">
+              <VerticalResizer initHeight={400}>
+                <div className="
+                  rounded-t-lg
+                  flex-1
+                  relative
+                  overflow-hidden
+                  bg-black-800
+                ">
+                  <CodeEditor
+                    isReadOnly
+                    language={pcs.template}
+                    content={pcs.code}
+                    className="
+                      absolute
+                      inset-0
+                    "
+                  />
+                </div>
+              </VerticalResizer>
+              <div className="
+                  rounded-t-lg
+                  flex-1
+                  relative
+                  overflow-hidden
+                ">
+                <Output
+                  output={csOutput}
+                  className="
+                  absolute
+                  inset-0
+                "
                 />
               </div>
-            </VerticalResizer>
-            <div className="
-                rounded-t-lg
-                flex-1
-                relative
-                overflow-hidden
-              ">
-              <Output
-                output={csOutput}
-                className="
-                absolute
-                inset-0
-              "
-              />
             </div>
           </div>
-        </div>
+        </div >
       </div >
-    </div >
+    </SharedSessionProvider>
   )
 }
 
