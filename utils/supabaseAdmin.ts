@@ -54,6 +54,14 @@ async function upsertEnv(env: CodeEnvironment) {
   if (error) throw error
 }
 
+async function deleteCodeSnippetEmbedRuns(id: string) {
+  const { error } = await supabaseAdmin
+    .from('code_snippet_embed_runs')
+    .delete()
+    .eq('code_snippet_id', id)
+  if (error) throw error
+}
+
 async function deleteCodeSnippet(id: string) {
   const { error } = await supabaseAdmin
     .from<CodeSnippet>('code_snippets')
@@ -98,4 +106,5 @@ export {
   deletePublishedCodeSnippet,
   getAPIKeyInfo,
   upsertCodeSnippetEmbedRun,
+  deleteCodeSnippetEmbedRuns,
 }
