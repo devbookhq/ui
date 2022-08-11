@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -7,6 +8,7 @@ import type { Terminal as XTermTerminal } from 'xterm'
 import {
   TerminalManager,
   TerminalSession,
+  ChildProcess,
 } from '@devbookhq/sdk'
 
 export interface Opts {
@@ -20,6 +22,8 @@ function useTerminal({
   const [terminalSession, setTerminalSession] = useState<TerminalSession>()
   const [error, setError] = useState<string>()
   const [isLoading, setIsLoading] = useState(true)
+  const [childProcesses, setChildProcesss] = useState<ChildProcess[]>([])
+  const [runningProcessCmd, setRunningProcessCmd] = useState<string>()
 
   useEffect(function initialize() {
     async function init() {
@@ -31,7 +35,11 @@ function useTerminal({
       const term = new xterm.Terminal({
         bellStyle: 'none',
         cursorStyle: 'block',
+        //fontSize: 13,
         theme: {
+          //background: '#0A0A0A',
+          //foreground: '#FFFFFF',
+          //cursor: '#FFFFFF',
           background: '#1A191D',
           foreground: '#E9E9E9',
           cursor: '#E9E9E9',
@@ -39,10 +47,11 @@ function useTerminal({
       })
 
       try {
-        const session = await terminalManager.createSession((data) => term.write(data), {
-          cols: term.cols,
-          rows: term.rows,
-        })
+        const session = await terminalManager.createSession(
+          (data) => term.write(data),
+          setChildProcesss,
+          { cols: term.cols, rows: term.rows },
+        )
 
         term.onData((data) => session.sendData(data))
         term.onResize((size) => session.resize(size))
@@ -68,21 +77,47 @@ function useTerminal({
     const disposePromise = init()
 
     return () => {
+      setChildProcesss([])
       disposePromise.then((dispose) => dispose?.())
     }
   }, [terminalManager])
 
-  return useMemo(() => {
-    return {
-      terminal,
-      terminalSession,
-      error,
-      isLoading,
-    }
+  const runningProcessID = runningProcessCmd
+    ? childProcesses.find(p => runningProcessCmd.startsWith(p.cmd))?.pid
+    : undefined
+
+  const runCmd = useCallback(async (cmd: string) => {
+    await terminalSession?.sendData('\x0C' + cmd + '\n')
+
+    setRunningProcessCmd(cmd)
+  }, [terminalSession])
+
+  const stopCmd = useCallback(() => {
+    if (!runningProcessID) return
+
+    terminalManager?.killProcess(runningProcessID)
   }, [
+    runningProcessID,
+    terminalManager,
+  ])
+
+  return useMemo(() => ({
     terminal,
+    terminalSession,
+    error,
+    isLoading,
+    stopCmd,
+    isCmdRunning: !!runningProcessID,
+    runCmd,
+    childProcesses,
+  }), [
+    terminal,
+    childProcesses,
     isLoading,
     error,
+    runningProcessID,
+    stopCmd,
+    runCmd,
     terminalSession,
   ])
 }

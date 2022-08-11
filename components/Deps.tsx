@@ -53,6 +53,20 @@ const depsInstructions: { [lang in Language]: ReactNode } = {
       <InfoCodeText text="poetry remove <dependency>" clipboard={true} />
       <InfoText text="." />
     </>,
+  Ansys:
+    <>
+      <InfoText text="To install Python 3 dependencies use " />
+      <InfoCodeText text="pip install <dependency>" clipboard={true} />
+      <InfoText text=" in the terminal." />
+      <br />
+      <InfoText text="To remove them use " />
+      <InfoCodeText text="pip uninstall <dependency>" clipboard={true} />
+      <InfoText text="." />
+    </>,
+  Rust:
+    <>
+      <InfoText text="MISSING" />
+    </>,
 }
 
 const generalInstructions = <>

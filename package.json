@@ -34,7 +34,7 @@
     "@codemirror/state": "^0.19.9",
     "@codemirror/stream-parser": "^0.19.7",
     "@codemirror/view": "^0.19.47",
-    "@devbookhq/sdk": "^2.3.12",
+    "@devbookhq/sdk": "^2.3.16",
     "@headlessui/react": "^1.6.3",
     "@heroicons/react": "^1.0.6",
     "@radix-ui/react-icons": "^1.1.1",

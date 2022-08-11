@@ -20,5 +20,7 @@ export function getLanguageExtension(lang: Language) {
       return pythonLanguage
     case 'Ansys':
       return pythonLanguage
+    default:
+      return javascriptLanguage
   }
 }
