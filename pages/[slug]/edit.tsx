@@ -200,7 +200,21 @@ function CodeSnippetEditor({
       .on('UPDATE', payload => {
         setEnv(payload.new)
       })
-      .subscribe()
+      .subscribe();
+
+    (async function () {
+      try {
+        const { body: envData } = await supabaseClient
+          .from<CodeEnvironment>('envs')
+          .select('*')
+          .eq('code_snippet_id', codeSnippet.id)
+          .single()
+        if (envData && envData.state === 'Done') {
+          setEnv(envData)
+        }
+      } catch (err: any) { }
+    })()
+
     return () => {
       supabaseClient.removeSubscription(sub)
     }
@@ -374,7 +388,7 @@ function CodeSnippetEditor({
               md:space-y-0
               md:space-x-8
             ">
-            <div className="
+              <div className="
               flex
               flex-row
               items-center
@@ -385,11 +399,11 @@ function CodeSnippetEditor({
               md:space-x-0
               md:space-y-4
             ">
-              <ExecutionButton
-                state={csState}
-                onRunClick={runCode}
-                onStopClick={stopCode}
-              />
+                <ExecutionButton
+                  state={csState}
+                  onRunClick={runCode}
+                  onStopClick={stopCode}
+                />
                 {Object.values(tabs).map(val => (
                   <TitleLink
                     key={val.key}
