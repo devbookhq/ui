@@ -1,19 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { CodeSnippetEmbedTelemetryType } from 'types'
 import { allowCors } from 'utils/api'
 import {
-  upsertCodeSnippetEmbedRun,
+  upsertCodeSnippetEmbedTelemetry,
 } from 'utils/supabaseAdmin'
 
-enum TelemetryType {
-  RunCodeEmbed = 'runCodeEmbed',
-}
-
-async function runCodeEmbedTelemetry(req: NextApiRequest, res: NextApiResponse) {
-  const { codeSnippetID, host, path } = req.body as {
+async function codeEmbedTelemetry(req: NextApiRequest, res: NextApiResponse) {
+  const { codeSnippetID, host, path, type } = req.body as {
     codeSnippetID: string
     host: string
     path: string
+    type: CodeSnippetEmbedTelemetryType
+  }
+
+  if (!type) {
+    res.status(400).json({ statusCode: 400, message: 'Missing telemetry type' })
+    return
   }
 
   if (!codeSnippetID) {
@@ -24,7 +27,7 @@ async function runCodeEmbedTelemetry(req: NextApiRequest, res: NextApiResponse) 
   }
 
   try {
-    await upsertCodeSnippetEmbedRun({ codeSnippetID, host, path })
+    await upsertCodeSnippetEmbedTelemetry({ codeSnippetID, host, path, type })
     res.status(200).send('')
   } catch(err: any) {
     console.error(err)
@@ -41,11 +44,7 @@ async function handler(
     res.status(405).json({ statusCode: 405, message: 'Method Not Allowed' })
     return
   }
-
-  const { type } = req.body as { type: TelemetryType }
-  if (type === TelemetryType.RunCodeEmbed) {
-    await runCodeEmbedTelemetry(req, res)
-  }
+  await codeEmbedTelemetry(req, res)
 }
 
 export default allowCors(handler)

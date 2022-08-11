@@ -5,6 +5,7 @@ import {
 import type {
   CodeEnvironment,
   CodeSnippet,
+  CodeSnippetEmbedTelemetryType,
   PublishedCodeSnippet,
 } from 'types'
 
@@ -54,14 +55,6 @@ async function upsertEnv(env: CodeEnvironment) {
   if (error) throw error
 }
 
-async function deleteCodeSnippetEmbedRuns(id: string) {
-  const { error } = await supabaseAdmin
-    .from('code_snippet_embed_runs')
-    .delete()
-    .eq('code_snippet_id', id)
-  if (error) throw error
-}
-
 async function deleteCodeSnippet(id: string) {
   const { error } = await supabaseAdmin
     .from<CodeSnippet>('code_snippets')
@@ -85,17 +78,27 @@ async function deletePublishedCodeSnippet(codeSnippetID: string) {
   if (error) throw error
 }
 
-async function upsertCodeSnippetEmbedRun(args: {
+async function upsertCodeSnippetEmbedTelemetry(args: {
   codeSnippetID: string
+  type: CodeSnippetEmbedTelemetryType
   host: string
   path: string
 }) {
-  const { codeSnippetID, host, path } = args
+  const { codeSnippetID, host, path, type } = args
   const { error } = await supabaseAdmin
-    .from('code_snippet_embed_runs')
-    .upsert({ code_snippet_id: codeSnippetID, host, path })
+    .from('code_snippet_embed_telemetry')
+    .upsert({ code_snippet_id: codeSnippetID, host, path, type })
   if (error) throw error
 }
+
+async function deleteCodeSnippetEmbedTelemetry(id: string) {
+  const { error } = await supabaseAdmin
+    .from('code_snippet_embed_telmetry')
+    .delete()
+    .eq('code_snippet_id', id)
+  if (error) throw error
+}
+
 
 export {
   getCodeSnippet,
@@ -105,6 +108,6 @@ export {
   upsertPublishedCodeSnippet,
   deletePublishedCodeSnippet,
   getAPIKeyInfo,
-  upsertCodeSnippetEmbedRun,
-  deleteCodeSnippetEmbedRuns,
+  upsertCodeSnippetEmbedTelemetry,
+  deleteCodeSnippetEmbedTelemetry,
 }

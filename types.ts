@@ -1,5 +1,10 @@
 import type { components, EnvVars } from '@devbookhq/sdk'
 
+export enum CodeSnippetEmbedTelemetryType {
+  RunCodeEmbed = 'runCodeEmbed',
+  CopyCodeEmbed = 'copyCodeEmbed',
+}
+
 export interface UserFeedback {
   user_id: string
   created_at: string
