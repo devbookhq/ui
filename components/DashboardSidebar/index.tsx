@@ -31,6 +31,8 @@ function DashboardSidebar() {
   const router = useRouter()
   const { user } = useUserInfo()
 
+  // Don't display sidebar on the public code snippet page.
+  if (router.pathname === '/[slug]') return null
   if (!user) return null
   return (
     <>
