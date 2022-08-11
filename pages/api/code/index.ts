@@ -226,7 +226,11 @@ async function deleteCodeItem(req: NextApiRequest, res: NextApiResponse<ErrorRes
     } = req.body as { codeSnippetID: string, apiKey: string }
     if (!(await validateAPIKey({ apiKey, res }))) return
 
-    await deleteCodeSnippetEmbedTelemetry(codeSnippetID)
+    try {
+      await deleteCodeSnippetEmbedTelemetry(codeSnippetID)
+    } catch (err: any) {
+      console.error(err)
+    }
     await deleteEnv({ codeSnippetID, api_key: apiKey })
     await deletePublishedCodeSnippet(codeSnippetID)
     await deleteCodeSnippet(codeSnippetID)
