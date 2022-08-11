@@ -28,7 +28,7 @@ function SidebarLink({
         'border-l-2',
         {'border-transparent': !active},
         {'border-green-500': active},
-        {'bg-white-900/5': active},
+        {'bg-[#18161C]': active},
       )}
       href={href}
       active={active}

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import {
   CodeIcon,
   GearIcon,
-  //BarChartIcon,
+  BarChartIcon,
 } from '@radix-ui/react-icons'
 
 import Button from 'components/Button'
@@ -18,12 +18,12 @@ const pages = [
     activeOnPathnames: ['/', '/[slug]/edit'],
     icon: <CodeIcon/>,
   },
-  //{
-  //  title: 'Analytics',
-  //  href: '/analytics',
-  //  activeOnPathnames: ['/analytics', '/analytics/[slug]'],
-  //  icon: <BarChartIcon/>,
-  //},
+  {
+    title: 'Analytics',
+    href: '/analytics',
+    activeOnPathnames: ['/analytics', '/analytics/[slug]'],
+    icon: <BarChartIcon/>,
+  },
 ]
 
 function DashboardSidebar() {
