@@ -3,6 +3,7 @@ import {
 } from 'react'
 
 import type { Template } from 'types'
+import useUserInfo from 'utils/useUserInfo'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
 import Select from 'components/Select'
@@ -14,8 +15,8 @@ const templates: Template[] = [
   { name: 'Go', value: 'Go' },
   { name: 'Bash', value: 'Bash' },
   { name: 'Python3', value: 'Python3' },
-  { name: 'Ansys', value: 'Ansys' },
 ]
+const ansysTemplate: Template = { name: 'Ansys', value: 'Ansys' }
 
 interface Props {
   isOpen: boolean
@@ -31,8 +32,12 @@ function NewCodeSnippetModal({
   isLoading,
 }: Props) {
   const [title, setTitle] = useState('')
-  // TODO: allow selecting templates
   const [selectedTmpl, setSelectedTmpl] = useState(templates[0])
+
+  // Enable Ansys template for Ansys users.
+  const { user } = useUserInfo()
+  const isAnsysUser = user?.email?.endsWith('ansys.com')
+  const isAdmin = user?.email?.endsWith('vasek.mlejnsky@gmail.com')
 
   function handleTitleChange(e: any) {
     setTitle(e.target.value)
@@ -81,7 +86,7 @@ function NewCodeSnippetModal({
           <Select
             wrapperClassName="w-full"
             title="Template"
-            items={templates}
+            items={(isAnsysUser || isAdmin) ? [...templates, ansysTemplate] : templates}
             value={selectedTmpl}
             onChange={i => setSelectedTmpl({ name: i.name, value: i.value as any })}
           />
