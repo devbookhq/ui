@@ -37,9 +37,6 @@ function useTerminal({
         cursorStyle: 'block',
         //fontSize: 13,
         theme: {
-          //background: '#0A0A0A',
-          //foreground: '#FFFFFF',
-          //cursor: '#FFFFFF',
           background: '#1A191D',
           foreground: '#E9E9E9',
           cursor: '#E9E9E9',

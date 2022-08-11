@@ -38,7 +38,6 @@ const InputEl = forwardRef<HTMLInputElement, Props>(({ className, onEnterDown, .
         'outline-none',
         'focus:border-green-200',
         'text-sm',
-        'font-semibold',
         'placeholder:text-gray-600',
         className,
       )}

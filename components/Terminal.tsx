@@ -51,7 +51,9 @@ const Terminal = forwardRef<Handler, Props>(({
     const dim = fitAddon.proposeDimensions()
 
     if (!dim) return
+      console.log('before')
     if (isNaN(dim.cols) || isNaN(dim.rows)) return
+      console.log('after')
 
     fitAddon.fit()
   }, [fitAddon])

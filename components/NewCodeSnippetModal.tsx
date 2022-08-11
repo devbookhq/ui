@@ -14,6 +14,7 @@ const templates: Template[] = [
   { name: 'Go', value: 'Go' },
   { name: 'Bash', value: 'Bash' },
   { name: 'Python3', value: 'Python3' },
+  { name: 'Ansys', value: 'Ansys' },
 ]
 
 interface Props {
