@@ -35,7 +35,7 @@ function useTerminal({
       const term = new xterm.Terminal({
         bellStyle: 'none',
         cursorStyle: 'block',
-        //fontSize: 13,
+        fontSize: 13,
         theme: {
           background: '#1A191D',
           foreground: '#E9E9E9',
