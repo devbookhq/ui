@@ -19,9 +19,9 @@ const pages = [
     icon: <CodeIcon/>,
   },
   {
-    title: 'Analytics',
-    href: '/analytics',
-    activeOnPathnames: ['/analytics', '/analytics/[slug]'],
+    title: 'Insights',
+    href: '/insights',
+    activeOnPathnames: ['/insights'],
     icon: <BarChartIcon/>,
   },
 ]
