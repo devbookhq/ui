@@ -4,20 +4,25 @@ import {
 } from 'react'
 
 import { CodeSnippetEmbedTelemetryType } from 'types'
-import {
-  getEmbedsTelemetry
-} from 'utils/supabaseClient'
-
+import { getEmbedsTelemetry } from 'utils/supabaseClient'
+import useUserInfo from 'utils/useUserInfo'
 import Title from 'components/typography/Title'
 import AnalyticsCard, { Item } from 'components/AnalyticsCard'
 
 
 function Insights() {
+  const { user } = useUserInfo()
   const [runData, setRunData] = useState<Item[]>()
   const [copyData, setCopyData] = useState<Item[]>()
 
-  useEffect(() => {
-    getEmbedsTelemetry('fcb56343-1fee-4ba0-bda6-d2f63bcc87d4')
+  useEffect(function getTelemetry() {
+    if (!user?.id) {
+      setRunData([])
+      setCopyData([])
+      return
+    }
+
+    getEmbedsTelemetry(user.id)
     .then(results => {
       const r = results.reduce((acc, current) => {
           const csID = current.code_snippet.id
@@ -52,7 +57,7 @@ function Insights() {
         .sort((a, b) => b.count - a.count)
       setCopyData(copies)
     })
-  }, [])
+  }, [user?.id])
 
   return (
     <div className="
