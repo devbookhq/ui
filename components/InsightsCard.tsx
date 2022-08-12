@@ -13,7 +13,7 @@ export interface Props {
   items: Item[] | undefined
 }
 
-function AnalyticsCard({
+function InsightsCard({
   title,
   items,
 }: Props) {
@@ -76,10 +76,11 @@ function AnalyticsCard({
             "
           >
             <TitleLink
-              className="text-green-500"
               size={TitleLink.size.T3}
               title={i.title}
               href={`/${i.id}/edit`}
+              active
+              alternative
             />
             <span className="text-sm font-mono">
               {i.count}
@@ -106,4 +107,4 @@ function AnalyticsCard({
   )
 }
 
-export default AnalyticsCard
+export default InsightsCard

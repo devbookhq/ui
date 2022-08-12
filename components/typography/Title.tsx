@@ -10,11 +10,13 @@ interface Props {
 
 export enum Rank {
   Primary,
+  PrimaryAlternative,
   Secondary,
 }
 
 const Ranks = {
   [Rank.Primary]: 'text-white-900',
+  [Rank.PrimaryAlternative]: 'text-green-500',
   [Rank.Secondary]: 'text-gray-600',
 }
 

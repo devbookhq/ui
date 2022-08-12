@@ -13,6 +13,7 @@ interface Props {
   icon?: ReactNode
   size?: Size
   active?: boolean
+  alternative?: boolean
   shallow?: boolean
 }
 
@@ -24,6 +25,7 @@ function TitleLink({
   icon,
   size,
   active,
+  alternative,
   shallow,
 }: Props) {
   return (
@@ -38,7 +40,8 @@ function TitleLink({
         )}
       >
         <Title
-          rank={active ? Title.rank.Primary : Title.rank.Secondary}
+          // Ugh..
+          rank={active ? (alternative ? Title.rank.PrimaryAlternative : Title.rank.Primary) : Title.rank.Secondary}
           className={cn(
             'hover:text-white-900',
             'whitespace-nowrap',

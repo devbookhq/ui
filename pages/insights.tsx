@@ -7,7 +7,7 @@ import { CodeSnippetEmbedTelemetryType } from 'types'
 import { getEmbedsTelemetry } from 'utils/supabaseClient'
 import useUserInfo from 'utils/useUserInfo'
 import Title from 'components/typography/Title'
-import AnalyticsCard, { Item } from 'components/AnalyticsCard'
+import InsightsCard, { Item } from 'components/InsightsCard'
 
 
 function Insights() {
@@ -84,12 +84,12 @@ function Insights() {
         md:space-y-0
         md:gap-4
       ">
-        <AnalyticsCard
+        <InsightsCard
           title="Most executed code snippets"
           items={runData}
         />
 
-        <AnalyticsCard
+        <InsightsCard
           title="Most copied code snippets"
           items={copyData}
         />
