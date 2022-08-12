@@ -63,7 +63,7 @@ function Insights() {
       space-y-6
     ">
       <Title
-        title="Analytics"
+        title="Insights"
       />
 
       <div className="
