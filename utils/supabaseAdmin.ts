@@ -93,7 +93,7 @@ async function upsertCodeSnippetEmbedTelemetry(args: {
 
 async function deleteCodeSnippetEmbedTelemetry(id: string) {
   const { error } = await supabaseAdmin
-    .from('code_snippet_embed_telmetry')
+    .from('code_snippet_embed_telemetry')
     .delete()
     .eq('code_snippet_id', id)
   if (error) throw error
