@@ -12,7 +12,7 @@ import Title from 'components/typography/Title'
 import AnalyticsCard, { Item } from 'components/AnalyticsCard'
 
 
-function Analytics() {
+function Insights() {
   const [runData, setRunData] = useState<Item[]>()
   const [copyData, setCopyData] = useState<Item[]>()
 
@@ -93,4 +93,4 @@ function Analytics() {
   )
 }
 
-export default Analytics
+export default Insights
