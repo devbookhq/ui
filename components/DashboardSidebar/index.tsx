@@ -18,12 +18,12 @@ const pages = [
     activeOnPathnames: ['/', '/[slug]/edit'],
     icon: <CodeIcon/>,
   },
-  //{
-  //  title: 'Analytics',
-  //  href: '/analytics',
-  //  activeOnPathnames: ['/analytics', '/analytics/[slug]'],
-  //  icon: <BarChartIcon/>,
-  //},
+  {
+    title: 'Analytics',
+    href: '/analytics',
+    activeOnPathnames: ['/analytics', '/analytics/[slug]'],
+    icon: <BarChartIcon/>,
+  },
 ]
 
 function DashboardSidebar() {

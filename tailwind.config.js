@@ -39,6 +39,9 @@ module.exports = {
           200: '#E9E9E9',
           100: '#F0F0F0',
         },
+        purple: {
+          900: '#18161C',
+        },
       },
       height: {
         inherit: 'inherit',

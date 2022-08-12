@@ -9,6 +9,7 @@ import {
   CodeEnvironment,
   CodeSnippetUpdate,
   UserFeedback,
+  CodeSnippetEmbedTelemetryType,
 } from 'types'
 
 type Env = Pick<CodeEnvironment, 'template' | 'deps'>
@@ -66,10 +67,33 @@ async function createCodeSnippet(apiKey: string, codeSnippet: { title?: string, 
   return response.json() as Promise<CodeSnippet | ErrorRes>
 }
 
+async function getEmbedsTelemetry(creatorID: string, actionType?: CodeSnippetEmbedTelemetryType) {
+  let query = supabaseClient
+    .from('code_snippet_embed_telemetry')
+    .select(`
+      type,
+      created_at,
+      code_snippet:code_snippet_id (
+        id,
+        title,
+        creator_id
+      )
+    `)
+    .eq('code_snippet.creator_id', creatorID)
+  if (actionType) {
+    query = query.eq('type', actionType)
+  }
+
+  const { body, error } = await query
+  if (error) throw error
+  return body.filter((el: any) => el.code_snippet !== null)
+}
+
 export {
   getPublishedCodeSnippet,
   upsertPublishedCodeSnippet,
   updateCodeSnippet,
   createCodeSnippet,
   upsertUserFeedback,
+  getEmbedsTelemetry,
 }
