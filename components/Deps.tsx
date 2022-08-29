@@ -43,6 +43,16 @@ const depsInstructions: { [lang in Language]: ReactNode } = {
       <InfoCodeText text="npm uninstall <dependency>" clipboard={true} />
       <InfoText text="." />
     </>,
+  Typescript:
+    <>
+      <InfoText text="To install Typescript dependencies use " />
+      <InfoCodeText text="npm install <dependency>" clipboard={true} />
+      <InfoText text=" in the terminal." />
+      <br />
+      <InfoText text="To remove them use " />
+      <InfoCodeText text="npm uninstall <dependency>" clipboard={true} />
+      <InfoText text="." />
+    </>,
   Python3:
     <>
       <InfoText text="To install Python 3 dependencies use " />

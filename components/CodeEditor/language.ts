@@ -16,6 +16,8 @@ export function getLanguageExtension(lang: Language) {
       return goLanguage
     case 'Nodejs':
       return javascriptLanguage
+    case 'Typescript':
+      return javascriptLanguage
     case 'Python3':
       return pythonLanguage
     case 'Ansys':
