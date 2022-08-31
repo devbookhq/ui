@@ -63,7 +63,7 @@ function CodeSnippet({
       <div className="
         dbk-header
         flex
-        flex-row
+        flex-row-reverse
         items-center
         justify-between
         py-1
@@ -71,6 +71,9 @@ function CodeSnippet({
         rounded-t-lg
         bg-black-700
       ">
+        <CopyButton
+          onClick={handleCopyButtonClick}
+        />
         {id &&
           <RunButton
             onRunClick={onRunClick}
@@ -78,9 +81,6 @@ function CodeSnippet({
             state={csState}
           />
         }
-        <CopyButton
-          onClick={handleCopyButtonClick}
-        />
       </div>
       <CodeEditor
         isReadOnly={true}
