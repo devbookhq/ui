@@ -10,7 +10,7 @@ export type Language = components['schemas']['Template']
 
 export interface Props {
   codeSnippetID: string
-  insertedCodeSnippetIDs?: string[]
+  connectCodeSnippetIDs?: string[]
 }
 
 export interface PublishedCodeSnippet {
@@ -25,11 +25,11 @@ export interface PublishedCodeSnippet {
 
 function usePublishedCodeSnippet({
   codeSnippetID,
-  insertedCodeSnippetIDs = [],
+  connectCodeSnippetIDs = [],
 }: Props) {
   let url = `https://embed.usedevbook.com/${codeSnippetID}/props`
-  if (insertedCodeSnippetIDs.length > 0) {
-    url += insertedCodeSnippetIDs.join(',')
+  if (connectCodeSnippetIDs.length > 0) {
+    url += `?connect=${connectCodeSnippetIDs.join(',')}`
   }
 
   const { data } = useFetch<PublishedCodeSnippet>(url)

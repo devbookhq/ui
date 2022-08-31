@@ -23,10 +23,6 @@
     "watch": "rollup -c -w",
     "fix": "npx eslint **/src/**/*.{ts,tsx,js,jsx} --fix"
   },
-  "peerDependencies": {
-    "react": ">=16",
-    "react-dom": ">=16"
-  },
   "dependencies": {
     "@codemirror/closebrackets": "^0.19.1",
     "@codemirror/commands": "^0.19.8",

@@ -9,16 +9,18 @@ import CopyButton from './CopyButton'
 
 export interface Props {
   id: string
-  insertIDs?: string[]
+  connectIDs?: string[]
+  fallbackContent?: string
 }
 
 function CodeSnippet({
   id,
-  insertIDs,
+  connectIDs,
+  fallbackContent,
 }: Props) {
   const codeSnippet = usePublishedCodeSnippet({
     codeSnippetID: id,
-    insertedCodeSnippetIDs: insertIDs,
+    connectCodeSnippetIDs: connectIDs,
   })
 
   const {
@@ -80,7 +82,7 @@ function CodeSnippet({
       <CodeEditor
         isReadOnly={true}
         language={codeSnippet?.codeSnippetTemplate || 'Nodejs'}
-        content={codeSnippet?.codeSnippetEditorCode}
+        content={codeSnippet?.codeSnippetEditorCode || fallbackContent}
       />
       <Output
         output={csOutput}
