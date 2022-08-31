@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import usePublishedCodeSnippet, { Language } from '../hooks/usePublishedCodeSnippet'
-import useSession from '../hooks/useSession'
+import useSession, { CodeSnippetExtendedState } from '../hooks/useSession'
 import CodeEditor from './CodeEditor'
 import Output from './Output'
 import RunButton from './RunButton'
@@ -10,6 +10,7 @@ import CopyButton from './CopyButton'
 export interface Props {
   id: string
   connectIDs?: string[]
+  isEditable?: boolean
   fallbackContent?: string
   fallbackLanguage?: Language
 }
@@ -17,9 +18,12 @@ export interface Props {
 function CodeSnippet({
   id,
   connectIDs,
+  isEditable,
   fallbackContent,
   fallbackLanguage = 'Typescript',
 }: Props) {
+  const [hasRan, setHasRan] = useState(false)
+
   const codeSnippet = usePublishedCodeSnippet({
     codeSnippetID: id,
     connectCodeSnippetIDs: connectIDs,
@@ -38,6 +42,7 @@ function CodeSnippet({
   async function onRunClick() {
     if (!codeSnippet) return
 
+    setHasRan(true)
     return runCS(
       codeSnippet.codeSnippetRunCode,
       codeSnippet.codeSnippetEnvVars,
@@ -74,7 +79,7 @@ function CodeSnippet({
         <CopyButton
           onClick={handleCopyButtonClick}
         />
-        {id &&
+        {id && (hasRan || csState !== CodeSnippetExtendedState.Loading) &&
           <RunButton
             onRunClick={onRunClick}
             onStopClick={onStopClick}
@@ -83,13 +88,19 @@ function CodeSnippet({
         }
       </div>
       <CodeEditor
-        isReadOnly={true}
+        isReadOnly={!isEditable}
         language={codeSnippet?.codeSnippetTemplate || fallbackLanguage}
         content={codeSnippet?.codeSnippetEditorCode || fallbackContent}
       />
-      <Output
-        output={csOutput}
-      />
+      {id &&
+        <Output
+          state={csState}
+          hasRan={hasRan}
+          onStopClick={onStopClick}
+          onRunClick={onRunClick}
+          output={csOutput}
+        />
+      }
     </div>
   )
 }

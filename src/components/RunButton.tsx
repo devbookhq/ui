@@ -14,17 +14,19 @@ import {
 interface Props {
   className?: string
   state: CodeSnippetState
-  onRunClick: (e: any) => void
-  onStopClick: (e: any) => void
+  onRunClick?: () => void
+  onStopClick?: () => void
+  textLeft?: string
 }
 
 function RunButton({
   className,
   state,
+  textLeft,
   onRunClick,
   onStopClick,
 }: Props) {
-  className = `dbk-run-btn dbk-button ${className}`
+  className = `dbk-run-btn ${className}`
 
   let text = 'Loading...'
   let icon: JSX.Element | undefined = <SpinnerIcon />
@@ -44,16 +46,17 @@ function RunButton({
       break
   }
 
-  function handleClick(e: any) {
-    if (state === CodeSnippetExecState.Stopped) onRunClick(e)
-    if (state === CodeSnippetExecState.Running) onStopClick(e)
+  function handleClick() {
+    if (state === CodeSnippetExecState.Stopped) onRunClick?.()
+    if (state === CodeSnippetExecState.Running) onStopClick?.()
   }
 
   return (
     <Button
       className={className}
       isDisabled={state === CodeSnippetExtendedState.Loading}
-      text={text}
+      textRight={text}
+      textLeft={textLeft}
       onClick={handleClick}
       icon={icon}
     />

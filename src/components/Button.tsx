@@ -1,15 +1,17 @@
 import React from 'react'
 
 interface Props {
-  text?: string
+  textRight?: string
+  textLeft?: string
   icon?: JSX.Element
   className?: string
-  onClick?: (e: any) => void
+  onClick?: () => void
   isDisabled?: boolean
 }
 
 function Button({
-  text,
+  textLeft,
+  textRight,
   icon,
   className = '',
   onClick,
@@ -20,6 +22,7 @@ function Button({
       className={`
         ${className}
         rounded-lg
+        dbk-button
         bg-black-700
         hover:bg-green-gradient
         hover:shadow-lg
@@ -40,15 +43,25 @@ function Button({
         hover:bg-white-900/10
         transition-colors
       ">
-        {icon}
-        {text && (
+        {textLeft && (
           <div className="
             text-xs
             text-gray-200
             leading-[15px]
             font-sans
           ">
-            {text}
+            {textLeft}
+          </div>
+        )}
+        {icon}
+        {textRight && (
+          <div className="
+            text-xs
+            text-gray-200
+            leading-[15px]
+            font-sans
+          ">
+            {textRight}
           </div>
         )}
       </div>

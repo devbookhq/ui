@@ -5,7 +5,7 @@ import CheckIcon from './icons/Check'
 import Button from './Button'
 
 export interface Props {
-  onClick?: (e: any) => void
+  onClick?: () => void
 }
 
 function CopyButton({
@@ -13,9 +13,9 @@ function CopyButton({
 }: Props) {
   const [icon, setIcon] = useState(<CopyIcon className="text-white-900/40" />)
 
-  function handleClick(e: any) {
+  function handleClick() {
     setIcon(<CheckIcon className="text-green-500" />)
-    onClick?.(e)
+    onClick?.()
 
     // Wait 1s and then switch back to the copy icon.
     setTimeout(() => {
