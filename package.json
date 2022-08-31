@@ -71,17 +71,18 @@
     "package-lock.json"
   ],
   "keywords": [
+    "react",
+    "javascript",
+    "docs",
+    "typescript",
+    "ui",
+    "sandbox",
+    "component-library",
+    "devbook",
     "vm",
     "code",
-    "javascript",
-    "typescript",
-    "devbook",
-    "react",
     "documentation",
-    "sandbox",
-    "editor",
-    "iframe",
-    "ui",
-    "component-library"
+    "playground",
+    "editor"
   ]
 }

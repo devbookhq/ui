@@ -27,7 +27,7 @@ interface Props {
   className?: string
   text: string | ReactNode
   size?: Size
-  onClick?: (e: any) => void
+  onClick?: () => void
   mono?: boolean
   rank?: Rank
 }

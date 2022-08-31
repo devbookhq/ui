@@ -41,7 +41,7 @@ function usePublishedCodeSnippet({
     if (typeof data?.codeSnippetEnvVars === 'string') {
       try {
         envVars = JSON.parse(data?.codeSnippetEnvVars)
-      } catch (err: any) {
+      } catch (err) {
         console.error('Cannot parse env vars', err)
       }
     }
