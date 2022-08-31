@@ -15,8 +15,8 @@ export interface Props {
 
 export interface PublishedCodeSnippet {
   codeSnippetID: string
-  codeSnippetEditorCode: string
-  codeSnippetRunCode: string
+  codeSnippetCode: string
+  codeSnippetConnectCode: string
   codeSnippetTitle: string
   // The env vars from server are in a string format
   codeSnippetEnvVars: string

@@ -35,6 +35,7 @@ const CodeEditor = forwardRef<Handler, Props>(({
   isReadOnly = false,
   language,
   height,
+  onContentChange,
   className,
   autofocus,
 }, ref) => {
@@ -105,6 +106,28 @@ const CodeEditor = forwardRef<Handler, Props>(({
   }, [
     editor,
     isReadOnly,
+  ])
+
+  useEffect(function configureContentChangeHandling() {
+    if (!editor) return
+    if (!onContentChange) return
+
+    const changeWatcher = EditorView.updateListener.of(update => {
+      if (update.docChanged) onContentChange?.(update.state.doc.toString())
+    })
+
+    editor.view.dispatch({
+      effects: editor.contentHandlingExtensions.reconfigure(changeWatcher),
+    })
+
+    return () => {
+      editor.view.dispatch({
+        effects: editor.contentHandlingExtensions.reconfigure([]),
+      })
+    }
+  }, [
+    editor,
+    onContentChange,
   ])
 
   return (

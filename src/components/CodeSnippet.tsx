@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import usePublishedCodeSnippet, { Language } from '../hooks/usePublishedCodeSnippet'
 import useSession, { CodeSnippetExtendedState } from '../hooks/useSession'
@@ -29,6 +29,15 @@ function CodeSnippet({
     connectCodeSnippetIDs: connectIDs,
   })
 
+  const [initCode, setInitCode] = useState(codeSnippet?.codeSnippetCode || fallbackContent || '')
+  const [code, setCode] = useState(initCode)
+
+  useEffect(function reinitializeCode() {
+    if (!codeSnippet) return
+    setInitCode(codeSnippet.codeSnippetCode)
+    setCode(codeSnippet.codeSnippetCode)
+  }, [codeSnippet])
+
   const {
     csOutput,
     csState,
@@ -43,15 +52,17 @@ function CodeSnippet({
     if (!codeSnippet) return
 
     setHasRan(true)
+
+    const codeToRun = `${codeSnippet.codeSnippetConnectCode}\n${code}`
+
     return runCS(
-      codeSnippet.codeSnippetRunCode,
+      codeToRun,
       codeSnippet.codeSnippetEnvVars,
     )
   }
 
   function handleCopyButtonClick() {
-    const content = codeSnippet?.codeSnippetEditorCode || fallbackContent || ''
-    navigator.clipboard.writeText(content)
+    navigator.clipboard.writeText(code)
   }
 
   return (
@@ -90,7 +101,8 @@ function CodeSnippet({
       <CodeEditor
         isReadOnly={!isEditable}
         language={codeSnippet?.codeSnippetTemplate || fallbackLanguage}
-        content={codeSnippet?.codeSnippetEditorCode || fallbackContent}
+        content={initCode}
+        onContentChange={setCode}
       />
       {id &&
         <Output
