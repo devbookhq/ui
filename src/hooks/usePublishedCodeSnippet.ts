@@ -19,7 +19,7 @@ export interface PublishedCodeSnippet {
   codeSnippetRunCode: string
   codeSnippetTitle: string
   // The env vars from server are in a string format
-  codeSnippetEnvVars: EnvVars | string
+  codeSnippetEnvVars: string
   codeSnippetTemplate: Language
 }
 
@@ -32,23 +32,24 @@ function usePublishedCodeSnippet({
     url += insertedCodeSnippetIDs.join(',')
   }
 
-  const { data } = useFetch<PublishedCodeSnippet & { codeSnippetEnvVars: string }>(url)
+  const { data } = useFetch<PublishedCodeSnippet>(url)
 
   return useMemo(() => {
+    if (!data) return undefined
+
     let envVars: EnvVars = {}
     if (typeof data?.codeSnippetEnvVars === 'string') {
       try {
         envVars = JSON.parse(data?.codeSnippetEnvVars)
       } catch (err: any) {
-        console.error('Cannot parse env vars', err, envVars)
+        console.error('Cannot parse env vars', err)
       }
     }
 
     return {
       ...data,
-      codeSnippetEnvVars: envVars,
+      codeSnippetEnvVars: envVars
     }
-
   }, [data])
 }
 

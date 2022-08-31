@@ -59,7 +59,6 @@ export async function createSessionProcess(
 export type SessionState = 'closed' | 'opening' | 'open'
 
 export enum CodeSnippetExtendedState {
-  Failed = 'Failed',
   Loading = 'Loading',
 }
 
@@ -96,8 +95,8 @@ function useSession({
     const newSession = new Session({
       id: codeSnippetID,
       codeSnippet: {
-        onStateChange: (csState) => {
-          setSessionState(s => s.session === newSession ? { ...s, csState } : s)
+        onStateChange: (state) => {
+          setCSState(state)
         },
         onStdout: (stdout) => {
           setCSOutput(output => [...output, stdout])
@@ -201,10 +200,7 @@ function useSession({
     (async function () {
       if (!runTrigger || csOutput.length > 0) return
       const { session } = await refresh()
-      const newCSState = await session?.codeSnippet?.run(runTrigger.code, runTrigger.envVars)
-      if (newCSState) {
-        setCSState(newCSState)
-      }
+      await session?.codeSnippet?.run(runTrigger.code, runTrigger.envVars)
     })()
   }, [
     refresh,
@@ -214,17 +210,12 @@ function useSession({
   ])
 
   const stopCS = useCallback(async () => {
-    setCSState(CodeSnippetExtendedState.Loading)
     const { session } = await refresh()
-    const newCSState = await session?.codeSnippet?.stop()
-    if (newCSState) {
-      setCSState(newCSState)
-    }
+    await session?.codeSnippet?.stop()
   }, [sessionState])
 
   const runCS = useCallback(async (code: string, envVars?: EnvVars) => {
     setCSOutput([])
-    setCSState(CodeSnippetExecState.Running)
     setRunTrigger({ code, envVars })
   }, [sessionState])
 
