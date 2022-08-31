@@ -25,7 +25,7 @@ function CopyButton({
 
   return (
     <Button
-      className='dkb-copy-btn'
+      className='dkb-copy-btn dbk-button'
       icon={icon}
       onClick={handleClick}
     />

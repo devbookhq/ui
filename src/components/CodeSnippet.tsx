@@ -50,12 +50,12 @@ function CodeSnippet({
     <div className="
       dbk-code-snippet
       flex
-      flex-1
       flex-col
       overflow-hidden
       border
       border-black-700
       rounded-lg
+      dbk-code-editor
     ">
       <div className="
         dbk-header
@@ -81,7 +81,6 @@ function CodeSnippet({
         isReadOnly={true}
         language={codeSnippet?.codeSnippetTemplate || 'Nodejs'}
         content={codeSnippet?.codeSnippetEditorCode}
-        className="absolute inset-0"
       />
       <Output
         output={csOutput}

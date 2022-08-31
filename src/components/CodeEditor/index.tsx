@@ -110,7 +110,9 @@ const CodeEditor = forwardRef<Handler, Props>(({
   return (
     <div
       className={`
+        dbk-code-editor
         overflow-auto
+      bg-black-800
         ${className || ''}
       `}
       ref={editorEl}

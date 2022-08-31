@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import cn from 'classnames'
+
 import {
   OutResponse,
   OutType,
@@ -7,46 +7,57 @@ import {
 
 export interface Props {
   output: OutResponse[]
-  className?: string
 }
 
 function Output({
-  className,
   output,
 }: Props) {
   // We are recreating the output array when we add new outputs, so we can use it as a dependency here.
   const sorted = useMemo(() => output.sort((a, b) => b.timestamp - a.timestamp), [output])
 
   return (
-    <div className={cn(
-      'p-2',
-      'font-mono',
-      'text-xs',
-      'cs-output',
-      'flex',
-      'flex-1',
-      'flex-col-reverse',
-      'overflow-auto',
-      'whitespace-pre-wrap',
-      'leading-tight',
-      className,
-    )}
-    >
+    <div className="
+      p-2
+      font-mono
+      text-xs
+      cs-output
+      flex
+      flex-col-reverse
+      overflow-auto
+      whitespace-pre
+      bg-black-900
+      leading-tight
+    ">
+      {output.length === 0 &&
+        <div
+          className={`
+          dbk-output-line
+          flex
+          flex-row
+          items-start
+          space-x-2
+          dbk-output-line-stdout text-gray-800
+        `}
+        >
+          {'Waiting for run output...'}
+        </div>
+      }
       {sorted.map((o, idx) =>
         <div
           key={idx}
-          className="
+          className={`
+            dbk-output-line
             flex
             flex-row
             items-start
             space-x-2
-          "
+            ${o.type === OutType.Stderr
+              ? 'dbk-output-line-stderr text-red-400'
+              : 'dbk-output-line-stdout text-white-900'
+            }
+          `}
         >
-          <span
-            className={o.type === OutType.Stderr ? 'text-red-400' : 'text-white-900'}
-          >
-            {o.line}
-          </span>
+          {o.line}
         </div>
       )}
     </div>

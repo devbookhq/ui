@@ -24,8 +24,7 @@ function RunButton({
   onRunClick,
   onStopClick,
 }: Props) {
-  const stateClass = state === CodeSnippetExtendedState.Failed ? 'text-red-400' : ''
-  className = `dbk-run-btn ${className} ${stateClass}`
+  className = `dbk-run-btn dbk-button ${className}`
 
   let text = 'Loading...'
   let icon: JSX.Element | undefined = <SpinnerIcon />
@@ -43,10 +42,6 @@ function RunButton({
       text = ''
       icon = <SpinnerIcon />
       break
-    case CodeSnippetExtendedState.Failed:
-      icon = undefined
-      text = 'Error'
-      break
   }
 
   function handleClick(e: any) {
@@ -54,11 +49,10 @@ function RunButton({
     if (state === CodeSnippetExecState.Running) onStopClick(e)
   }
 
-
   return (
     <Button
       className={className}
-      isDisabled={state === CodeSnippetExtendedState.Loading || state === CodeSnippetExtendedState.Failed}
+      isDisabled={state === CodeSnippetExtendedState.Loading}
       text={text}
       onClick={handleClick}
       icon={icon}
