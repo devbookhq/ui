@@ -1,57 +1,74 @@
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  important: true,
   darkMode: 'class',
   theme: {
     extend: {
-      fontSize: {
-        '2xs': '0.8rem',
-        xs: '0.85rem',
+      fontFamily: {
+        mono: [
+          '\'JetBrains Mono\'',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Monaco',
+          'Consolas',
+          '"Liberation Mono"',
+          '"Courier New"',
+          'monospace',
+        ],
       },
-    },
-    colors: {
-      transparent: 'transparent',
-      black: {
-        900: '#141414',
-        800: '#1F1F1F',
-        700: '#262626',
-        650: '#292929',
-        600: '#363636',
+      lineClamp: {
+        10: '10',
       },
-      green: {
-        400: '#0AC069',
+      colors: {
+        transparent: 'transparent',
+        prisma: {
+          500: '#F564A5',
+        },
+        white: {
+          900: '#FFFFFF',
+        },
+        black: {
+          950: '#0A0A0A',
+          900: '#0E0D11',
+          850: '#15141a',
+          800: '#1A191D',
+          750: '#212024',
+          700: '#313034',
+          650: '#2E3034',
+          600: '#4F4F4F',
+        },
+        green: {
+          500: '#0AC069',
+          200: '#71DFAB',
+        },
+        navy: {
+          500: '#264F78',
+        },
+        red: {
+          400: '#FC4F60',
+        },
+        gray: {
+          800: '#8F8F8F',
+          700: '#B1B1B1',
+          600: '#979797',
+          550: '#CBCBCB',
+          500: '#D1D1D1',
+          400: '#DBDBDB',
+          300: '#DEDEDE',
+          200: '#E9E9E9',
+          100: '#F0F0F0',
+        },
       },
-      red: {
-        400: '#FC4F60',
-      },
-      gray: {
-        800: '#8F8F8F',
-        700: '#B1B1B1',
-        600: '#BBBBBB',
-        550: '#CBCBCB',
-        500: '#D1D1D1',
-        400: '#DBDBDB',
-        300: '#DEDEDE',
-        200: '#E9E9E9',
-        100: '#F0F0F0',
-      },
-      denim: {
-        800: '#373D47',
-        700: '#3C4A5D',
-        400: '#6A7380',
-        300: '#6F7885',
-        200: '#898F99',
-        100: '#AEAFB2',
+      height: {
+        inherit: 'inherit',
       },
     },
   },
-  variants: {
-    extend: {
-      backgroundColor: ['active', 'disabled'],
-      opacity: ['disabled'],
-      cursor: ['disabled'],
-    },
-  },
-  corePlugins: {
-    preflight: false,
-  },
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 }

@@ -40,13 +40,13 @@ export default {
     postcss({
       extensions: ['.css'],
       inject: {
-        insertAt: "top",
+        insertAt: 'top',
       },
       config: {
         path: './postcss.config.js',
       },
     }),
-    typescript({ tsconfig: './tsconfig.json' }),
+    typescript(),
     nodePolyfills(),
     nodeResolve(),
     terser(),

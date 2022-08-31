@@ -1,6 +1,4 @@
 @import './codemirror.css';
-@import './ant/tree.css';
-@import './ant/switch.css';
 @import './xterm.css';
 
 @tailwind utilities;
@@ -8,7 +6,10 @@
 @tailwind base;
 
 @layer base {
-  *, ::before, ::after {
+
+  *,
+  ::before,
+  ::after {
     border-width: 0;
     border-style: solid;
     border-color: theme('borderColor.DEFAULT', currentColor);
@@ -24,4 +25,28 @@ svg {
 label.required:after {
   @apply pl-1;
   content: "*";
+}
+
+
+@layer components {
+  .custom-scrollbar {
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      @apply bg-black-650;
+
+      &:hover {
+        @apply bg-black-600;
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background: transparent;
+    }
+  }
 }

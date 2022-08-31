@@ -1,9 +1,0 @@
-@tailwind utilities;
-@tailwind components;
-@tailwind base;
-
-@layer base {
-  html, body {
-    @apply w-full h-full;
-  }
-}

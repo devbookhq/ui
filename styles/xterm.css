@@ -35,11 +35,15 @@
  *  Default styles for xterm.js
  */
 
- .xterm {
+.xterm {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   position: relative;
   user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+  border-radius: 20px;
+
+  /* Custom */
 }
 
 .xterm.focus,
@@ -97,6 +101,12 @@
   position: absolute;
   left: 0;
   top: 0;
+
+  /* CUSTOM */
+  /* This way we add a padding. We must resize the whole screen. */
+  left: 0.5rem;
+  width: calc(100% - 0.5rem) !important;
+  /* height: calc(100% - 0.5rem) !important; */
 }
 
 .xterm .xterm-scroll-area {
@@ -176,18 +186,23 @@
   left: 0;
   top: 0;
   bottom: 0;
-  @apply overflow-auto;
   scrollbar-color: #8F8F8F transparent;
   scrollbar-width: thin;
+
+  /* CUSTOM */
+  @apply overflow-auto;
+  @apply inset-2;
 }
 
 .xterm-viewport::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  /* CUSTOM */
+  width: 8px;
+  height: 8px;
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb {
-  @apply dark:bg-black-600 bg-gray-500;
+  @apply bg-black-700;
+  @apply rounded;
 }
 
 .xterm-viewport::-webkit-scrollbar-corner {

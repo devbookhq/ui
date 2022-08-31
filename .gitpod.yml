@@ -12,3 +12,4 @@ image:
 vscode:
   extensions:
     - bradlc.vscode-tailwindcss
+    - dbaeumer.vscode-eslint

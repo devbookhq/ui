@@ -1,3 +1,3 @@
 import '../styles/index.css'
 
-export * from './react'
+export { default as CodeSnippet } from './components/CodeSnippet'
