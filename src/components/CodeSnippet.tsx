@@ -1,6 +1,6 @@
 import React from 'react'
 
-import usePublishedCodeSnippet from '../hooks/usePublishedCodeSnippet'
+import usePublishedCodeSnippet, { Language } from '../hooks/usePublishedCodeSnippet'
 import useSession from '../hooks/useSession'
 import CodeEditor from './CodeEditor'
 import Output from './Output'
@@ -11,12 +11,14 @@ export interface Props {
   id: string
   connectIDs?: string[]
   fallbackContent?: string
+  fallbackLanguage?: Language
 }
 
 function CodeSnippet({
   id,
   connectIDs,
   fallbackContent,
+  fallbackLanguage = 'Typescript',
 }: Props) {
   const codeSnippet = usePublishedCodeSnippet({
     codeSnippetID: id,
@@ -43,9 +45,8 @@ function CodeSnippet({
   }
 
   function handleCopyButtonClick() {
-    if (!codeSnippet) return
-
-    navigator.clipboard.writeText(codeSnippet.codeSnippetEditorCode)
+    const content = codeSnippet?.codeSnippetEditorCode || fallbackContent || ''
+    navigator.clipboard.writeText(content)
   }
 
   return (
@@ -70,18 +71,20 @@ function CodeSnippet({
         rounded-t-lg
         bg-black-700
       ">
-        <RunButton
-          onRunClick={onRunClick}
-          onStopClick={onStopClick}
-          state={csState}
-        />
+        {id &&
+          <RunButton
+            onRunClick={onRunClick}
+            onStopClick={onStopClick}
+            state={csState}
+          />
+        }
         <CopyButton
           onClick={handleCopyButtonClick}
         />
       </div>
       <CodeEditor
         isReadOnly={true}
-        language={codeSnippet?.codeSnippetTemplate || 'Nodejs'}
+        language={codeSnippet?.codeSnippetTemplate || fallbackLanguage}
         content={codeSnippet?.codeSnippetEditorCode || fallbackContent}
       />
       <Output

@@ -21,6 +21,8 @@ export function getLanguageHighlight(lang: Language) {
       return typescriptLanguage
     case 'Python3':
       return pythonLanguage
+    case 'Typescript':
+      return typescriptLanguage
     default:
       return typescriptLanguage
   }
