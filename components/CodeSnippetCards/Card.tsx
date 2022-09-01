@@ -124,6 +124,7 @@ function CodeSnippetCard({
             <Title
               size={Title.size.T2}
               title={cs.title}
+              className="truncate"
             />
             <div
               className="
