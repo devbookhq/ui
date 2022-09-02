@@ -100,9 +100,7 @@ function CodeSnippet({
               state={csState}
             />
             {csState === CodeSnippetExecState.Running &&
-              <div className="">
-                <Spinner></Spinner>
-              </div>
+              <Spinner></Spinner>
             }
           </div>
         }
