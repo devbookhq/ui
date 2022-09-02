@@ -22,12 +22,12 @@ const cmd = 'node index.mjs'
 const filename = '/code/index.mjs'
 
 function useRunCode(session?: ReturnType<typeof useSession>) {
-  const [output, setOutput] = useState<OutResponse[]>([])
   const [runTrigger, setRunTrigger] = useState<{ code: string, envVars?: EnvVars }>()
   const [process, setProcess] = useState<{
     process?: Awaited<ReturnType<typeof createSessionProcess>>,
     state: CodeSnippetExecState,
-  }>({ state: CodeSnippetExecState.Stopped })
+    output: OutResponse[]
+  }>({ state: CodeSnippetExecState.Stopped, output: [] })
 
   const derivedState = useMemo(() => {
     switch (session?.state) {
@@ -47,50 +47,49 @@ function useRunCode(session?: ReturnType<typeof useSession>) {
 
   useEffect(function triggerRun() {
     (async function () {
-      if (!runTrigger || output.length > 0) return
+      if (!runTrigger) return
       const currentSession = await session?.refresh()
 
-      setProcess({ state: CodeSnippetExecState.Running })
+      setProcess({ state: CodeSnippetExecState.Running, output: [] })
 
       try {
         await currentSession?.session?.filesystem?.writeFile(filename, runTrigger.code)
-        const newProcess = await createSessionProcess(
+        const newProcess: Awaited<ReturnType<typeof createSessionProcess>> = await createSessionProcess(
           cmd,
           session?.session?.process,
-          (stdout) => setOutput(o => [...o, stdout]),
-          (stderr) => setOutput(o => [...o, stderr]),
+          (stdout) => setProcess(p => ({ ...p, output: [...p.output, stdout] })),
+          (stderr) => setProcess(p => ({ ...p, output: [...p.output, stderr] })),
+          // (stdout) => setProcess(p => p.process === newProcess ? { ...p, output: [...p.output, stdout] } : p),
+          // (stderr) => setProcess(p => p.process === newProcess ? { ...p, output: [...p.output, stderr] } : p),
           runTrigger.envVars,
         )
-        setProcess({ process: newProcess, state: CodeSnippetExecState.Running })
+        setProcess({ process: newProcess, state: CodeSnippetExecState.Running, output: [] })
         newProcess.exited.then(() => {
           setProcess(p => p.process === newProcess ? { ...p, state: CodeSnippetExecState.Stopped } : p)
         })
       } catch (err) {
-        setProcess({ state: CodeSnippetExecState.Stopped })
+        setProcess({ state: CodeSnippetExecState.Stopped, output: [] })
         throw err
       }
     })()
   }, [
     session?.refresh,
     runTrigger,
-    output,
   ])
 
   const stop = useCallback(async () => {
     await process.process?.kill()
-    console.log('killed process')
   }, [process])
 
   const run = useCallback(async (code: string, envVars?: EnvVars) => {
     await session?.refresh?.()
-    setOutput([])
     setRunTrigger({ code, envVars })
   }, [session?.refresh])
 
   return {
     run,
     stop,
-    output,
+    output: process.output,
     state: derivedState,
   }
 }

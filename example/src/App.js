@@ -5,10 +5,9 @@ import { CodeSnippet, SharedSessionProvider } from '@devbookhq/react'
 function App() {
   return (
     <div className="App">
-      <SharedSessionProvider opts={{ codeSnippetID: 'a5HSDvbAI44c' }}>
-        <div style={{ height: '200px', width: '300px' }}>
-          <CodeSnippet id='a5HSDvbAI44c' isEditable={true} />
-          <CodeSnippet id='a5HSDvbAI44c' />
+      <SharedSessionProvider opts={{ codeSnippetID: 'Hq0FmpRimr2k' }}>
+        <div style={{ height: '200px' }}>
+          <CodeSnippet id='Hq0FmpRimr2k' isEditable={true} />
         </div>
       </SharedSessionProvider>
     </div>
