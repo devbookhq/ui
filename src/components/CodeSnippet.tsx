@@ -6,6 +6,8 @@ import CodeEditor from './CodeEditor'
 import Output from './Output'
 import RunButton from './RunButton'
 import CopyButton from './CopyButton'
+import { CodeSnippetExecState } from '@devbookhq/sdk'
+import Spinner from './icons/Spinner'
 
 export interface Props {
   id: string
@@ -91,11 +93,18 @@ function CodeSnippet({
           onClick={handleCopyButtonClick}
         />
         {id && (hasRan || csState !== CodeSnippetExtendedState.Loading) &&
-          <RunButton
-            onRunClick={onRunClick}
-            onStopClick={onStopClick}
-            state={csState}
-          />
+          <div className="items-center justify-center flex space-x-1">
+            <RunButton
+              onRunClick={onRunClick}
+              onStopClick={onStopClick}
+              state={csState}
+            />
+            {csState === CodeSnippetExecState.Running &&
+              <div className="">
+                <Spinner></Spinner>
+              </div>
+            }
+          </div>
         }
       </div>
       <CodeEditor
