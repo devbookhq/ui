@@ -8,7 +8,7 @@ import {
 import RunButton from './RunButton'
 import {
   CodeSnippetState,
-} from '../hooks/useSession'
+} from '../hooks/useRunCode'
 
 export interface Props {
   output: OutResponse[]

@@ -1,16 +1,13 @@
 import {
   useCallback,
   useEffect,
-  useMemo,
   useState
 } from 'react'
 import {
   Session,
-  CodeSnippetExecState,
   ProcessManager,
   OutStdoutResponse,
   OutStderrResponse,
-  OutResponse,
   EnvVars,
 } from '@devbookhq/sdk'
 import { useIdleTimer } from 'react-idle-timer'
@@ -24,6 +21,7 @@ export async function createSessionProcess(
   manager?: ProcessManager,
   onStdout?: (o: OutStdoutResponse) => void,
   onStderr?: (o: OutStderrResponse) => void,
+  envVars?: EnvVars,
   processID?: string,
 ) {
   if (!manager) {
@@ -46,6 +44,7 @@ export async function createSessionProcess(
     onExit,
     rootdir,
     processID,
+    envVars,
   })
 
   return {
@@ -57,12 +56,6 @@ export async function createSessionProcess(
 }
 
 export type SessionState = 'closed' | 'opening' | 'open'
-
-export enum CodeSnippetExtendedState {
-  Loading = 'Loading',
-}
-
-export type CodeSnippetState = CodeSnippetExtendedState | CodeSnippetExecState
 
 export interface Opts {
   codeSnippetID?: string
@@ -85,26 +78,12 @@ function useSession({
     id?: string
     open?: Promise<void>
   }>({ state: 'closed' })
-  const [csOutput, setCSOutput] = useState<OutResponse[]>([])
-  const [runTrigger, setRunTrigger] = useState<{ code: string, envVars?: EnvVars }>()
-  const [csState, setCSState] = useState<CodeSnippetState>(CodeSnippetExecState.Stopped)
 
   const initSession = useCallback(async () => {
     if (!codeSnippetID) return
 
     const newSession = new Session({
       id: codeSnippetID,
-      codeSnippet: {
-        onStateChange: (state) => {
-          setCSState(state)
-        },
-        onStdout: (stdout) => {
-          setCSOutput(output => [...output, stdout])
-        },
-        onStderr: (stderr) => {
-          setCSOutput(output => [...output, stderr])
-        },
-      },
       onDisconnect() {
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
       },
@@ -182,51 +161,10 @@ function useSession({
     }
   }, [initSession])
 
-  const csDerivedState = useMemo(() => {
-    switch (sessionState.state) {
-      case 'closed':
-        return CodeSnippetExecState.Stopped
-      case 'opening':
-        return CodeSnippetExtendedState.Loading
-      case 'open':
-        return csState
-    }
-  }, [
-    csState,
-    sessionState.state,
-  ])
-
-  useEffect(function triggerRun() {
-    (async function () {
-      if (!runTrigger || csOutput.length > 0) return
-      const { session } = await refresh()
-      await session?.codeSnippet?.run(runTrigger.code, runTrigger.envVars)
-    })()
-  }, [
-    refresh,
-    runTrigger,
-    sessionState.session?.codeSnippet,
-    csOutput,
-  ])
-
-  const stopCS = useCallback(async () => {
-    const { session } = await refresh()
-    await session?.codeSnippet?.stop()
-  }, [sessionState])
-
-  const runCS = useCallback(async (code: string, envVars?: EnvVars) => {
-    setCSOutput([])
-    setRunTrigger({ code, envVars })
-  }, [sessionState])
-
   return {
     refresh,
     session: sessionState.state === 'open' ? sessionState.session : undefined,
     state: sessionState.state,
-    csOutput: csOutput,
-    csState: csDerivedState,
-    stopCS,
-    runCS,
   }
 }
 

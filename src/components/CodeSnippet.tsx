@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, {
+  useEffect,
+  useState,
+} from 'react'
+import { CodeSnippetExecState } from '@devbookhq/sdk'
 
 import usePublishedCodeSnippet, { Language } from '../hooks/usePublishedCodeSnippet'
-import useSession, { CodeSnippetExtendedState } from '../hooks/useSession'
+import { CodeSnippetExtendedState } from '../hooks/useRunCode'
 import CodeEditor from './CodeEditor'
 import Output from './Output'
 import RunButton from './RunButton'
 import CopyButton from './CopyButton'
-import { CodeSnippetExecState } from '@devbookhq/sdk'
 import Spinner from './icons/Spinner'
+import useSharedSession from '../utils/SharedSessionProvider'
+import useRunCode from '../hooks/useRunCode'
 
 export interface Props {
-  id: string
+  id?: string
   connectIDs?: string[]
   isEditable?: boolean
   fallbackContent?: string
@@ -25,6 +30,8 @@ function CodeSnippet({
   fallbackLanguage = 'Typescript',
 }: Props) {
   const [hasRan, setHasRan] = useState(false)
+
+  const sharedSession = useSharedSession()
 
   const codeSnippet = usePublishedCodeSnippet({
     codeSnippetID: id,
@@ -41,14 +48,11 @@ function CodeSnippet({
   }, [codeSnippet])
 
   const {
-    csOutput,
-    csState,
-    runCS,
-    stopCS: onStopClick,
-  } = useSession({
-    codeSnippetID: id,
-    debug: true,
-  })
+    run: runCS,
+    stop: onStopClick,
+    state: csState,
+    output: csOutput,
+  } = useRunCode(sharedSession)
 
   async function onRunClick() {
     if (!codeSnippet) return

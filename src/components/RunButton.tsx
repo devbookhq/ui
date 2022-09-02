@@ -9,7 +9,7 @@ import Button from './Button'
 import {
   CodeSnippetState,
   CodeSnippetExtendedState,
-} from '../hooks/useSession'
+} from '../hooks/useRunCode'
 
 interface Props {
   className?: string

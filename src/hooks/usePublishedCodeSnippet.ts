@@ -9,7 +9,7 @@ import useFetch from './useFetch'
 export type Language = components['schemas']['Template']
 
 export interface Props {
-  codeSnippetID: string
+  codeSnippetID?: string
   connectCodeSnippetIDs?: string[]
 }
 
@@ -27,10 +27,17 @@ function usePublishedCodeSnippet({
   codeSnippetID,
   connectCodeSnippetIDs = [],
 }: Props) {
-  let url = `https://embed.usedevbook.com/${codeSnippetID}/props`
-  if (connectCodeSnippetIDs.length > 0) {
-    url += `?connect=${connectCodeSnippetIDs.join(',')}`
-  }
+  const url = useMemo(() => {
+    if (!codeSnippetID) return
+    let embedURL = `https://embed.usedevbook.com/${codeSnippetID}/props`
+    if (connectCodeSnippetIDs.length > 0) {
+      embedURL += `?connect=${connectCodeSnippetIDs.join(',')}`
+    }
+    return embedURL
+  }, [
+    codeSnippetID,
+    connectCodeSnippetIDs,
+  ])
 
   const { data } = useFetch<PublishedCodeSnippet>(url)
 

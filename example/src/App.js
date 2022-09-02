@@ -1,16 +1,16 @@
 import './App.css';
 
-import { CodeSnippet } from '@devbookhq/react'
+import { CodeSnippet, SharedSessionProvider } from '@devbookhq/react'
 
 function App() {
   return (
     <div className="App">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div style={{ height: '200px', width: '300px' }}>
-        <CodeSnippet id='yRA8mTcSaI5S' />
-      </div>
+      <SharedSessionProvider opts={{ codeSnippetID: 'a5HSDvbAI44c' }}>
+        <div style={{ height: '200px', width: '300px' }}>
+          <CodeSnippet id='a5HSDvbAI44c' isEditable={true} />
+          <CodeSnippet id='a5HSDvbAI44c' />
+        </div>
+      </SharedSessionProvider>
     </div>
   );
 }
