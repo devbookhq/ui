@@ -16,8 +16,6 @@ import {
   Session as LegacySession,
 } from '@devbookhq/sdk-legacy'
 
-type SessionBase = Session | LegacySession
-
 export type SessionState = 'open' | 'closed'
 
 const legacyCodeSnippets = [
@@ -60,7 +58,7 @@ function useSession({
   manualOpen = false,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
-    session?: SessionBase,
+    session?: Session,
     state: SessionState,
     id?: string,
     open?: () => Promise<void>,
@@ -144,7 +142,7 @@ function useSession({
       },
       editEnabled: persistentEdits,
       debug,
-    })
+    }) as Session
 
     const open = async () => {
       try {

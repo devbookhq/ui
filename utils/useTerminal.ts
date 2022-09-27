@@ -42,7 +42,6 @@ function useTerminal({
       try {
         const session = await terminalManager.createSession({
           onData: (data) => term.write(data),
-          onChildProcessesChange: undefined,
           size: { cols: term.cols, rows: term.rows },
         })
 
