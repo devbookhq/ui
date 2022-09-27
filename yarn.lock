@@ -233,10 +233,19 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@devbookhq/sdk@^2.4.4":
+"@devbookhq/sdk-legacy@npm:@devbookhq/sdk@2.4.4":
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.4.4.tgz#dc168dba48f075904fc461c2074e6b3ce4922352"
   integrity sha512-hbLKhRYoQ+QUdMeHMtqX3EA/nsg8TSv+Lfd+m8XW55zM+Coy6e8FF01l7RWSX9a1SxNpIEFuz/b5fQQrRAxNkg==
+  dependencies:
+    cross-fetch "^3.1.5"
+    openapi-typescript-fetch "^1.1.3"
+    rpc-websocket-client "^1.1.4"
+
+"@devbookhq/sdk@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.5.1.tgz#c75192e3172286a3338de1687af6facbaeddf552"
+  integrity sha512-jkl9kwi3b4jx9ZSdidWT0TkwqfEBm0eQNkxUx5dTy/ZBIHgWMSJcXhI7IqlQCmm1yAKrddpnnBBwrZZFcq0Wdw==
   dependencies:
     cross-fetch "^3.1.5"
     openapi-typescript-fetch "^1.1.3"
@@ -434,10 +443,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@supabase/gotrue-js@1.22.12", "@supabase/gotrue-js@^1.22.14":
-  version "1.22.12"
-  resolved "https://registry.yarnpkg.com/@supabase/gotrue-js/-/gotrue-js-1.22.12.tgz#78caaef13ef9bdacfcbabceb803ac79de52c6ad3"
-  integrity sha512-/baPkNiumE2B+OLSpvZquDsTqnOTAsG/07GBq5rXU8/e0rSyjljAFf8gnawGPezjlDGTFr2fjRYs0BYMz4LD/A==
+"@supabase/gotrue-js@1.22.14", "@supabase/gotrue-js@^1.22.14":
+  version "1.22.14"
+  resolved "https://registry.yarnpkg.com/@supabase/gotrue-js/-/gotrue-js-1.22.14.tgz#f6a1e0fbba58c58a7f2b0343d6eec10e3be15227"
+  integrity sha512-/LeNV9BFJ9hxzK6KcmJsOF3apxSYd7HlZOD9dd9a3+Ah0cIMmjlFloW/u4vJXN7ko+Ol3EUWJ6iHcgNoT4gvTw==
   dependencies:
     cross-fetch "^3.0.6"
 
@@ -1832,7 +1841,7 @@ isexe@^2.0.0:
 
 isomorphic-ws@^4.0.1:
   version "4.0.1"
-  resolved "https://registry.npmjs.org/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz#55fd4cd6c5e6491e76dc125938dd863f5cd4f2dc"
   integrity sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==
 
 jose@^4.8.1:
@@ -2143,7 +2152,7 @@ once@^1.3.0:
 
 openapi-typescript-fetch@^1.1.3:
   version "1.1.3"
-  resolved "https://registry.npmjs.org/openapi-typescript-fetch/-/openapi-typescript-fetch-1.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/openapi-typescript-fetch/-/openapi-typescript-fetch-1.1.3.tgz#354e6803b7885c7142ae11adc1b758afafd8aa2e"
   integrity sha512-smLZPck4OkKMNExcw8jMgrMOGgVGx2N/s6DbKL2ftNl77g5HfoGpZGFy79RBzU/EkaO0OZpwBnslfdBfh7ZcWg==
 
 opener@^1.5.2:
@@ -2638,7 +2647,7 @@ rimraf@^3.0.2:
 
 rpc-websocket-client@^1.1.4:
   version "1.1.4"
-  resolved "https://registry.npmjs.org/rpc-websocket-client/-/rpc-websocket-client-1.1.4.tgz"
+  resolved "https://registry.yarnpkg.com/rpc-websocket-client/-/rpc-websocket-client-1.1.4.tgz#c82a98c85a4a3ed65b19cf7fe989bf8cbfd5b421"
   integrity sha512-UDMVcsNDJ3WET+0EFdmseYX+60MOCA3BpgpZ5dbtiGsqHo+9uWfgNbPZ4iGDtNcX+EUhCt/Y7C0fTmUU3CkkWA==
   dependencies:
     isomorphic-ws "^4.0.1"
@@ -2959,7 +2968,7 @@ util-deprecate@^1.0.2:
 
 uuid@^3.3.3:
   version "3.4.0"
-  resolved "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
 v8-compile-cache@^2.0.3:
@@ -3040,7 +3049,12 @@ wrappy@1:
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-ws@^7.1.2, ws@^7.3.1:
+ws@^7.1.2:
+  version "7.5.9"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
+  integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==
+
+ws@^7.3.1:
   version "7.5.8"
   resolved "https://registry.npmjs.org/ws/-/ws-7.5.8.tgz"
   integrity sha512-ri1Id1WinAX5Jqn9HejiGb8crfRio0Qgu8+MtL36rlTA6RLsMdWt1Az/19A2Qij6uSHUMphEFaTKa4WG+UNHNw==

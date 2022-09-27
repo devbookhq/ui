@@ -12,7 +12,18 @@ import {
   EnvVars,
 } from '@devbookhq/sdk'
 
+import {
+  Session as LegacySession,
+} from '@devbookhq/sdk-legacy'
+
+type SessionBase = Session | LegacySession
+
 export type SessionState = 'open' | 'closed'
+
+const legacyCodeSnippets = [
+  'BpZS9GOnfQYr',
+  'O99CUbQ45L97',
+]
 
 export enum CodeSnippetExtendedState {
   Failed = 'Failed',
@@ -32,6 +43,7 @@ export interface Opts {
   debug?: boolean
   apiKey?: string
   manualOpen?: boolean
+
 }
 
 function useSession({
@@ -48,7 +60,7 @@ function useSession({
   manualOpen = false,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
-    session?: Session,
+    session?: SessionBase,
     state: SessionState,
     id?: string,
     open?: () => Promise<void>,
@@ -76,7 +88,10 @@ function useSession({
     if (!codeSnippetID) return
     if (persistentEdits && !apiKey) return
 
-    const newSession = new Session({
+    // Use legacy SDK that does not subscribe to terminal data before starting the terminal
+    const isLegacy = legacyCodeSnippets.includes(codeSnippetID)
+
+    const newSession = new (isLegacy ? LegacySession : Session)({
       apiKey,
       id: codeSnippetID,
       codeSnippet: {
