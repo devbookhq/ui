@@ -110,7 +110,7 @@ function useSession({
               p.State === 'LISTEN' &&
               validPortIPs.includes(p.Ip) &&
               // This is devbookd
-              p.Port !== 8010 &&
+              p.Port !== 49982 &&
               // ssh daemon
               p.Port !== 22
             )
