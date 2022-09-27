@@ -242,10 +242,10 @@
     openapi-typescript-fetch "^1.1.3"
     rpc-websocket-client "^1.1.4"
 
-"@devbookhq/sdk@^2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.5.1.tgz#c75192e3172286a3338de1687af6facbaeddf552"
-  integrity sha512-jkl9kwi3b4jx9ZSdidWT0TkwqfEBm0eQNkxUx5dTy/ZBIHgWMSJcXhI7IqlQCmm1yAKrddpnnBBwrZZFcq0Wdw==
+"@devbookhq/sdk@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.5.3.tgz#bc95c159935e1ea639892524cfd36afa48ce2d7b"
+  integrity sha512-KpPhsrojRNORlJqAXhgf+uaBh7p4VB/lRtXLgrKb5hHDKrT5gblwiegAEurIIgprpFin8EsN1fmrNVShgk1dxw==
   dependencies:
     cross-fetch "^3.1.5"
     openapi-typescript-fetch "^1.1.3"
