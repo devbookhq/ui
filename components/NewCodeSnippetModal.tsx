@@ -17,7 +17,6 @@ const templates: Template[] = [
   { name: 'Python3', value: 'Python3' },
   { name: 'Typescript', value: 'Typescript' },
 ]
-const ansysTemplate: Template = { name: 'Ansys', value: 'Ansys' }
 
 interface Props {
   isOpen: boolean
@@ -35,11 +34,7 @@ function NewCodeSnippetModal({
   const [title, setTitle] = useState('')
   const [selectedTmpl, setSelectedTmpl] = useState(templates[0])
 
-  // Enable Ansys template for Ansys users.
   const { user } = useUserInfo()
-  const isAnsysUser = user?.email?.endsWith('ansys.com')
-  const isAdmin = user?.email?.endsWith('vasek.mlejnsky@gmail.com')
-
   function handleTitleChange(e: any) {
     setTitle(e.target.value)
   }
@@ -87,7 +82,7 @@ function NewCodeSnippetModal({
           <Select
             wrapperClassName="w-full"
             title="Template"
-            items={(isAnsysUser || isAdmin) ? [...templates, ansysTemplate] : templates}
+            items={templates}
             value={selectedTmpl}
             onChange={i => setSelectedTmpl({ name: i.name, value: i.value as any })}
           />
