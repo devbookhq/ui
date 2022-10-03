@@ -7,6 +7,10 @@ npm install @devbookhq/react
 ```
 
 ## Usage
+Available components:
+- [CodeSnippet](#codesnippet)
+
+### `CodeSnippet`
 
 ```tsx
 import { CodeSnippet } from '@devbookhq/react'
