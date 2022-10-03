@@ -1,4 +1,4 @@
-# Devbook Dashboard
+# Devbook Builder
 
 ## Setup
 **Node.js 16.x** is preferred for development in this repository.
@@ -25,15 +25,13 @@ yarn dev
 
 To automatically lint and fix errors according to ESLint run:
 ```bash
-npm run fix
+yarn fix
 ```
 
 To analyze client and server bundle sizes run:
 ```bash
-npm run analyze
+yarn analyze
 ```
 
 ## Deployment (Vercel)
 The app is **automatically deployed** to production via *Vercel* when you push a new commit to the **master** branch. When you push commit any other branch you can view the preview deployment via *Vercel* too.
-
-The app is deployed on https://dash.usedevbook.com

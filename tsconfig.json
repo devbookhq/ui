@@ -36,7 +36,6 @@
   "exclude": [
     "tsconfig.json",
     "node_modules",
-    "embed",
     "next.config.js",
     "postcss.config.js",
     "tailwind.config.js",
