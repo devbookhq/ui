@@ -1,10 +1,9 @@
-@import "./codemirror.css";
-@import './xterm.css';
+@import "react-grid-layout/css/styles.css";
+@import "react-resizable/css/styles.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @layer base {
 

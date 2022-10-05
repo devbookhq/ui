@@ -40,7 +40,7 @@ function FeedbackModal({
       isOpen={isOpen}
       onClose={onClose}
     >
-      {isSavingFeedback && <SpinnerIcon className="m-auto"/>}
+      {isSavingFeedback && <SpinnerIcon className="m-auto" />}
       {!isSavingFeedback && (
         <form
           className="

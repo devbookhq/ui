@@ -19,7 +19,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
   const router = useRouter()
   const meta = {
     title: 'Devbook',
-    description: 'Interactive code snippets',
+    description: 'Interactive app',
     cardImage: '/og.png',
     ...pageMeta
   }
@@ -30,7 +30,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         <meta name="robots" content="follow, index" />
         <link href="/favicon.ico" rel="shortcut icon" />
         <meta content={meta.description} name="description" />
-        <meta property="og:url" content={`https://dash.usedevbook.com${router.asPath}`} />
+        <meta property="og:url" content={`https://app.usedevbook.com${router.asPath}`} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={meta.title} />
         <meta property="og:description" content={meta.description} />
@@ -49,7 +49,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         flex
         item-start
       ">
-        <DashboardSidebar/>
+        <DashboardSidebar />
         <div className="
           p-4
           flex-1

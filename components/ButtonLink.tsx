@@ -1,8 +1,6 @@
 import { ReactNode } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
-import Text from 'components/typography/Text'
 import Button, { Variant } from 'components/Button'
 
 interface Props {

@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import {
   CodeIcon,
   GearIcon,
-  BarChartIcon,
 } from '@radix-ui/react-icons'
 
 import Button from 'components/Button'
@@ -13,16 +12,10 @@ import SidebarLink from './SidebarLink'
 
 const pages = [
   {
-    title: 'Code Snippets',
+    title: 'Apps',
     href: '/',
-    activeOnPathnames: ['/', '/[slug]/edit'],
-    icon: <CodeIcon/>,
-  },
-  {
-    title: 'Insights',
-    href: '/insights',
-    activeOnPathnames: ['/insights'],
-    icon: <BarChartIcon/>,
+    activeOnPathnames: ['/'],
+    icon: <CodeIcon />,
   },
 ]
 
@@ -31,8 +24,6 @@ function DashboardSidebar() {
   const router = useRouter()
   const { user } = useUserInfo()
 
-  // Don't display sidebar on the public code snippet page.
-  if (router.pathname === '/[slug]') return null
   if (!user) return null
   return (
     <>
@@ -81,7 +72,7 @@ function DashboardSidebar() {
             title="Settings"
             href="/settings"
             active={router.pathname === '/settings'}
-            icon={<GearIcon/>}
+            icon={<GearIcon />}
           />
           <Button
             className="mx-2"

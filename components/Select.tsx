@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Listbox } from '@headlessui/react'
 import cn from 'classnames'
 
@@ -124,34 +123,34 @@ function Select({
   return (
     <>
       {title
-      ? (
-        <div className={cn(
-          'flex',
-          'flex-col',
-          'items-start',
-          'space-y-1',
-          wrapperClassName,
-        )}>
-          <span className="
+        ? (
+          <div className={cn(
+            'flex',
+            'flex-col',
+            'items-start',
+            'space-y-1',
+            wrapperClassName,
+          )}>
+            <span className="
             font-sm
             text-gray-600
           ">
-            {title}
-          </span>
+              {title}
+            </span>
+            <SelectEl
+              items={items}
+              value={value}
+              onChange={onChange}
+            />
+          </div>
+        )
+        : (
           <SelectEl
             items={items}
             value={value}
             onChange={onChange}
           />
-        </div>
-      )
-      : (
-        <SelectEl
-          items={items}
-          value={value}
-          onChange={onChange}
-        />
-      )}
+        )}
     </>
   )
 }
