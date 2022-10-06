@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import cn from 'classnames'
+import cn from 'clsx'
 import TitleLink from 'components//TitleLink'
 import { UrlObject } from 'url'
 
@@ -26,9 +26,9 @@ function SidebarLink({
         'py-1.5',
         'hover:bg-white-900/5',
         'border-l-2',
-        {'border-transparent': !active},
-        {'border-green-500': active},
-        {'bg-[#18161C]': active},
+        { 'border-transparent': !active },
+        { 'border-green-500': active },
+        { 'bg-[#18161C]': active },
       )}
       href={href}
       active={active}

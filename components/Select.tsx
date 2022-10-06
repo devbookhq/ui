@@ -1,5 +1,5 @@
 import { Listbox } from '@headlessui/react'
-import cn from 'classnames'
+import cn from 'clsx'
 
 import Text from 'components/typography/Text'
 import { SelectorIcon } from '@heroicons/react/solid'

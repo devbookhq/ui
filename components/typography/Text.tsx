@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 
 export enum Size {
   S1,
@@ -31,7 +31,7 @@ function Text({
         'text-white',
         Sizes[size],
         className,
-        {'font-mono': mono},
+        { 'font-mono': mono },
       )}
       onClick={onClick}
     >

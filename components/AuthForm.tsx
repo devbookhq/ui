@@ -4,7 +4,7 @@ import {
   useState,
 } from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import cn from 'classnames'
+import cn from 'clsx'
 
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'

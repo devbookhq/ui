@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 
 export interface Props {
   className?: string

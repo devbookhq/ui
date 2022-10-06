@@ -1,6 +1,3 @@
-@import "react-grid-layout/css/styles.css";
-@import "react-resizable/css/styles.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,65 +47,6 @@
 img {
   max-width: 100%;
   display: block;
-}
-
-.RootMenu.open {
-  background: #313034;
-}
-
-.Menu {
-  background: #313034;
-  padding: 4px;
-  border: 1px solid #d7dce5;
-  border-radius: 6px;
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.1);
-  outline: 0;
-}
-
-.MenuItem {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  background: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  text-align: left;
-  line-height: 1.8;
-  min-width: 110px;
-  margin: 0;
-  outline: 0;
-}
-
-.MenuItem.open {
-  background: #d7dce5;
-  background: #313034;
-
-}
-
-.MenuItem:focus,
-.MenuItem:not([disabled]):active {
-  background: royalblue;
-  color: white;
-}
-
-.cs-output {
-  @apply overflow-auto;
-  /* Firefox scrollbar styling */
-  scrollbar-color: #8F8F8F transparent;
-  scrollbar-width: thin;
-}
-
-.cs-output::-webkit-scrollbar {
-  @apply h-[10px] w-[10px];
-}
-
-.cs-output::-webkit-scrollbar-corner {
-  @apply bg-transparent;
-}
-
-.cs-output::-webkit-scrollbar-thumb {
-  @apply bg-black-700;
 }
 
 input:-webkit-autofill,

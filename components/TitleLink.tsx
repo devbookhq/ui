@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import cn from 'classnames'
+import cn from 'clsx'
 import Link from 'next/link'
 import { UrlObject } from 'url'
 

@@ -1,7 +1,7 @@
 import {
   ReactNode,
 } from 'react'
-import cn from 'classnames'
+import cn from 'clsx'
 
 import Text from 'components/typography/Text'
 

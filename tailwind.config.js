@@ -47,8 +47,5 @@ module.exports = {
         inherit: 'inherit',
       },
     },
-  },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-  ],
+  }
 }
