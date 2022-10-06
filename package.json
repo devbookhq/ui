@@ -1,5 +1,5 @@
 {
-  "name": "@devbookhq/dashboard",
+  "name": "@devbookhq/builder",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -24,6 +24,7 @@
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "clsx": "^1.2.1",
     "immutability-helper": "^3.1.1",
+    "nanoid": "^4.0.0",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dnd": "^16.0.1",

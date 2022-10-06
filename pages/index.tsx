@@ -18,9 +18,7 @@ interface Props {
 
 function AppEditor({ }: Props) {
   return (
-    <div>
-      <Editor />
-    </div>
+    <Editor />
   )
 }
 

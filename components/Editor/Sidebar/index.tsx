@@ -1,18 +1,9 @@
-import { dropTargetType } from '../Board'
-import { asUIComponent } from './asUIComponent'
-import UIPlaceholder from './UIComponents/Placeholder'
-
-const availableComponents = [
-  UIPlaceholder,
-]
-
-const uiComponents = availableComponents
-  .map(c => asUIComponent(c, dropTargetType))
+import { uiComponentsList } from '../UIComponent'
 
 function Editor() {
   return (
-    <div>
-      {uiComponents.map(UIComp => <UIComp key={UIComp.displayName} />)}
+    <div className="flex flex-1">
+      {uiComponentsList.map(ui => <ui.Sidebar key={ui.id} />)}
     </div>
   )
 }
