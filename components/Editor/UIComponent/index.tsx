@@ -3,6 +3,7 @@ import { useDrag } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import type { XYCoord } from 'react-dnd'
 
+import CodeSnippet, { Icon as CodeSnippetIcon } from './CodeSnippet'
 import Placeholder, { Icon as PlaceholderIcon } from './Placeholder'
 import { snapToGrid, xStep, yStep } from '../Board/snapToGrid'
 
@@ -36,7 +37,16 @@ function getStyles(
 function getItemStyles(
   initialOffset: XYCoord | null,
   currentOffset: XYCoord | null,
+  offset: XYCoord | null,
 ) {
+  if (offset) {
+    const transform = `translate(${offset.x}px, ${offset.y}px)`
+    return {
+      transform,
+      WebkitTransform: transform,
+    }
+  }
+
   if (!initialOffset || !currentOffset) {
     return {
       display: 'none',
@@ -64,12 +74,13 @@ function getItemStyles(
 interface DraggedProps {
   initialOffset: XYCoord | null
   currentOffset: XYCoord | null
+  offset: XYCoord | null
 }
 
 function asDraggedBoardComponent<P extends object>(Component: ComponentType<P>) {
   const Wrapped = (props: P & BoardItem & DraggedProps) => {
     return (
-      <div style={getItemStyles(props.initialOffset, props.currentOffset)} >
+      <div style={getItemStyles(props.initialOffset, props.currentOffset, props.offset)} >
         <Component {...props} />
       </div >
     )
@@ -101,8 +112,28 @@ function asBoardComponent<P extends object>(Component: ComponentType<P>, compone
 
     return (
       <div
+        className="bg-gray-300"
         ref={drag}
         style={getStyles(left, top, isDragging)}
+      >
+        <Component {...props} />
+      </div>
+    )
+  }
+
+  Wrapped.displayName = Component.displayName
+
+  return memo(Wrapped)
+}
+
+function asPreviewComponent<P extends object>(Component: ComponentType<P>) {
+  const Wrapped = (props: P & BoardItem) => {
+    const { id, left, top } = props
+
+    return (
+      <div
+        className="bg-gray-300"
+        style={getStyles(left, top, false)}
       >
         <Component {...props} />
       </div>
@@ -129,7 +160,7 @@ function asSidebarIcon<P extends object>(Component: ComponentType<P>, componentT
     }))
 
     return (
-      <div ref={drag} {...collected} className="p-1 border-emerald-50 border flex flex-1 h-10 w-10 justify-center items-center" >
+      <div ref={drag} {...collected} className="p-1 mx-1 bg-gray-800 rounded-sm flex h-12 w-12 justify-center items-center" >
         <Component {...props} />
       </div>
     )
@@ -146,6 +177,7 @@ type UIComponentSetup<T extends BoardItem, I extends object, L extends BoardItem
   Board: ComponentType<T>,
   Sidebar: ComponentType<I>,
   DraggedBoard: ComponentType<L>,
+  Preview: ComponentType<T>,
 }
 
 type UIComponentMap = {
@@ -158,6 +190,10 @@ const availableComponents = {
     Sidebar: PlaceholderIcon,
     Board: Placeholder,
   },
+  [CodeSnippet.name]: {
+    Sidebar: CodeSnippetIcon,
+    Board: CodeSnippet,
+  },
 }
 
 export const uiComponentsList = Object
@@ -168,6 +204,7 @@ export const uiComponentsList = Object
       Sidebar: asSidebarIcon(Sidebar, id),
       Board: asBoardComponent(Board, id),
       DraggedBoard: asDraggedBoardComponent(Board),
+      Preview: asPreviewComponent(Board),
     }
   })
 
@@ -177,17 +214,34 @@ export const uiComponentsMap = uiComponentsList
       Sidebar: curr.Sidebar,
       Board: curr.Board,
       DraggedBoard: curr.DraggedBoard,
+      Preview: curr.Preview,
     }
     return prev
   }, {})
-
 
 export function renderBoardItem(item: BoardItem) {
   const C = uiComponentsMap[item.componentType]
   return <C.Board key={item.id} {...item} />
 }
 
-export function renderDraggedBoardItem(item: BoardItem, initialOffset: XYCoord | null, currentOffset: XYCoord | null) {
+export function renderPreviewItem(item: BoardItem) {
   const C = uiComponentsMap[item.componentType]
-  return <C.DraggedBoard key={item.id} {...item} initialOffset={initialOffset} currentOffset={currentOffset} />
+  return <C.Preview key={item.id} {...item} />
+}
+
+export function renderDraggedBoardItem(
+  item: BoardItem,
+  initialOffset: XYCoord | null,
+  currentOffset: XYCoord | null,
+  isSidebarItem: boolean,
+  offset: XYCoord | null,
+) {
+  const C = uiComponentsMap[item.componentType]
+  return <C.DraggedBoard
+    key={item.id}
+    {...item}
+    initialOffset={initialOffset}
+    currentOffset={currentOffset}
+    offset={isSidebarItem ? offset : null}
+  />
 }

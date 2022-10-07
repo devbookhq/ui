@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import useUserInfo from 'utils/useUserInfo'
 
-import { upsertUserFeedback } from 'utils/supabaseClient'
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import { upsertUserFeedback } from 'utils/queries'
 import Modal from 'components/Modal'
 import Textarea from 'components/Textarea'
 import SpinnerIcon from 'components/icons/Spinner'
@@ -28,7 +29,7 @@ function FeedbackModal({
 
     setIsSavingFeedback(true)
 
-    await upsertUserFeedback(user.id, feedback)
+    await upsertUserFeedback(supabaseClient, user.id, feedback)
 
     setIsSavingFeedback(false)
     onClose()

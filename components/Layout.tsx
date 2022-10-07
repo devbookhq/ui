@@ -17,6 +17,9 @@ interface Props {
 
 export default function Layout({ children, meta: pageMeta }: Props) {
   const router = useRouter()
+
+  const isPreview = router.pathname === '/preview'
+
   const meta = {
     title: 'Devbook',
     description: 'Interactive app',
@@ -49,7 +52,7 @@ export default function Layout({ children, meta: pageMeta }: Props) {
         flex
         item-start
       ">
-        <DashboardSidebar />
+        {!isPreview && <DashboardSidebar />}
         <div className="
           p-4
           flex-1

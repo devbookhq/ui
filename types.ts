@@ -8,3 +8,10 @@ export interface ErrorRes {
   statusCode: number
   message: string
 }
+
+export interface App {
+  id: string
+  title: string
+  creator_id?: string
+  serialized: object
+}

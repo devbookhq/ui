@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useDragLayer } from 'react-dnd'
-import { renderDraggedBoardItem } from '../UIComponent'
+import { renderDraggedBoardItem, sidebarIconType } from '../UIComponent'
 
 const layerStyles: CSSProperties = {
   position: 'fixed',
@@ -21,9 +21,13 @@ function CustomDragLayer({ }: Props) {
     item,
     initialOffset,
     currentOffset,
+    isSidebarItem,
+    offset,
   } = useDragLayer((monitor) => ({
     item: monitor.getItem(),
+    isSidebarItem: monitor.getItemType() === sidebarIconType,
     itemType: monitor.getItemType(),
+    offset: monitor.getClientOffset(),
     initialOffset: monitor.getInitialSourceClientOffset(),
     currentOffset: monitor.getSourceClientOffset(),
     isDragging: monitor.isDragging(),
@@ -35,7 +39,7 @@ function CustomDragLayer({ }: Props) {
 
   return (
     <div style={layerStyles}>
-      {renderDraggedBoardItem(item, initialOffset, currentOffset)}
+      {renderDraggedBoardItem(item, initialOffset, currentOffset, isSidebarItem, offset)}
     </div>
   )
 }

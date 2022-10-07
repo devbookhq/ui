@@ -1,7 +1,18 @@
 {
   "name": "@devbookhq/builder",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://usedevbook.com",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": {
+    "name": "FoundryLabs, Inc.",
+    "email": "hello@usedevbook.com",
+    "url": "https://usedevbook.com"
+  },
+  "bugs": "https://github.com/DevbookHQ/builder/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DevbookHQ/builder"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -18,6 +29,7 @@
     "@supabase/gotrue-js": "1.22.14"
   },
   "dependencies": {
+    "@devbookhq/react": "^1.1.12",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^1.0.6",
     "@radix-ui/react-icons": "^1.1.1",

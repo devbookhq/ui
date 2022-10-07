@@ -1,31 +1,28 @@
 import update from 'immutability-helper'
-import type { CSSProperties } from 'react'
 import { useCallback, useState } from 'react'
-import { ConnectDropTarget, useDrop } from 'react-dnd'
+import { useDrop } from 'react-dnd'
 import { nanoid } from 'nanoid'
 
 import { boardComponentType, sidebarIconType, BoardItem, renderBoardItem } from '../UIComponent'
 import { snapToGrid, xStep, yStep } from './snapToGrid'
-
-const styles: CSSProperties = {
-  width: 300,
-  height: 300,
-  border: '1px solid black',
-  position: 'relative',
-}
-
-export interface Props {
-
-}
+import useElement from 'utils/useElement'
 
 interface ItemMap {
   [id: string]: BoardItem
 }
 
-function useBoardItems(initItems: ItemMap = {}): [ItemMap, ConnectDropTarget] {
+interface MoveItem {
+  (item: Pick<BoardItem, 'id' | 'left' | 'top'>): void
+}
+
+interface AddItem {
+  (item: BoardItem): void
+}
+
+export function useBoardItems(initItems: ItemMap = {}): [ItemMap, AddItem, MoveItem] {
   const [items, setItems] = useState<ItemMap>(initItems)
 
-  const move = useCallback((id: string, left: number, top: number) => {
+  const move = useCallback<MoveItem>(({ id, left, top }) => {
     setItems(i =>
       update(i, {
         [id]: {
@@ -35,7 +32,7 @@ function useBoardItems(initItems: ItemMap = {}): [ItemMap, ConnectDropTarget] {
     )
   }, [])
 
-  const add = useCallback((componentType: string, id: string, left: number, top: number) => {
+  const add = useCallback<AddItem>(({ componentType, id, left, top }) => {
     setItems(i =>
       update(i, {
         [id]: {
@@ -45,10 +42,19 @@ function useBoardItems(initItems: ItemMap = {}): [ItemMap, ConnectDropTarget] {
     )
   }, [])
 
+  return [items, add, move]
+}
+
+function useBoardDrag(): [ItemMap, (i: HTMLDivElement | null) => void] {
+  const [items, add, move] = useBoardItems()
+
+  const [ref, setRef] = useElement<HTMLDivElement>(e => drop(e))
+
   const [, drop] = useDrop(() => ({
     accept: [boardComponentType, sidebarIconType],
     drop(item: BoardItem, monitor) {
       const type = monitor.getItemType()
+      console.log({ type, item })
 
       if (type === boardComponentType) {
         const delta = monitor.getDifferenceFromInitialOffset()
@@ -57,37 +63,57 @@ function useBoardItems(initItems: ItemMap = {}): [ItemMap, ConnectDropTarget] {
         const left = snapToGrid(Math.round(item.left + delta.x), xStep)
         const top = snapToGrid(Math.round(item.top + delta.y), yStep)
 
-        move(item.id, left, top)
+        move({
+          id: item.id,
+          left,
+          top,
+        })
       } else if (type === sidebarIconType) {
-        
-        const pos = monitor.getClientOffset()
-        if (!pos) return
 
-        const left = snapToGrid(Math.round(pos.x), xStep)
-        const top = snapToGrid(Math.round(pos.y), yStep)
+        console.log({})
+
+        const offset = monitor.getClientOffset()
+        if (!offset) return
+        if (!ref) return
+
+
+
+        const dropTargetPosition = ref.getBoundingClientRect()
+
+        const left = snapToGrid(Math.round(offset.x - dropTargetPosition.left), xStep)
+        const top = snapToGrid(Math.round(offset.y - dropTargetPosition.top), yStep)
 
         const id = 'ui_' + nanoid()
 
-        add(item.componentType, id, left, top)
+        add({
+          componentType: item.componentType,
+          id,
+          left,
+          top,
+        })
       }
     },
   }),
     [
       move,
       add,
+      ref,
     ],
   )
 
-  return [items, drop]
+  return [items, setRef]
+}
+
+export interface Props {
+
 }
 
 function Container({ }: Props) {
-  const [items, drop] = useBoardItems({})
+  const [items, ref] = useBoardDrag()
 
-  console.log({ items })
-
+  console.log(items)
   return (
-    <div ref={drop} style={styles}>
+    <div ref={ref} className="relative flex flex-1">
       {Object.values(items).map((item) => renderBoardItem(item))}
     </div>
   )
