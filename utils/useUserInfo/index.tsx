@@ -1,12 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useMemo
-} from 'react'
-import {
-  useUser as useSupaUser,
-  User
-} from '@supabase/supabase-auth-helpers/react'
+import { User, useUser as useSupaUser } from '@supabase/supabase-auth-helpers/react'
+import { createContext, useContext, useMemo } from 'react'
 
 import useAPIKey from './useAPIKey'
 
@@ -25,11 +18,7 @@ export interface Props {
 }
 
 export function UserInfoContextProvider({ children }: Props) {
-  const {
-    user,
-    accessToken,
-    isLoading: isLoadingUser,
-  } = useSupaUser()
+  const { user, accessToken, isLoading: isLoadingUser } = useSupaUser()
 
   const {
     error: apiKeyError,
@@ -49,25 +38,18 @@ export function UserInfoContextProvider({ children }: Props) {
     return errs.length > 0 ? errs : undefined
   }, [apiKeyError])
 
-  const value = useMemo(() => ({
-    apiKey,
-    user,
-    accessToken,
-    isLoading,
-    errors,
-  }), [
-    apiKey,
-    user,
-    accessToken,
-    isLoading,
-    errors,
-  ])
-
-  return (
-    <userInfoContext.Provider value={value}>
-      {children}
-    </userInfoContext.Provider>
+  const value = useMemo(
+    () => ({
+      apiKey,
+      user,
+      accessToken,
+      isLoading,
+      errors,
+    }),
+    [apiKey, user, accessToken, isLoading, errors],
   )
+
+  return <userInfoContext.Provider value={value}>{children}</userInfoContext.Provider>
 }
 
 export default function useUserInfo() {

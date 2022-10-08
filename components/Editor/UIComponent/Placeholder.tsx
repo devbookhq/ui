@@ -1,17 +1,9 @@
 export function Icon() {
-  return (
-    <div>
-      ICON
-    </div>
-  )
+  return <div>ICON</div>
 }
 
 function Placeholder() {
-  return (
-    <div className="flex">
-      ITEM
-    </div>
-  )
+  return <div className="flex">ITEM</div>
 }
 
 export default Placeholder

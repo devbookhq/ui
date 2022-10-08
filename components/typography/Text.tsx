@@ -18,21 +18,12 @@ interface Props {
   mono?: boolean
 }
 
-function Text({
-  className,
-  text,
-  size = Size.S2,
-  onClick,
-  mono,
-}: Props) {
+function Text({ className, text, size = Size.S2, onClick, mono }: Props) {
   return (
     <span
-      className={cn(
-        'text-white',
-        Sizes[size],
-        className,
-        { 'font-mono': mono },
-      )}
+      className={cn('text-white', Sizes[size], className, {
+        'font-mono': mono,
+      })}
       onClick={onClick}
     >
       {text}

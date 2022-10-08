@@ -1,21 +1,17 @@
-import { ReactNode } from 'react'
 import cn from 'clsx'
-import TitleLink from 'components//TitleLink'
+import { ReactNode } from 'react'
 import { UrlObject } from 'url'
+
+import TitleLink from 'components//TitleLink'
 
 export interface Props {
   active: boolean
   title: string
   href: UrlObject | string
-  icon: ReactNode,
+  icon: ReactNode
 }
 
-function SidebarLink({
-  active,
-  title,
-  href,
-  icon,
-}: Props) {
+function SidebarLink({ active, title, href, icon }: Props) {
   return (
     <TitleLink
       wrapperClassName="w-full"
@@ -26,9 +22,15 @@ function SidebarLink({
         'py-1.5',
         'hover:bg-white-900/5',
         'border-l-2',
-        { 'border-transparent': !active },
-        { 'border-green-500': active },
-        { 'bg-[#18161C]': active },
+        {
+          'border-transparent': !active,
+        },
+        {
+          'border-green-500': active,
+        },
+        {
+          'bg-[#18161C]': active,
+        },
       )}
       href={href}
       active={active}

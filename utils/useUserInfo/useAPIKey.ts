@@ -1,8 +1,5 @@
-import {
-  useEffect,
-  useState,
-} from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import { useEffect, useState } from 'react'
 
 function useAPIKey(userID?: string) {
   const [key, setKey] = useState<string>()
@@ -10,25 +7,31 @@ function useAPIKey(userID?: string) {
   const [isLoading, setIsLoading] = useState(true)
   const [isJobInProcess, setIsJobInProcess] = useState(false)
 
-  useEffect(function fetchAPIKey() {
-    if (!userID) return
-    if (isJobInProcess) return
+  useEffect(
+    function fetchAPIKey() {
+      if (!userID) return
+      if (isJobInProcess) return
 
-    setIsJobInProcess(true)
-    setIsLoading(true)
+      setIsJobInProcess(true)
+      setIsLoading(true)
 
-    supabaseClient
-      .from<{ api_key: string, owner_id: string }>('api_keys')
-      .select('api_key')
-      .eq('owner_id', userID)
-      .single()
-      .then(({ data, error: err }) => {
-        if (data) setKey(data.api_key)
-        if (err) setError(err.message)
-        setIsJobInProcess(false)
-        setIsLoading(false)
-      })
-  }, [userID])
+      supabaseClient
+        .from<{
+          api_key: string
+          owner_id: string
+        }>('api_keys')
+        .select('api_key')
+        .eq('owner_id', userID)
+        .single()
+        .then(({ data, error: err }) => {
+          if (data) setKey(data.api_key)
+          if (err) setError(err.message)
+          setIsJobInProcess(false)
+          setIsLoading(false)
+        })
+    },
+    [userID],
+  )
 
   return {
     key,
@@ -36,6 +39,5 @@ function useAPIKey(userID?: string) {
     isLoading,
   }
 }
-
 
 export default useAPIKey

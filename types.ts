@@ -13,5 +13,6 @@ export interface App {
   id: string
   title: string
   creator_id?: string
+  created_at?: number
   serialized: object
 }

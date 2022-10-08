@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
 import cn from 'clsx'
 import Link from 'next/link'
+import { ReactNode } from 'react'
 import { UrlObject } from 'url'
 
 import Title, { Size } from 'components/typography/Title'
@@ -33,15 +33,16 @@ function TitleLink({
       href={href}
       shallow={shallow}
     >
-      <a
-        className={cn(
-          'hover:no-underline',
-          wrapperClassName,
-        )}
-      >
+      <a className={cn('hover:no-underline', wrapperClassName)}>
         <Title
           // Ugh..
-          rank={active ? (alternative ? Title.rank.PrimaryAlternative : Title.rank.Primary) : Title.rank.Secondary}
+          rank={
+            active
+              ? alternative
+                ? Title.rank.PrimaryAlternative
+                : Title.rank.Primary
+              : Title.rank.Secondary
+          }
           className={cn(
             'hover:text-white-900',
             'whitespace-nowrap',

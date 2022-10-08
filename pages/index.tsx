@@ -1,22 +1,22 @@
-import {
-  useState,
-  useEffect,
-} from 'react'
-import { useRouter } from 'next/router'
-import { supabaseClient, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { PlusIcon } from '@radix-ui/react-icons'
+import { supabaseClient, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+
+import AppCards from 'components/AppCards'
+import Button from 'components/Button'
+import NewAppModal from 'components/NewAppModal'
+import SpinnerIcon from 'components/icons/Spinner'
+import Title from 'components/typography/Title'
 
 import { showErrorNotif } from 'utils/notification'
-import Title from 'components/typography/Title'
-import Button from 'components/Button'
-import CodeSnippetCards from 'components/CodeSnippetCards'
-import SpinnerIcon from 'components/icons/Spinner'
-import NewCodeSnippetModal from 'components/NewCodeSnippetModal'
+import { createApp } from 'utils/queries'
 import useApps from 'utils/useApps'
 import useUserInfo from 'utils/useUserInfo'
-import { createApp } from 'utils/queries'
 
-export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
+export const getServerSideProps = withPageAuth({
+  redirectTo: '/signin',
+})
 
 function Dashboard() {
   const router = useRouter()
@@ -25,11 +25,7 @@ function Dashboard() {
 
   const { apiKey, user } = useUserInfo()
 
-  const {
-    apps,
-    isLoading,
-    error: csError,
-  } = useApps(user?.id || '')
+  const { apps, isLoading, error: csError } = useApps(user?.id || '')
 
   function closeModal() {
     setIsModalOpened(false)
@@ -39,12 +35,13 @@ function Dashboard() {
     setIsModalOpened(true)
   }
 
-  async function handleCreateApp({ title }: {
-    title: string,
-  }) {
+  async function handleCreateApp({ title }: { title: string }) {
     if (!apiKey) throw new Error('API key is undefined')
     setIsLoadingNewSnippet(true)
-    createApp(supabaseClient, { title, serialized: {} })
+    createApp(supabaseClient, {
+      title,
+      serialized: {},
+    })
       .then((data: any) => {
         if (data.statusCode === 500 && data.message) {
           throw new Error(data.message)
@@ -64,26 +61,32 @@ function Dashboard() {
       })
   }
 
-  useEffect(function checkAppError() {
-    if (!csError) return
-    showErrorNotif(`Error: ${csError}`)
-  }, [csError])
+  useEffect(
+    function checkAppError() {
+      if (!csError) return
+      showErrorNotif(`Error: ${csError}`)
+    },
+    [csError],
+  )
 
   return (
     <>
-      <NewCodeSnippetModal
+      <NewAppModal
         isOpen={isModalOpened}
         isLoading={isLoadingNewSnippet}
         onClose={closeModal}
-        onCreateCodeSnippetClick={handleCreateApp}
+        onCreate={handleCreateApp}
       />
-      <div className="
+      <div
+        className="
         flex-1
         flex
         flex-col
         space-y-6
-      ">
-        <div className="
+      "
+      >
+        <div
+          className="
           flex
           flex-col
           items-center
@@ -93,10 +96,9 @@ function Dashboard() {
           sm:justify-between
           sm:items-center
           sm:space-y-0
-        ">
-          <Title
-            title="Code Snippets"
-          />
+        "
+        >
+          <Title title="Apps" />
 
           {apps.length > 0 && (
             <Button
@@ -109,24 +111,23 @@ function Dashboard() {
         </div>
 
         {isLoading && (
-          <div className="
+          <div
+            className="
             flex-1
             flex
             items-center
             justify-center
-          ">
+          "
+          >
             <SpinnerIcon />
           </div>
         )}
 
-        {!isLoading && apps.length > 0 && (
-          <CodeSnippetCards
-            codeSnippets={apps}
-          />
-        )}
+        {!isLoading && apps.length > 0 && <AppCards apps={apps} />}
 
         {!isLoading && apps.length === 0 && (
-          <div className="
+          <div
+            className="
             flex
             flex-col
             items-center
@@ -139,7 +140,8 @@ function Dashboard() {
             border
             border-black-700
             rounded-lg
-          ">
+          "
+          >
             <Title
               title="Get Started"
               size={Title.size.T2}

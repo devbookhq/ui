@@ -1,9 +1,7 @@
 import Container from './Container'
 import CustomDragLayer from './CustomDragLayer'
 
-export interface Props {
-
-}
+export interface Props {}
 
 function Board() {
   return (

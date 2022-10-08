@@ -7,12 +7,7 @@ export interface Props {
   onChange: (e: any) => void
 }
 
-function Textarea({
-  value,
-  className,
-  placeholder,
-  onChange,
-}: Props) {
+function Textarea({ value, className, placeholder, onChange }: Props) {
   return (
     <textarea
       className={cn(

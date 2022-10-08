@@ -1,13 +1,9 @@
 import Preview from 'components/Preview'
 
-interface Props {
+interface Props {}
 
-}
-
-function AppPreview({ }: Props) {
-  return (
-    <Preview />
-  )
+function AppPreview({}: Props) {
+  return <Preview />
 }
 
 export default AppPreview

@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from 'react'
+import { useEffect, useState } from 'react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 
@@ -20,9 +17,7 @@ function useDndBackend() {
     }
   }, [])
 
-  return isTouch
-    ? touch
-    : html5
+  return isTouch ? touch : html5
 }
 
 export default useDndBackend

@@ -1,7 +1,5 @@
-import {
-  ReactNode,
-} from 'react'
 import cn from 'clsx'
+import { ReactNode } from 'react'
 
 import Text from 'components/typography/Text'
 
@@ -27,7 +25,7 @@ function Button({
   icon,
   onClick,
   type,
-  isDisabled
+  isDisabled,
 }: Props) {
   if (variant === Variant.Full) {
     return (
@@ -44,21 +42,29 @@ function Button({
           'rounded-lg',
           'bg-green-500',
           'hover:shadow',
-          { 'hover:shadow-green-500/50': !isDisabled },
-          { 'opacity-70': isDisabled },
-          { 'cursor-not-allowed': isDisabled },
+          {
+            'hover:shadow-green-500/50': !isDisabled,
+          },
+          {
+            'opacity-70': isDisabled,
+          },
+          {
+            'cursor-not-allowed': isDisabled,
+          },
           className,
         )}
-        onClick={!isDisabled ? onClick : () => { }}
+        onClick={!isDisabled ? onClick : () => {}}
       >
-        <div className="
+        <div
+          className="
           flex
           flex-row
           items-center
           justify-center
           space-x-1.5
           bg-green-500
-        ">
+        "
+        >
           <Text
             size={Text.size.S2}
             text={text}
@@ -77,14 +83,21 @@ function Button({
         'bg-black-700',
         'hover:bg-green-gradient',
         'hover:shadow',
-        { 'hover:shadow-green-500/50': !isDisabled },
-        { 'opacity-70': isDisabled },
-        { 'cursor-not-allowed': isDisabled },
+        {
+          'hover:shadow-green-500/50': !isDisabled,
+        },
+        {
+          'opacity-70': isDisabled,
+        },
+        {
+          'cursor-not-allowed': isDisabled,
+        },
         className,
       )}
-      onMouseDown={!isDisabled ? onClick : () => { }}
+      onMouseDown={!isDisabled ? onClick : () => {}}
     >
-      <div className="
+      <div
+        className="
         py-1
         px-2
 
@@ -96,7 +109,8 @@ function Button({
 
         rounded-lg
         bg-black-900
-      ">
+      "
+      >
         {icon}
         <Text
           size={Text.size.S2}

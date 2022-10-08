@@ -32,13 +32,7 @@ const Sizes = {
   [Size.T3]: 'text-sm',
 }
 
-function Title({
-  className,
-  title,
-  rank,
-  size = Size.T1,
-  icon,
-}: Props) {
+function Title({ className, title, rank, size = Size.T1, icon }: Props) {
   const classes = cn(
     'flex',
     'flex-row',
@@ -59,11 +53,7 @@ function Title({
     )
   }
 
-  return (
-    <span className={classes}>
-      {title}
-    </span>
-  )
+  return <span className={classes}>{title}</span>
 }
 
 Title.rank = Rank

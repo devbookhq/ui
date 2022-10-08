@@ -1,11 +1,11 @@
-import { ComponentType, memo, useEffect, CSSProperties } from 'react'
+import { CSSProperties, ComponentType, memo, useEffect } from 'react'
 import { useDrag } from 'react-dnd'
-import { getEmptyImage } from 'react-dnd-html5-backend'
 import type { XYCoord } from 'react-dnd'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 
+import { snapToGrid, xStep, yStep } from '../Board/snapToGrid'
 import CodeSnippet, { Icon as CodeSnippetIcon } from './CodeSnippet'
 import Placeholder, { Icon as PlaceholderIcon } from './Placeholder'
-import { snapToGrid, xStep, yStep } from '../Board/snapToGrid'
 
 export const boardComponentType: UIComponentType = 'boardComponent'
 export const sidebarIconType = 'sidebarIcon'
@@ -17,11 +17,7 @@ export interface BoardItem {
   componentType: string
 }
 
-function getStyles(
-  left: number,
-  top: number,
-  isDragging: boolean,
-): CSSProperties {
+function getStyles(left: number, top: number, isDragging: boolean): CSSProperties {
   const transform = `translate3d(${left}px, ${top}px, 0)`
   return {
     position: 'absolute',
@@ -80,9 +76,9 @@ interface DraggedProps {
 function asDraggedBoardComponent<P extends object>(Component: ComponentType<P>) {
   const Wrapped = (props: P & BoardItem & DraggedProps) => {
     return (
-      <div style={getItemStyles(props.initialOffset, props.currentOffset, props.offset)} >
+      <div style={getItemStyles(props.initialOffset, props.currentOffset, props.offset)}>
         <Component {...props} />
-      </div >
+      </div>
     )
   }
 
@@ -91,15 +87,23 @@ function asDraggedBoardComponent<P extends object>(Component: ComponentType<P>) 
   return memo(Wrapped)
 }
 
-function asBoardComponent<P extends object>(Component: ComponentType<P>, componentType: string) {
+function asBoardComponent<P extends object>(
+  Component: ComponentType<P>,
+  componentType: string,
+) {
   const Wrapped = (props: P & BoardItem) => {
     const { id, left, top } = props
 
     const [{ isDragging }, drag, preview] = useDrag(
       () => ({
         type: boardComponentType,
-        item: { id, left, top, componentType },
-        collect: (monitor) => ({
+        item: {
+          id,
+          left,
+          top,
+          componentType,
+        },
+        collect: monitor => ({
           isDragging: monitor.isDragging(),
         }),
       }),
@@ -107,7 +111,9 @@ function asBoardComponent<P extends object>(Component: ComponentType<P>, compone
     )
 
     useEffect(() => {
-      preview(getEmptyImage(), { captureDraggingState: true })
+      preview(getEmptyImage(), {
+        captureDraggingState: true,
+      })
     }, [])
 
     return (
@@ -145,22 +151,31 @@ function asPreviewComponent<P extends object>(Component: ComponentType<P>) {
   return memo(Wrapped)
 }
 
-function asSidebarIcon<P extends object>(Component: ComponentType<P>, componentType: string) {
+function asSidebarIcon<P extends object>(
+  Component: ComponentType<P>,
+  componentType: string,
+) {
   const Wrapped = (props: P) => {
     const [collected, drag] = useDrag(() => ({
       type: sidebarIconType,
       options: {
         dropEffect: 'copy',
       },
-      item: { componentType },
-      collect: (monitor) => ({
+      item: {
+        componentType,
+      },
+      collect: monitor => ({
         isDragging: monitor.isDragging(),
         opacity: monitor.isDragging() ? 0.5 : 1,
       }),
     }))
 
     return (
-      <div ref={drag} {...collected} className="p-1 mx-1 bg-gray-800 rounded-sm flex h-12 w-12 justify-center items-center" >
+      <div
+        ref={drag}
+        {...collected}
+        className="p-1 mx-1 bg-gray-800 rounded-sm flex h-12 w-12 justify-center items-center"
+      >
         <Component {...props} />
       </div>
     )
@@ -173,11 +188,15 @@ function asSidebarIcon<P extends object>(Component: ComponentType<P>, componentT
 
 type UIComponentType = string
 
-type UIComponentSetup<T extends BoardItem, I extends object, L extends BoardItem & DraggedProps> = {
-  Board: ComponentType<T>,
-  Sidebar: ComponentType<I>,
-  DraggedBoard: ComponentType<L>,
-  Preview: ComponentType<T>,
+type UIComponentSetup<
+  T extends BoardItem,
+  I extends object,
+  L extends BoardItem & DraggedProps,
+> = {
+  Board: ComponentType<T>
+  Sidebar: ComponentType<I>
+  DraggedBoard: ComponentType<L>
+  Preview: ComponentType<T>
 }
 
 type UIComponentMap = {
@@ -196,9 +215,8 @@ const availableComponents = {
   },
 }
 
-export const uiComponentsList = Object
-  .entries(availableComponents)
-  .map(([id, { Sidebar, Board }]) => {
+export const uiComponentsList = Object.entries(availableComponents).map(
+  ([id, { Sidebar, Board }]) => {
     return {
       id,
       Sidebar: asSidebarIcon(Sidebar, id),
@@ -206,27 +224,37 @@ export const uiComponentsList = Object
       DraggedBoard: asDraggedBoardComponent(Board),
       Preview: asPreviewComponent(Board),
     }
-  })
+  },
+)
 
-export const uiComponentsMap = uiComponentsList
-  .reduce<UIComponentMap>((prev, curr) => {
-    prev[curr.id] = {
-      Sidebar: curr.Sidebar,
-      Board: curr.Board,
-      DraggedBoard: curr.DraggedBoard,
-      Preview: curr.Preview,
-    }
-    return prev
-  }, {})
+export const uiComponentsMap = uiComponentsList.reduce<UIComponentMap>((prev, curr) => {
+  prev[curr.id] = {
+    Sidebar: curr.Sidebar,
+    Board: curr.Board,
+    DraggedBoard: curr.DraggedBoard,
+    Preview: curr.Preview,
+  }
+  return prev
+}, {})
 
 export function renderBoardItem(item: BoardItem) {
   const C = uiComponentsMap[item.componentType]
-  return <C.Board key={item.id} {...item} />
+  return (
+    <C.Board
+      key={item.id}
+      {...item}
+    />
+  )
 }
 
 export function renderPreviewItem(item: BoardItem) {
   const C = uiComponentsMap[item.componentType]
-  return <C.Preview key={item.id} {...item} />
+  return (
+    <C.Preview
+      key={item.id}
+      {...item}
+    />
+  )
 }
 
 export function renderDraggedBoardItem(
@@ -237,11 +265,13 @@ export function renderDraggedBoardItem(
   offset: XYCoord | null,
 ) {
   const C = uiComponentsMap[item.componentType]
-  return <C.DraggedBoard
-    key={item.id}
-    {...item}
-    initialOffset={initialOffset}
-    currentOffset={currentOffset}
-    offset={isSidebarItem ? offset : null}
-  />
+  return (
+    <C.DraggedBoard
+      key={item.id}
+      {...item}
+      initialOffset={initialOffset}
+      currentOffset={currentOffset}
+      offset={isSidebarItem ? offset : null}
+    />
+  )
 }

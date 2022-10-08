@@ -1,14 +1,10 @@
-import {
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import cn from 'clsx'
+import { useLayoutEffect, useRef, useState } from 'react'
 
+import Button from 'components/Button'
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
-import Button from 'components/Button'
 
 export enum AuthFormType {
   SignIn,
@@ -19,26 +15,27 @@ export interface Props {
   authType: AuthFormType
 }
 
-function AuthForm({
-  authType,
-}: Props) {
+function AuthForm({ authType }: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const [errMessage, setErrMessage] = useState('')
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  useLayoutEffect(function autofocusEmailInput() {
-    if (isLoading) return
+  useLayoutEffect(
+    function autofocusEmailInput() {
+      if (isLoading) return
 
-    if (!emailRef.current?.value) {
-      emailRef.current?.focus()
-    } else if (!passwordRef.current?.value) {
-      passwordRef.current?.focus()
-    } else {
-      emailRef.current?.focus()
-    }
-  }, [isLoading])
+      if (!emailRef.current?.value) {
+        emailRef.current?.focus()
+      } else if (!passwordRef.current?.value) {
+        passwordRef.current?.focus()
+      } else {
+        emailRef.current?.focus()
+      }
+    },
+    [isLoading],
+  )
 
   async function authWithEmail() {
     setIsLoading(true)
@@ -60,15 +57,16 @@ function AuthForm({
       return
     }
 
-    const { error } = authType === AuthFormType.SignUp
-      ? await supabaseClient.auth.signUp({
-        email,
-        password,
-      })
-      : await supabaseClient.auth.signIn({
-        email,
-        password,
-      })
+    const { error } =
+      authType === AuthFormType.SignUp
+        ? await supabaseClient.auth.signUp({
+            email,
+            password,
+          })
+        : await supabaseClient.auth.signIn({
+            email,
+            password,
+          })
 
     if (error) {
       emailRef.current?.focus()
@@ -81,31 +79,26 @@ function AuthForm({
     setIsLoading(false)
   }
 
-  const title = authType === AuthFormType.SignUp
-    ? 'Create a new account'
-    : 'Sign in'
+  const title = authType === AuthFormType.SignUp ? 'Create a new account' : 'Sign in'
 
-  const buttonLabel = authType === AuthFormType.SignUp
-    ? 'Sign up'
-    : 'Sign in'
+  const buttonLabel = authType === AuthFormType.SignUp ? 'Sign up' : 'Sign in'
 
-  const buttonLoadingLabel = authType === AuthFormType.SignUp
-    ? 'Signing up...'
-    : 'Signing in...'
+  const buttonLoadingLabel =
+    authType === AuthFormType.SignUp ? 'Signing up...' : 'Signing in...'
 
-  const passwordAutocomplete = authType === AuthFormType.SignUp
-    ? 'new-password'
-    : 'current-password'
+  const passwordAutocomplete =
+    authType === AuthFormType.SignUp ? 'new-password' : 'current-password'
 
   return (
     <form
       autoComplete="on"
-      onSubmit={(e) => {
+      onSubmit={e => {
         e.preventDefault()
         authWithEmail()
       }}
     >
-      <div className="
+      <div
+        className="
         py-12
         px-4
         w-[450px]
@@ -117,10 +110,9 @@ function AuthForm({
         self-start
         rounded
         bg-black-800
-      ">
-        <Title
-          title={title}
-        />
+      "
+      >
+        <Title title={title} />
         <div className="w-full flex flex-col px-16 space-y-8">
           <div className="flex flex-col space-y-2 min-w-0">
             <input
@@ -136,8 +128,12 @@ function AuthForm({
                 'rounded-lg',
                 'border',
                 'border-black-700',
-                { 'bg-black-900': !isLoading },
-                { 'bg-black-800': isLoading },
+                {
+                  'bg-black-900': !isLoading,
+                },
+                {
+                  'bg-black-800': isLoading,
+                },
                 'outline-none',
                 'focus:border-green-200',
                 'text-sm',
@@ -162,8 +158,12 @@ function AuthForm({
                 'min-w-0',
                 'flex-1',
                 'border-black-700',
-                { 'bg-black-900': !isLoading },
-                { 'bg-black-800': isLoading },
+                {
+                  'bg-black-900': !isLoading,
+                },
+                {
+                  'bg-black-800': isLoading,
+                },
                 'outline-none',
                 'focus:border-green-200',
                 'text-sm',
@@ -184,13 +184,13 @@ function AuthForm({
               text={isLoading ? buttonLoadingLabel : buttonLabel}
               variant={Button.variant.Full}
             />
-            {!isLoading && !!errMessage &&
+            {!isLoading && !!errMessage && (
               <Text
                 text={errMessage}
                 size={Text.size.S2}
                 className="text-red-400 self-center"
               />
-            }
+            )}
           </div>
         </div>
       </div>

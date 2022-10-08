@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-
   /* Override react-toastify vars */
   :root {
     --toastify-color-dark: #313034;
@@ -27,7 +26,8 @@
     @apply bg-black-900;
     @apply text-white-900 antialiased;
 
-    font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue', 'Helvetica', sans-serif;
+    font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
+      'Helvetica', sans-serif;
     text-rendering: optimizeLegibility;
   }
 

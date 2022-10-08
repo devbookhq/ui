@@ -1,13 +1,12 @@
-import { useState } from 'react'
+import { CodeIcon, GearIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/router'
-import {
-  CodeIcon,
-  GearIcon,
-} from '@radix-ui/react-icons'
+import { useState } from 'react'
 
 import Button from 'components/Button'
 import FeedbackModal from 'components/FeedbackModal'
+
 import useUserInfo from 'utils/useUserInfo'
+
 import SidebarLink from './SidebarLink'
 
 const pages = [
@@ -32,7 +31,8 @@ function DashboardSidebar() {
         onClose={() => setIsFeedbackVisible(false)}
       />
 
-      <div className="
+      <div
+        className="
         py-4
         border-r
         border-black-700
@@ -40,15 +40,18 @@ function DashboardSidebar() {
         flex-col
         items-center
         justify-between
-      ">
-        <div className="
+      "
+      >
+        <div
+          className="
           w-full
           flex
           flex-col
           items-start
           justify-start
           space-y-2
-        ">
+        "
+        >
           {pages.map(p => (
             <SidebarLink
               key={p.href}
@@ -60,14 +63,16 @@ function DashboardSidebar() {
           ))}
         </div>
 
-        <div className="
+        <div
+          className="
           w-full
           flex
           flex-col
           items-center
           justify-start
           space-y-4
-        ">
+        "
+        >
           <SidebarLink
             title="Settings"
             href="/settings"

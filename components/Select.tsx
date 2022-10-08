@@ -1,8 +1,8 @@
 import { Listbox } from '@headlessui/react'
+import { SelectorIcon } from '@heroicons/react/solid'
 import cn from 'clsx'
 
 import Text from 'components/typography/Text'
-import { SelectorIcon } from '@heroicons/react/solid'
 
 interface Item {
   value: string
@@ -17,25 +17,18 @@ interface Props {
   onChange: (i: Item) => void
 }
 
-function SelectEl({
-  items,
-  value,
-  onChange,
-}: Props) {
+function SelectEl({ items, value, onChange }: Props) {
   return (
     <Listbox
       value={value}
       onChange={onChange}
     >
       {({ open }) => (
-        <div className={cn(
-          'relative',
-          'w-full',
-          'rounded-lg',
-          'p-[1px]',
-          'bg-black-700',
-          { 'bg-green-gradient': open },
-        )}>
+        <div
+          className={cn('relative', 'w-full', 'rounded-lg', 'p-[1px]', 'bg-black-700', {
+            'bg-green-gradient': open,
+          })}
+        >
           <Listbox.Button
             className="
               w-full
@@ -47,13 +40,15 @@ function SelectEl({
               text-left
               rounded-lg
               text-sm
-          ">
+          "
+          >
             <Text
               className="block truncate"
               text={value.name}
               size={Text.size.S1}
             />
-            <span className="
+            <span
+              className="
               pointer-events-none
               absolute
               inset-y-0
@@ -61,7 +56,8 @@ function SelectEl({
               flex
               items-center
               pr-2
-            ">
+            "
+            >
               <SelectorIcon
                 className="h-5 w-5 text-gray-400"
                 aria-hidden="true"
@@ -69,7 +65,8 @@ function SelectEl({
             </span>
           </Listbox.Button>
 
-          <Listbox.Options className="
+          <Listbox.Options
+            className="
             absolute
             mt-1
             max-h-60
@@ -81,8 +78,9 @@ function SelectEl({
             border
             border-black-700
             z-50
-          ">
-            {items.map((item) => (
+          "
+          >
+            {items.map(item => (
               <Listbox.Option
                 className="
                   relative
@@ -112,45 +110,34 @@ function SelectEl({
   )
 }
 
-
-function Select({
-  wrapperClassName,
-  title,
-  items,
-  value,
-  onChange,
-}: Props) {
+function Select({ wrapperClassName, title, items, value, onChange }: Props) {
   return (
     <>
-      {title
-        ? (
-          <div className={cn(
-            'flex',
-            'flex-col',
-            'items-start',
-            'space-y-1',
-            wrapperClassName,
-          )}>
-            <span className="
+      {title ? (
+        <div
+          className={cn('flex', 'flex-col', 'items-start', 'space-y-1', wrapperClassName)}
+        >
+          <span
+            className="
             font-sm
             text-gray-600
-          ">
-              {title}
-            </span>
-            <SelectEl
-              items={items}
-              value={value}
-              onChange={onChange}
-            />
-          </div>
-        )
-        : (
+          "
+          >
+            {title}
+          </span>
           <SelectEl
             items={items}
             value={value}
             onChange={onChange}
           />
-        )}
+        </div>
+      ) : (
+        <SelectEl
+          items={items}
+          value={value}
+          onChange={onChange}
+        />
+      )}
     </>
   )
 }

@@ -1,8 +1,5 @@
-import {
-  ReactNode,
-  Fragment,
-} from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, ReactNode } from 'react'
 
 import Title from 'components/typography/Title'
 
@@ -13,15 +10,18 @@ interface Props {
   onClose: () => void
 }
 
-function Modal({
-  title,
-  children,
-  isOpen,
-  onClose,
-}: Props) {
+function Modal({ title, children, isOpen, onClose }: Props) {
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+    <Transition
+      appear
+      show={isOpen}
+      as={Fragment}
+    >
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={onClose}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -34,14 +34,17 @@ function Modal({
           <div className="fixed inset-0 bg-[#000]/50" />
         </Transition.Child>
 
-        <div className="
+        <div
+          className="
           fixed
           inset-0
           flex
           justify-center
           overflow-y-auto
-        ">
-          <div className="
+        "
+        >
+          <div
+            className="
             flex-1
             flex
             min-h-full
@@ -52,7 +55,8 @@ function Modal({
             text-center
             relative
             top-[-100px]
-          ">
+          "
+          >
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -62,7 +66,8 @@ function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="
+              <Dialog.Panel
+                className="
                 flex
                 flex-col
                 items-start
@@ -80,12 +85,15 @@ function Modal({
                 border
                 border-black-700
                 text-white-900
-              ">
-                <div className="
+              "
+              >
+                <div
+                  className="
                   flex
                   items-center
                   justify-start
-                ">
+                "
+                >
                   <Dialog.Title
                     as={Title}
                     title={title}

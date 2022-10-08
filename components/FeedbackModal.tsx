@@ -1,22 +1,20 @@
-import { useState } from 'react'
-import useUserInfo from 'utils/useUserInfo'
-
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { upsertUserFeedback } from 'utils/queries'
+import { useState } from 'react'
+
+import Button from 'components/Button'
 import Modal from 'components/Modal'
 import Textarea from 'components/Textarea'
 import SpinnerIcon from 'components/icons/Spinner'
-import Button from 'components/Button'
+
+import { upsertUserFeedback } from 'utils/queries'
+import useUserInfo from 'utils/useUserInfo'
 
 export interface Props {
   isOpen: boolean
   onClose: () => void
 }
 
-function FeedbackModal({
-  isOpen,
-  onClose,
-}: Props) {
+function FeedbackModal({ isOpen, onClose }: Props) {
   const [feedback, setFeedback] = useState('')
   const [isSavingFeedback, setIsSavingFeedback] = useState(false)
   const { user } = useUserInfo()

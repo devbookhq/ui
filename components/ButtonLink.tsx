@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
 import { useRouter } from 'next/router'
+import { ReactNode } from 'react'
 
 import Button, { Variant } from 'components/Button'
 
@@ -10,12 +10,7 @@ interface Props {
   icon?: ReactNode
 }
 
-function ButtonLink({
-  text,
-  href,
-  variant = Variant.Outline,
-  icon,
-}: Props) {
+function ButtonLink({ text, href, variant = Variant.Outline, icon }: Props) {
   const router = useRouter()
   return (
     <Button

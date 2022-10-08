@@ -1,12 +1,15 @@
-import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { CopyIcon } from '@radix-ui/react-icons'
+import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 
+import ButtonLink from 'components/ButtonLink'
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
-import ButtonLink from 'components/ButtonLink'
+
 import useUserInfo from 'utils/useUserInfo'
 
-export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
+export const getServerSideProps = withPageAuth({
+  redirectTo: '/signin',
+})
 
 function Settings() {
   const { apiKey, user } = useUserInfo()
@@ -22,34 +25,38 @@ function Settings() {
   }
 
   return (
-    <div className="
+    <div
+      className="
       flex
       flex-col
       items-start
       space-y-6
-    ">
-      <Title
-        title="Settings"
-      />
+    "
+    >
+      <Title title="Settings" />
 
-      <div className="
+      <div
+        className="
         flex
         flex-col
         items-start
         justify-start
         space-y-2
-      ">
+      "
+      >
         <Title
           size={Title.size.T2}
           title="Email"
         />
-        <div className="
+        <div
+          className="
           flex
           flex-row
           items-center
           space-x-2
           px-2
-        ">
+        "
+        >
           <Text
             text={user?.email || ''}
             size={Text.size.S1}
@@ -60,12 +67,14 @@ function Settings() {
           size={Title.size.T2}
           title="API Key"
         />
-        <div className="
+        <div
+          className="
           flex
           flex-row
           items-center
           space-x-2
-        ">
+        "
+        >
           <input
             type="text"
             className="
