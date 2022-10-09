@@ -19,7 +19,15 @@ module.exports = {
   rules: {
     '@typescript-eslint/member-ordering': ['error'],
     'linebreak-style': ['error', 'unix'],
-    'max-len': ['error', { code: 90, ignoreComments: true }],
+    'max-len': [
+      'error',
+      {
+        code: 90,
+        ignoreComments: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+      },
+    ],
     'prettier/prettier': ['error'],
     quotes: ['error', 'single', { avoidEscape: true }],
     'react/jsx-sort-props': [
