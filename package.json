@@ -26,11 +26,6 @@
     "format:fix": "prettier --write --ignore-path .gitignore .",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "@codemirror/closebrackets": "^0.19.1",
     "@codemirror/commands": "^0.19.8",
