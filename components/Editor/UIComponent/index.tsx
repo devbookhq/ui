@@ -174,7 +174,7 @@ function asSidebarIcon<P extends object>(
       <div
         ref={drag}
         {...collected}
-        className="p-1 mx-1 bg-gray-800 rounded-sm flex h-12 w-12 justify-center items-center"
+        className="mx-1 flex h-12 w-12 items-center justify-center rounded-sm bg-gray-800 p-1"
       >
         <Component {...props} />
       </div>
@@ -269,8 +269,8 @@ export function renderDraggedBoardItem(
     <C.DraggedBoard
       key={item.id}
       {...item}
-      initialOffset={initialOffset}
       currentOffset={currentOffset}
+      initialOffset={initialOffset}
       offset={isSidebarItem ? offset : null}
     />
   )

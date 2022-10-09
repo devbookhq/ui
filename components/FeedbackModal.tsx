@@ -35,32 +35,32 @@ function FeedbackModal({ isOpen, onClose }: Props) {
 
   return (
     <Modal
-      title="Your Feedback"
       isOpen={isOpen}
+      title="Your Feedback"
       onClose={onClose}
     >
       {isSavingFeedback && <SpinnerIcon className="m-auto" />}
       {!isSavingFeedback && (
         <form
+          autoComplete="of"
           className="
             flex
+            w-full
             flex-col
             items-start
             space-y-4
-            w-full
           "
-          autoComplete="of"
           onSubmit={saveFeedback}
         >
           <Textarea
+            placeholder="Your feedback..."
             value={feedback}
             onChange={e => setFeedback(e.target.value)}
-            placeholder="Your feedback..."
           />
 
           <Button
-            variant={Button.variant.Full}
             text="Send"
+            variant={Button.variant.Full}
             onClick={saveFeedback}
           />
         </form>

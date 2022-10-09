@@ -98,17 +98,17 @@ function Button({
     >
       <div
         className="
-        py-1
-        px-2
-
         flex
         flex-row
+
         items-center
         justify-center
         space-x-1.5
-
         rounded-lg
         bg-black-900
+
+        py-1
+        px-2
       "
       >
         {icon}

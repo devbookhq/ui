@@ -27,14 +27,14 @@ function AppCards({ apps }: Props) {
 
       md:flex-row
       md:flex-wrap
-      md:space-y-0
       md:gap-4
+      md:space-y-0
     "
     >
       {sorted.map(app => (
         <Card
-          key={app.id}
           app={app}
+          key={app.id}
         />
       ))}
     </div>

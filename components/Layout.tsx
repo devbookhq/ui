@@ -31,8 +31,8 @@ export default function Layout({ children, meta: pageMeta }: Props) {
       <Head>
         <title>{meta.title}</title>
         <meta
-          name="robots"
           content="follow, index"
+          name="robots"
         />
         <link
           href="/favicon.ico"
@@ -43,66 +43,66 @@ export default function Layout({ children, meta: pageMeta }: Props) {
           name="description"
         />
         <meta
-          property="og:url"
           content={`https://app.usedevbook.com${router.asPath}`}
+          property="og:url"
         />
         <meta
-          property="og:type"
           content="website"
+          property="og:type"
         />
         <meta
+          content={meta.title}
           property="og:site_name"
-          content={meta.title}
         />
         <meta
+          content={meta.description}
           property="og:description"
-          content={meta.description}
         />
         <meta
+          content={meta.title}
           property="og:title"
-          content={meta.title}
         />
         <meta
+          content={meta.cardImage}
           property="og:image"
-          content={meta.cardImage}
         />
         <meta
-          name="twitter:card"
           content="summary_large_image"
+          name="twitter:card"
         />
         <meta
-          name="twitter:site"
           content="@devbookhq"
+          name="twitter:site"
         />
         <meta
-          name="twitter:title"
           content={meta.title}
+          name="twitter:title"
         />
         <meta
-          name="twitter:description"
           content={meta.description}
+          name="twitter:description"
         />
         <meta
-          name="twitter:image"
           content={meta.cardImage}
+          name="twitter:image"
         />
       </Head>
 
       <div
         className="
+        item-start
+        flex
         w-full
         flex-1
-        flex
-        item-start
       "
       >
         {!isPreview && <DashboardSidebar />}
         <div
           className="
-          p-4
-          flex-1
           flex
+          flex-1
           flex-col
+          p-4
         "
         >
           {children}

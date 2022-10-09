@@ -123,8 +123,8 @@ function Container({}: Props) {
   console.log(items)
   return (
     <div
-      ref={ref}
       className="relative flex flex-1"
+      ref={ref}
     >
       {Object.values(items).map(item => renderBoardItem(item))}
     </div>

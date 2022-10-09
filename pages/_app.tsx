@@ -17,14 +17,14 @@ export default function App({ Component, pageProps }: AppProps) {
           <Layout>
             <Component {...pageProps} />
             <ToastContainer
-              position="bottom-right"
-              theme="dark"
               autoClose={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
               draggable={false}
+              newestOnTop={false}
+              position="bottom-right"
+              rtl={false}
+              theme="dark"
+              closeOnClick
+              pauseOnFocusLoss
             />
           </Layout>
         </UserInfoContextProvider>

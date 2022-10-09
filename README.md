@@ -29,13 +29,13 @@ yarn dev
 To automatically lint and fix errors according to ESLint run:
 
 ```bash
-yarn fix
+yarn lint:fix
 ```
 
 To analyze client and server bundle sizes run:
 
 ```bash
-yarn analyze
+yarn build:analyze
 ```
 
 ## Deployment (Vercel)

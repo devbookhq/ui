@@ -27,15 +27,15 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
 
   return (
     <Modal
-      title="Create new app"
       isOpen={isOpen}
+      title="Create new app"
       onClose={onClose}
     >
       <div
         className="
         mt-4
-        w-full
         flex
+        w-full
         flex-col
         items-center
         justify-center
@@ -44,8 +44,8 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
       >
         <div
           className="
-          w-full
           flex
+          w-full
           flex-col
           items-center
           justify-center
@@ -53,19 +53,19 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
         "
         >
           <Input
-            wrapperClassName="w-full"
+            placeholder="App title"
             title="Title"
             value={title}
+            wrapperClassName="w-full"
             onChange={handleTitleChange}
-            placeholder="App title"
             onEnterDown={handleCreateButtonClick}
           />
         </div>
         <Button
-          variant={Button.variant.Full}
-          text={isLoading ? 'Creating...' : 'Create App'}
           icon={isLoading ? <SpinnerIcon /> : null}
           isDisabled={isLoading}
+          text={isLoading ? 'Creating...' : 'Create App'}
+          variant={Button.variant.Full}
           onClick={handleCreateButtonClick}
         />
       </div>

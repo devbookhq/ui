@@ -14,6 +14,11 @@ export interface Props {
 function SidebarLink({ active, title, href, icon }: Props) {
   return (
     <TitleLink
+      active={active}
+      href={href}
+      icon={icon}
+      size={TitleLink.size.T3}
+      title={title}
       wrapperClassName="w-full"
       className={cn(
         'w-full',
@@ -32,11 +37,6 @@ function SidebarLink({ active, title, href, icon }: Props) {
           'bg-[#18161C]': active,
         },
       )}
-      href={href}
-      active={active}
-      title={title}
-      size={TitleLink.size.T3}
-      icon={icon}
       shallow
     />
   )

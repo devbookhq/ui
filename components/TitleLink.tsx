@@ -36,6 +36,15 @@ function TitleLink({
       <a className={cn('hover:no-underline', wrapperClassName)}>
         <Title
           // Ugh..
+          icon={icon}
+          size={size}
+          title={title}
+          className={cn(
+            'hover:text-white-900',
+            'whitespace-nowrap',
+            'transition-colors',
+            className,
+          )}
           rank={
             active
               ? alternative
@@ -43,15 +52,6 @@ function TitleLink({
                 : Title.rank.Primary
               : Title.rank.Secondary
           }
-          className={cn(
-            'hover:text-white-900',
-            'whitespace-nowrap',
-            'transition-colors',
-            className,
-          )}
-          size={size}
-          title={title}
-          icon={icon}
         />
       </a>
     </Link>

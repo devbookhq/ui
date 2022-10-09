@@ -25,7 +25,6 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
       <input
         {...rest}
         ref={ref}
-        onKeyDown={handleKeyDown}
         className={cn(
           'px-2.5',
           'py-1',
@@ -39,6 +38,7 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
           'placeholder:text-gray-600',
           className,
         )}
+        onKeyDown={handleKeyDown}
       />
     )
   },
@@ -69,8 +69,8 @@ const Input = forwardRef<HTMLInputElement, Props>(
               {title}
             </span>
             <InputEl
-              ref={ref}
               className={cn('w-full', className)}
+              ref={ref}
               {...rest}
             />
           </div>

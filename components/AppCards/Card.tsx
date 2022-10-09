@@ -67,16 +67,16 @@ function Card({ app }: Props) {
           <div
             ref={cardRef}
             className="
-              p-[2px]
+              hover:bg-green-gradient
+
+              cursor-pointer
+              rounded-lg
 
               bg-black-700
-              cursor-pointer
-
-              hover:bg-green-gradient
+              p-[2px]
               hover:shadow-lg
-              hover:shadow-green-500/50
 
-              rounded-lg"
+              hover:shadow-green-500/50"
           >
             <div
               className="
@@ -88,26 +88,26 @@ function Card({ app }: Props) {
             >
               <div
                 className="
-                flex-1
                 flex
+                flex-1
                 items-center
                 justify-between
+                truncate
+                rounded-b-lg
                 bg-black-700
                 py-1
                 px-2
-                rounded-b-lg
-                truncate
           "
               >
                 <Title
+                  className="truncate"
                   size={Title.size.T2}
                   title={app.title}
-                  className="truncate"
                 />
                 <div
                   className="
-                p-2
                 rounded
+                p-2
                 hover:bg-white-900/5
               "
                   onClick={handleOnMoreClick}
@@ -122,11 +122,11 @@ function Card({ app }: Props) {
             <div
               className="
             absolute
-            p-1
-            px-2
             z-10
             rounded
             bg-black-700
+            p-1
+            px-2
             hover:bg-[#504E55]
           "
               style={{
@@ -135,10 +135,10 @@ function Card({ app }: Props) {
               }}
             >
               <Text
+                text="Delete"
                 className="
               cursor-pointer
             "
-                text="Delete"
                 onClick={handleDelete}
               />
             </div>

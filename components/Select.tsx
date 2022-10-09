@@ -32,20 +32,20 @@ function SelectEl({ items, value, onChange }: Props) {
           <Listbox.Button
             className="
               w-full
-              bg-black-900
               cursor-pointer
+              rounded-lg
+              bg-black-900
               py-2
               pl-3
               pr-10
               text-left
-              rounded-lg
               text-sm
           "
           >
             <Text
               className="block truncate"
-              text={value.name}
               size={Text.size.S1}
+              text={value.name}
             />
             <span
               className="
@@ -59,8 +59,8 @@ function SelectEl({ items, value, onChange }: Props) {
             "
             >
               <SelectorIcon
-                className="h-5 w-5 text-gray-400"
                 aria-hidden="true"
+                className="h-5 w-5 text-gray-400"
               />
             </span>
           </Listbox.Button>
@@ -68,33 +68,33 @@ function SelectEl({ items, value, onChange }: Props) {
           <Listbox.Options
             className="
             absolute
+            z-50
             mt-1
             max-h-60
             w-full
             overflow-auto
             rounded-lg
-            py-1
-            bg-black-900
             border
             border-black-700
-            z-50
+            bg-black-900
+            py-1
           "
           >
             {items.map(item => (
               <Listbox.Option
+                disabled={false}
+                key={item.value}
+                value={item}
                 className="
                   relative
+                  cursor-pointer
                   select-none
                   py-2
                   pl-3
                   pr-4
-                  cursor-pointer
-                  hover:bg-black-700
                   text-left
+                  hover:bg-black-700
                 "
-                key={item.value}
-                value={item}
-                disabled={false}
               >
                 <Text
                   className="block truncate"

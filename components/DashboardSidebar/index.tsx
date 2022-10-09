@@ -33,19 +33,19 @@ function DashboardSidebar() {
 
       <div
         className="
-        py-4
-        border-r
-        border-black-700
         flex
         flex-col
         items-center
         justify-between
+        border-r
+        border-black-700
+        py-4
       "
       >
         <div
           className="
-          w-full
           flex
+          w-full
           flex-col
           items-start
           justify-start
@@ -54,19 +54,19 @@ function DashboardSidebar() {
         >
           {pages.map(p => (
             <SidebarLink
+              active={p.activeOnPathnames.includes(router.pathname)}
+              href={p.href}
+              icon={p.icon}
               key={p.href}
               title={p.title}
-              href={p.href}
-              active={p.activeOnPathnames.includes(router.pathname)}
-              icon={p.icon}
             />
           ))}
         </div>
 
         <div
           className="
-          w-full
           flex
+          w-full
           flex-col
           items-center
           justify-start
@@ -74,10 +74,10 @@ function DashboardSidebar() {
         "
         >
           <SidebarLink
-            title="Settings"
-            href="/settings"
             active={router.pathname === '/settings'}
+            href="/settings"
             icon={<GearIcon />}
+            title="Settings"
           />
           <Button
             className="mx-2"

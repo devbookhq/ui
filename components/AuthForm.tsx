@@ -99,10 +99,8 @@ function AuthForm({ authType }: Props) {
     >
       <div
         className="
-        py-12
-        px-4
-        w-[450px]
         flex
+        w-[450px]
         flex-1
         flex-col
         items-center
@@ -110,17 +108,22 @@ function AuthForm({ authType }: Props) {
         self-start
         rounded
         bg-black-800
+        py-12
+        px-4
       "
       >
         <Title title={title} />
-        <div className="w-full flex flex-col px-16 space-y-8">
-          <div className="flex flex-col space-y-2 min-w-0">
+        <div className="flex w-full flex-col space-y-8 px-16">
+          <div className="flex min-w-0 flex-col space-y-2">
             <input
-              ref={emailRef}
-              autoCorrect="off"
               autoCapitalize="off"
+              autoComplete="email"
+              autoCorrect="off"
               disabled={isLoading}
-              required
+              name="email"
+              placeholder="Email"
+              ref={emailRef}
+              type="email"
               className={cn(
                 'w-full',
                 'px-2.5',
@@ -139,16 +142,16 @@ function AuthForm({ authType }: Props) {
                 'text-sm',
                 'placeholder:text-gray-600',
               )}
-              name="email"
-              autoComplete="email"
-              placeholder="Email"
-              type="email"
+              required
             />
             <input
-              disabled={isLoading}
-              ref={passwordRef}
+              autoComplete={passwordAutocomplete}
               autoCorrect="off"
-              required
+              disabled={isLoading}
+              name="password"
+              placeholder="Password"
+              ref={passwordRef}
+              type="password"
               className={cn(
                 'px-2.5',
                 'py-2',
@@ -170,25 +173,22 @@ function AuthForm({ authType }: Props) {
                 'font-medium',
                 'placeholder:text-gray-600',
               )}
-              name="password"
-              type="password"
-              autoComplete={passwordAutocomplete}
-              placeholder="Password"
+              required
             />
           </div>
           <div className="flex flex-col space-y-4">
             <Button
-              type="submit"
-              isDisabled={isLoading}
               className="self-center whitespace-nowrap"
+              isDisabled={isLoading}
               text={isLoading ? buttonLoadingLabel : buttonLabel}
+              type="submit"
               variant={Button.variant.Full}
             />
             {!isLoading && !!errMessage && (
               <Text
-                text={errMessage}
+                className="self-center text-red-400"
                 size={Text.size.S2}
-                className="text-red-400 self-center"
+                text={errMessage}
               />
             )}
           </div>

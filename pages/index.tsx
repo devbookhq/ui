@@ -72,15 +72,15 @@ function Dashboard() {
   return (
     <>
       <NewAppModal
-        isOpen={isModalOpened}
         isLoading={isLoadingNewSnippet}
+        isOpen={isModalOpened}
         onClose={closeModal}
         onCreate={handleCreateApp}
       />
       <div
         className="
-        flex-1
         flex
+        flex-1
         flex-col
         space-y-6
       "
@@ -93,8 +93,8 @@ function Dashboard() {
           space-y-2
 
           sm:flex-row
-          sm:justify-between
           sm:items-center
+          sm:justify-between
           sm:space-y-0
         "
         >
@@ -102,10 +102,10 @@ function Dashboard() {
 
           {apps.length > 0 && (
             <Button
-              text="New app"
               icon={isLoadingNewSnippet ? <SpinnerIcon /> : <PlusIcon />}
-              onClick={openModal}
               isDisabled={isLoadingNewSnippet}
+              text="New app"
+              onClick={openModal}
             />
           )}
         </div>
@@ -113,8 +113,8 @@ function Dashboard() {
         {isLoading && (
           <div
             className="
-            flex-1
             flex
+            flex-1
             items-center
             justify-center
           "
@@ -129,32 +129,32 @@ function Dashboard() {
           <div
             className="
             flex
+            w-full
             flex-col
             items-center
+
             space-y-16
 
-            py-6
-
-            w-full
-            bg-transparent
+            rounded-lg
             border
             border-black-700
-            rounded-lg
+            bg-transparent
+            py-6
           "
           >
             <Title
-              title="Get Started"
               size={Title.size.T2}
+              title="Get Started"
             />
 
             <div />
 
             <Button
-              variant={Button.variant.Full}
               icon={isLoadingNewSnippet ? <SpinnerIcon /> : null}
-              text="New app"
-              onClick={openModal}
               isDisabled={isLoadingNewSnippet}
+              text="New app"
+              variant={Button.variant.Full}
+              onClick={openModal}
             />
           </div>
         )}

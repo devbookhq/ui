@@ -9,8 +9,8 @@ function CodeSnippet() {
     <div className="flex">
       <CS
         fallbackContent="Content"
-        isEditable={true}
         id="Mh3XS5Pq9ch8"
+        isEditable={true}
       />
     </div>
   )

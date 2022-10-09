@@ -1,6 +1,7 @@
 import { RefCallback, useCallback, useState } from 'react'
 
 function useElement<T>(
+  lor: string,
   cb?: (element: T) => any,
 ): [T | undefined, (instance: T | null) => void] {
   const [element, setElement] = useState<T>()

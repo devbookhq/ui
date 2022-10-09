@@ -2,9 +2,20 @@ module.exports = {
   extends: ['next/core-web-vitals', 'prettier'],
   plugins: ['prettier', 'unused-imports'],
   rules: {
-    semi: [2, 'never'],
-    quotes: [
+    'react/jsx-sort-props': [
       2,
+      {
+        callbacksLast: true,
+        shorthandFirst: false,
+        shorthandLast: true,
+        multiline: 'last',
+        ignoreCase: true,
+        noSortAlphabetically: false,
+      },
+    ],
+    semi: ['error', 'never'],
+    quotes: [
+      'error',
       'single',
       {
         avoidEscape: true,
@@ -12,14 +23,5 @@ module.exports = {
     ],
     'prettier/prettier': ['error'],
     'unused-imports/no-unused-imports': 'error',
-    'unused-imports/no-unused-vars': [
-      'warn',
-      {
-        vars: 'all',
-        varsIgnorePattern: '^_',
-        args: 'after-used',
-        argsIgnorePattern: '^_',
-      },
-    ],
   },
 }

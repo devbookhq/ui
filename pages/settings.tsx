@@ -58,8 +58,8 @@ function Settings() {
         "
         >
           <Text
-            text={user?.email || ''}
             size={Text.size.S1}
+            text={user?.email || ''}
           />
         </div>
 
@@ -77,29 +77,29 @@ function Settings() {
         >
           <input
             type="text"
+            value={apiKey}
             className="
               w-[300px]
-              px-2
-              py-1
+              truncate
               rounded-lg
-              text-white-900
-              bg-black-800
               border
               border-black-700
-              truncate
+              bg-black-800
+              px-2
+              py-1
               text-sm
+              text-white-900
             "
-            value={apiKey}
             readOnly
           />
           <div
             className="
-              p-2
-              rounded-lg
               cursor-pointer
+              rounded-lg
+              p-2
               text-white-900/50
-              hover:text-white-900
               hover:bg-black-700
+              hover:text-white-900
             "
             onClick={handleCopyClick}
           >

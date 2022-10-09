@@ -10,6 +10,8 @@ export interface Props {
 function Textarea({ value, className, placeholder, onChange }: Props) {
   return (
     <textarea
+      placeholder={placeholder}
+      value={value}
       className={cn(
         'w-full',
         'px-2.5',
@@ -25,8 +27,6 @@ function Textarea({ value, className, placeholder, onChange }: Props) {
         'placeholder:text-gray-600',
         className,
       )}
-      placeholder={placeholder}
-      value={value}
       onChange={onChange}
     />
   )

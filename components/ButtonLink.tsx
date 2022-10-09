@@ -15,8 +15,8 @@ function ButtonLink({ text, href, variant = Variant.Outline, icon }: Props) {
   return (
     <Button
       icon={icon}
-      variant={variant}
       text={text}
+      variant={variant}
       onClick={() => router.push(href)}
     />
   )

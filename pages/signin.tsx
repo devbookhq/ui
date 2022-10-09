@@ -22,8 +22,8 @@ function SignIn() {
       {user && (
         <div
           className="
-          flex-1
           flex
+          flex-1
           items-center
           justify-center
         "
@@ -38,8 +38,8 @@ function SignIn() {
             flex
             flex-col
             items-center
-            rounded
             space-y-4
+            rounded
           "
         >
           {!isCreatingNewAccount && (
@@ -48,13 +48,13 @@ function SignIn() {
               <TitleLink
                 size={TitleLink.size.T2}
                 title="Create a new account"
-                shallow
                 href={{
                   pathname: router.pathname,
                   query: {
                     signup: 'true',
                   },
                 }}
+                shallow
               />
             </>
           )}
@@ -64,10 +64,10 @@ function SignIn() {
               <TitleLink
                 size={TitleLink.size.T2}
                 title="Sign in with an existing account"
-                shallow
                 href={{
                   pathname: router.pathname,
                 }}
+                shallow
               />
             </>
           )}

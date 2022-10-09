@@ -13,9 +13,9 @@ interface Props {
 function Modal({ title, children, isOpen, onClose }: Props) {
   return (
     <Transition
-      appear
-      show={isOpen}
       as={Fragment}
+      show={isOpen}
+      appear
     >
       <Dialog
         as="div"
@@ -45,16 +45,16 @@ function Modal({ title, children, isOpen, onClose }: Props) {
         >
           <div
             className="
-            flex-1
+            relative
+            top-[-100px]
             flex
             min-h-full
             max-w-[800px]
+            flex-1
             items-center
             justify-center
             p-4
             text-center
-            relative
-            top-[-100px]
           "
           >
             <Transition.Child
@@ -69,22 +69,22 @@ function Modal({ title, children, isOpen, onClose }: Props) {
               <Dialog.Panel
                 className="
                 flex
-                flex-col
-                items-start
-                space-y-4
                 w-full
                 max-w-full
                 transform
+                flex-col
+                items-start
+                space-y-4
                 rounded-lg
-                backdrop-blur
+                border
+                border-black-700
                 bg-black-900/30
                 p-6
                 align-middle
-                shadow-xl
-                transition-all
-                border
-                border-black-700
                 text-white-900
+                shadow-xl
+                backdrop-blur
+                transition-all
               "
               >
                 <div
@@ -96,8 +96,8 @@ function Modal({ title, children, isOpen, onClose }: Props) {
                 >
                   <Dialog.Title
                     as={Title}
-                    title={title}
                     size={Title.size.T1}
+                    title={title}
                   />
                 </div>
                 {children}
