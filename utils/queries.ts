@@ -1,13 +1,11 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { App, UserFeedback } from 'types'
 
-export async function getApp(client: SupabaseClient, id: string, userID: string) {
+export async function getApp(client: SupabaseClient, id: string) {
   const { data, error } = await client
     .from<App>('apps')
     .select('*')
     .eq('id', id)
-    // Check if the user is the owner of a code snippet.
-    .eq('creator_id', userID)
     .limit(1)
     .single()
 
@@ -17,12 +15,21 @@ export async function getApp(client: SupabaseClient, id: string, userID: string)
 
 export async function createApp(
   client: SupabaseClient,
-  app: Pick<App, 'title' | 'serialized'>,
+  app: Required<Pick<App, 'title' | 'id' | 'serialized' | 'creator_id'>>,
 ) {
   const { body, error } = await client.from<App>('apps').insert(app).limit(1).single()
 
   if (error) throw error
   return body
+}
+
+export async function updateApp(
+  client: SupabaseClient,
+  app: Required<Pick<App, 'id' | 'serialized'>>,
+) {
+  const { error } = await client.from<App>('apps').update(app).eq('id', app.id)
+
+  if (error) throw error
 }
 
 export async function deleteApp(client: SupabaseClient, id: string) {

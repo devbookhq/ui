@@ -1,5 +1,4 @@
 import {
-  getUser,
   supabaseServerClient,
   withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
@@ -13,13 +12,6 @@ export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
   async getServerSideProps(ctx) {
     try {
-      const { user } = await getUser(ctx)
-      if (!user?.id) {
-        return {
-          notFound: true,
-        }
-      }
-
       const {
         slug,
       }: {
@@ -40,7 +32,7 @@ export const getServerSideProps = withPageAuth({
       }
 
       // Try to get an app from the DB based on a ID in the slug.
-      const app = await getApp(supabaseServerClient(ctx), id, user.id)
+      const app = await getApp(supabaseServerClient(ctx), id)
       if (!app) {
         return {
           notFound: true,

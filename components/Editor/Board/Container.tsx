@@ -1,8 +1,11 @@
+import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import update from 'immutability-helper'
 import { nanoid } from 'nanoid'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
+import { App } from 'types'
 
+import { updateApp } from 'utils/queries'
 import useElement from 'utils/useElement'
 
 import {
@@ -13,7 +16,7 @@ import {
 } from '../UIComponent'
 import { snapToGrid, xStep, yStep } from './snapToGrid'
 
-interface ItemMap {
+export interface ItemMap {
   [id: string]: BoardItem
 }
 
@@ -59,8 +62,10 @@ export function useBoardItems(initItems: ItemMap = {}): [ItemMap, AddItem, MoveI
   return [items, add, move]
 }
 
-function useBoardDrag(): [ItemMap, (i: HTMLDivElement | null) => void] {
-  const [items, add, move] = useBoardItems()
+function useBoardDrag(
+  serializedApp: object,
+): [ItemMap, (i: HTMLDivElement | null) => void] {
+  const [items, add, move] = useBoardItems(serializedApp as ItemMap)
 
   const [ref, setRef] = useElement<HTMLDivElement>(e => drop(e))
 
@@ -115,12 +120,20 @@ function useBoardDrag(): [ItemMap, (i: HTMLDivElement | null) => void] {
   return [items, setRef]
 }
 
-export interface Props {}
+export interface Props {
+  app: App
+}
 
-function Container({}: Props) {
-  const [items, ref] = useBoardDrag()
+function Container({ app }: Props) {
+  const [items, ref] = useBoardDrag(app.serialized)
 
-  console.log(items)
+  useEffect(
+    function saveApp() {
+      updateApp(supabaseClient, { serialized: items, id: app.id })
+    },
+    [items, app.id],
+  )
+
   return (
     <div
       className="relative flex flex-1"

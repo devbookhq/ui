@@ -29,6 +29,7 @@ function Card({ app }: Props) {
 
   function handleOnMoreClick(e: any) {
     e.stopPropagation()
+    e.preventDefault()
     setShowDropdown(c => !c)
   }
 
@@ -80,10 +81,10 @@ function Card({ app }: Props) {
           >
             <div
               className="
-          flex
-          flex-col
-          rounded-lg
-          bg-black-900
+                flex
+                flex-col
+                rounded-lg
+                bg-black-900
         "
             >
               <div

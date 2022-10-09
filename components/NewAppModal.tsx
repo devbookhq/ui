@@ -1,3 +1,5 @@
+import dockerNames from 'docker-names'
+import { nanoid } from 'nanoid'
 import { useState } from 'react'
 
 import Button from 'components/Button'
@@ -8,12 +10,12 @@ import SpinnerIcon from 'components/icons/Spinner'
 interface Props {
   isOpen: boolean
   onClose: () => void
-  onCreate: ({ title }: { title: string }) => void
+  onCreate: ({ title, id }: { id: string; title: string }) => void
   isLoading: boolean
 }
 
 function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(dockerNames.getRandomName())
 
   function handleTitleChange(e: any) {
     setTitle(e.target.value)
@@ -21,7 +23,8 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
 
   function handleCreateButtonClick() {
     onCreate({
-      title,
+      title: title ? title : dockerNames.getRandomName(),
+      id: nanoid(),
     })
   }
 

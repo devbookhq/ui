@@ -13,6 +13,15 @@ module.exports = {
         noSortAlphabetically: false,
       },
     ],
+    'max-len': [
+      'error',
+      {
+        code: 90,
+        ignoreComments: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+      },
+    ],
     semi: ['error', 'never'],
     quotes: [
       'error',

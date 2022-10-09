@@ -1,12 +1,17 @@
 import { SharedSessionProvider } from '@devbookhq/react'
 import { DndProvider } from 'react-dnd'
+import { App } from 'types'
 
 import useDndBackend from 'utils/useDndBackend'
 
 import Board from './Board'
 import Sidebar from './Sidebar'
 
-function Editor() {
+export interface Props {
+  app: App
+}
+
+function Editor({ app }: Props) {
   const backend = useDndBackend()
 
   return (
@@ -17,7 +22,7 @@ function Editor() {
         }}
       >
         <DndProvider backend={backend}>
-          <Board />
+          <Board app={app} />
           <Sidebar />
         </DndProvider>
       </SharedSessionProvider>

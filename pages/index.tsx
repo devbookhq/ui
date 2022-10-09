@@ -35,11 +35,15 @@ function Dashboard() {
     setIsModalOpened(true)
   }
 
-  async function handleCreateApp({ title }: { title: string }) {
+  async function handleCreateApp({ title, id }: { title: string; id: string }) {
     if (!apiKey) throw new Error('API key is undefined')
+    if (!user) throw new Error('User is undefined')
+
     setIsLoadingNewSnippet(true)
     createApp(supabaseClient, {
       title,
+      id,
+      creator_id: user.id,
       serialized: {},
     })
       .then((data: any) => {
