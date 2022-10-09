@@ -144,12 +144,12 @@ const Terminal = forwardRef<Handler, Props>(
           <div
             className={clsx(
               'flex-1',
+              'flex',
               { flex: !isHidden },
               { hidden: isHidden },
               'justify-center',
               'items-center',
               'bg-black-850',
-              'lg:rounded-b-xl',
             )}
           >
             <Text
@@ -164,12 +164,12 @@ const Terminal = forwardRef<Handler, Props>(
           <div
             className={clsx(
               'flex-1',
+              'flex',
               { flex: !isHidden },
               { hidden: isHidden },
               'justify-center',
               'items-center',
               'bg-black-850',
-              'lg:rounded-b-xl',
             )}
           >
             <SpinnerIcon />
@@ -180,10 +180,10 @@ const Terminal = forwardRef<Handler, Props>(
           <div
             className={clsx(
               'flex-1',
+              'py-1',
+              'flex',
               { hidden: isHidden },
-              'relative',
               'bg-black-850',
-              'lg:rounded-b-xl',
             )}
           >
             {/*
@@ -195,7 +195,6 @@ const Terminal = forwardRef<Handler, Props>(
             <div
               ref={assignRefs}
               className="
-              absolute
               h-full
               w-full
             "

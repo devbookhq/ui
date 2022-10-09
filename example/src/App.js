@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <SessionProvider opts={{ codeSnippetID: '9uDpF0vBywCA' }}>
-        <div style={{ height: '200px', width: '300px' }}>
+        <div style={{ height: '400px', width: '300px' }}>
           {/* <CodeSnippet
             id="9uDpF0vBywCA"
             isEditable={true}

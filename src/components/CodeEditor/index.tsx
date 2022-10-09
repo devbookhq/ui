@@ -10,6 +10,8 @@ import React, {
 } from 'react'
 
 import type { Language } from '../../hooks/usePublishedCodeSnippet'
+import { LanguageServer } from '../../utils/languageServer'
+import { languageService } from '../../utils/languageService'
 import { createEditorState } from './createEditorState'
 
 export interface Props {
@@ -21,6 +23,7 @@ export interface Props {
   className?: string
   autofocus?: boolean
   filename?: string
+  languageServer?: LanguageServer
 }
 
 export interface Handler {
@@ -37,6 +40,8 @@ const CodeEditor = forwardRef<Handler, Props>(
       onContentChange,
       className,
       autofocus,
+      filename,
+      languageServer,
     },
     ref,
   ) => {
@@ -130,6 +135,51 @@ const CodeEditor = forwardRef<Handler, Props>(
         }
       },
       [editor, onContentChange],
+    )
+
+    useEffect(
+      function configureLanguageService() {
+        async function init() {
+          if (!filename) return
+          if (!languageServer) return
+          if (!editor) return
+          if (!languageServer.hasValidExtension(filename)) return
+
+          const transport = await languageServer.createConnection()
+          if (!transport) return
+
+          console.log(
+            'uri',
+            languageServer.getRootdirURI(),
+            languageServer.getDocumentURI(filename),
+          )
+
+          const service = languageService({
+            transport,
+            rootUri: languageServer.getRootdirURI(),
+            documentUri: languageServer.getDocumentURI(filename),
+            languageId: languageServer.languageID,
+            workspaceFolders: null,
+          })
+
+          editor.view.dispatch({
+            effects: editor.languageServiceExtensions.reconfigure(service),
+          })
+
+          return () => {
+            editor.view.dispatch({
+              effects: editor.languageServiceExtensions.reconfigure([]),
+            })
+          }
+        }
+
+        const result = init()
+
+        return () => {
+          result.then(cleanup => cleanup?.())
+        }
+      },
+      [editor, languageServer, filename],
     )
 
     return (
