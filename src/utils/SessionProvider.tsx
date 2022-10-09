@@ -1,11 +1,8 @@
-import React, {
-  createContext,
-  useContext,
-} from 'react'
+import React, { createContext, useContext } from 'react'
 
 import useSession, { Opts as UseSessionOpts } from '../hooks/useSession'
 
-interface SharedSessionProviderProps {
+interface SessionProviderProps {
   children: React.ReactNode | React.ReactNode[] | null
   opts?: UseSessionOpts
   /**
@@ -14,28 +11,28 @@ interface SharedSessionProviderProps {
   session?: ReturnType<typeof useSession>
 }
 
-export const sharedSessionContext = createContext<ReturnType<typeof useSession> | undefined>(undefined)
+export const sessionContext = createContext<ReturnType<typeof useSession> | undefined>(
+  undefined,
+)
 
-export function SharedSessionProvider({
+function SessionProvider({
   children,
   opts,
   session: existingSession,
-}: SharedSessionProviderProps) {
+}: SessionProviderProps) {
   const shouldCreateNewSession = !existingSession && !!opts
   const newSession = useSession(shouldCreateNewSession ? opts : {})
 
   const session = shouldCreateNewSession ? newSession : existingSession
-  return (
-    <sharedSessionContext.Provider value={session}>
-      {children}
-    </sharedSessionContext.Provider>
-  )
+  return <sessionContext.Provider value={session}>{children}</sessionContext.Provider>
 }
 
-export default function useSharedSession() {
-  const ctx = useContext(sharedSessionContext)
+export function useProvidedSession() {
+  const ctx = useContext(sessionContext)
   if (!ctx) {
     throw new Error('Cannot find provided Devbook session')
   }
   return ctx
 }
+
+export default SessionProvider

@@ -1,15 +1,11 @@
-import React from 'react'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
+import React from 'react'
 
-import PlayIcon from './icons/Play'
-import StopIcon from './icons/Stop'
-import SpinnerIcon from './icons/Spinner'
+import { CodeSnippetExtendedState, CodeSnippetState } from '../hooks/useRunCode'
 import Button from './Button'
-
-import {
-  CodeSnippetState,
-  CodeSnippetExtendedState,
-} from '../hooks/useRunCode'
+import PlayIcon from './icons/Play'
+import SpinnerIcon from './icons/Spinner'
+import StopIcon from './icons/Stop'
 
 interface Props {
   className?: string
@@ -19,13 +15,7 @@ interface Props {
   textLeft?: string
 }
 
-function RunButton({
-  className,
-  state,
-  textLeft,
-  onRunClick,
-  onStopClick,
-}: Props) {
+function RunButton({ className, state, textLeft, onRunClick, onStopClick }: Props) {
   className = `dbk-run-btn ${className}`
 
   let text = 'Loading...'
@@ -54,11 +44,11 @@ function RunButton({
   return (
     <Button
       className={className}
-      isDisabled={state === CodeSnippetExtendedState.Loading}
-      textRight={text}
-      textLeft={textLeft}
-      onClick={handleClick}
       icon={icon}
+      isDisabled={state === CodeSnippetExtendedState.Loading}
+      textLeft={textLeft}
+      textRight={text}
+      onClick={handleClick}
     />
   )
 }

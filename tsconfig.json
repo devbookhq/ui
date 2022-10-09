@@ -2,10 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "es6",
-    "lib": [
-      "dom",
-      "ESNext"
-    ],
+    "lib": ["dom", "ESNext"],
     "sourceMap": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,16 +16,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "example",
-    ".eslintrc.js",
-    "rollup.config.js",
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "example", ".eslintrc.js", "rollup.config.js"]
 }

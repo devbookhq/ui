@@ -1,59 +1,6 @@
-import {
-  useCallback,
-  useEffect,
-  useState
-} from 'react'
-import {
-  Session,
-  ProcessManager,
-  OutStdoutResponse,
-  OutStderrResponse,
-  EnvVars,
-} from '@devbookhq/sdk'
+import { Session } from '@devbookhq/sdk'
+import { useCallback, useEffect, useState } from 'react'
 import { useIdleTimer } from 'react-idle-timer'
-
-import { createDeferredPromise } from '../utils/createDeferredPromise'
-
-export const rootdir = '/code'
-
-export async function createSessionProcess(
-  cmd: string,
-  manager?: ProcessManager,
-  onStdout?: (o: OutStdoutResponse) => void,
-  onStderr?: (o: OutStderrResponse) => void,
-  envVars?: EnvVars,
-  processID?: string,
-) {
-  if (!manager) {
-    throw new Error('Cannot create process - process manager is not defined')
-  }
-
-  const {
-    resolve,
-    promise: exited,
-  } = createDeferredPromise()
-
-  const onExit = () => {
-    resolve()
-  }
-
-  const process = await manager.start({
-    cmd,
-    onStdout,
-    onStderr,
-    onExit,
-    rootdir,
-    processID,
-    envVars,
-  })
-
-  return {
-    exited,
-    processID: process.processID,
-    kill: process.kill,
-    sendStdin: process.sendStdin,
-  }
-}
 
 export type SessionState = 'closed' | 'opening' | 'open'
 
@@ -85,13 +32,13 @@ function useSession({
     const newSession = new Session({
       id: codeSnippetID,
       onDisconnect() {
-        setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
+        setSessionState(s => (s.session === newSession ? { ...s, state: 'closed' } : s))
       },
       onReconnect() {
-        setSessionState(s => s.session === newSession ? { ...s, state: 'open' } : s)
+        setSessionState(s => (s.session === newSession ? { ...s, state: 'open' } : s))
       },
       onClose() {
-        setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
+        setSessionState(s => (s.session === newSession ? { ...s, state: 'closed' } : s))
       },
       debug,
     })
@@ -100,7 +47,7 @@ function useSession({
     let close: (() => Promise<void>) | undefined
 
     setSessionState(oldState => {
-      oldState.session?.close().catch((err) => {
+      oldState.session?.close().catch(err => {
         console.error(err)
       })
       return { session: newSession, state: 'opening', id: codeSnippetID, open }
@@ -108,19 +55,16 @@ function useSession({
 
     await open
 
-    setSessionState(s => s.session === newSession ? { ...s, state: 'open' } : s)
+    setSessionState(s => (s.session === newSession ? { ...s, state: 'open' } : s))
 
     return { session: newSession, close }
-  }, [
-    debug,
-    codeSnippetID,
-  ])
+  }, [debug, codeSnippetID])
 
   const onIdle = useCallback(() => {
     setSessionState(s => {
       if (s.state === 'closed') return s
 
-      s.session?.close().catch((err) => {
+      s.session?.close().catch(err => {
         console.error(err)
       })
 
@@ -128,9 +72,7 @@ function useSession({
     })
   }, [])
 
-  const {
-    reset,
-  } = useIdleTimer({
+  const { reset } = useIdleTimer({
     timeout: 15 * 60 * 1000,
     onIdle,
   })
@@ -147,19 +89,18 @@ function useSession({
       await sessionState.open
       return { session: sessionState.session }
     }
-  }, [
-    sessionState,
-    initSession,
-    reset,
-  ])
+  }, [sessionState, initSession, reset])
 
-  useEffect(function startSession() {
-    const result = initSession()
+  useEffect(
+    function startSession() {
+      const result = initSession()
 
-    return () => {
-      result.then(r => r?.close?.())
-    }
-  }, [initSession])
+      return () => {
+        result.then(r => r?.close?.())
+      }
+    },
+    [initSession],
+  )
 
   return {
     refresh,

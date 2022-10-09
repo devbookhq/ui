@@ -1,15 +1,8 @@
-import {
-  useEffect,
-  useMemo,
-  useCallback,
-  useState,
-} from 'react'
-import {
-  EnvVars,
-  OutResponse,
-  CodeSnippetExecState,
-} from '@devbookhq/sdk'
-import useSession, { createSessionProcess } from './useSession'
+import { CodeSnippetExecState, EnvVars, OutResponse } from '@devbookhq/sdk'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { createSessionProcess } from '../utils/createSessionProcess'
+import useSession from './useSession'
 
 export enum CodeSnippetExtendedState {
   Loading = 'Loading',
@@ -22,10 +15,10 @@ const cmd = 'node index.mjs'
 const filename = '/code/index.mjs'
 
 function useRunCode(session?: ReturnType<typeof useSession>) {
-  const [runTrigger, setRunTrigger] = useState<{ code: string, envVars?: EnvVars }>()
+  const [runTrigger, setRunTrigger] = useState<{ code: string; envVars?: EnvVars }>()
   const [process, setProcess] = useState<{
-    process?: Awaited<ReturnType<typeof createSessionProcess>>,
-    state: CodeSnippetExecState,
+    process?: Awaited<ReturnType<typeof createSessionProcess>>
+    state: CodeSnippetExecState
     output: OutResponse[]
   }>({ state: CodeSnippetExecState.Stopped, output: [] })
 
@@ -40,51 +33,58 @@ function useRunCode(session?: ReturnType<typeof useSession>) {
       default:
         return CodeSnippetExtendedState.Loading
     }
-  }, [
-    process.state,
-    session?.state,
-  ])
+  }, [process.state, session?.state])
 
-  useEffect(function triggerRun() {
-    (async function () {
-      if (!runTrigger) return
-      const currentSession = await session?.refresh()
+  useEffect(
+    function triggerRun() {
+      ;(async function () {
+        if (!runTrigger) return
+        const currentSession = await session?.refresh()
 
-      setProcess({ state: CodeSnippetExecState.Running, output: [] })
+        setProcess({ state: CodeSnippetExecState.Running, output: [] })
 
-      try {
-        await currentSession?.session?.filesystem?.writeFile(filename, runTrigger.code)
-        const newProcess: Awaited<ReturnType<typeof createSessionProcess>> = await createSessionProcess(
-          cmd,
-          session?.session?.process,
-          (stdout) => setProcess(p => ({ ...p, output: [...p.output, stdout] })),
-          (stderr) => setProcess(p => ({ ...p, output: [...p.output, stderr] })),
-          // (stdout) => setProcess(p => p.process === newProcess ? { ...p, output: [...p.output, stdout] } : p),
-          // (stderr) => setProcess(p => p.process === newProcess ? { ...p, output: [...p.output, stderr] } : p),
-          runTrigger.envVars,
-        )
-        setProcess({ process: newProcess, state: CodeSnippetExecState.Running, output: [] })
-        newProcess.exited.then(() => {
-          setProcess(p => p.process === newProcess ? { ...p, state: CodeSnippetExecState.Stopped } : p)
-        })
-      } catch (err) {
-        setProcess({ state: CodeSnippetExecState.Stopped, output: [] })
-        throw err
-      }
-    })()
-  }, [
-    session?.refresh,
-    runTrigger,
-  ])
+        try {
+          await currentSession?.session?.filesystem?.writeFile(filename, runTrigger.code)
+          const newProcess: Awaited<ReturnType<typeof createSessionProcess>> =
+            await createSessionProcess(
+              cmd,
+              session?.session?.process,
+              stdout => setProcess(p => ({ ...p, output: [...p.output, stdout] })),
+              stderr => setProcess(p => ({ ...p, output: [...p.output, stderr] })),
+              runTrigger.envVars,
+            )
+          setProcess({
+            process: newProcess,
+            state: CodeSnippetExecState.Running,
+            output: [],
+          })
+          newProcess.exited.then(() => {
+            setProcess(p =>
+              p.process === newProcess
+                ? { ...p, state: CodeSnippetExecState.Stopped }
+                : p,
+            )
+          })
+        } catch (err) {
+          setProcess({ state: CodeSnippetExecState.Stopped, output: [] })
+          throw err
+        }
+      })()
+    },
+    [session?.refresh, runTrigger],
+  )
 
   const stop = useCallback(async () => {
     await process.process?.kill()
   }, [process])
 
-  const run = useCallback(async (code: string, envVars?: EnvVars) => {
-    await session?.refresh?.()
-    setRunTrigger({ code, envVars })
-  }, [session?.refresh])
+  const run = useCallback(
+    async (code: string, envVars?: EnvVars) => {
+      await session?.refresh?.()
+      setRunTrigger({ code, envVars })
+    },
+    [session?.refresh],
+  )
 
   return {
     run,

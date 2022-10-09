@@ -1,7 +1,7 @@
-import { shell } from '@codemirror/legacy-modes/mode/shell'
 import { go } from '@codemirror/legacy-modes/mode/go'
-import { python } from '@codemirror/legacy-modes/mode/python'
 import { typescript } from '@codemirror/legacy-modes/mode/javascript'
+import { python } from '@codemirror/legacy-modes/mode/python'
+import { shell } from '@codemirror/legacy-modes/mode/shell'
 import { StreamLanguage } from '@codemirror/stream-parser'
 
 import type { Language } from '../../hooks/usePublishedCodeSnippet'

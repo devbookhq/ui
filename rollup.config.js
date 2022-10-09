@@ -1,9 +1,9 @@
-import typescript from 'rollup-plugin-typescript2'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import autoExternal from 'rollup-plugin-auto-external'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
 import postcss from 'rollup-plugin-postcss'
 import { terser } from 'rollup-plugin-terser'
+import typescript from 'rollup-plugin-typescript2'
 
 import pkg from './package.json'
 
@@ -30,11 +30,7 @@ export default {
       sourcemap: true,
     },
   ],
-  external: [
-    'react',
-    'react-dom',
-    'react/jsx-runtime',
-  ],
+  external: ['react', 'react-dom', 'react/jsx-runtime'],
   plugins: [
     autoExternal({ builtins: false }),
     postcss({

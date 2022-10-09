@@ -1,50 +1,28 @@
+import { closeBrackets, closeBracketsKeymap } from '@codemirror/closebrackets'
+import { defaultKeymap, indentWithTab } from '@codemirror/commands'
+import { commentKeymap } from '@codemirror/comment'
+import { foldGutter, foldKeymap } from '@codemirror/fold'
+import { highlightActiveLineGutter, lineNumbers } from '@codemirror/gutter'
 import { classHighlightStyle } from '@codemirror/highlight'
+import { history, historyKeymap } from '@codemirror/history'
+import { indentOnInput } from '@codemirror/language'
+import { bracketMatching } from '@codemirror/matchbrackets'
+import { Compartment, EditorState } from '@codemirror/state'
 import {
   EditorView,
-  keymap,
-  highlightSpecialChars,
   drawSelection,
-  highlightActiveLine,
   dropCursor,
+  highlightActiveLine,
+  highlightSpecialChars,
+  keymap,
 } from '@codemirror/view'
-import {
-  Compartment,
-  EditorState,
-} from '@codemirror/state'
-import {
-  history,
-  historyKeymap,
-} from '@codemirror/history'
-import {
-  foldGutter,
-  foldKeymap,
-} from '@codemirror/fold'
-import {
-  indentOnInput,
-} from '@codemirror/language'
-import {
-  lineNumbers,
-  highlightActiveLineGutter,
-} from '@codemirror/gutter'
-import {
-  defaultKeymap,
-  indentWithTab,
-} from '@codemirror/commands'
-import { bracketMatching } from '@codemirror/matchbrackets'
-import {
-  closeBrackets,
-  closeBracketsKeymap,
-} from '@codemirror/closebrackets'
-import { commentKeymap } from '@codemirror/comment'
-import type { Language } from '../../hooks/usePublishedCodeSnippet'
 
-import {
-  getLanguageHighlight,
-} from './language'
+import type { Language } from '../../hooks/usePublishedCodeSnippet'
+import { getLanguageHighlight } from './language'
 
 const disableSpellchecking = {
   'data-gramm': 'false',
-  'spellcheck': 'false',
+  spellcheck: 'false',
 }
 
 export interface Options {
@@ -55,10 +33,7 @@ export interface Options {
   filename?: string
 }
 
-export function createEditorState({
-  content = '',
-  language,
-}: Options) {
+export function createEditorState({ content = '', language }: Options) {
   const languageHighlight = getLanguageHighlight(language)
 
   const languageServiceExtensions = new Compartment()

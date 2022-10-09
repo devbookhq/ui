@@ -1,18 +1,15 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react'
 import { CodeSnippetExecState } from '@devbookhq/sdk'
+import React, { useEffect, useState } from 'react'
 
 import usePublishedCodeSnippet, { Language } from '../hooks/usePublishedCodeSnippet'
 import { CodeSnippetExtendedState } from '../hooks/useRunCode'
+import useRunCode from '../hooks/useRunCode'
+import { useProvidedSession } from '../utils/SessionProvider'
 import CodeEditor from './CodeEditor'
+import CopyButton from './CopyButton'
 import Output from './Output'
 import RunButton from './RunButton'
-import CopyButton from './CopyButton'
 import Spinner from './icons/Spinner'
-import useSharedSession from '../utils/SharedSessionProvider'
-import useRunCode from '../hooks/useRunCode'
 
 export interface Props {
   id?: string
@@ -31,28 +28,33 @@ function CodeSnippet({
 }: Props) {
   const [hasRan, setHasRan] = useState(false)
 
-  const sharedSession = useSharedSession()
+  const session = useProvidedSession()
 
   const codeSnippet = usePublishedCodeSnippet({
     codeSnippetID: id,
     connectCodeSnippetIDs: connectIDs,
   })
 
-  const [initCode, setInitCode] = useState(codeSnippet?.codeSnippetCode || fallbackContent || '')
+  const [initCode, setInitCode] = useState(
+    codeSnippet?.codeSnippetCode || fallbackContent || '',
+  )
   const [code, setCode] = useState(initCode)
 
-  useEffect(function reinitializeCode() {
-    if (!codeSnippet) return
-    setInitCode(codeSnippet.codeSnippetCode)
-    setCode(codeSnippet.codeSnippetCode)
-  }, [codeSnippet])
+  useEffect(
+    function reinitializeCode() {
+      if (!codeSnippet) return
+      setInitCode(codeSnippet.codeSnippetCode)
+      setCode(codeSnippet.codeSnippetCode)
+    },
+    [codeSnippet],
+  )
 
   const {
     run: runCS,
     stop: onStopClick,
     state: csState,
     output: csOutput,
-  } = useRunCode(sharedSession)
+  } = useRunCode(session)
 
   async function onRunClick() {
     if (!codeSnippet) return
@@ -61,10 +63,7 @@ function CodeSnippet({
 
     const codeToRun = `${codeSnippet.codeSnippetConnectCode}\n${code}`
 
-    return runCS(
-      codeToRun,
-      codeSnippet.codeSnippetEnvVars,
-    )
+    return runCS(codeToRun, codeSnippet.codeSnippetEnvVars)
   }
 
   function handleCopyButtonClick() {
@@ -72,58 +71,58 @@ function CodeSnippet({
   }
 
   return (
-    <div className="
+    <div
+      className="
       dbk-code-snippet
+      dbk-code-editor
       flex
       flex-col
       overflow-hidden
+      rounded-lg
       border
       border-black-700
-      rounded-lg
-      dbk-code-editor
-    ">
-      <div className="
+    "
+    >
+      <div
+        className="
         dbk-header
         flex
         flex-row-reverse
         items-center
         justify-between
-        py-1
-        px-2
         rounded-t-lg
         bg-black-700
-      ">
-        <CopyButton
-          onClick={handleCopyButtonClick}
-        />
-        {id && (hasRan || csState !== CodeSnippetExtendedState.Loading) &&
-          <div className="items-center justify-center flex space-x-1">
+        py-1
+        px-2
+      "
+      >
+        <CopyButton onClick={handleCopyButtonClick} />
+        {id && (hasRan || csState !== CodeSnippetExtendedState.Loading) && (
+          <div className="flex items-center justify-center space-x-1">
             <RunButton
+              state={csState}
               onRunClick={onRunClick}
               onStopClick={onStopClick}
-              state={csState}
             />
-            {csState === CodeSnippetExecState.Running &&
-              <Spinner></Spinner>
-            }
+            {csState === CodeSnippetExecState.Running && <Spinner></Spinner>}
           </div>
-        }
+        )}
       </div>
       <CodeEditor
+        content={initCode}
         isReadOnly={!isEditable}
         language={codeSnippet?.codeSnippetTemplate || fallbackLanguage}
-        content={initCode}
         onContentChange={setCode}
       />
-      {id &&
+      {id && (
         <Output
-          state={csState}
           hasRan={hasRan}
-          onStopClick={onStopClick}
-          onRunClick={onRunClick}
           output={csOutput}
+          state={csState}
+          onRunClick={onRunClick}
+          onStopClick={onStopClick}
         />
-      }
+      )}
     </div>
   )
 }

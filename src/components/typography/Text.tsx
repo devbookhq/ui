@@ -1,5 +1,5 @@
+import clsx from 'clsx'
 import React, { ReactNode } from 'react'
-import cn from 'classnames'
 
 export enum Size {
   S0,
@@ -42,7 +42,7 @@ function Text({
 }: Props) {
   return (
     <span
-      className={cn(
+      className={clsx(
         'text-white',
         Sizes[size],
         className,
@@ -59,4 +59,5 @@ function Text({
 
 Text.rank = Rank
 Text.size = Size
+
 export default Text

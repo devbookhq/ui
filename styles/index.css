@@ -1,4 +1,5 @@
-@import "./codemirror.css";
+@import './codemirror.css';
+@import './xterm.css';
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +8,7 @@
 .cs-output {
   @apply overflow-auto;
   /* Firefox scrollbar styling */
-  scrollbar-color: #8F8F8F transparent;
+  scrollbar-color: #8f8f8f transparent;
   scrollbar-width: thin;
   height: 120px;
 }

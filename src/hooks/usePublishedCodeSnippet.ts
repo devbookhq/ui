@@ -1,7 +1,4 @@
-import {
-  EnvVars,
-  components,
-} from '@devbookhq/sdk'
+import { EnvVars, components } from '@devbookhq/sdk'
 import { useMemo } from 'react'
 
 import useFetch from './useFetch'
@@ -23,10 +20,7 @@ export interface PublishedCodeSnippet {
   codeSnippetTemplate: Language
 }
 
-function usePublishedCodeSnippet({
-  codeSnippetID,
-  connectCodeSnippetIDs = [],
-}: Props) {
+function usePublishedCodeSnippet({ codeSnippetID, connectCodeSnippetIDs = [] }: Props) {
   const url = useMemo(() => {
     if (!codeSnippetID) return
     let embedURL = `https://embed.usedevbook.com/${codeSnippetID}/props`
@@ -34,10 +28,7 @@ function usePublishedCodeSnippet({
       embedURL += `?connect=${connectCodeSnippetIDs.join(',')}`
     }
     return embedURL
-  }, [
-    codeSnippetID,
-    connectCodeSnippetIDs,
-  ])
+  }, [codeSnippetID, connectCodeSnippetIDs])
 
   const { data } = useFetch<PublishedCodeSnippet>(url)
 
@@ -55,7 +46,7 @@ function usePublishedCodeSnippet({
 
     return {
       ...data,
-      codeSnippetEnvVars: envVars
+      codeSnippetEnvVars: envVars,
     }
   }, [data])
 }

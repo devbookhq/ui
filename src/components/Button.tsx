@@ -15,52 +15,58 @@ function Button({
   icon,
   className = '',
   onClick,
-  isDisabled
+  isDisabled,
 }: Props) {
   return (
     <button
       className={`
         ${className}
-        rounded-lg
         dbk-button
-        bg-black-700
         hover:bg-green-gradient
+        rounded-lg
+        bg-black-700
         hover:shadow-lg
-        ${isDisabled ? 'opacity-70 cursor-not-allowed' : ''}
+        ${isDisabled ? 'cursor-not-allowed opacity-70' : ''}
       `}
       onMouseDown={!isDisabled ? onClick : undefined}
     >
-      <div className="
-        py-0.5
-        px-1
+      <div
+        className="
         flex
         flex-row
         items-center
         justify-center
         space-x-1
-        text-gray-500
         rounded
-        hover:bg-white-900/10
+        py-0.5
+        px-1
+        text-gray-500
         transition-colors
-      ">
+        hover:bg-white-900/10
+      "
+      >
         {textLeft && (
-          <div className="
-            text-xs
-            text-gray-200
-            leading-[15px]
+          <div
+            className="
             font-sans
-          ">
+            text-xs
+            leading-[15px]
+            text-gray-200
+          "
+          >
             {textLeft}
           </div>
         )}
         {icon}
         {textRight && (
-          <div className="
-            text-xs
-            text-gray-200
-            leading-[15px]
+          <div
+            className="
             font-sans
-          ">
+            text-xs
+            leading-[15px]
+            text-gray-200
+          "
+          >
             {textRight}
           </div>
         )}

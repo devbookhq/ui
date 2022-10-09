@@ -1,17 +1,26 @@
-import './App.css';
+import { SessionProvider, Terminal } from '@devbookhq/react'
+import React from 'react'
 
-import { CodeSnippet, SharedSessionProvider } from '@devbookhq/react'
+import './App.css'
 
 function App() {
   return (
     <div className="App">
-      <SharedSessionProvider opts={{ codeSnippetID: 'Hq0FmpRimr2k' }}>
-        <div style={{ height: '200px' }}>
-          <CodeSnippet id='Hq0FmpRimr2k' isEditable={true} />
+      <SessionProvider opts={{ codeSnippetID: '9uDpF0vBywCA' }}>
+        <div style={{ height: '200px', width: '300px' }}>
+          {/* <CodeSnippet
+            id="9uDpF0vBywCA"
+            isEditable={true}
+          /> */}
+          <Terminal
+            autofocus={true}
+            isHidden={false}
+            onRunningCmdChange={() => {}}
+          />
         </div>
-      </SharedSessionProvider>
+      </SessionProvider>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
