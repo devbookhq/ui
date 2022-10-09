@@ -11,7 +11,7 @@
     ".git/**": true,
     "node_modules/**": true,
     "package-lock.json": true,
-    "yarl.lock":true
+    "yarl.lock": true
   },
   "files.watcherExclude": {
     "**/.git": true,
@@ -25,7 +25,7 @@
     ".git/**": true,
     "node_modules/**": true,
     "package-lock.json": true,
-    "yarl.lock":true
+    "yarl.lock": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "css.validate": false,
@@ -37,8 +37,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.validate": [
-    "javascript",
-    "typescript"
-  ]
+  "eslint.validate": ["javascript", "typescript"]
 }

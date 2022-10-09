@@ -29,7 +29,9 @@
     "build:analyze": "ANALYZE=true yarn build",
     "check-types": "tsc --noEmit",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "resolutions": {
     "@supabase/gotrue-js": "1.22.14"
