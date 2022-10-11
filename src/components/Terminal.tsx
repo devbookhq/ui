@@ -172,7 +172,7 @@ const Terminal = forwardRef<Handler, Props>(
           </div>
         )}
 
-        <div className={clsx('flex-1', 'py-1', 'flex', 'bg-black-850')}>
+        <div className={clsx('flex-1', 'p-1', 'flex', 'bg-black-850')}>
           {/*
            * We assign the `sizeRef` and the `terminalRef` to a child element intentionally
            * because the fit addon for xterm.js resizes the terminal based on the PARENT'S size.

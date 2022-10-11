@@ -37,7 +37,7 @@ function Button({
         items-center
         justify-center
         space-x-1
-        rounded
+        rounded-lg
         py-0.5
         px-1
         text-gray-500

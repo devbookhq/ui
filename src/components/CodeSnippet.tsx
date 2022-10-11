@@ -80,6 +80,7 @@ function CodeSnippet({
       rounded-lg
       border
       border-black-700
+      bg-black-700
     "
     >
       <div
@@ -88,7 +89,6 @@ function CodeSnippet({
         flex-row-reverse
         items-center
         justify-between
-        rounded-t-lg
         bg-black-700
         py-1
         px-2

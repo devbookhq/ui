@@ -64,7 +64,6 @@
   .cm-gutter.cm-lineNumbers {
     @apply min-w-[36px];
     @apply text-right;
-    @apply rounded-l-lg;
   }
 
   .cm-editor .cm-activeLineGutter {

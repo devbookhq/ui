@@ -12,7 +12,6 @@ function Casing({ children }: PropsWithChildren<unknown>) {
     border
     border-black-700
     bg-black-850
-    pb-1
   "
     >
       {children}
