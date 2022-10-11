@@ -18,6 +18,7 @@ function useLanguageServer({
   const [languageServer, setLanguageServer] = useState<{
     server?: LanguageServer
     state?: LanguageServerState
+    error?: Error
   }>({ state: 'closed' })
 
   useEffect(
@@ -28,17 +29,26 @@ function useLanguageServer({
 
       setLanguageServer({ server, state: 'opening' })
 
-      server.start().then(process => {
-        setLanguageServer(s => (s.server === server ? { ...s, state: 'open' } : s))
+      server
+        .start()
+        .then(process => {
+          setLanguageServer(s => (s.server === server ? { ...s, state: 'open' } : s))
 
-        process?.exited.then(() => {
-          setLanguageServer(s => (s.server === server ? { state: 'closed' } : s))
+          process?.exited.then(() => {
+            setLanguageServer(s => (s.server === server ? { state: 'closed' } : s))
+          })
         })
-      })
+        .catch(error =>
+          setLanguageServer(s => (s.server === server ? { ...s, error } : s)),
+        )
 
       return () => {
         setLanguageServer(s => (s.server === server ? { state: 'closed' } : s))
-        server.stop()
+        server
+          .stop()
+          .catch(error =>
+            setLanguageServer(s => (s.server === server ? { ...s, error } : s)),
+          )
       }
     },
     [session, language, debug],
@@ -46,6 +56,7 @@ function useLanguageServer({
 
   return {
     server: languageServer.state === 'open' ? languageServer.server : undefined,
+    error: languageServer.error,
   }
 }
 

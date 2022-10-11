@@ -2,13 +2,11 @@ import { CodeSnippetExecState } from '@devbookhq/sdk'
 import clsx from 'clsx'
 import React from 'react'
 import {
-  MutableRefObject,
   forwardRef,
   useCallback,
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
-  useRef,
   useState,
 } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
@@ -31,15 +29,14 @@ export interface Props {
   autofocus?: boolean
   onStart?: (handler: Omit<Handler, 'runCmd' | 'stopCmd'>) => Promise<void> | void
   onRunningCmdChange?: (state: CodeSnippetExecState) => void
-  isHidden?: boolean
 }
 
 const Terminal = forwardRef<Handler, Props>(
-  ({ onStart, autofocus, onRunningCmdChange, isHidden }, ref) => {
+  ({ onStart, autofocus, onRunningCmdChange }, ref) => {
     const { session } = useProvidedSession()
 
     const [fitAddon, setFitAddon] = useState<FitAddon>()
-    const terminalRef = useRef(null) as MutableRefObject<HTMLDivElement | null>
+    const [terminalRef, setTerminalRef] = useState<HTMLDivElement | null>(null)
     const {
       terminal,
       terminalSession,
@@ -62,7 +59,7 @@ const Terminal = forwardRef<Handler, Props>(
     }, [fitAddon])
 
     const assignRefs = useCallback((el: HTMLDivElement | null) => {
-      terminalRef.current = el
+      setTerminalRef(el)
       sizeRef.current = el
     }, [])
 
@@ -101,8 +98,10 @@ const Terminal = forwardRef<Handler, Props>(
     useLayoutEffect(
       function attachTerminal() {
         ;(async function () {
-          if (!terminalRef.current) return
+          if (!terminalRef) return
           if (!terminal) return
+          if (errMessage) return
+          if (isLoading) return
 
           const fit = await import('xterm-addon-fit')
           const webLinks = await import('xterm-addon-web-links')
@@ -112,7 +111,7 @@ const Terminal = forwardRef<Handler, Props>(
           const fitAddon = new fit.FitAddon()
           terminal.loadAddon(fitAddon)
 
-          terminal.open(terminalRef.current)
+          terminal.open(terminalRef)
           fitAddon.fit()
 
           setFitAddon(fitAddon)
@@ -120,7 +119,7 @@ const Terminal = forwardRef<Handler, Props>(
           if (autofocus) terminal.focus()
         })()
       },
-      [terminal, autofocus],
+      [terminal, autofocus, isLoading, errMessage],
     )
 
     useEffect(
@@ -145,13 +144,12 @@ const Terminal = forwardRef<Handler, Props>(
             className={clsx(
               'flex-1',
               'flex',
-              { flex: !isHidden },
-              { hidden: isHidden },
               'justify-center',
               'items-center',
               'bg-black-850',
             )}
           >
+            f
             <Text
               className="text-red-400"
               size={Text.size.S2}
@@ -165,8 +163,6 @@ const Terminal = forwardRef<Handler, Props>(
             className={clsx(
               'flex-1',
               'flex',
-              { flex: !isHidden },
-              { hidden: isHidden },
               'justify-center',
               'items-center',
               'bg-black-850',
@@ -176,31 +172,21 @@ const Terminal = forwardRef<Handler, Props>(
           </div>
         )}
 
-        {!isLoading && !errMessage && (
+        <div className={clsx('flex-1', 'py-1', 'flex', 'bg-black-850')}>
+          {/*
+           * We assign the `sizeRef` and the `terminalRef` to a child element intentionally
+           * because the fit addon for xterm.js resizes the terminal based on the PARENT'S size.
+           * The child element MUST have set the same width and height of it's parent, hence
+           * the `w-full` and `h-full`.
+           */}
           <div
-            className={clsx(
-              'flex-1',
-              'py-1',
-              'flex',
-              { hidden: isHidden },
-              'bg-black-850',
-            )}
-          >
-            {/*
-             * We assign the `sizeRef` and the `terminalRef` to a child element intentionally
-             * because the fit addon for xterm.js resizes the terminal based on the PARENT'S size.
-             * The child element MUST have set the same width and height of it's parent, hence
-             * the `w-full` and `h-full`.
-             */}
-            <div
-              ref={assignRefs}
-              className="
+            ref={assignRefs}
+            className="
               h-full
               w-full
             "
-            />
-          </div>
-        )}
+          />
+        </div>
       </>
     )
   },

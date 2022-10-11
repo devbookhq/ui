@@ -85,7 +85,6 @@ export class LanguageServerClient {
   private requestManager: RequestManager
   private client: Client
 
-
   private plugins: LanguageServicePlugin[]
 
   constructor(options: LanguageServerClientOptions) {
@@ -100,6 +99,10 @@ export class LanguageServerClient {
 
     this.client.onNotification((data) => {
       this.processNotification(data as any)
+    })
+
+    this.client.onError((data) => {
+      console.error('Error in language service', data)
     })
 
     const webSocketTransport = <WebSocketTransport>this.transport
@@ -121,7 +124,7 @@ export class LanguageServerClient {
   }
 
   async initialize() {
-    const { capabilities } = await this.request('initialize', {
+    const result = await this.request('initialize', {
       capabilities: {
         textDocument: {
           hover: {
@@ -181,7 +184,9 @@ export class LanguageServerClient {
       workspaceFolders: this.workspaceFolders,
     }, timeout * 3)
   
-    this.capabilities = capabilities
+    if (!result?.capabilities) return
+
+    this.capabilities = result.capabilities
     this.notify('initialized', {})
     this.ready = true
   }
@@ -222,14 +227,14 @@ export class LanguageServerClient {
     params: LSPRequestMap[K][0],
     timeout: number
   ): Promise<LSPRequestMap[K][1]> {
-    return this.client.request({ method, params }, timeout)
+    return this.client.request({ method, params }, timeout).catch(err => console.log(err))
   }
 
   private notify<K extends keyof LSPNotifyMap>(
     method: K,
     params: LSPNotifyMap[K]
   ): Promise<LSPNotifyMap[K]> {
-    return this.client.notify({ method, params })
+    return this.client.notify({ method, params }).catch(err => console.log(err))
   }
 
   private processNotification(notification: Notification) {

@@ -24,7 +24,7 @@ function useSession({
     state: SessionState
     id?: string
     open?: Promise<void>
-  }>({ state: 'closed' })
+  }>({ state: codeSnippetID ? 'opening' : 'closed' })
 
   const initSession = useCallback(async () => {
     if (!codeSnippetID) return
@@ -32,7 +32,7 @@ function useSession({
     const newSession = new Session({
       id: codeSnippetID,
       onDisconnect() {
-        setSessionState(s => (s.session === newSession ? { ...s, state: 'closed' } : s))
+        setSessionState(s => (s.session === newSession ? { ...s, state: 'opening' } : s))
       },
       onReconnect() {
         setSessionState(s => (s.session === newSession ? { ...s, state: 'open' } : s))

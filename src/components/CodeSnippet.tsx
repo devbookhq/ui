@@ -73,7 +73,6 @@ function CodeSnippet({
   return (
     <div
       className="
-      dbk-code-snippet
       dbk-code-editor
       flex
       flex-col
@@ -85,7 +84,6 @@ function CodeSnippet({
     >
       <div
         className="
-        dbk-header
         flex
         flex-row-reverse
         items-center

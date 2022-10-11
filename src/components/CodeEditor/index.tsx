@@ -10,7 +10,7 @@ import React, {
 } from 'react'
 
 import type { Language } from '../../hooks/usePublishedCodeSnippet'
-import { LanguageServer } from '../../utils/languageServer'
+import type { LanguageServer } from '../../utils/languageServer'
 import { languageService } from '../../utils/languageService'
 import { createEditorState } from './createEditorState'
 
@@ -18,7 +18,7 @@ export interface Props {
   content?: string
   isReadOnly?: boolean
   onContentChange?: (content: string) => void
-  language: Language
+  language?: Language
   height?: string
   className?: string
   autofocus?: boolean
@@ -35,7 +35,7 @@ const CodeEditor = forwardRef<Handler, Props>(
     {
       content,
       isReadOnly = false,
-      language,
+      language = 'Nodejs',
       height,
       onContentChange,
       className,
@@ -188,7 +188,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         className={`
         dbk-code-editor
         overflow-auto
-      bg-black-800
+      bg-black-850
         ${className || ''}
       `}
         style={{

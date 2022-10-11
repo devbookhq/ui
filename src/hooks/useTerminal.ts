@@ -7,19 +7,23 @@ export interface Opts {
 }
 
 function useTerminal({ terminalManager }: Opts) {
-  const [terminal, setTerminal] = useState<XTermTerminal>()
-  const [terminalSession, setTerminalSession] = useState<TerminalSession>()
-  const [error, setError] = useState<string>()
-  const [isLoading, setIsLoading] = useState(true)
-  const [childProcesses, setChildProcesss] = useState<ChildProcess[]>([])
-  const [runningProcessCmd, setRunningProcessCmd] = useState<string>()
   const [cmd, setCmd] = useState<{ cmdContent?: string; wasExecuted?: boolean }>({})
+  const [runningProcessCmd, setRunningProcessCmd] = useState<string>()
+
+  const [terminalState, setTerminalState] = useState<{
+    terminal?: XTermTerminal
+    session?: TerminalSession
+    error?: string
+    isLoading?: boolean
+    childProcesses: ChildProcess[]
+  }>({ childProcesses: [], isLoading: true })
+
   const runningProcessID = useMemo(() => {
-    if (runningProcessCmd && childProcesses.length > 0) {
-      return childProcesses[0].pid
+    if (runningProcessCmd && terminalState.childProcesses.length > 0) {
+      return terminalState.childProcesses[0].pid
     }
     return undefined
-  }, [runningProcessCmd, childProcesses])
+  }, [runningProcessCmd, terminalState.childProcesses])
 
   const runCmd = useCallback(async (cmd: string) => {
     setCmd({ cmdContent: cmd, wasExecuted: false })
@@ -37,9 +41,13 @@ function useTerminal({ terminalManager }: Opts) {
         if (!terminalManager) return
 
         setRunningProcessCmd(undefined)
-        setChildProcesss([])
 
-        setIsLoading(true)
+        setTerminalState({
+          childProcesses: [],
+          isLoading: true,
+          error: undefined,
+        })
+
         const xterm = await import('xterm')
 
         const term = new xterm.Terminal({
@@ -53,39 +61,54 @@ function useTerminal({ terminalManager }: Opts) {
           },
         })
 
+        setTerminalState({
+          childProcesses: [],
+          isLoading: true,
+          terminal: term,
+          error: undefined,
+        })
+
         try {
           const session = await terminalManager.createSession({
             onData: data => term.write(data),
-            onChildProcessesChange: setChildProcesss,
+            onChildProcessesChange: cps => {
+              setTerminalState(s =>
+                s.terminal === term ? { ...s, childProcesses: cps } : s,
+              )
+            },
             size: { cols: term.cols, rows: term.rows },
           })
 
           term.onData(data => session.sendData(data))
           term.onResize(size => session.resize(size))
 
-          setTerminal(term)
-          setTerminalSession(session)
-          setError(undefined)
-          setIsLoading(false)
+          setTerminalState(s =>
+            s.terminal === term ? { ...s, session, isLoading: false } : s,
+          )
 
           return () => {
             term.dispose()
             session.destroy()
-            setTerminal(undefined)
+            setTerminalState(s =>
+              s.terminal === term ? { isLoading: false, childProcesses: [] } : s,
+            )
           }
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err)
           console.error(message)
-          setError(message)
+          setTerminalState(s => (s.terminal === term ? { ...s, error: message } : s))
         } finally {
-          setIsLoading(false)
+          setTerminalState(s => (s.terminal === term ? { ...s, isLoading: false } : s))
         }
       }
 
       const disposePromise = init()
 
       return () => {
-        setChildProcesss([])
+        setTerminalState({
+          childProcesses: [],
+          isLoading: false,
+        })
         setRunningProcessCmd(undefined)
         disposePromise.then(dispose => dispose?.())
       }
@@ -95,11 +118,11 @@ function useTerminal({ terminalManager }: Opts) {
 
   useEffect(
     function executeCmd() {
-      if (!cmd.wasExecuted && cmd.cmdContent && terminalSession) {
+      if (!cmd.wasExecuted && cmd.cmdContent && terminalState.session) {
         setRunningProcessCmd(cmd.cmdContent)
         ;(async function () {
           try {
-            await terminalSession?.sendData('\x0C' + cmd.cmdContent + '\n')
+            await terminalState.session?.sendData('\x0C' + cmd.cmdContent + '\n')
             setCmd(c => ({ cmdContent: c.cmdContent, wasExecuted: true }))
           } catch (e) {
             setRunningProcessCmd(undefined)
@@ -107,31 +130,19 @@ function useTerminal({ terminalManager }: Opts) {
         })()
       }
     },
-    [cmd, terminalSession],
+    [cmd, terminalState.session],
   )
 
-  return useMemo(
-    () => ({
-      terminal,
-      terminalSession,
-      error,
-      isLoading,
-      stopCmd,
-      isCmdRunning: !!runningProcessID,
-      runCmd,
-      childProcesses,
-    }),
-    [
-      terminal,
-      childProcesses,
-      isLoading,
-      error,
-      runningProcessID,
-      stopCmd,
-      runCmd,
-      terminalSession,
-    ],
-  )
+  return {
+    terminal: terminalState.terminal,
+    terminalSession: terminalState.session,
+    error: terminalState.error,
+    isLoading: terminalState.isLoading,
+    stopCmd,
+    isCmdRunning: !!runningProcessID,
+    runCmd,
+    childProcesses: terminalState.childProcesses,
+  }
 }
 
 export default useTerminal
