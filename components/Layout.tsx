@@ -17,7 +17,6 @@ interface Props {
 
 export default function Layout({ children, meta: pageMeta }: Props) {
   const router = useRouter()
-
   const isPreview = router.pathname === '/[slug]'
 
   const meta = {
