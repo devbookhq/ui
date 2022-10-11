@@ -37,7 +37,7 @@
     "@supabase/gotrue-js": "1.22.14"
   },
   "dependencies": {
-    "@devbookhq/react": "^1.1.13",
+    "@devbookhq/react": "1.1.14",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^1.0.6",
     "@radix-ui/react-icons": "^1.1.1",
