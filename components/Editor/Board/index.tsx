@@ -9,7 +9,7 @@ export interface Props {
 
 function Board({ app }: Props) {
   return (
-    <div className="flex flex-1 overflow-hidden bg-black-800">
+    <div className="bg-black-80 flex flex-1 overflow-hidden">
       <Container app={app} />
       <CustomDragLayer />
     </div>

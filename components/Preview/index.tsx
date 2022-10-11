@@ -1,6 +1,6 @@
-import { SharedSessionProvider } from '@devbookhq/react'
+import { SessionProvider } from '@devbookhq/react'
 
-import { ItemMap, useBoardItems } from 'components/Editor/Board/Container'
+import { ItemMap, useBoardBlocks } from 'components/BuilderProvider/useBoardBlocks'
 import { renderPreviewItem } from 'components/Editor/UIComponent'
 
 export interface Props {
@@ -8,10 +8,10 @@ export interface Props {
 }
 
 function Preview({ serializedApp }: Props) {
-  const [items] = useBoardItems(serializedApp as ItemMap)
+  const [items] = useBoardBlocks(serializedApp as ItemMap)
 
   return (
-    <SharedSessionProvider
+    <SessionProvider
       opts={{
         codeSnippetID: 'Mh3XS5Pq9ch8',
       }}
@@ -19,7 +19,7 @@ function Preview({ serializedApp }: Props) {
       <div className="relative flex flex-1">
         {Object.values(items).map(item => renderPreviewItem(item))}
       </div>
-    </SharedSessionProvider>
+    </SessionProvider>
   )
 }
 

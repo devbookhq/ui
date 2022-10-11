@@ -3,19 +3,13 @@ import { useDrag } from 'react-dnd'
 import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
-import { snapToGrid, xStep, yStep } from '../Board/snapToGrid'
+import { BoardBlock } from '../../BuilderProvider/BoardBlock'
+import CodeEditor, { Icon as CodeEditorIcon } from './CodeEditor'
 import CodeSnippet, { Icon as CodeSnippetIcon } from './CodeSnippet'
-import Placeholder, { Icon as PlaceholderIcon } from './Placeholder'
+import Terminal, { Icon as TerminalIcon } from './Terminal'
 
 export const boardComponentType: UIComponentType = 'boardComponent'
 export const sidebarIconType = 'sidebarIcon'
-
-export interface BoardItem {
-  top: number
-  id: string
-  left: number
-  componentType: string
-}
 
 function getStyles(left: number, top: number, isDragging: boolean): CSSProperties {
   const transform = `translate3d(${left}px, ${top}px, 0)`
@@ -30,37 +24,8 @@ function getStyles(left: number, top: number, isDragging: boolean): CSSPropertie
   }
 }
 
-function getItemStyles(
-  initialOffset: XYCoord | null,
-  currentOffset: XYCoord | null,
-  offset: XYCoord | null,
-) {
-  if (offset) {
-    const transform = `translate(${offset.x}px, ${offset.y}px)`
-    return {
-      transform,
-      WebkitTransform: transform,
-    }
-  }
-
-  if (!initialOffset || !currentOffset) {
-    return {
-      display: 'none',
-    }
-  }
-
-  let { x, y } = currentOffset
-
-  x -= initialOffset.x
-  y -= initialOffset.y
-
-  x = snapToGrid(x, xStep)
-  y = snapToGrid(y, yStep)
-
-  x += initialOffset.x
-  y += initialOffset.y
-
-  const transform = `translate(${x}px, ${y}px)`
+function getSidebarStyles(left: number, top: number): CSSProperties {
+  const transform = `translate(${left}px, ${top}px)`
   return {
     transform,
     WebkitTransform: transform,
@@ -68,15 +33,13 @@ function getItemStyles(
 }
 
 interface DraggedProps {
-  initialOffset: XYCoord | null
-  currentOffset: XYCoord | null
-  offset: XYCoord | null
+  offset: XYCoord
 }
 
 function asDraggedBoardComponent<P extends object>(Component: ComponentType<P>) {
-  const Wrapped = (props: P & BoardItem & DraggedProps) => {
+  const Wrapped = (props: P & BoardBlock & DraggedProps) => {
     return (
-      <div style={getItemStyles(props.initialOffset, props.currentOffset, props.offset)}>
+      <div style={getSidebarStyles(props.offset.x, props.offset.y)}>
         <Component {...props} />
       </div>
     )
@@ -91,7 +54,7 @@ function asBoardComponent<P extends object>(
   Component: ComponentType<P>,
   componentType: string,
 ) {
-  const Wrapped = (props: P & BoardItem) => {
+  const Wrapped = (props: P & BoardBlock) => {
     const { id, left, top } = props
 
     const [{ isDragging }, drag, preview] = useDrag(
@@ -118,7 +81,6 @@ function asBoardComponent<P extends object>(
 
     return (
       <div
-        className="bg-gray-300"
         ref={drag}
         style={getStyles(left, top, isDragging)}
       >
@@ -133,14 +95,11 @@ function asBoardComponent<P extends object>(
 }
 
 function asPreviewComponent<P extends object>(Component: ComponentType<P>) {
-  const Wrapped = (props: P & BoardItem) => {
+  const Wrapped = (props: P & BoardBlock) => {
     const { id, left, top } = props
 
     return (
-      <div
-        className="bg-gray-300"
-        style={getStyles(left, top, false)}
-      >
+      <div style={getStyles(left, top, false)}>
         <Component {...props} />
       </div>
     )
@@ -189,9 +148,9 @@ function asSidebarIcon<P extends object>(
 type UIComponentType = string
 
 type UIComponentSetup<
-  T extends BoardItem,
+  T extends BoardBlock,
   I extends object,
-  L extends BoardItem & DraggedProps,
+  L extends BoardBlock & DraggedProps,
 > = {
   Board: ComponentType<T>
   Sidebar: ComponentType<I>
@@ -200,18 +159,22 @@ type UIComponentSetup<
 }
 
 type UIComponentMap = {
-  [id: string]: UIComponentSetup<BoardItem, object, BoardItem & DraggedProps>
+  [id: string]: UIComponentSetup<BoardBlock, object, BoardBlock & DraggedProps>
 }
 
 // Add new board components and their sidebar icons here
 const availableComponents = {
-  [Placeholder.name]: {
-    Sidebar: PlaceholderIcon,
-    Board: Placeholder,
-  },
   [CodeSnippet.name]: {
     Sidebar: CodeSnippetIcon,
     Board: CodeSnippet,
+  },
+  [CodeEditor.name]: {
+    Sidebar: CodeEditorIcon,
+    Board: CodeEditor,
+  },
+  [Terminal.name]: {
+    Sidebar: TerminalIcon,
+    Board: Terminal,
   },
 }
 
@@ -237,7 +200,7 @@ export const uiComponentsMap = uiComponentsList.reduce<UIComponentMap>((prev, cu
   return prev
 }, {})
 
-export function renderBoardItem(item: BoardItem) {
+export function renderBoardItem(item: BoardBlock) {
   const C = uiComponentsMap[item.componentType]
   return (
     <C.Board
@@ -247,7 +210,7 @@ export function renderBoardItem(item: BoardItem) {
   )
 }
 
-export function renderPreviewItem(item: BoardItem) {
+export function renderPreviewItem(item: BoardBlock) {
   const C = uiComponentsMap[item.componentType]
   return (
     <C.Preview
@@ -257,21 +220,13 @@ export function renderPreviewItem(item: BoardItem) {
   )
 }
 
-export function renderDraggedBoardItem(
-  item: BoardItem,
-  initialOffset: XYCoord | null,
-  currentOffset: XYCoord | null,
-  isSidebarItem: boolean,
-  offset: XYCoord | null,
-) {
+export function renderDraggedBoardItem(item: BoardBlock, offset: XYCoord) {
   const C = uiComponentsMap[item.componentType]
   return (
     <C.DraggedBoard
       key={item.id}
       {...item}
-      currentOffset={currentOffset}
-      initialOffset={initialOffset}
-      offset={isSidebarItem ? offset : null}
+      offset={offset}
     />
   )
 }

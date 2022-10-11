@@ -6,11 +6,6 @@ const exportWrapper = process.env.ANALYZE
 
 module.exports = exportWrapper({
   reactStrictMode: true,
-  compiler: {
-    removeConsole: {
-      exclude: ['error'],
-    },
-  },
   swcMinify: true,
   env: {},
   webpack: config => ({

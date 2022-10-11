@@ -22,6 +22,12 @@ module.exports = {
         ignoreTemplateLiterals: true,
       },
     ],
+    'react-hooks/exhaustive-deps': [
+      'warn',
+      {
+        additionalHooks: '(useRecoilCallback|useRecoilTransaction_UNSTABLE)',
+      },
+    ],
     semi: ['error', 'never'],
     quotes: [
       'error',

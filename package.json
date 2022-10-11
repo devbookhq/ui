@@ -37,7 +37,7 @@
     "@supabase/gotrue-js": "1.22.14"
   },
   "dependencies": {
-    "@devbookhq/react": "^1.1.12",
+    "@devbookhq/react": "^1.1.13",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^1.0.6",
     "@radix-ui/react-icons": "^1.1.1",
@@ -52,7 +52,8 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "18.2.0",
-    "react-toastify": "^9.0.8"
+    "react-toastify": "^9.0.8",
+    "recoil": "^0.7.5"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^12.3.1",
@@ -75,5 +76,23 @@
     "prettier-plugin-tailwindcss": "^0.1.13",
     "tailwindcss": "^3.1.8",
     "typescript": "^4.8.4"
-  }
+  },
+  "keywords": [
+    "react",
+    "javascript",
+    "docs",
+    "typescript",
+    "ui",
+    "sandbox",
+    "components",
+    "devbook",
+    "builder",
+    "vm",
+    "code",
+    "documentation",
+    "playground",
+    "editor",
+    "onboarding",
+    "dnd"
+  ]
 }

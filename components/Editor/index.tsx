@@ -1,8 +1,8 @@
-import { SharedSessionProvider } from '@devbookhq/react'
+import { SessionProvider } from '@devbookhq/react'
 import { DndProvider } from 'react-dnd'
 import { App } from 'types'
 
-import useDndBackend from 'utils/useDndBackend'
+import useDndBackend from 'components/BuilderProvider/useDndBackend'
 
 import Board from './Board'
 import Sidebar from './Sidebar'
@@ -14,9 +14,11 @@ export interface Props {
 function Editor({ app }: Props) {
   const backend = useDndBackend()
 
+  console.log('editor')
+
   return (
     <div className="flex flex-1 rounded border border-black-700">
-      <SharedSessionProvider
+      <SessionProvider
         opts={{
           codeSnippetID: 'Mh3XS5Pq9ch8',
         }}
@@ -25,7 +27,7 @@ function Editor({ app }: Props) {
           <Board app={app} />
           <Sidebar />
         </DndProvider>
-      </SharedSessionProvider>
+      </SessionProvider>
     </div>
   )
 }

@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react'
-import { useDragLayer } from 'react-dnd'
 
-import { renderDraggedBoardItem, sidebarIconType } from '../UIComponent'
+import { useBoardDrag } from '../../BuilderProvider/useBoardDrag'
 
 const layerStyles: CSSProperties = {
   position: 'fixed',
@@ -11,31 +10,17 @@ const layerStyles: CSSProperties = {
   top: 0,
   width: '100%',
   height: '100%',
+  // background: 'blue',
 }
 
 export interface Props {}
 
 function CustomDragLayer({}: Props) {
-  const { isDragging, item, initialOffset, currentOffset, isSidebarItem, offset } =
-    useDragLayer(monitor => ({
-      item: monitor.getItem(),
-      isSidebarItem: monitor.getItemType() === sidebarIconType,
-      itemType: monitor.getItemType(),
-      offset: monitor.getClientOffset(),
-      initialOffset: monitor.getInitialSourceClientOffset(),
-      currentOffset: monitor.getSourceClientOffset(),
-      isDragging: monitor.isDragging(),
-    }))
+  const draggedChildren = useBoardDrag()
 
-  if (!isDragging) {
-    return null
-  }
+  if (!draggedChildren) return null
 
-  return (
-    <div style={layerStyles}>
-      {renderDraggedBoardItem(item, initialOffset, currentOffset, isSidebarItem, offset)}
-    </div>
-  )
+  return <div style={layerStyles}>{draggedChildren}</div>
 }
 
 export default CustomDragLayer

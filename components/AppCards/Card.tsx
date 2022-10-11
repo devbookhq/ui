@@ -33,7 +33,9 @@ function Card({ app }: Props) {
     setShowDropdown(c => !c)
   }
 
-  async function handleDelete(_: any) {
+  async function handleDelete(e: any) {
+    e.stopPropagation()
+    e.preventDefault()
     if (
       confirm(`Are you sure you want to delete '${app.title}'? This cannot be reversed.`)
     ) {
