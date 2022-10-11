@@ -1,7 +1,7 @@
 import { CodeSnippet as CS } from '@devbookhq/react'
 
 export function Icon() {
-  return <div>CODE</div>
+  return <div>Code</div>
 }
 
 function CodeSnippet() {

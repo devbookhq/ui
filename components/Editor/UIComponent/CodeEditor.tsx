@@ -1,7 +1,7 @@
 import { CodeEditor as CE, withCasing } from '@devbookhq/react'
 
 export function Icon() {
-  return <div>EDITOR</div>
+  return <div>Editor</div>
 }
 
 const CodeEditorWithCasing = withCasing(CE)

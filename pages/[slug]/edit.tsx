@@ -2,11 +2,11 @@ import {
   supabaseServerClient,
   withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
-import { App } from 'types'
 
 import Editor from 'components/Editor'
 
-import { getApp } from 'utils/queries'
+import { getApp } from 'utils/queries/queries'
+import { App } from 'utils/queries/types'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',

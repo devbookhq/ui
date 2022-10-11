@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { App, UserFeedback } from 'types'
+
+import { App, UserFeedback } from './types'
 
 export async function getApp(client: SupabaseClient, id: string) {
   const { data, error } = await client

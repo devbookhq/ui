@@ -18,6 +18,8 @@ export interface AddItem {
 export function useBoardBlocks(initItems: ItemMap = {}): [ItemMap, AddItem, MoveItem] {
   const [items, setItems] = useState<ItemMap>(initItems)
 
+  const position = useRecoilValue(elementPositionStateFamily(elementID))
+
   const move = useCallback<MoveItem>(({ id, left, top }) => {
     setItems(i =>
       update(i, {

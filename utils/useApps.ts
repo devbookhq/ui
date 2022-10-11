@@ -1,6 +1,7 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { useEffect, useState } from 'react'
-import type { App } from 'types'
+
+import { App } from 'utils/queries/types'
 
 function useApps(userID?: string) {
   const [apps, setApps] = useState<Required<App>[]>([])

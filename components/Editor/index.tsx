@@ -1,10 +1,12 @@
 import { SessionProvider } from '@devbookhq/react'
 import { DndProvider } from 'react-dnd'
-import { App } from 'types'
 
 import useDndBackend from 'components/BuilderProvider/useDndBackend'
 
+import { App } from 'utils/queries/types'
+
 import Board from './Board'
+import Inspector from './Inspector'
 import Sidebar from './Sidebar'
 
 export interface Props {
@@ -14,8 +16,6 @@ export interface Props {
 function Editor({ app }: Props) {
   const backend = useDndBackend()
 
-  console.log('editor')
-
   return (
     <div className="flex flex-1 rounded border border-black-700">
       <SessionProvider
@@ -24,7 +24,10 @@ function Editor({ app }: Props) {
         }}
       >
         <DndProvider backend={backend}>
-          <Board app={app} />
+          <div className="flex flex-1 flex-col">
+            <Board app={app} />
+            <Inspector />
+          </div>
           <Sidebar />
         </DndProvider>
       </SessionProvider>

@@ -1,8 +1,8 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { useEffect } from 'react'
-import { App } from 'types'
 
-import { updateApp } from 'utils/queries'
+import { updateApp } from 'utils/queries/queries'
+import { App } from 'utils/queries/types'
 
 import { useBoard } from '../../BuilderProvider/useBoard'
 import { renderBoardItem } from '../UIComponent'

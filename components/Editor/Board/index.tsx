@@ -1,4 +1,4 @@
-import { App } from 'types'
+import { App } from 'utils/queries/types'
 
 import Container from './Container'
 import CustomDragLayer from './CustomDragLayer'
@@ -9,7 +9,7 @@ export interface Props {
 
 function Board({ app }: Props) {
   return (
-    <div className="bg-black-80 flex flex-1 overflow-hidden">
+    <div className="bg-black-850 flex flex-1 overflow-hidden">
       <Container app={app} />
       <CustomDragLayer />
     </div>

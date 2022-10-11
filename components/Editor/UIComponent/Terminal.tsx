@@ -1,7 +1,7 @@
 import { Terminal as T, withCasing } from '@devbookhq/react'
 
 export function Icon() {
-  return <div>TERMINAL</div>
+  return <div>Terminal</div>
 }
 
 const TerminalWithCasing = withCasing(T)

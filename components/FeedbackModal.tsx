@@ -6,7 +6,7 @@ import Modal from 'components/Modal'
 import Textarea from 'components/Textarea'
 import SpinnerIcon from 'components/icons/Spinner'
 
-import { upsertUserFeedback } from 'utils/queries'
+import { upsertUserFeedback } from 'utils/queries/queries'
 import useUserInfo from 'utils/useUserInfo'
 
 export interface Props {

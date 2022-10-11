@@ -10,7 +10,7 @@ import SpinnerIcon from 'components/icons/Spinner'
 import Title from 'components/typography/Title'
 
 import { showErrorNotif } from 'utils/notification'
-import { createApp } from 'utils/queries'
+import { createApp } from 'utils/queries/queries'
 import useApps from 'utils/useApps'
 import useUserInfo from 'utils/useUserInfo'
 

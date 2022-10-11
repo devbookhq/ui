@@ -81,6 +81,7 @@ function asBoardComponent<P extends object>(
 
     return (
       <div
+        className="flex flex-1"
         ref={drag}
         style={getStyles(left, top, isDragging)}
       >
@@ -133,7 +134,7 @@ function asSidebarIcon<P extends object>(
       <div
         ref={drag}
         {...collected}
-        className="mx-1 flex h-12 w-12 items-center justify-center rounded-sm bg-gray-800 p-1"
+        className="flex h-14 w-14 cursor-move items-center justify-center rounded-sm border border-black-700 bg-black-800 p-1 px-1 text-xs hover:bg-black-700"
       >
         <Component {...props} />
       </div>

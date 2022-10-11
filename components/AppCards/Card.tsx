@@ -2,13 +2,13 @@ import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
-import type { App } from 'types'
 
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
 
 import { showErrorNotif } from 'utils/notification'
-import { deleteApp } from 'utils/queries'
+import { deleteApp } from 'utils/queries/queries'
+import { App } from 'utils/queries/types'
 import useOnClickOutside from 'utils/useOnClickOutside'
 
 export interface Props {

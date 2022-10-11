@@ -1,10 +1,10 @@
 import { supabaseServerClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { GetServerSideProps } from 'next'
-import { App } from 'types'
 
 import Preview from 'components/Preview'
 
-import { getApp } from 'utils/queries'
+import { getApp } from 'utils/queries/queries'
+import { App } from 'utils/queries/types'
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   try {

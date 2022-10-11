@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { App } from 'types'
+
+import { App } from 'utils/queries/types'
 
 import Card from './Card'
 
