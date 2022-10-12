@@ -1,6 +1,6 @@
 import { SessionProvider } from '@devbookhq/react'
 
-import { renderPreviewItem } from 'components/Editor/UIComponent'
+import { renderPreviewBoardBlock } from 'components/Editor/uiComponents'
 import SwitchMode from 'components/SwitchMode'
 
 import { App } from 'utils/queries/types'
@@ -18,7 +18,9 @@ function Preview({ app }: Props) {
         }}
       >
         <div className="relative flex flex-1">
-          {app.serialized.blocks?.map(item => renderPreviewItem(item))}
+          {Object.values(app.state.board.blocks).map(block =>
+            renderPreviewBoardBlock(block),
+          )}
         </div>
       </SessionProvider>
       <SwitchMode className="fixed top-4 right-4" />

@@ -1,9 +1,8 @@
 import { SessionProvider } from '@devbookhq/react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import BuilderProvider from 'core/BuilderProvider'
+import { RootState } from 'core/BuilderProvider/models/RootStoreProvider'
 import { useCallback } from 'react'
-
-import BuilderProvider from 'components/BuilderProvider'
-import { BoardBlock } from 'components/BuilderProvider/boardBlock'
 
 import { updateApp } from 'utils/queries/queries'
 import { App } from 'utils/queries/types'
@@ -17,17 +16,17 @@ export interface Props {
 }
 
 function Editor({ app }: Props) {
-  const saveBlocks = useCallback(
-    (blocks: BoardBlock[]) => {
-      updateApp(supabaseClient, { serialized: { blocks }, id: app.id })
+  const saveAppState = useCallback(
+    (state: RootState) => {
+      updateApp(supabaseClient, { state, id: app.id })
     },
     [app.id],
   )
   return (
     <div className="flex flex-1 rounded border border-black-700">
       <BuilderProvider
-        initialBlocks={app.serialized.blocks}
-        onBlocksChange={saveBlocks}
+        initialState={app.state}
+        onStateChange={saveAppState}
       >
         <SessionProvider
           opts={{

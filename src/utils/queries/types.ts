@@ -1,4 +1,4 @@
-import { BoardBlock } from 'components/BuilderProvider/boardBlock'
+import { RootState as AppState } from 'core/BuilderProvider/models/RootStoreProvider'
 
 export interface UserFeedback {
   user_id: string
@@ -16,7 +16,5 @@ export interface App {
   title: string
   creator_id?: string
   created_at?: number
-  serialized: {
-    blocks?: BoardBlock[]
-  }
+  state: AppState
 }

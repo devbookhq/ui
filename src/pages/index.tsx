@@ -45,7 +45,7 @@ function Dashboard() {
       title,
       id,
       creator_id: user.id,
-      serialized: {},
+      state: { board: { blocks: {}, selectedBlockID: null } },
     })
       .then((data: any) => {
         if (data.statusCode === 500 && data.message) {

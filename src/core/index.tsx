@@ -1,14 +1,11 @@
-import { CSSProperties, ComponentType, memo, useEffect } from 'react'
+import { BoardBlock } from 'core/BuilderProvider/models/board'
+import { observer } from 'mobx-react-lite'
+import { CSSProperties, ComponentType, useEffect } from 'react'
 import { useDrag } from 'react-dnd'
 import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
-import { BoardBlock } from '../../BuilderProvider/boardBlock'
-import CodeEditor, { Icon as CodeEditorIcon } from './CodeEditor'
-import CodeSnippet, { Icon as CodeSnippetIcon } from './CodeSnippet'
-import Terminal, { Icon as TerminalIcon } from './Terminal'
-
-export const boardComponentType: UIComponentType = 'boardComponent'
+export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
 
 function getStyles(left: number, top: number, isDragging: boolean): CSSProperties {
@@ -36,11 +33,10 @@ interface DraggedProps {
   offset: XYCoord
 }
 
-function asDraggedBoardComponent<P extends object>(Component: ComponentType<P>) {
+function asDraggedBoardBlock<P extends object>(Component: ComponentType<P>) {
   const Wrapped = (props: P & BoardBlock & DraggedProps) => {
     return (
       <div style={getSidebarStyles(props.offset.x, props.offset.y)}>
-        DRAGGED
         <Component {...props} />
       </div>
     )
@@ -48,10 +44,10 @@ function asDraggedBoardComponent<P extends object>(Component: ComponentType<P>) 
 
   Wrapped.displayName = Component.displayName
 
-  return memo(Wrapped)
+  return observer(Wrapped)
 }
 
-function asBoardComponent<P extends object>(
+function asBoardBlock<P extends object>(
   Component: ComponentType<P>,
   componentType: string,
 ) {
@@ -60,7 +56,7 @@ function asBoardComponent<P extends object>(
 
     const [{ isDragging }, drag, preview] = useDrag(
       () => ({
-        type: boardComponentType,
+        type: boardBlockType,
         item: {
           id,
           left,
@@ -75,10 +71,8 @@ function asBoardComponent<P extends object>(
     )
 
     useEffect(() => {
-      preview(getEmptyImage(), {
-        captureDraggingState: true,
-      })
-    }, [])
+      preview(getEmptyImage())
+    }, [preview])
 
     return (
       <div
@@ -86,7 +80,6 @@ function asBoardComponent<P extends object>(
         ref={drag}
         style={getStyles(left, top, isDragging)}
       >
-        BOARD
         <Component {...props} />
       </div>
     )
@@ -94,10 +87,10 @@ function asBoardComponent<P extends object>(
 
   Wrapped.displayName = Component.displayName
 
-  return memo(Wrapped)
+  return observer(Wrapped)
 }
 
-function asPreviewComponent<P extends object>(Component: ComponentType<P>) {
+function asPreviewBlock<P extends object>(Component: ComponentType<P>) {
   const Wrapped = (props: P & BoardBlock) => {
     const { id, left, top } = props
 
@@ -110,7 +103,7 @@ function asPreviewComponent<P extends object>(Component: ComponentType<P>) {
 
   Wrapped.displayName = Component.displayName
 
-  return memo(Wrapped)
+  return observer(Wrapped)
 }
 
 function asSidebarIcon<P extends object>(
@@ -118,7 +111,7 @@ function asSidebarIcon<P extends object>(
   componentType: string,
 ) {
   const Wrapped = (props: P) => {
-    const [collected, drag] = useDrag(() => ({
+    const [collected, drag, preview] = useDrag(() => ({
       type: sidebarIconType,
       options: {
         dropEffect: 'copy',
@@ -128,9 +121,14 @@ function asSidebarIcon<P extends object>(
       },
       collect: monitor => ({
         isDragging: monitor.isDragging(),
-        opacity: monitor.isDragging() ? 0.5 : 1,
+        opacity: monitor.isDragging() ? 0 : 1,
       }),
     }))
+
+    useEffect(() => {
+      console.log('rered')
+      preview(getEmptyImage())
+    }, [preview])
 
     return (
       <div
@@ -148,9 +146,7 @@ function asSidebarIcon<P extends object>(
   return Wrapped
 }
 
-type UIComponentType = string
-
-type UIComponentSetup<
+type UIComponent<
   T extends BoardBlock,
   I extends object,
   L extends BoardBlock & DraggedProps,
@@ -162,74 +158,73 @@ type UIComponentSetup<
 }
 
 type UIComponentMap = {
-  [id: string]: UIComponentSetup<BoardBlock, object, BoardBlock & DraggedProps>
+  [id: string]: UIComponent<BoardBlock, object, BoardBlock & DraggedProps>
 }
 
-// Add new board components and their sidebar icons here
-const availableComponents = {
-  [CodeSnippet.name]: {
-    Sidebar: CodeSnippetIcon,
-    Board: CodeSnippet,
-  },
-  [CodeEditor.name]: {
-    Sidebar: CodeEditorIcon,
-    Board: CodeEditor,
-  },
-  [Terminal.name]: {
-    Sidebar: TerminalIcon,
-    Board: Terminal,
-  },
+type UIComponentSetup<T extends BoardBlock, I extends object> = {
+  [id: string]: {
+    Board: ComponentType<T>
+    Sidebar: ComponentType<I>
+  }
 }
 
-export const uiComponentsList = Object.entries(availableComponents).map(
-  ([id, { Sidebar, Board }]) => {
+export function getUIComponents(setup: UIComponentSetup<BoardBlock, object>) {
+  const uiComponentsList = Object.entries(setup).map(([id, { Sidebar, Board }]) => {
     return {
       id,
       Sidebar: asSidebarIcon(Sidebar, id),
-      Board: asBoardComponent(Board, id),
-      DraggedBoard: asDraggedBoardComponent(Board),
-      Preview: asPreviewComponent(Board),
+      Board: asBoardBlock(Board, id),
+      DraggedBoard: asDraggedBoardBlock(Board),
+      Preview: asPreviewBlock(Board),
     }
-  },
-)
+  })
 
-export const uiComponentsMap = uiComponentsList.reduce<UIComponentMap>((prev, curr) => {
-  prev[curr.id] = {
-    Sidebar: curr.Sidebar,
-    Board: curr.Board,
-    DraggedBoard: curr.DraggedBoard,
-    Preview: curr.Preview,
+  const uiComponentsMap = uiComponentsList.reduce<UIComponentMap>((prev, curr) => {
+    prev[curr.id] = {
+      Sidebar: curr.Sidebar,
+      Board: curr.Board,
+      DraggedBoard: curr.DraggedBoard,
+      Preview: curr.Preview,
+    }
+    return prev
+  }, {})
+
+  function renderBoardBlock(block: BoardBlock) {
+    const C = uiComponentsMap[block.componentType]
+    return (
+      <C.Board
+        key={block.id}
+        {...block}
+      />
+    )
   }
-  return prev
-}, {})
 
-export function renderBoardItem(item: BoardBlock) {
-  const C = uiComponentsMap[item.componentType]
-  return (
-    <C.Board
-      key={item.id}
-      {...item}
-    />
-  )
-}
+  function renderPreviewBoardBlock(block: BoardBlock) {
+    const C = uiComponentsMap[block.componentType]
+    return (
+      <C.Preview
+        key={block.id}
+        {...block}
+      />
+    )
+  }
 
-export function renderPreviewItem(item: BoardBlock) {
-  const C = uiComponentsMap[item.componentType]
-  return (
-    <C.Preview
-      key={item.id}
-      {...item}
-    />
-  )
-}
+  function renderDraggedBoardBlock(block: BoardBlock, offset: XYCoord) {
+    const C = uiComponentsMap[block.componentType]
+    return (
+      <C.DraggedBoard
+        key={block.id}
+        {...block}
+        offset={offset}
+      />
+    )
+  }
 
-export function renderDraggedBoardItem(item: BoardBlock, offset: XYCoord) {
-  const C = uiComponentsMap[item.componentType]
-  return (
-    <C.DraggedBoard
-      key={item.id}
-      {...item}
-      offset={offset}
-    />
-  )
+  return {
+    uiComponentsList,
+    uiComponentsMap,
+    renderBoardBlock,
+    renderPreviewBoardBlock,
+    renderDraggedBoardBlock,
+  }
 }

@@ -1,6 +1,6 @@
 import SwitchMode from 'components/SwitchMode'
 
-import { uiComponentsList } from '../UIComponent'
+import { uiComponentsList } from '../uiComponents'
 
 function Sidebar() {
   return (

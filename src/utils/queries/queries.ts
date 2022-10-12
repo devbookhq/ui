@@ -16,7 +16,7 @@ export async function getApp(client: SupabaseClient, id: string) {
 
 export async function createApp(
   client: SupabaseClient,
-  app: Required<Pick<App, 'title' | 'id' | 'serialized' | 'creator_id'>>,
+  app: Required<Pick<App, 'title' | 'id' | 'state' | 'creator_id'>>,
 ) {
   const { body, error } = await client.from<App>('apps').insert(app).limit(1).single()
 
@@ -26,7 +26,7 @@ export async function createApp(
 
 export async function updateApp(
   client: SupabaseClient,
-  app: Required<Pick<App, 'id' | 'serialized'>>,
+  app: Required<Pick<App, 'id' | 'state'>>,
 ) {
   const { error } = await client.from<App>('apps').update(app).eq('id', app.id)
 

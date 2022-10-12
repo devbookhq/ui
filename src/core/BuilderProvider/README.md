@@ -1,10 +1,6 @@
-
-
-
 ## Usage
 
 ```tsx
-
 function App() {
   return (
     <BuilderProvider>
@@ -44,12 +40,6 @@ function DragLayer() {
 function Container() {
   const [children, ref] = useBoard()
 
-  return (
-    <div ref={ref}>
-      {children}
-    </div>
-  )
+  return <div ref={ref}>{children}</div>
 }
-
-
 ```

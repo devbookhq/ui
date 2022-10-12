@@ -1,7 +1,9 @@
+import { observer } from 'mobx-react-lite'
+
 import { App } from 'utils/queries/types'
 
-import { useBoard } from '../../BuilderProvider/useBoard'
-import { renderBoardItem } from '../UIComponent'
+import { useBoard } from '../../../core/BuilderProvider/useBoard'
+import { renderBoardBlock } from '../uiComponents'
 
 export interface Props {
   app: App
@@ -15,9 +17,9 @@ function Container({ app }: Props) {
       className="board relative flex flex-1"
       ref={ref}
     >
-      {blocks.map(b => renderBoardItem(b))}
+      {blocks.map(b => renderBoardBlock(b))}
     </div>
   )
 }
 
-export default Container
+export default observer(Container)

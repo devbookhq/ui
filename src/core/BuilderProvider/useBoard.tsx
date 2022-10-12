@@ -3,31 +3,31 @@ import { useDrop } from 'react-dnd'
 
 import useElement from 'hooks/useElement'
 
-import { boardComponentType, sidebarIconType } from '../Editor/UIComponent'
-import { BoardBlock, useBoardBlockControls, useBoardBlocks } from './boardBlock'
+import { boardBlockType, sidebarIconType } from '..'
+import { useRootStore } from './models/RootStoreProvider'
+import { BoardBlock } from './models/board'
 import { snapToGrid, xStep, yStep } from './snapToGrid'
 
 export function useBoard() {
-  const blocks = useBoardBlocks()
-  const { update, set } = useBoardBlockControls()
+  const { board } = useRootStore()
 
   const [ref, setRef] = useElement<HTMLDivElement>(e => drop(e))
 
   const [, drop] = useDrop(
     () => ({
-      accept: [boardComponentType, sidebarIconType],
-      drop(item: BoardBlock, monitor) {
+      accept: [boardBlockType, sidebarIconType],
+      drop(block: BoardBlock, monitor) {
         const type = monitor.getItemType()
 
-        if (type === boardComponentType) {
+        if (type === boardBlockType) {
           const delta = monitor.getDifferenceFromInitialOffset()
           if (!delta) return
 
-          const left = snapToGrid(Math.round(item.left + delta.x), xStep)
-          const top = snapToGrid(Math.round(item.top + delta.y), yStep)
+          const left = snapToGrid(Math.round(block.left + delta.x), xStep)
+          const top = snapToGrid(Math.round(block.top + delta.y), yStep)
 
-          update({
-            id: item.id,
+          board.moveBlock({
+            id: block.id,
             left,
             top,
           })
@@ -43,8 +43,8 @@ export function useBoard() {
 
           const id = 'ui_' + nanoid()
 
-          set({
-            componentType: item.componentType,
+          board.setBlock({
+            componentType: block.componentType,
             id,
             left,
             top,
@@ -52,11 +52,11 @@ export function useBoard() {
         }
       },
     }),
-    [set, update, ref],
+    [ref, board],
   )
 
   return {
-    blocks,
+    blocks: board.boardBlocks,
     ref: setRef,
   }
 }

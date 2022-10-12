@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-import { useBoardDrag } from '../../BuilderProvider/useBoardDrag'
+import { useBoardDrag } from '../../../core/BuilderProvider/useBoardDrag'
 
 const layerStyles: CSSProperties = {
   position: 'fixed',
@@ -10,7 +10,6 @@ const layerStyles: CSSProperties = {
   top: 0,
   width: '100%',
   height: '100%',
-  // background: 'blue',
 }
 
 export interface Props {}
