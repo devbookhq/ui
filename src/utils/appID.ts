@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid'
 
-export const createID = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 22)
+export const createID = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 16)
 
 const delimiter = '-'
 
