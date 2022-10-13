@@ -11,7 +11,7 @@ import { PropsWithChildren, createContext, useContext, useEffect, useState } fro
 
 import { board } from './board'
 
-enableStaticRendering(true)
+enableStaticRendering(typeof window === 'undefined')
 
 export const root = types.model({
   board,
@@ -53,7 +53,6 @@ function RootStoreProvider({
     },
     [store, onStateChange],
   )
-
   return <RootStoreContext.Provider value={store}>{children}</RootStoreContext.Provider>
 }
 
@@ -62,7 +61,6 @@ export function useRootStore() {
   if (!store) {
     throw new Error('Store cannot be null, please add a context provider')
   }
-
   return store
 }
 
