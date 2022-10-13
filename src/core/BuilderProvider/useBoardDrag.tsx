@@ -5,6 +5,7 @@ import { renderDraggedBoardBlock } from 'components/Editor/uiComponents'
 import { sidebarIconType } from '..'
 import { BoardBlock } from './models/board'
 import { snapToGrid, xStep, yStep } from './snapToGrid'
+import { getCanvas } from './useBoard'
 
 renderDraggedBoardBlock
 
@@ -31,31 +32,27 @@ function getBlockOffset(
 }
 
 export function useBoardDrag() {
-  const {
-    isDragging,
-    block,
-    initialOffset,
-    currentOffset,
-    isSidebarItem,
-    sidebarCurrentOffset,
-    sidebarInitialOffset,
-  } = useDragLayer(monitor => ({
-    block: monitor.getItem<BoardBlock | undefined>(),
-    isSidebarItem: monitor.getItemType() === sidebarIconType,
-    itemType: monitor.getItemType(),
-    sidebarInitialOffset: monitor.getInitialClientOffset(),
-    sidebarCurrentOffset: monitor.getClientOffset(),
-    initialOffset: monitor.getInitialSourceClientOffset(),
-    currentOffset: monitor.getSourceClientOffset(),
-    isDragging: monitor.isDragging(),
-  }))
+  const { isDragging, block, initialOffset, currentOffset, isSidebarItem } = useDragLayer(
+    monitor => ({
+      block: monitor.getItem<BoardBlock | undefined>(),
+      isSidebarItem: monitor.getItemType() === sidebarIconType,
+      initialOffset: monitor.getInitialSourceClientOffset(),
+      currentOffset: monitor.getSourceClientOffset(),
+      isDragging: monitor.isDragging(),
+    }),
+  )
 
   if (!isDragging) return
   if (!block) return
 
-  const offset = isSidebarItem
-    ? getBlockOffset(sidebarInitialOffset, currentOffset)
-    : getBlockOffset(initialOffset, currentOffset)
+  let offset: XYCoord | undefined
+
+  if (isSidebarItem) {
+    const canvas = getCanvas()
+    offset = getBlockOffset({ x: canvas.left, y: canvas.top }, currentOffset)
+  } else {
+    offset = getBlockOffset(initialOffset, currentOffset)
+  }
 
   return offset && renderDraggedBoardBlock(block, offset)
 }

@@ -2,13 +2,13 @@ import { SnapshotOut, destroy, types } from 'mobx-state-tree'
 
 const boardBlock = types
   .model({
+    id: types.identifier,
     top: types.number,
     left: types.number,
-    id: types.string,
     componentType: types.string,
   })
   .actions(self => ({
-    updatePosition(top: number, left: number) {
+    translate(top: number, left: number) {
       self.top = top
       self.left = left
     },
@@ -19,11 +19,21 @@ export type BoardBlock = SnapshotOut<typeof boardBlock>
 export const board = types
   .model({
     blocks: types.map(boardBlock),
-    selectedBlockID: types.maybeNull(types.string),
+    selectedBlock: types.safeReference(boardBlock),
   })
+  .views(self => ({
+    getBlock(id: string) {
+      return self.blocks.get(id)
+    },
+  }))
+  .views(self => ({
+    get boardBlocks() {
+      return Array.from(self.blocks.values())
+    },
+  }))
   .actions(self => ({
     setBlock(block: BoardBlock) {
-      self.blocks.set(block.id, block)
+      self.blocks.put(block)
     },
     removeBlock(block: Pick<BoardBlock, 'id'>) {
       const currentBlock = self.blocks.get(block.id)
@@ -31,21 +41,6 @@ export const board = types
         self.blocks.delete(currentBlock.id)
         destroy(currentBlock)
       }
-    },
-    moveBlock(block: Pick<BoardBlock, 'id' | 'left' | 'top'>) {
-      const currentBlock = self.blocks.get(block.id)
-      currentBlock?.updatePosition(block.top, block.left)
-    },
-  }))
-  .views(self => ({
-    get selectedBlock() {
-      if (self.selectedBlockID) {
-        return self.blocks.get(self.selectedBlockID)
-      }
-    },
-
-    get boardBlocks() {
-      return Array.from(self.blocks.values())
     },
   }))
 

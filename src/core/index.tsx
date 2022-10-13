@@ -1,9 +1,10 @@
-import { BoardBlock } from 'core/BuilderProvider/models/board'
 import { observer } from 'mobx-react-lite'
 import { CSSProperties, ComponentType, useEffect } from 'react'
 import { useDrag } from 'react-dnd'
 import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
+
+import { BoardBlock } from 'core/BuilderProvider/models/board'
 
 export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
@@ -22,7 +23,7 @@ function getStyles(left: number, top: number, isDragging: boolean): CSSPropertie
 }
 
 function getSidebarStyles(left: number, top: number): CSSProperties {
-  const transform = `translate(${left}px, ${top}px)`
+  const transform = `translate3d(${left}px, ${top}px, 0)`
   return {
     transform,
     WebkitTransform: transform,
@@ -72,7 +73,7 @@ function asBoardBlock<P extends object>(
 
     useEffect(() => {
       preview(getEmptyImage())
-    }, [preview])
+    }, [])
 
     return (
       <div
@@ -126,9 +127,8 @@ function asSidebarIcon<P extends object>(
     }))
 
     useEffect(() => {
-      console.log('rered')
       preview(getEmptyImage())
-    }, [preview])
+    }, [])
 
     return (
       <div

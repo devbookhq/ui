@@ -1,11 +1,13 @@
 import { SessionProvider } from '@devbookhq/react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import BuilderProvider from 'core/BuilderProvider'
-import { RootState } from 'core/BuilderProvider/models/RootStoreProvider'
 import { useCallback } from 'react'
 
+import { log } from 'utils/logger'
 import { updateApp } from 'utils/queries/queries'
 import { App } from 'utils/queries/types'
+
+import BuilderProvider from 'core/BuilderProvider'
+import { RootState } from 'core/BuilderProvider/models/RootStoreProvider'
 
 import Board from './Board'
 import Inspector from './Inspector'
@@ -18,6 +20,7 @@ export interface Props {
 function Editor({ app }: Props) {
   const saveAppState = useCallback(
     (state: RootState) => {
+      log(state)
       updateApp(supabaseClient, { state, id: app.id })
     },
     [app.id],

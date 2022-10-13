@@ -1,5 +1,6 @@
-import { useRootStore } from 'core/BuilderProvider/models/RootStoreProvider'
 import { observer } from 'mobx-react-lite'
+
+import { useRootStore } from 'core/BuilderProvider/models/RootStoreProvider'
 
 function Inspector() {
   const { board } = useRootStore()

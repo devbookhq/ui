@@ -1,17 +1,19 @@
 import { nanoid } from 'nanoid'
 import { useDrop } from 'react-dnd'
 
-import useElement from 'hooks/useElement'
-
 import { boardBlockType, sidebarIconType } from '..'
 import { useRootStore } from './models/RootStoreProvider'
 import { BoardBlock } from './models/board'
 import { snapToGrid, xStep, yStep } from './snapToGrid'
 
+export const canvasClass = 'builder-canvas'
+
+export function getCanvas() {
+  return document.getElementsByClassName(canvasClass)[0].getBoundingClientRect()
+}
+
 export function useBoard() {
   const { board } = useRootStore()
-
-  const [ref, setRef] = useElement<HTMLDivElement>(e => drop(e))
 
   const [, drop] = useDrop(
     () => ({
@@ -26,20 +28,15 @@ export function useBoard() {
           const left = snapToGrid(Math.round(block.left + delta.x), xStep)
           const top = snapToGrid(Math.round(block.top + delta.y), yStep)
 
-          board.moveBlock({
-            id: block.id,
-            left,
-            top,
-          })
+          board.getBlock(block.id)?.translate(top, left)
         } else if (type === sidebarIconType) {
           const offset = monitor.getClientOffset()
           if (!offset) return
-          if (!ref) return
 
-          const dropTargetPosition = ref.getBoundingClientRect()
+          const canvas = getCanvas()
 
-          const left = snapToGrid(Math.round(offset.x - dropTargetPosition.left), xStep)
-          const top = snapToGrid(Math.round(offset.y - dropTargetPosition.top), yStep)
+          const left = snapToGrid(Math.round(offset.x - canvas.left), xStep)
+          const top = snapToGrid(Math.round(offset.y - canvas.top), yStep)
 
           const id = 'ui_' + nanoid()
 
@@ -52,11 +49,11 @@ export function useBoard() {
         }
       },
     }),
-    [ref, board],
+    [board],
   )
 
   return {
     blocks: board.boardBlocks,
-    ref: setRef,
+    ref: drop,
   }
 }

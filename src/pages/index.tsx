@@ -9,11 +9,14 @@ import NewAppModal from 'components/NewAppModal'
 import SpinnerIcon from 'components/icons/Spinner'
 import Title from 'components/typography/Title'
 
+import { getSlug } from 'utils/appID'
 import { showErrorNotif } from 'utils/notification'
 import { createApp } from 'utils/queries/queries'
 
 import useApps from 'hooks/useApps'
 import useUserInfo from 'hooks/useUserInfo'
+
+import { defaultRootState } from '../core/BuilderProvider/models/RootStoreProvider'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -45,14 +48,14 @@ function Dashboard() {
       title,
       id,
       creator_id: user.id,
-      state: { board: { blocks: {}, selectedBlockID: null } },
+      state: defaultRootState,
     })
       .then((data: any) => {
         if (data.statusCode === 500 && data.message) {
           throw new Error(data.message)
         }
-        const slug = `${data.title}-${data.id}`
 
+        const slug = getSlug(data.id, data.title)
         router.push({
           pathname: '/[slug]/edit',
           query: {
