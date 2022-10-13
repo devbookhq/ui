@@ -1,8 +1,8 @@
 import { SessionProvider } from '@devbookhq/react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import debounce from 'lodash/debounce'
 import { useCallback } from 'react'
 
-import { log } from 'utils/logger'
 import { updateApp } from 'utils/queries/queries'
 import { App } from 'utils/queries/types'
 
@@ -17,11 +17,19 @@ export interface Props {
   app: App
 }
 
+const saveToDBDebounce = 1_000 // 1000ms
+const saveToDBMaxInterval = 3_000 // 3000ms
+
+const debouncedUpdateApp = debounce(updateApp, saveToDBDebounce, {
+  maxWait: saveToDBMaxInterval,
+  leading: false,
+  trailing: true,
+})
+
 function Editor({ app }: Props) {
   const saveAppState = useCallback(
     (state: RootState) => {
-      log(state)
-      updateApp(supabaseClient, { state, id: app.id })
+      debouncedUpdateApp(supabaseClient, { state, id: app.id })
     },
     [app.id],
   )
