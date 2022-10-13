@@ -32,15 +32,21 @@ function getBlockOffset(
 }
 
 export function useBoardDrag() {
-  const { isDragging, block, initialOffset, currentOffset, isSidebarItem } = useDragLayer(
-    monitor => ({
-      block: monitor.getItem<BoardBlock | undefined>(),
-      isSidebarItem: monitor.getItemType() === sidebarIconType,
-      initialOffset: monitor.getInitialSourceClientOffset(),
-      currentOffset: monitor.getSourceClientOffset(),
-      isDragging: monitor.isDragging(),
-    }),
-  )
+  const {
+    sidebarOffset,
+    isDragging,
+    block,
+    initialOffset,
+    currentOffset,
+    isSidebarItem,
+  } = useDragLayer(monitor => ({
+    block: monitor.getItem<BoardBlock | undefined>(),
+    isSidebarItem: monitor.getItemType() === sidebarIconType,
+    initialOffset: monitor.getInitialSourceClientOffset(),
+    currentOffset: monitor.getSourceClientOffset(),
+    sidebarOffset: monitor.getClientOffset(),
+    isDragging: monitor.isDragging(),
+  }))
 
   if (!isDragging) return
   if (!block) return
@@ -49,7 +55,7 @@ export function useBoardDrag() {
 
   if (isSidebarItem) {
     const canvas = getCanvas()
-    offset = getBlockOffset({ x: canvas.left, y: canvas.top }, currentOffset)
+    offset = getBlockOffset({ x: canvas.left, y: canvas.top }, sidebarOffset)
   } else {
     offset = getBlockOffset(initialOffset, currentOffset)
   }
