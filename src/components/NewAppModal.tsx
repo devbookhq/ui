@@ -1,4 +1,3 @@
-import dockerNames from 'docker-names'
 import { useState } from 'react'
 
 import Button from 'components/Button'
@@ -7,16 +6,18 @@ import Modal from 'components/Modal'
 import SpinnerIcon from 'components/icons/Spinner'
 
 import { createID } from 'utils/appID'
+import { createRandomTitle } from 'utils/appTitle'
+import { App } from 'utils/queries/types'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
-  onCreate: ({ title, id }: { id: string; title: string }) => void
+  onCreate: (app: Pick<App, 'id' | 'title'>) => void
   isLoading: boolean
 }
 
 function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
-  const [title, setTitle] = useState(dockerNames.getRandomName())
+  const [title, setTitle] = useState(createRandomTitle())
 
   function handleTitleChange(e: any) {
     setTitle(e.target.value)
@@ -24,7 +25,7 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
 
   function handleCreateButtonClick() {
     onCreate({
-      title: title ? title : dockerNames.getRandomName(),
+      title: title ? title : createRandomTitle(),
       id: createID(),
     })
   }
