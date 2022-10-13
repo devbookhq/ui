@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 import { CSSProperties, ComponentType, useEffect } from 'react'
 import { useDrag } from 'react-dnd'
@@ -5,6 +6,8 @@ import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { BoardBlock } from 'core/BuilderProvider/models/board'
+
+import { useRootStore } from './BuilderProvider/models/RootStoreProvider'
 
 export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
@@ -55,6 +58,8 @@ function asBoardBlock<P extends object>(
   const Wrapped = (props: P & BoardBlock) => {
     const { id, left, top } = props
 
+    const { board } = useRootStore()
+
     const [{ isDragging }, drag, preview] = useDrag(
       () => ({
         type: boardBlockType,
@@ -78,12 +83,33 @@ function asBoardBlock<P extends object>(
       [preview],
     )
 
+    useEffect(
+      function selectOnDrag() {
+        if (isDragging) {
+          board.selectBlock(id)
+        }
+      },
+      [isDragging, board, id],
+    )
+
+    const isSelected = board.selectedBlock?.id === id
+
     return (
       <div
         className="flex flex-1"
         ref={drag}
         style={getStyles(left, top, isDragging)}
+        onClick={e => {
+          e.stopPropagation()
+          board.selectBlock(id)
+        }}
       >
+        <div
+          className={clsx('flex', 'pointer-events-none', 'w-full', 'h-full', 'absolute', {
+            'z-80 rounded-sm opacity-60 outline-dashed outline-offset-4 outline-green-600':
+              isSelected,
+          })}
+        ></div>
         <Component {...props} />
       </div>
     )

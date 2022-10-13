@@ -6,4 +6,4 @@ export function logger(namespace: string, color: string = 'orange') {
   }
 }
 
-export const log = logger('App')
+export const log = logger('General')

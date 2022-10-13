@@ -28,6 +28,9 @@ function getBlockOffset(
   x += initialOffset.x
   y += initialOffset.y
 
+  x = Math.round(x)
+  y = Math.round(y)
+
   return { x, y }
 }
 

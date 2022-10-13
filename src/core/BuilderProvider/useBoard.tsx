@@ -38,8 +38,7 @@ export function useBoard() {
           const left = snapToGrid(Math.round(offset.x - canvas.left), xStep)
           const top = snapToGrid(Math.round(offset.y - canvas.top), yStep)
 
-          const id = 'ui_' + nanoid()
-
+          const id = 'block_' + nanoid(14)
           board.setBlock({
             componentType: block.componentType,
             id,

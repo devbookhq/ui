@@ -7,7 +7,11 @@ function Inspector() {
 
   if (!board.selectedBlock) return null
 
-  return <div className="flex border-t border-black-700">INSPECTOR</div>
+  return (
+    <div className="flex border-t border-black-700">
+      INSPECTOR-{board.selectedBlock.id}
+    </div>
+  )
 }
 
 export default observer(Inspector)

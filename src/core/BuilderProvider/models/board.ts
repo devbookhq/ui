@@ -32,6 +32,12 @@ export const board = types
     },
   }))
   .actions(self => ({
+    selectBlock(id: string) {
+      self.selectedBlock = self.blocks.get(id)
+    },
+    resetBlockSelection() {
+      self.selectedBlock = undefined
+    },
     setBlock(block: BoardBlock) {
       self.blocks.put(block)
     },
