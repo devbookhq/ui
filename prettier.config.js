@@ -28,6 +28,7 @@ module.exports = {
     '^pages/(.*)$',
     '^utils/(.*)$',
     '^hooks/(.*)$',
+    '^core/(.*)$',
     '^[./]',
   ],
   importOrderSeparation: true,
