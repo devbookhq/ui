@@ -1,3 +1,4 @@
+import dockerNames from 'docker-names'
 import { customAlphabet } from 'nanoid'
 
 export const createID = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 16)
@@ -12,4 +13,8 @@ export function getID(slug: string) {
 
 export function getSlug(id: string, title: string) {
   return `${title}${delimiter}${id}`
+}
+
+export function createRandomTitle() {
+  return dockerNames.getRandomName().replace('_', '-')
 }

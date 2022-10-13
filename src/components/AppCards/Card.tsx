@@ -6,7 +6,7 @@ import { useRef, useState } from 'react'
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
 
-import { getSlug } from 'utils/appID'
+import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
 import { deleteApp } from 'utils/queries/queries'
 import { App } from 'utils/queries/types'

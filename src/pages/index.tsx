@@ -9,7 +9,7 @@ import NewAppModal from 'components/NewAppModal'
 import SpinnerIcon from 'components/icons/Spinner'
 import Title from 'components/typography/Title'
 
-import { getSlug } from 'utils/appID'
+import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
 import { createApp } from 'utils/queries/queries'
 

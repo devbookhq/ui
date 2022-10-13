@@ -5,7 +5,7 @@ import {
 
 import Editor from 'components/Editor'
 
-import { getID } from 'utils/appID'
+import { getID } from 'utils/app'
 import { getApp } from 'utils/queries/queries'
 import { App } from 'utils/queries/types'
 

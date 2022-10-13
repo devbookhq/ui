@@ -5,8 +5,7 @@ import Input from 'components/Input'
 import Modal from 'components/Modal'
 import SpinnerIcon from 'components/icons/Spinner'
 
-import { createID } from 'utils/appID'
-import { createRandomTitle } from 'utils/appTitle'
+import { createID, createRandomTitle } from 'utils/app'
 import { App } from 'utils/queries/types'
 
 interface Props {
