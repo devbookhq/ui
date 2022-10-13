@@ -18,7 +18,7 @@ function Preview({ app }: Props) {
         }}
       >
         <div className="relative flex flex-1">
-          {Object.values(app.state.board).map(block => renderPreviewBoardBlock(block))}
+          {Object.values(app.state.board.blocks).map(b => renderPreviewBoardBlock(b))}
         </div>
       </SessionProvider>
       <SwitchMode className="fixed top-4 right-4" />
