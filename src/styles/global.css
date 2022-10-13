@@ -60,12 +60,3 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #212024 inset;
 }
-
-.board {
-  background-image: radial-gradient(
-    circle at 0.5px 0.5px,
-    rgb(49, 49, 49) 0.5px,
-    transparent 0
-  );
-  background-size: 15px 15px;
-}

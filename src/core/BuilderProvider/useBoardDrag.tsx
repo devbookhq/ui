@@ -3,8 +3,8 @@ import { XYCoord, useDragLayer } from 'react-dnd'
 import { renderDraggedBoardBlock } from 'components/Editor/uiComponents'
 
 import { sidebarIconType } from '..'
+import { snapToGrid, xStep, yStep } from './grid'
 import { BoardBlock } from './models/board'
-import { snapToGrid, xStep, yStep } from './snapToGrid'
 import { getCanvas } from './useBoard'
 
 renderDraggedBoardBlock

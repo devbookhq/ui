@@ -2,9 +2,9 @@ import { nanoid } from 'nanoid'
 import { useDrop } from 'react-dnd'
 
 import { boardBlockType, sidebarIconType } from '..'
+import { snapToGrid, xStep, yStep } from './grid'
 import { useRootStore } from './models/RootStoreProvider'
 import { BoardBlock } from './models/board'
-import { snapToGrid, xStep, yStep } from './snapToGrid'
 
 export const canvasClass = 'builder-canvas'
 

@@ -7,7 +7,6 @@ const delimiter = '-'
 export function getID(slug: string) {
   const last = slug.lastIndexOf(delimiter)
   const id = slug.substring(last + 1, slug.length)
-
   return id
 }
 
