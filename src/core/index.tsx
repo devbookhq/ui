@@ -71,9 +71,12 @@ function asBoardBlock<P extends object>(
       [id, left, top],
     )
 
-    useEffect(() => {
-      preview(getEmptyImage())
-    }, [])
+    useEffect(
+      function changePreview() {
+        preview(getEmptyImage())
+      },
+      [preview],
+    )
 
     return (
       <div
@@ -126,9 +129,12 @@ function asSidebarIcon<P extends object>(
       }),
     }))
 
-    useEffect(() => {
-      preview(getEmptyImage())
-    }, [])
+    useEffect(
+      function changePreview() {
+        preview(getEmptyImage())
+      },
+      [preview],
+    )
 
     return (
       <div

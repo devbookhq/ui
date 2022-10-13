@@ -11,11 +11,14 @@ function SignIn() {
   const { user } = useUser()
   const isCreatingNewAccount = router.query.signup === 'true'
 
-  useEffect(() => {
-    if (user) {
-      router.replace('/')
-    }
-  }, [user, router])
+  useEffect(
+    function redirect() {
+      if (user) {
+        router.replace('/')
+      }
+    },
+    [user, router],
+  )
 
   return (
     <>
