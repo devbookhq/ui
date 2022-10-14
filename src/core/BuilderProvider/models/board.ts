@@ -1,16 +1,25 @@
 import { SnapshotOut, destroy, types } from 'mobx-state-tree'
 
+const blockProp = types.model({})
+
 const boardBlock = types
   .model({
     id: types.identifier,
     top: types.number,
     left: types.number,
+    width: types.number,
+    height: types.number,
+    props: types.map(blockProp),
     componentType: types.string,
   })
   .actions(self => ({
     translate(top: number, left: number) {
       self.top = top
       self.left = left
+    },
+    resize(width: number, height: number) {
+      self.width = width
+      self.height = height
     },
   }))
 

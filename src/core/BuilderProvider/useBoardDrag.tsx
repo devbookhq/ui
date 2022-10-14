@@ -51,8 +51,8 @@ export function useBoardDrag() {
     isDragging: monitor.isDragging(),
   }))
 
-  if (!isDragging) return
   if (!block) return
+  if (!isDragging) return
 
   let offset: XYCoord | undefined
 

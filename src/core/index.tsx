@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
+import { Resizable } from 're-resizable'
 import { CSSProperties, ComponentType, useEffect } from 'react'
 import { useDrag } from 'react-dnd'
 import type { XYCoord } from 'react-dnd'
@@ -13,11 +14,9 @@ export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
 
 function getStyles(left: number, top: number, isDragging: boolean): CSSProperties {
-  const transform = `translate3d(${left}px, ${top}px, 0)`
   return {
     position: 'absolute',
-    transform,
-    WebkitTransform: transform,
+    ...getTransform(left, top),
     // IE fallback: hide the real node using CSS when dragging
     // because IE will ignore our custom "empty image" drag preview.
     opacity: isDragging ? 0 : 1,
@@ -25,7 +24,7 @@ function getStyles(left: number, top: number, isDragging: boolean): CSSPropertie
   }
 }
 
-function getSidebarStyles(left: number, top: number): CSSProperties {
+function getTransform(left: number, top: number): CSSProperties {
   const transform = `translate3d(${left}px, ${top}px, 0)`
   return {
     transform,
@@ -40,14 +39,13 @@ interface DraggedProps {
 function asDraggedBoardBlock<P extends object>(Component: ComponentType<P>) {
   const Wrapped = (props: P & BoardBlock & DraggedProps) => {
     return (
-      <div style={getSidebarStyles(props.offset.x, props.offset.y)}>
+      <div style={getTransform(props.offset.x, props.offset.y)}>
         <Component {...props} />
       </div>
     )
   }
 
   Wrapped.displayName = Component.displayName
-
   return observer(Wrapped)
 }
 
@@ -59,6 +57,8 @@ function asBoardBlock<P extends object>(
     const { id, left, top } = props
 
     const { board } = useRootStore()
+
+    const block = board.getBlock(id)
 
     const [{ isDragging }, drag, preview] = useDrag(
       () => ({
@@ -94,35 +94,45 @@ function asBoardBlock<P extends object>(
 
     const isSelected = board.selectedBlock?.id === id
 
+    if (!block) return null
+
     return (
-      <div
-        className="flex flex-1"
-        ref={drag}
-        style={getStyles(left, top, isDragging)}
-        onClick={e => {
-          e.stopPropagation()
-          board.selectBlock(id)
-        }}
-      >
+      <Resizable>
         <div
-          className={clsx('flex', 'pointer-events-none', 'w-full', 'h-full', 'absolute', {
-            'z-80 rounded-sm opacity-60 outline-dashed outline-offset-4 outline-green-600':
-              isSelected,
-          })}
-        ></div>
-        <Component {...props} />
-      </div>
+          className="flex flex-1"
+          ref={drag}
+          style={getStyles(left, top, isDragging)}
+          onClick={e => {
+            e.stopPropagation()
+            board.selectBlock(id)
+          }}
+        >
+          <div
+            className={clsx(
+              'flex',
+              'pointer-events-none',
+              'w-full',
+              'h-full',
+              'absolute',
+              {
+                'z-80 rounded-sm opacity-60 outline-dashed outline-offset-4 outline-green-600':
+                  isSelected,
+              },
+            )}
+          ></div>
+          <Component {...block.props} />
+        </div>
+      </Resizable>
     )
   }
 
   Wrapped.displayName = Component.displayName
-
   return observer(Wrapped)
 }
 
 function asPreviewBlock<P extends object>(Component: ComponentType<P>) {
   const Wrapped = (props: P & BoardBlock) => {
-    const { id, left, top } = props
+    const { left, top } = props
 
     return (
       <div style={getStyles(left, top, false)}>
@@ -132,7 +142,6 @@ function asPreviewBlock<P extends object>(Component: ComponentType<P>) {
   }
 
   Wrapped.displayName = Component.displayName
-
   return observer(Wrapped)
 }
 
@@ -174,7 +183,6 @@ function asSidebarIcon<P extends object>(
   }
 
   Wrapped.displayName = Component.displayName
-
   return Wrapped
 }
 

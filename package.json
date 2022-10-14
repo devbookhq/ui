@@ -50,11 +50,13 @@
     "mobx-state-tree": "^5.1.6",
     "nanoid": "^4.0.0",
     "next": "12.3.1",
+    "re-resizable": "^6.9.9",
     "react": "18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "18.2.0",
+    "react-resizable": "^3.0.4",
     "react-toastify": "^9.0.8"
   },
   "devDependencies": {
@@ -64,6 +66,7 @@
     "@types/node": "^18.8.5",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "@types/react-resizable": "^3.0.3",
     "autoprefixer": "^10.4.12",
     "cssnano": "^5.1.13",
     "eslint": "^8.25.0",
