@@ -32,8 +32,13 @@ export const board = types
     },
   }))
   .actions(self => ({
-    selectBlock(id: string) {
-      self.selectedBlock = self.blocks.get(id)
+    selectBlock(id: string): boolean {
+      const block = self.blocks.get(id)
+      if (block) {
+        self.selectedBlock = block
+        return true
+      }
+      return false
     },
     resetBlockSelection() {
       self.selectedBlock = undefined
