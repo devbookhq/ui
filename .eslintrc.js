@@ -2,6 +2,7 @@ module.exports = {
   extends: ['next/core-web-vitals', 'prettier'],
   plugins: ['prettier', 'unused-imports'],
   rules: {
+    'unused-imports/no-unused-imports': 'error',
     'react/jsx-sort-props': [
       2,
       {
@@ -37,6 +38,5 @@ module.exports = {
       },
     ],
     'prettier/prettier': ['error'],
-    'unused-imports/no-unused-imports': 'error',
   },
 }

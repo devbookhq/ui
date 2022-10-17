@@ -1,10 +1,18 @@
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
-import { Resizable } from 're-resizable'
-import { CSSProperties, ComponentType, useEffect } from 'react'
+import {
+  CSSProperties,
+  ComponentProps,
+  ComponentType,
+  JSXElementConstructor,
+  useEffect,
+  useMemo,
+} from 'react'
 import { useDrag } from 'react-dnd'
 import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
+
+import useHasMounted from 'hooks/useHasMounted'
 
 import { BoardBlock } from 'core/BuilderProvider/models/board'
 
@@ -12,6 +20,16 @@ import { useRootStore } from './BuilderProvider/models/RootStoreProvider'
 
 export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
+
+export function parseDefaultProps<P extends UIComponentProps>(
+  props: { [name: string]: any },
+  [name, { default: def }]: [string, { type: UIPropType; label: string; default: any }],
+) {
+  if (def !== undefined) {
+    props[name] = def
+  }
+  return props
+}
 
 function getStyles(left: number, top: number, isDragging: boolean): CSSProperties {
   return {
@@ -32,33 +50,44 @@ function getTransform(left: number, top: number): CSSProperties {
   }
 }
 
-interface DraggedProps {
-  offset: XYCoord
+export enum UIPropType {
+  'string' = 'string',
+  'number' = 'number',
+  'boolean' = 'boolean',
 }
 
-function asDraggedBoardBlock<P extends object>(Component: ComponentType<P>) {
-  const Wrapped = (props: P & BoardBlock & DraggedProps) => {
-    return (
-      <div style={getTransform(props.offset.x, props.offset.y)}>
-        <Component {...props} />
-      </div>
-    )
+type UIComponentProps = keyof JSX.IntrinsicElements | JSXElementConstructor<any>
+
+export type UIProps<C extends UIComponentProps> = {
+  [key in keyof ComponentProps<C>]: {
+    type: UIPropType
+    label: string
+    values?: ComponentProps<C>[key][]
+    default: ComponentProps<C>[key]
   }
-
-  Wrapped.displayName = Component.displayName
-  return observer(Wrapped)
 }
 
-function asBoardBlock<P extends object>(
-  Component: ComponentType<P>,
-  componentType: string,
-) {
-  const Wrapped = (props: P & BoardBlock) => {
-    const { id, left, top } = props
+export type UIComponentSetup = {
+  [id: string]: {
+    Block: ComponentType
+    Icon: ComponentType
+    label: string
+    props: UIProps<UIComponentProps>
+  }
+}
+
+export function getUIComponents(setup: UIComponentSetup) {
+  function EditorBoardBlock({
+    id,
+    left,
+    top,
+    componentType,
+    props: rawProps,
+    isSelected,
+  }: BoardBlock & { isSelected: boolean }) {
+    const C = setup[componentType]
 
     const { board } = useRootStore()
-
-    const block = board.getBlock(id)
 
     const [{ isDragging }, drag, preview] = useDrag(
       () => ({
@@ -92,64 +121,46 @@ function asBoardBlock<P extends object>(
       [isDragging, board, id],
     )
 
-    const isSelected = board.selectedBlock?.id === id
+    const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
-    if (!block) return null
+    const hasMounted = useHasMounted()
+    if (!hasMounted) return null
 
     return (
-      <Resizable>
+      <div
+        className="flex flex-1"
+        ref={drag}
+        style={getStyles(left, top, isDragging)}
+        onClick={e => {
+          e.stopPropagation()
+          board.selectBlock(id)
+        }}
+      >
         <div
-          className="flex flex-1"
-          ref={drag}
-          style={getStyles(left, top, isDragging)}
-          onClick={e => {
-            e.stopPropagation()
-            board.selectBlock(id)
-          }}
-        >
-          <div
-            className={clsx(
-              'flex',
-              'pointer-events-none',
-              'w-full',
-              'h-full',
-              'absolute',
-              {
-                'z-80 rounded-sm opacity-60 outline-dashed outline-offset-4 outline-green-600':
-                  isSelected,
-              },
-            )}
-          ></div>
-          <Component {...block.props} />
-        </div>
-      </Resizable>
-    )
-  }
-
-  Wrapped.displayName = Component.displayName
-  return observer(Wrapped)
-}
-
-function asPreviewBlock<P extends object>(Component: ComponentType<P>) {
-  const Wrapped = (props: P & BoardBlock) => {
-    const { left, top } = props
-
-    return (
-      <div style={getStyles(left, top, false)}>
-        <Component {...props} />
+          className={clsx('flex', 'pointer-events-none', 'w-full', 'h-full', 'absolute', {
+            'z-80 rounded-sm opacity-60 outline-dashed outline-offset-4 outline-green-600':
+              isSelected,
+          })}
+        ></div>
+        <C.Block {...props} />
       </div>
     )
   }
 
-  Wrapped.displayName = Component.displayName
-  return observer(Wrapped)
-}
+  function PreviewBoardBlock(block: BoardBlock) {
+    const C = setup[block.componentType]
+    const { left, top, props: rawProps } = block
+    const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
-function asSidebarIcon<P extends object>(
-  Component: ComponentType<P>,
-  componentType: string,
-) {
-  const Wrapped = (props: P) => {
+    return (
+      <div style={getStyles(left, top, false)}>
+        <C.Block {...props} />
+      </div>
+    )
+  }
+
+  function SidebarIcon({ componentType }: { componentType: string }) {
+    const C = setup[componentType]
     const [collected, drag, preview] = useDrag(() => ({
       type: sidebarIconType,
       options: {
@@ -159,7 +170,6 @@ function asSidebarIcon<P extends object>(
         componentType,
       },
       collect: monitor => ({
-        isDragging: monitor.isDragging(),
         opacity: monitor.isDragging() ? 0 : 1,
       }),
     }))
@@ -177,94 +187,33 @@ function asSidebarIcon<P extends object>(
         {...collected}
         className="flex h-14 w-14 cursor-move items-center justify-center rounded-sm border border-black-700 bg-black-800 p-1 px-1 text-xs hover:bg-black-700"
       >
-        <Component {...props} />
+        <C.Icon />
       </div>
     )
   }
 
-  Wrapped.displayName = Component.displayName
-  return Wrapped
-}
+  function DraggedBoardBlock({
+    componentType,
+    offset,
+  }: Omit<BoardBlock, 'props'> & { offset: XYCoord }) {
+    const C = setup[componentType]
 
-type UIComponent<
-  T extends BoardBlock,
-  I extends object,
-  L extends BoardBlock & DraggedProps,
-> = {
-  Board: ComponentType<T>
-  Sidebar: ComponentType<I>
-  DraggedBoard: ComponentType<L>
-  Preview: ComponentType<T>
-}
-
-type UIComponentMap = {
-  [id: string]: UIComponent<BoardBlock, object, BoardBlock & DraggedProps>
-}
-
-type UIComponentSetup<T extends BoardBlock, I extends object> = {
-  [id: string]: {
-    Board: ComponentType<T>
-    Sidebar: ComponentType<I>
-  }
-}
-
-export function getUIComponents(setup: UIComponentSetup<BoardBlock, object>) {
-  const uiComponentsList = Object.entries(setup).map(([id, { Sidebar, Board }]) => {
-    return {
-      id,
-      Sidebar: asSidebarIcon(Sidebar, id),
-      Board: asBoardBlock(Board, id),
-      DraggedBoard: asDraggedBoardBlock(Board),
-      Preview: asPreviewBlock(Board),
-    }
-  })
-
-  const uiComponentsMap = uiComponentsList.reduce<UIComponentMap>((prev, curr) => {
-    prev[curr.id] = {
-      Sidebar: curr.Sidebar,
-      Board: curr.Board,
-      DraggedBoard: curr.DraggedBoard,
-      Preview: curr.Preview,
-    }
-    return prev
-  }, {})
-
-  function renderBoardBlock(block: BoardBlock) {
-    const C = uiComponentsMap[block.componentType]
-    return (
-      <C.Board
-        key={block.id}
-        {...block}
-      />
+    const props = useMemo(
+      () => Object.entries(C.props).reduce(parseDefaultProps, {}),
+      [C.props],
     )
-  }
 
-  function renderPreviewBoardBlock(block: BoardBlock) {
-    const C = uiComponentsMap[block.componentType]
     return (
-      <C.Preview
-        key={block.id}
-        {...block}
-      />
-    )
-  }
-
-  function renderDraggedBoardBlock(block: BoardBlock, offset: XYCoord) {
-    const C = uiComponentsMap[block.componentType]
-    return (
-      <C.DraggedBoard
-        key={block.id}
-        {...block}
-        offset={offset}
-      />
+      <div style={getTransform(offset.x, offset.y)}>
+        <C.Block {...props} />
+      </div>
     )
   }
 
   return {
-    uiComponentsList,
-    uiComponentsMap,
-    renderBoardBlock,
-    renderPreviewBoardBlock,
-    renderDraggedBoardBlock,
+    DraggedBoardBlock: observer(DraggedBoardBlock),
+    PreviewBoardBlock: observer(PreviewBoardBlock),
+    EditorBoardBlock: observer(EditorBoardBlock),
+    SidebarIcon,
   }
 }

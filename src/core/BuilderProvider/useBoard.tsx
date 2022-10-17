@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
 import { useDrop } from 'react-dnd'
 
-import { boardBlockType, sidebarIconType } from '..'
+import { UIComponentSetup, boardBlockType, parseDefaultProps, sidebarIconType } from '..'
 import { snapToGrid, xStep, yStep } from './grid'
 import { useRootStore } from './models/RootStoreProvider'
 import { BoardBlock } from './models/board'
@@ -12,7 +12,7 @@ export function getCanvas() {
   return document.getElementsByClassName(canvasClass)[0].getBoundingClientRect()
 }
 
-export function useBoard() {
+export function useBoard(setup: UIComponentSetup) {
   const { board } = useRootStore()
 
   const [, drop] = useDrop(
@@ -25,8 +25,8 @@ export function useBoard() {
           const delta = monitor.getDifferenceFromInitialOffset()
           if (!delta) return
 
-          const left = snapToGrid(Math.round(block.left + delta.x), xStep)
-          const top = snapToGrid(Math.round(block.top + delta.y), yStep)
+          const left = snapToGrid(block.left + delta.x, xStep)
+          const top = snapToGrid(block.top + delta.y, yStep)
 
           board.getBlock(block.id)?.translate(top, left)
         } else if (type === sidebarIconType) {
@@ -35,8 +35,16 @@ export function useBoard() {
 
           const canvas = getCanvas()
 
-          const left = snapToGrid(Math.round(offset.x - canvas.left), xStep)
-          const top = snapToGrid(Math.round(offset.y - canvas.top), yStep)
+          const left = snapToGrid(offset.x - canvas.left, xStep)
+          const top = snapToGrid(offset.y - canvas.top, yStep)
+
+          const uiComponentSetup = setup[block.componentType]
+          if (!uiComponentSetup) return
+
+          const defaultProps = Object.entries(uiComponentSetup.props).reduce(
+            parseDefaultProps,
+            {},
+          )
 
           const id = 'block_' + nanoid(14)
           board.setBlock({
@@ -44,7 +52,9 @@ export function useBoard() {
             id,
             left,
             top,
+            props: JSON.stringify(defaultProps),
           })
+          board.selectBlock(id)
         }
       },
     }),
@@ -52,7 +62,6 @@ export function useBoard() {
   )
 
   return {
-    blocks: board.boardBlocks,
     ref: drop,
   }
 }
