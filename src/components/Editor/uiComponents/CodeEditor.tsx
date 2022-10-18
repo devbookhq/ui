@@ -1,4 +1,5 @@
 import { CodeEditor as CE, withCasing } from '@devbookhq/react'
+import { ComponentProps } from 'react'
 
 export function Icon() {
   return <div>Editor</div>
@@ -6,10 +7,10 @@ export function Icon() {
 
 const CodeEditorWithCasing = withCasing(CE)
 
-function CodeEditor() {
+function CodeEditor(props: ComponentProps<typeof CE>) {
   return (
     <div className="flex">
-      <CodeEditorWithCasing content="Test" />
+      <CodeEditorWithCasing {...props} />
     </div>
   )
 }

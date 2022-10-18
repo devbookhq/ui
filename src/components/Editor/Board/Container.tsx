@@ -7,7 +7,7 @@ import { getGridStyle, xStep, yStep } from 'core/BuilderProvider/grid'
 import { useRootStore } from 'core/BuilderProvider/models/RootStoreProvider'
 
 import { canvasClass, useBoard } from '../../../core/BuilderProvider/useBoard'
-import { renderBoardBlock } from '../uiComponents'
+import { EditorBoardBlock, uiComponentsSetup } from '../uiComponents'
 
 export interface Props {
   app: App
@@ -16,7 +16,7 @@ export interface Props {
 const gridStyle = getGridStyle(xStep, yStep)
 
 function Container({ app }: Props) {
-  const { blocks, ref } = useBoard()
+  const { ref } = useBoard(uiComponentsSetup)
   const { board } = useRootStore()
 
   return (
@@ -26,7 +26,13 @@ function Container({ app }: Props) {
       style={gridStyle}
       onClick={board.resetBlockSelection}
     >
-      {blocks.map(b => renderBoardBlock(b))}
+      {board.boardBlocks.map(b => (
+        <EditorBoardBlock
+          {...b}
+          isSelected={b.id === board.selectedBlock?.id}
+          key={b.id}
+        />
+      ))}
     </div>
   )
 }

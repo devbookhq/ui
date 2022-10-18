@@ -1,25 +1,38 @@
 import { SnapshotOut, destroy, types } from 'mobx-state-tree'
 
-const blockProp = types.model({})
+type BlockProps = { [name: string]: any }
 
 const boardBlock = types
   .model({
     id: types.identifier,
     top: types.number,
     left: types.number,
-    width: types.number,
-    height: types.number,
-    props: types.map(blockProp),
+    props: types.optional(types.string, '{}'),
     componentType: types.string,
   })
+  .views(self => ({
+    getProps() {
+      const props = JSON.parse(self.props)
+      return props as BlockProps
+    },
+  }))
+  .views(self => ({
+    getProp(name: string) {
+      return self.getProps()[name]
+    },
+  }))
   .actions(self => ({
+    setProp(name: string, value: any) {
+      const props = self.getProps()
+
+      self.props = JSON.stringify({
+        ...props,
+        [name]: value,
+      })
+    },
     translate(top: number, left: number) {
       self.top = top
       self.left = left
-    },
-    resize(width: number, height: number) {
-      self.width = width
-      self.height = height
     },
   }))
 
@@ -48,7 +61,7 @@ export const board = types
       self.selectedBlock = undefined
     },
     setBlock(block: BoardBlock) {
-      self.blocks.put(block)
+      return self.blocks.put(block)
     },
     removeBlock(block: Pick<BoardBlock, 'id'>) {
       const currentBlock = self.blocks.get(block.id)

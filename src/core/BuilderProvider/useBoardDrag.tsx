@@ -1,13 +1,11 @@
 import { XYCoord, useDragLayer } from 'react-dnd'
 
-import { renderDraggedBoardBlock } from 'components/Editor/uiComponents'
+import { DraggedBoardBlock } from 'components/Editor/uiComponents'
 
 import { sidebarIconType } from '..'
 import { snapToGrid, xStep, yStep } from './grid'
 import { BoardBlock } from './models/board'
 import { getCanvas } from './useBoard'
-
-renderDraggedBoardBlock
 
 function getBlockOffset(
   initialOffset: XYCoord | null,
@@ -63,5 +61,12 @@ export function useBoardDrag() {
     offset = getBlockOffset(initialOffset, currentOffset)
   }
 
-  return offset && renderDraggedBoardBlock(block, offset)
+  if (!offset) return null
+
+  return (
+    <DraggedBoardBlock
+      {...block}
+      offset={offset}
+    />
+  )
 }
