@@ -140,7 +140,7 @@ function AuthForm({ authType }: Props) {
                   'bg-white': !isLoading,
                 },
                 {
-                  'bg-gray-400': isLoading,
+                  'bg-gray-50': isLoading,
                 },
                 'outline-none',
                 'focus:border-lime-400',
@@ -170,7 +170,7 @@ function AuthForm({ authType }: Props) {
                   'bg-white': !isLoading,
                 },
                 {
-                  'bg-gray-400': isLoading,
+                  'bg-gray-50': isLoading,
                 },
                 'outline-none',
                 'focus:border-lime-400',
