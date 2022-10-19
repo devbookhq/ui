@@ -1,7 +1,14 @@
 module.exports = {
-  extends: ['next/core-web-vitals', 'prettier', 'plugin:tailwindcss/recommended'],
-  plugins: ['tailwindcss', 'prettier', 'unused-imports'],
+  extends: ['next/core-web-vitals', 'prettier'],
+  plugins: ['unused-imports', 'tailwindcss', 'prettier'],
   rules: {
+    'tailwindcss/classnames-order': 'warn',
+    'tailwindcss/enforces-negative-arbitrary-values': 'warn',
+    'tailwindcss/enforces-shorthand': 'warn',
+    'tailwindcss/migration-from-tailwind-2': 'warn',
+    'tailwindcss/no-arbitrary-value': 'off',
+    'tailwindcss/no-custom-classname': 'error',
+    'tailwindcss/no-contradicting-classname': 'error',
     'unused-imports/no-unused-imports': 'error',
     'react/jsx-sort-props': [
       2,

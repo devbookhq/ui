@@ -51,9 +51,9 @@ function getTransform(left: number, top: number): CSSProperties {
 }
 
 export enum UIPropType {
-  'string' = 'string',
-  'number' = 'number',
-  'boolean' = 'boolean',
+  String = 'string',
+  Number = 'number',
+  Boolean = 'boolean',
 }
 
 type UIComponentProps = keyof JSX.IntrinsicElements | JSXElementConstructor<any>
@@ -185,7 +185,7 @@ export function getUIComponents(setup: UIComponentSetup) {
       <div
         ref={drag}
         {...collected}
-        className="flex h-14 w-14 cursor-move items-center justify-center rounded-sm border border-black-700 bg-black-800 p-1 px-1 text-xs hover:bg-black-700"
+        className="border-black-700 bg-black-800 hover:bg-black-700 flex h-14 w-14 cursor-move items-center justify-center rounded-sm border p-1 px-1 text-xs"
       >
         <C.Icon />
       </div>
