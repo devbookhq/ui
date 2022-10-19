@@ -1,6 +1,6 @@
 module.exports = {
-  extends: ['next/core-web-vitals', 'prettier'],
-  plugins: ['prettier', 'unused-imports'],
+  extends: ['next/core-web-vitals', 'prettier', 'plugin:tailwindcss/recommended'],
+  plugins: ['tailwindcss', 'prettier', 'unused-imports'],
   rules: {
     'unused-imports/no-unused-imports': 'error',
     'react/jsx-sort-props': [
