@@ -32,7 +32,7 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
   return (
     <Modal
       isOpen={isOpen}
-      title="Create new app"
+      title="New app"
       onClose={onClose}
     >
       <div
@@ -57,8 +57,8 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
         "
         >
           <Input
-            placeholder="App title"
-            title="Title"
+            placeholder="App name"
+            title="Name"
             value={title}
             wrapperClassName="w-full"
             onChange={handleTitleChange}

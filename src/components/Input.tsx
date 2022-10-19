@@ -1,4 +1,4 @@
-import cn from 'clsx'
+import clsx from 'clsx'
 import { ChangeEvent, forwardRef } from 'react'
 
 export interface Props {
@@ -25,17 +25,18 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
       <input
         {...rest}
         ref={ref}
-        className={cn(
+        spellCheck={false}
+        className={clsx(
           'px-2.5',
           'py-1',
-          'rounded-lg',
+          'rounded',
           'border',
-          'border-black-700',
-          'bg-black-900',
+          'border-gray-200',
+          'bg-white',
           'outline-none',
-          'focus:border-green-200',
+          'focus:border-gray-500/30',
           'text-sm',
-          'placeholder:text-gray-600',
+          'placeholder:text-gray-300',
           className,
         )}
         onKeyDown={handleKeyDown}
@@ -52,7 +53,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
       <>
         {title ? (
           <div
-            className={cn(
+            className={clsx(
               'flex',
               'flex-col',
               'items-start',
@@ -62,14 +63,14 @@ const Input = forwardRef<HTMLInputElement, Props>(
           >
             <span
               className="
-            font-sm
-            text-gray-600
+              text-sm
+            text-gray-400
           "
             >
               {title}
             </span>
             <InputEl
-              className={cn('w-full', className)}
+              className={clsx('w-full', className)}
               ref={ref}
               {...rest}
             />

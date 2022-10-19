@@ -17,7 +17,7 @@ function SwitchMode({ className }: Props) {
         <div>
           <Button
             className={className}
-            text="Edit"
+            text="Edit App"
             onClick={() =>
               router.push({
                 pathname: '/[slug]/edit',
@@ -32,7 +32,7 @@ function SwitchMode({ className }: Props) {
       {isEdit && (
         <Button
           className={className}
-          text="Preview"
+          text="Open App"
           onClick={() =>
             router.push({
               pathname: '/[slug]',

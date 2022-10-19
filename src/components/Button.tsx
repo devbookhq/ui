@@ -1,4 +1,4 @@
-import cn from 'clsx'
+import clsx from 'clsx'
 import { ReactNode } from 'react'
 
 import Text from 'components/typography/Text'
@@ -31,19 +31,16 @@ function Button({
     return (
       <button
         type={type}
-        className={cn(
+        className={clsx(
           'py-1.5',
-          'px-2',
-
+          'px-3',
           'flex',
           'items-center',
           'justify-center',
-
-          'rounded-lg',
-          'bg-green-500',
-          'hover:shadow',
+          'rounded',
+          'bg-lime-200 hover:bg-lime-300',
           {
-            'hover:shadow-green-500/50': !isDisabled,
+            'drop-shadow-sm': !isDisabled,
           },
           {
             'opacity-70': isDisabled,
@@ -62,11 +59,11 @@ function Button({
           items-center
           justify-center
           space-x-1.5
-          bg-green-500
         "
         >
+          {icon}
           <Text
-            size={Text.size.S2}
+            size={Text.size.S1}
             text={text}
           />
         </div>
@@ -77,14 +74,12 @@ function Button({
   return (
     <button
       type={type}
-      className={cn(
-        'p-[1px]',
-        'rounded-lg',
-        'bg-black-700',
-        'hover:bg-green-gradient',
-        'hover:shadow',
+      className={clsx(
+        'rounded',
+        'bg-white hover:bg-gray-100',
+        'border border-gray-200 hover:border-gray-300',
         {
-          'hover:shadow-green-500/50': !isDisabled,
+          'shadow-sm': !isDisabled,
         },
         {
           'opacity-70': isDisabled,
@@ -100,20 +95,16 @@ function Button({
         className="
         flex
         flex-row
-
         items-center
         justify-center
         space-x-1.5
-        rounded-lg
-        bg-black-900
-
-        py-1
-        px-2
+        py-1.5
+        px-3
       "
       >
         {icon}
         <Text
-          size={Text.size.S2}
+          size={Text.size.S1}
           text={text}
         />
       </div>
@@ -122,4 +113,5 @@ function Button({
 }
 
 Button.variant = Variant
+
 export default Button

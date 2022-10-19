@@ -1,117 +1,68 @@
-import { CopyIcon } from '@radix-ui/react-icons'
 import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
+import { useUser } from '@supabase/supabase-auth-helpers/react'
 
 import ButtonLink from 'components/ButtonLink'
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
-
-import useUserInfo from 'hooks/useUserInfo'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
 })
 
 function Settings() {
-  const { apiKey, user } = useUserInfo()
-
-  // TODO: Handle loading
-  // TODO: Handle error
-
-  function handleCopyClick() {
-    if (apiKey) {
-      // TODO: Show notit that key has been copied
-      navigator.clipboard.writeText(apiKey)
-    }
-  }
+  const { user } = useUser()
 
   return (
     <div
       className="
       flex
-      flex-col
+      flex-1
       items-start
-      space-y-6
+      space-x-4
+      p-16
     "
     >
-      <Title title="Settings" />
+      <Title
+        size={Title.size.T0}
+        title="Settings"
+      />
 
       <div
         className="
         flex
+        flex-1
         flex-col
-        items-start
-        justify-start
-        space-y-2
-      "
+        space-y-4
+        border-l
+        border-gray-200
+        pl-4
+        "
       >
-        <Title
-          size={Title.size.T2}
-          title="Email"
-        />
         <div
           className="
-          flex
-          flex-row
-          items-center
-          space-x-2
-          px-2
-        "
+        flex
+        flex-col
+        space-y-1
+      "
         >
+          <Title
+            rank={Title.rank.Secondary}
+            size={Title.size.T2}
+            title="Email"
+          />
           <Text
             size={Text.size.S1}
             text={user?.email || ''}
           />
         </div>
 
-        <Title
-          size={Title.size.T2}
-          title="API Key"
-        />
-        <div
-          className="
-          flex
-          flex-row
-          items-center
-          space-x-2
-        "
-        >
-          <input
-            type="text"
-            value={apiKey}
-            className="
-              w-[300px]
-              truncate
-              rounded-lg
-              border
-              border-black-700
-              bg-black-800
-              px-2
-              py-1
-              text-sm
-              text-white-900
-            "
-            readOnly
+        <div>
+          <ButtonLink
+            href="/api/auth/logout"
+            text="Sign out"
           />
-          <div
-            className="
-              cursor-pointer
-              rounded-lg
-              p-2
-              text-white-900/50
-              hover:bg-black-700
-              hover:text-white-900
-            "
-            onClick={handleCopyClick}
-          >
-            <CopyIcon />
-          </div>
         </div>
       </div>
-
-      <ButtonLink
-        href="/api/auth/logout"
-        text="Sign Out"
-      />
     </div>
   )
 }

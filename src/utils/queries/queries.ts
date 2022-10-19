@@ -2,9 +2,19 @@ import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
 import { App, UserFeedback } from './types'
 
+export async function getApps(client: SupabaseClient, userID: string) {
+  const { data, error } = await client
+    .from<Required<App>>('apps')
+    .select('*')
+    .eq('creator_id', userID)
+
+  if (error) throw error
+  return data || []
+}
+
 export async function getApp(client: SupabaseClient, id: string) {
   const { data, error } = await client
-    .from<App>('apps')
+    .from<Required<App>>('apps')
     .select('*')
     .eq('id', id)
     .limit(1)

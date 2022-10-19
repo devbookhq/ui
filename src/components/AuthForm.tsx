@@ -1,5 +1,5 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import cn from 'clsx'
+import clsx from 'clsx'
 import { useLayoutEffect, useRef, useState } from 'react'
 
 import Button from 'components/Button'
@@ -100,19 +100,24 @@ function AuthForm({ authType }: Props) {
       <div
         className="
         flex
-        w-[450px]
+        w-120
         flex-1
         flex-col
         items-center
         space-y-8
         self-start
         rounded
-        bg-black-800
+        border
+        border-gray-200
+        bg-white
         py-12
         px-4
       "
       >
-        <Title title={title} />
+        <Title
+          size={Title.size.T0}
+          title={title}
+        />
         <div className="flex w-full flex-col space-y-8 px-16">
           <div className="flex min-w-0 flex-col space-y-2">
             <input
@@ -124,23 +129,23 @@ function AuthForm({ authType }: Props) {
               placeholder="Email"
               ref={emailRef}
               type="email"
-              className={cn(
+              className={clsx(
                 'w-full',
                 'px-2.5',
                 'py-2',
-                'rounded-lg',
+                'rounded',
                 'border',
-                'border-black-700',
+                'border-gray-200',
                 {
-                  'bg-black-900': !isLoading,
+                  'bg-white': !isLoading,
                 },
                 {
-                  'bg-black-800': isLoading,
+                  'bg-gray-400': isLoading,
                 },
                 'outline-none',
-                'focus:border-green-200',
+                'focus:border-lime-400',
                 'text-sm',
-                'placeholder:text-gray-600',
+                'placeholder:text-gray-300',
               )}
               required
             />
@@ -152,26 +157,26 @@ function AuthForm({ authType }: Props) {
               placeholder="Password"
               ref={passwordRef}
               type="password"
-              className={cn(
+              className={clsx(
                 'px-2.5',
                 'py-2',
-                'rounded-lg',
+                'rounded',
                 'border',
                 'flex',
                 'min-w-0',
                 'flex-1',
-                'border-black-700',
+                'border-gray-200',
                 {
-                  'bg-black-900': !isLoading,
+                  'bg-white': !isLoading,
                 },
                 {
-                  'bg-black-800': isLoading,
+                  'bg-gray-400': isLoading,
                 },
                 'outline-none',
-                'focus:border-green-200',
+                'focus:border-lime-400',
                 'text-sm',
                 'font-medium',
-                'placeholder:text-gray-600',
+                'placeholder:text-gray-300',
               )}
               required
             />

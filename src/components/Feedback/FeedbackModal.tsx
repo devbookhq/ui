@@ -1,4 +1,5 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { useState } from 'react'
 
 import Button from 'components/Button'
@@ -8,8 +9,6 @@ import SpinnerIcon from 'components/icons/Spinner'
 
 import { upsertUserFeedback } from 'utils/queries/queries'
 
-import useUserInfo from 'hooks/useUserInfo'
-
 export interface Props {
   isOpen: boolean
   onClose: () => void
@@ -18,7 +17,7 @@ export interface Props {
 function FeedbackModal({ isOpen, onClose }: Props) {
   const [feedback, setFeedback] = useState('')
   const [isSavingFeedback, setIsSavingFeedback] = useState(false)
-  const { user } = useUserInfo()
+  const { user } = useUser()
 
   async function saveFeedback(e: any) {
     e.preventDefault()
@@ -37,7 +36,7 @@ function FeedbackModal({ isOpen, onClose }: Props) {
   return (
     <Modal
       isOpen={isOpen}
-      title="Your Feedback"
+      title="Send us your feedback"
       onClose={onClose}
     >
       {isSavingFeedback && <SpinnerIcon className="m-auto" />}
@@ -48,7 +47,7 @@ function FeedbackModal({ isOpen, onClose }: Props) {
             flex
             w-full
             flex-col
-            items-start
+            items-center
             space-y-4
           "
           onSubmit={saveFeedback}
@@ -58,7 +57,6 @@ function FeedbackModal({ isOpen, onClose }: Props) {
             value={feedback}
             onChange={e => setFeedback(e.target.value)}
           />
-
           <Button
             text="Send"
             variant={Button.variant.Full}

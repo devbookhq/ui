@@ -21,7 +21,7 @@ import { useRootStore } from './BuilderProvider/models/RootStoreProvider'
 export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
 
-export function parseDefaultProps<P extends UIComponentProps>(
+export function parseDefaultProps(
   props: { [name: string]: any },
   [name, { default: def }]: [string, { type: UIPropType; label: string; default: any }],
 ) {
@@ -138,8 +138,7 @@ export function getUIComponents(setup: UIComponentSetup) {
       >
         <div
           className={clsx('flex', 'pointer-events-none', 'w-full', 'h-full', 'absolute', {
-            'z-80 rounded-sm opacity-60 outline-dashed outline-offset-4 outline-green-600':
-              isSelected,
+            'z-50 rounded opacity-60 outline-dashed outline-lime-600/80': isSelected,
           })}
         ></div>
         <C.Block {...props} />
@@ -185,9 +184,12 @@ export function getUIComponents(setup: UIComponentSetup) {
       <div
         ref={drag}
         {...collected}
-        className="border-black-700 bg-black-800 hover:bg-black-700 flex h-14 w-14 cursor-move items-center justify-center rounded-sm border p-1 px-1 text-xs"
+        className="flex flex-col items-center"
       >
-        <C.Icon />
+        <div className="flex h-14 w-14 cursor-move flex-col rounded border border-gray-300 bg-gray-50 p-1 px-1 text-xs hover:bg-gray-400">
+          <C.Icon />
+        </div>
+        <div className="text-sm text-gray-600">{C.label}</div>
       </div>
     )
   }

@@ -1,4 +1,4 @@
-import cn from 'clsx'
+import clsx from 'clsx'
 
 export enum Size {
   S1,
@@ -21,7 +21,7 @@ interface Props {
 function Text({ className, text, size = Size.S2, onClick, mono }: Props) {
   return (
     <span
-      className={cn('text-white', Sizes[size], className, {
+      className={clsx(Sizes[size], className, {
         'font-mono': mono,
       })}
       onClick={onClick}

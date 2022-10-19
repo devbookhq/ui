@@ -1,5 +1,5 @@
-import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import { MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
 
@@ -17,17 +17,13 @@ export interface Props {
   app: App
 }
 
-function Card({ app }: Props) {
+function AppItem({ app }: Props) {
   const [showDropdown, setShowDropdown] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
-  useOnClickOutside(
-    cardRef,
-    () => {
-      setShowDropdown(false)
-    },
-    [],
-  )
+  useOnClickOutside(cardRef, () => {
+    setShowDropdown(false)
+  })
 
   function handleOnMoreClick(e: any) {
     e.stopPropagation()
@@ -72,23 +68,18 @@ function Card({ app }: Props) {
           <div
             ref={cardRef}
             className="
-              hover:bg-green-gradient
-
               cursor-pointer
-              rounded-lg
-
-              bg-black-700
+              rounded
               p-[2px]
               hover:shadow-lg
-
-              hover:shadow-green-500/50"
+              hover:shadow-lime-200/50"
           >
             <div
               className="
                 flex
                 flex-col
-                rounded-lg
-                bg-black-900
+                rounded
+                bg-white
         "
             >
               <div
@@ -98,8 +89,6 @@ function Card({ app }: Props) {
                 items-center
                 justify-between
                 truncate
-                rounded-b-lg
-                bg-black-700
                 py-1
                 px-2
           "
@@ -113,11 +102,11 @@ function Card({ app }: Props) {
                   className="
                 rounded
                 p-2
-                hover:bg-white-900/5
+                hover:bg-white/5
               "
                   onClick={handleOnMoreClick}
                 >
-                  <DotsVerticalIcon />
+                  <MoreHorizontal />
                 </div>
               </div>
             </div>
@@ -126,10 +115,9 @@ function Card({ app }: Props) {
           {showDropdown && (
             <div
               className="
-            absolute
+              absolute
             z-10
             rounded
-            bg-black-700
             p-1
             px-2
             hover:bg-[#504E55]
@@ -154,4 +142,4 @@ function Card({ app }: Props) {
   )
 }
 
-export default Card
+export default AppItem

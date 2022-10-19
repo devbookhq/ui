@@ -6,7 +6,7 @@
   /* Override react-toastify vars */
   :root {
     --toastify-color-dark: #313034;
-    color-scheme: dark;
+    color-scheme: light dark;
   }
 
   *,
@@ -16,15 +16,15 @@
   }
 
   ::selection {
-    @apply text-white-900;
-    @apply bg-green-500/70;
+    @apply text-gray-600;
+    @apply bg-lime-200/70;
   }
 
   html,
   body {
     @apply h-full;
-    @apply bg-black-900;
-    @apply text-white-900 antialiased;
+    @apply bg-white;
+    @apply text-gray-800 antialiased;
 
     font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
       'Helvetica', sans-serif;
@@ -34,13 +34,21 @@
   #__next {
     @apply flex h-inherit flex-col items-center;
   }
+
+  button {
+    @apply focus:outline-lime-400;
+  }
+
+  a {
+    @apply focus:outline-lime-400;
+  }
 }
 
 @layer components {
   .bg-green-gradient {
     @apply bg-gradient-to-b;
-    @apply from-green-200;
-    @apply to-green-500;
+    @apply from-lime-100;
+    @apply to-lime-200;
   }
 }
 
@@ -58,5 +66,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #212024 inset;
+  -webkit-box-shadow: 0 0 0px 1000px #f9fafb inset;
+  -webkit-text-fill-color: #374151;
+  caret-color: #000;
 }

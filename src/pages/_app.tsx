@@ -7,28 +7,24 @@ import 'styles/global.css'
 
 import Layout from 'components/Layout'
 
-import { UserInfoContextProvider } from 'hooks/useUserInfo'
+import { App as AppProp } from 'utils/queries/types'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps<{ app?: AppProp }>) {
   return (
-    <>
-      <UserProvider supabaseClient={supabaseClient}>
-        <UserInfoContextProvider>
-          <Layout>
-            <Component {...pageProps} />
-            <ToastContainer
-              autoClose={false}
-              draggable={false}
-              newestOnTop={false}
-              position="bottom-right"
-              rtl={false}
-              theme="dark"
-              closeOnClick
-              pauseOnFocusLoss
-            />
-          </Layout>
-        </UserInfoContextProvider>
-      </UserProvider>
-    </>
+    <UserProvider supabaseClient={supabaseClient}>
+      <Layout app={pageProps.app}>
+        <Component {...pageProps} />
+        <ToastContainer
+          autoClose={false}
+          draggable={false}
+          newestOnTop={false}
+          position="bottom-right"
+          rtl={false}
+          theme="dark"
+          closeOnClick
+          pauseOnFocusLoss
+        />
+      </Layout>
+    </UserProvider>
   )
 }

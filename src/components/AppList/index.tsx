@@ -2,13 +2,13 @@ import { useMemo } from 'react'
 
 import { App } from 'utils/queries/types'
 
-import Card from './Card'
+import AppItem from './AppItem'
 
 export interface Props {
   apps: Required<App>[]
 }
 
-function AppCards({ apps }: Props) {
+function AppList({ apps }: Props) {
   const sorted = useMemo(
     () =>
       apps.sort(
@@ -25,15 +25,10 @@ function AppCards({ apps }: Props) {
       items-start
       justify-start
       space-y-4
-
-      md:flex-row
-      md:flex-wrap
-      md:gap-4
-      md:space-y-0
     "
     >
       {sorted.map(app => (
-        <Card
+        <AppItem
           app={app}
           key={app.id}
         />
@@ -42,4 +37,4 @@ function AppCards({ apps }: Props) {
   )
 }
 
-export default AppCards
+export default AppList

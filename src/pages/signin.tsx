@@ -21,7 +21,7 @@ function SignIn() {
   )
 
   return (
-    <>
+    <div className="flex flex-1 bg-gray-100">
       {user && (
         <div
           className="
@@ -49,7 +49,7 @@ function SignIn() {
             <>
               <AuthForm authType={AuthForm.type.SignIn} />
               <TitleLink
-                size={TitleLink.size.T2}
+                size={TitleLink.size.T3}
                 title="Create a new account"
                 href={{
                   pathname: router.pathname,
@@ -57,6 +57,7 @@ function SignIn() {
                     signup: 'true',
                   },
                 }}
+                alternative
                 shallow
               />
             </>
@@ -65,18 +66,19 @@ function SignIn() {
             <>
               <AuthForm authType={AuthForm.type.SignUp} />
               <TitleLink
-                size={TitleLink.size.T2}
+                size={TitleLink.size.T3}
                 title="Sign in with an existing account"
                 href={{
                   pathname: router.pathname,
                 }}
+                alternative
                 shallow
               />
             </>
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

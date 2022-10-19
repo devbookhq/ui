@@ -2,7 +2,6 @@ module.exports = {
   extends: ['next/core-web-vitals', 'prettier'],
   plugins: ['unused-imports', 'tailwindcss', 'prettier'],
   rules: {
-    'tailwindcss/classnames-order': 'warn',
     'tailwindcss/enforces-negative-arbitrary-values': 'warn',
     'tailwindcss/enforces-shorthand': 'warn',
     'tailwindcss/migration-from-tailwind-2': 'warn',
@@ -30,12 +29,7 @@ module.exports = {
         ignoreTemplateLiterals: true,
       },
     ],
-    'react-hooks/exhaustive-deps': [
-      'warn',
-      {
-        additionalHooks: '(useRecoilCallback|useRecoilTransaction_UNSTABLE)',
-      },
-    ],
+    'react-hooks/exhaustive-deps': ['warn'],
     semi: ['error', 'never'],
     quotes: [
       'error',

@@ -1,4 +1,4 @@
-import cn from 'clsx'
+import clsx from 'clsx'
 
 interface Props {
   title: string
@@ -15,25 +15,27 @@ export enum Rank {
 }
 
 const Ranks = {
-  [Rank.Primary]: 'text-white-900',
-  [Rank.PrimaryAlternative]: 'text-green-500',
-  [Rank.Secondary]: 'text-gray-600',
+  [Rank.Primary]: 'text-gray-600',
+  [Rank.PrimaryAlternative]: 'text-lime-200',
+  [Rank.Secondary]: 'text-gray-400',
 }
 
 export enum Size {
+  T0,
   T1,
   T2,
   T3,
 }
 
 const Sizes = {
-  [Size.T1]: 'text-base font-semibold',
-  [Size.T2]: 'text-sm font-semibold',
+  [Size.T0]: 'text-2xl',
+  [Size.T1]: 'text-base',
+  [Size.T2]: 'text-sm',
   [Size.T3]: 'text-sm',
 }
 
 function Title({ className, title, rank, size = Size.T1, icon }: Props) {
-  const classes = cn(
+  const classes = clsx(
     'flex',
     'flex-row',
     'items-center',

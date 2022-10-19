@@ -1,4 +1,4 @@
-import cn from 'clsx'
+import clsx from 'clsx'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 import { UrlObject } from 'url'
@@ -32,15 +32,15 @@ function TitleLink({
     <Link
       href={href}
       shallow={shallow}
+      passHref
     >
-      <a className={cn('hover:no-underline', wrapperClassName)}>
+      <a className={clsx('hover:no-underline', wrapperClassName)}>
         <Title
-          // Ugh..
           icon={icon}
           size={size}
           title={title}
-          className={cn(
-            'hover:text-white-900',
+          className={clsx(
+            { 'hover:text-gray-600': !active },
             'whitespace-nowrap',
             'transition-colors',
             className,
