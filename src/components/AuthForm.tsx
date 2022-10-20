@@ -175,7 +175,6 @@ function AuthForm({ authType }: Props) {
                 'outline-none',
                 'focus:border-lime-400',
                 'text-sm',
-                'font-medium',
                 'placeholder:text-gray-300',
               )}
               required

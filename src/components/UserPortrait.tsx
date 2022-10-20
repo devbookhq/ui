@@ -3,7 +3,7 @@ import { MouseEvent } from 'react'
 
 export interface Props {
   color: string
-  userDisplayName?: string
+  username?: string
   onClick?: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void
   size?: Size
 }
@@ -13,12 +13,7 @@ export enum Size {
   Large,
 }
 
-function UserIndicator({
-  onClick,
-  size = Size.Small,
-  color,
-  userDisplayName = '?',
-}: Props) {
+function UserPortrait({ onClick, size = Size.Small, color, username = '?' }: Props) {
   return (
     <div
       style={{ backgroundColor: color }}
@@ -31,12 +26,12 @@ function UserIndicator({
       onClick={onClick}
     >
       <div className="relative select-none text-gray-100">
-        {userDisplayName[0].toUpperCase()}
+        {username[0].toUpperCase()}
       </div>
     </div>
   )
 }
 
-UserIndicator.size = Size
+UserPortrait.size = Size
 
-export default UserIndicator
+export default UserPortrait

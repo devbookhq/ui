@@ -4,7 +4,7 @@ import randomColor from 'randomcolor'
 import { useMemo } from 'react'
 
 import EditorPreviewSwitch from 'components/EditorPreviewSwitch'
-import UserIndicator from 'components/UserIndicator'
+import UserPortrait from 'components/UserPortrait'
 
 import { App } from 'queries/types'
 
@@ -18,7 +18,7 @@ function Header({ app }: Props) {
   const { user } = useUser()
 
   const color = useMemo(
-    () => randomColor({ luminosity: 'dark', seed: user?.id }),
+    () => randomColor({ luminosity: 'bright', seed: user?.id }),
     [user?.id],
   )
 
@@ -34,10 +34,10 @@ function Header({ app }: Props) {
           passHref
         >
           <a>
-            <UserIndicator
+            <UserPortrait
               color={color}
-              size={UserIndicator.size.Large}
-              userDisplayName={user?.email}
+              size={UserPortrait.size.Large}
+              username={user?.email}
             />
           </a>
         </Link>
