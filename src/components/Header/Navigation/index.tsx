@@ -29,12 +29,14 @@ function Navigation({ app }: Props) {
               size="16px"
             />
           </div>
-          <Title
-            className="whitespace-nowrap"
-            rank={Title.rank.Primary}
-            size={Title.size.T3}
-            title={app.title}
-          />
+          <div className="flex items-center space-x-2 border-b-2 border-transparent">
+            <Title
+              className="whitespace-nowrap"
+              rank={Title.rank.Primary}
+              size={Title.size.T3}
+              title={app.title}
+            />
+          </div>
         </>
       )}
     </div>
