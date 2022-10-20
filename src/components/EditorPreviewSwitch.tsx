@@ -6,9 +6,9 @@ export interface Props {
   className?: string
 }
 
-function SwitchMode({ className }: Props) {
+function EditorPreviewSwitch({ className }: Props) {
   const router = useRouter()
-  const isPreview = router.pathname === '/[slug]'
+  const isPreview = router.pathname === '/[slug]/preview'
   const isEdit = router.pathname === '/[slug]/edit'
 
   return (
@@ -17,7 +17,7 @@ function SwitchMode({ className }: Props) {
         <div>
           <Button
             className={className}
-            text="Edit App"
+            text="Edit"
             onClick={() =>
               router.push({
                 pathname: '/[slug]/edit',
@@ -32,10 +32,10 @@ function SwitchMode({ className }: Props) {
       {isEdit && (
         <Button
           className={className}
-          text="Open App"
+          text="Preview"
           onClick={() =>
             router.push({
-              pathname: '/[slug]',
+              pathname: '/[slug]/preview',
               query: {
                 slug: router.query.slug,
               },
@@ -47,4 +47,4 @@ function SwitchMode({ className }: Props) {
   )
 }
 
-export default SwitchMode
+export default EditorPreviewSwitch

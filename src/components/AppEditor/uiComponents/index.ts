@@ -36,5 +36,4 @@ export const uiComponentsSetup: UIComponentSetup = {
   },
 }
 
-export const { EditorBoardBlock, DraggedBoardBlock, PreviewBoardBlock, SidebarIcon } =
-  getUIComponents(uiComponentsSetup)
+export const UI = getUIComponents(uiComponentsSetup)

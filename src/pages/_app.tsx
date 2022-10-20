@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps<{ app?: AppProp }
           newestOnTop={false}
           position="bottom-right"
           rtl={false}
-          theme="dark"
+          theme="light"
           closeOnClick
           pauseOnFocusLoss
         />

@@ -1,6 +1,6 @@
 import { XYCoord, useDragLayer } from 'react-dnd'
 
-import { DraggedBoardBlock } from 'components/Editor/uiComponents'
+import { UI } from 'components/AppEditor/uiComponents'
 
 import { sidebarIconType } from '..'
 import { snapToGrid, xStep, yStep } from './grid'
@@ -64,7 +64,7 @@ export function useBoardDrag() {
   if (!offset) return null
 
   return (
-    <DraggedBoardBlock
+    <UI.DraggedBoardBlock
       {...block}
       offset={offset}
     />

@@ -29,7 +29,6 @@ function Dashboard() {
   const [isModalOpened, setIsModalOpened] = useState(false)
 
   const { user } = useUser()
-
   const { apps, isLoading, error: csError } = useApps(user?.id || '')
 
   function closeModal() {

@@ -1,7 +1,9 @@
 import { supabaseServerClient } from '@supabase/supabase-auth-helpers/nextjs'
+import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { GetServerSideProps } from 'next'
 
 import AppView from 'components/AppView'
+import EditorPreviewSwitch from 'components/EditorPreviewSwitch'
 
 import { getID } from 'utils/app'
 import { getApp } from 'utils/queries/queries'
@@ -53,7 +55,14 @@ interface Props {
 }
 
 function AppPreview({ app }: Props) {
-  return <AppView app={app} />
+  const { user } = useUser()
+
+  return (
+    <>
+      <AppView app={app} />
+      {user && <EditorPreviewSwitch className="fixed top-4 right-4" />}
+    </>
+  )
 }
 
 export default AppPreview

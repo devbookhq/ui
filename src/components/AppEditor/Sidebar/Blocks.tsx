@@ -1,10 +1,10 @@
-import { SidebarIcon, uiComponentsSetup } from '../uiComponents'
+import { UI, uiComponentsSetup } from '../uiComponents'
 
 function Blocks() {
   return (
     <div className="flex flex-row items-center space-x-2 px-2 py-4">
       {Object.keys(uiComponentsSetup).map(c => (
-        <SidebarIcon
+        <UI.SidebarIcon
           componentType={c}
           key={c}
         />

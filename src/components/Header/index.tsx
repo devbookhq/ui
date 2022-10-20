@@ -3,7 +3,7 @@ import Link from 'next/link'
 import randomColor from 'randomcolor'
 import { useMemo } from 'react'
 
-import SwitchMode from 'components/SwitchMode'
+import EditorPreviewSwitch from 'components/EditorPreviewSwitch'
 import UserIndicator from 'components/UserIndicator'
 
 import { App } from 'utils/queries/types'
@@ -26,7 +26,7 @@ function Header({ app }: Props) {
     <div className="flex justify-between border-b border-gray-200 px-4">
       <Navigation app={app} />
       <div className="flex items-center space-x-4">
-        <SwitchMode />
+        <EditorPreviewSwitch />
         <Link
           href={{
             pathname: '/settings',

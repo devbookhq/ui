@@ -12,7 +12,7 @@ export interface Props {
   app: App
 }
 
-function Editor({ app }: Props) {
+function AppEditor({ app }: Props) {
   const saveAppState = useSaveApp(app.id)
 
   return (
@@ -36,4 +36,4 @@ function Editor({ app }: Props) {
   )
 }
 
-export default Editor
+export default AppEditor
