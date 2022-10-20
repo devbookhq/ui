@@ -18,3 +18,10 @@ export interface App {
   created_at?: number
   state: AppState
 }
+
+export interface DeployedApp {
+  id: string
+  creator_id?: string
+  created_at?: number
+  state: AppState
+}

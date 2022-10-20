@@ -20,7 +20,6 @@ interface Props {
 
 export default function Layout({ children, meta: pageMeta, app }: Props) {
   const router = useRouter()
-  const isDeployed = router.pathname === '/[slug]'
   const isPreview = router.pathname === '/[slug]/preview'
   const isSignIn = router.pathname === '/signin'
 
@@ -100,7 +99,7 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
         flex-col
       "
       >
-        {!isPreview && !isSignIn && !isDeployed && <Header app={app} />}
+        {!isPreview && !isSignIn && <Header app={app} />}
         <div
           className="
           flex
