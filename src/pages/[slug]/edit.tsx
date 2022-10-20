@@ -5,9 +5,10 @@ import {
 
 import AppEditor from 'components/AppEditor'
 
+import { getApp } from 'queries/queries'
+import { App } from 'queries/types'
+
 import { getID } from 'utils/app'
-import { getApp } from 'utils/queries/queries'
-import { App } from 'utils/queries/types'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',

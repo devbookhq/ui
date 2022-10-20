@@ -5,8 +5,9 @@ import Input from 'components/Input'
 import Modal from 'components/Modal'
 import SpinnerIcon from 'components/icons/Spinner'
 
+import { App } from 'queries/types'
+
 import { createID, createRandomTitle } from 'utils/app'
-import { App } from 'utils/queries/types'
 
 interface Props {
   isOpen: boolean

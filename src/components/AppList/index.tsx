@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { App } from 'utils/queries/types'
+import { App } from 'queries/types'
 
 import AppItem from './AppItem'
 

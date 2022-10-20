@@ -2,7 +2,7 @@ import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { debounce } from 'lodash'
 import { useCallback } from 'react'
 
-import { updateApp } from 'utils/queries/queries'
+import { updateApp } from 'queries'
 
 import { RootState } from 'core/BuilderProvider/models/RootStoreProvider'
 

@@ -1,6 +1,6 @@
 import { SessionProvider } from '@devbookhq/react'
 
-import { App } from 'utils/queries/types'
+import { App } from 'queries/types'
 
 import BuilderProvider from 'core/BuilderProvider'
 

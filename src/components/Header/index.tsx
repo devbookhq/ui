@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import EditorPreviewSwitch from 'components/EditorPreviewSwitch'
 import UserIndicator from 'components/UserIndicator'
 
-import { App } from 'utils/queries/types'
+import { App } from 'queries/types'
 
 import Navigation from './Navigation'
 

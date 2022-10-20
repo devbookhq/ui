@@ -11,11 +11,12 @@ import NewAppModal from 'components/NewAppModal'
 import SpinnerIcon from 'components/icons/Spinner'
 import Title from 'components/typography/Title'
 
+import useApps from 'hooks/useApps'
+
+import { createApp } from 'queries'
+
 import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
-import { createApp } from 'utils/queries/queries'
-
-import useApps from 'hooks/useApps'
 
 import { defaultRootState } from '../core/BuilderProvider/models/RootStoreProvider'
 

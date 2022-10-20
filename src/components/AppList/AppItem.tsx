@@ -6,12 +6,13 @@ import { useRef, useState } from 'react'
 import Text from 'components/typography/Text'
 import Title from 'components/typography/Title'
 
+import useOnClickOutside from 'hooks/useOnClickOutside'
+
+import { deleteApp } from 'queries'
+import { App } from 'queries/types'
+
 import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
-import { deleteApp } from 'utils/queries/queries'
-import { App } from 'utils/queries/types'
-
-import useOnClickOutside from 'hooks/useOnClickOutside'
 
 export interface Props {
   app: App

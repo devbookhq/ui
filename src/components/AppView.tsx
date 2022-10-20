@@ -2,7 +2,7 @@ import { SessionProvider } from '@devbookhq/react'
 
 import { UI } from 'components/AppEditor/uiComponents'
 
-import { App } from 'utils/queries/types'
+import { App } from 'queries/types'
 
 export interface Props {
   app: App

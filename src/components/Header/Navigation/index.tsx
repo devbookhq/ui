@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import Title from 'components/typography/Title'
 
-import { App } from 'utils/queries/types'
+import { App } from 'queries/types'
 
 import HeaderLink from './HeaderLink'
 
