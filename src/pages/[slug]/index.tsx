@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next'
 
 import AppView from 'components/AppView'
 
-import { getApp } from 'queries/queries'
+import { getApp } from 'queries'
 import { App } from 'queries/types'
 
 import { getID } from 'utils/app'
