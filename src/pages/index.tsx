@@ -9,7 +9,7 @@ import Button from 'components/Button'
 import Feedback from 'components/Feedback'
 import NewAppModal from 'components/NewAppModal'
 import SpinnerIcon from 'components/icons/Spinner'
-import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 
 import useApps from 'hooks/useApps'
 
@@ -103,9 +103,9 @@ function Dashboard() {
     "
       >
         <div className="flex items-start justify-start">
-          <Title
-            size={Title.size.T0}
-            title="Apps"
+          <Text
+            size={Text.size.T0}
+            text="Apps"
           />
         </div>
 
@@ -126,12 +126,13 @@ function Dashboard() {
           items-stretch
           space-y-2
           overflow-hidden
+          p-2
         "
           >
             <div className="flex flex-1 justify-end">
               {apps.length > 0 && (
                 <Button
-                  icon={isLoadingNewSnippet ? <SpinnerIcon /> : <Plus />}
+                  icon={isLoadingNewSnippet ? <SpinnerIcon /> : <Plus size="16px" />}
                   isDisabled={isLoadingNewSnippet}
                   text="New app"
                   variant={Button.variant.Full}
@@ -150,7 +151,7 @@ function Dashboard() {
             justify-center
           "
             >
-              <SpinnerIcon />
+              <SpinnerIcon className="text-slate-400" />
             </div>
           )}
 
@@ -171,15 +172,15 @@ function Dashboard() {
             self-center
             rounded
             border
-            border-gray-200
+            border-slate-200
             bg-transparent
             py-12
             md:w-[800px]
           "
             >
-              <Title
-                size={Title.size.T1}
-                title="Get Started"
+              <Text
+                size={Text.size.T1}
+                text="Get Started"
               />
 
               <Button

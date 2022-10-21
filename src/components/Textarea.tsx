@@ -18,11 +18,10 @@ function Textarea({ value, className, placeholder, onChange }: Props) {
         'py-2',
         'rounded',
         'border',
-        'border-gray-200',
-        'bg-white',
+        'border-slate-200',
         'outline-none',
         'text-sm',
-        'placeholder:text-gray-300',
+        'placeholder:text-slate-300',
         className,
       )}
       onChange={onChange}

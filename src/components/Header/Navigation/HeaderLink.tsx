@@ -11,25 +11,26 @@ export interface Props {
 
 function HeaderLink({ active, title, href }: Props) {
   return (
-    <TitleLink
-      active={active}
-      href={href}
-      size={TitleLink.size.T3}
-      title={title}
-      wrapperClassName="w-full justify-center flex"
-      className={clsx(
-        'px-1',
-        'py-3',
-        'border-b-2',
-        {
+    <div className="relative flex flex-col">
+      <TitleLink
+        active={active}
+        href={href}
+        size={TitleLink.size.T2}
+        title={title}
+        wrapperClassName="w-full justify-center flex"
+        className={clsx('px-1', 'py-3', 'transition-all', 'hover:text-amber-800', {
+          'text-slate-400': !active,
+          'text-amber-800': active,
+        })}
+        shallow
+      />
+      <div
+        className={clsx('absolute bottom-0 -mb-px w-full border-b-2', {
           'border-transparent': !active,
-        },
-        {
-          'border-yellow-200': active,
-        },
-      )}
-      shallow
-    />
+          'rounded border-amber-400': active,
+        })}
+      ></div>
+    </div>
   )
 }
 

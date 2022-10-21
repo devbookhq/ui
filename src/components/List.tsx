@@ -20,12 +20,12 @@ function List({ selected, onSelect, options }: Props) {
       onChange={onSelect}
     >
       <div className="relative mt-1">
-        <Listbox.Button className="relative w-full cursor-pointer rounded border border-gray-600 py-1.5 pl-3 pr-10 text-left shadow-md hover:border-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-yellow-200/75 sm:text-sm">
+        <Listbox.Button className="relative w-full cursor-pointer rounded border border-slate-600 py-1.5 pl-3 pr-10 text-left shadow-md hover:border-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-amber-200/75 sm:text-sm">
           <span className="block truncate">{selected.value}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronDown
               aria-hidden="true"
-              className="h-5 w-5 text-gray-500"
+              className="h-5 w-5 text-slate-500"
             />
           </span>
         </Listbox.Button>
@@ -35,14 +35,14 @@ function List({ selected, onSelect, options }: Props) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute bottom-full z-50 mb-1 flex max-h-60 flex-col rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-gray-400/5 focus:outline-none sm:text-sm">
+          <Listbox.Options className="absolute bottom-full z-50 mb-1 flex max-h-60 flex-col rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-slate-400/5 focus:outline-none sm:text-sm">
             {options.map((o, idx) => (
               <Listbox.Option
                 key={idx}
                 value={o}
                 className={({ active }) =>
                   `relative cursor-default select-none py-2 pl-10 pr-8 ${
-                    active ? 'bg-yellow-200 text-gray-500' : 'text-gray-500'
+                    active ? 'bg-amber-200 text-slate-500' : 'text-slate-500'
                   }`
                 }
               >

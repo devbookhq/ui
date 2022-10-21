@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { ReactNode } from 'react'
 import { UrlObject } from 'url'
 
-import Title, { Size } from 'components/typography/Title'
+import Text, { Size } from 'components/typography/Text'
 
-interface Props {
+export interface Props {
   className?: string
   wrapperClassName?: string
   href: UrlObject | string
@@ -13,7 +13,6 @@ interface Props {
   icon?: ReactNode
   size?: Size
   active?: boolean
-  alternative?: boolean
   shallow?: boolean
 }
 
@@ -25,7 +24,6 @@ function TitleLink({
   icon,
   size,
   active,
-  alternative,
   shallow,
 }: Props) {
   return (
@@ -35,23 +33,16 @@ function TitleLink({
       passHref
     >
       <a className={clsx('hover:no-underline', wrapperClassName)}>
-        <Title
+        <Text
           icon={icon}
           size={size}
-          title={title}
+          text={title}
           className={clsx(
-            { 'hover:text-gray-600': !active },
             'whitespace-nowrap',
-            'transition-colors',
+            'transition-all',
+            active ? 'text-amber-800' : 'text-slate-400 hover:text-amber-800',
             className,
           )}
-          rank={
-            active
-              ? alternative
-                ? Title.rank.PrimaryAlternative
-                : Title.rank.Primary
-              : Title.rank.Secondary
-          }
         />
       </a>
     </Link>
@@ -59,4 +50,5 @@ function TitleLink({
 }
 
 TitleLink.size = Size
+
 export default TitleLink

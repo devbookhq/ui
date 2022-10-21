@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 
 import FeedbackModal from './FeedbackModal'
 
@@ -14,11 +14,10 @@ function Feedback() {
         onClose={() => setIsFeedbackVisible(false)}
       />
       <div onClick={() => setIsFeedbackVisible(true)}>
-        <Title
-          className="cursor-pointer whitespace-nowrap transition-colors hover:text-gray-600"
-          rank={Title.rank.Secondary}
-          size={Title.size.T3}
-          title="Feedback"
+        <Text
+          className="cursor-pointer whitespace-nowrap text-slate-400 transition-colors hover:text-amber-800"
+          size={Text.size.T1}
+          text="Feedback"
         />
       </div>
     </>

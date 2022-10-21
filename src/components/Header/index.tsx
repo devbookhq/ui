@@ -1,7 +1,5 @@
 import { useUser } from '@supabase/supabase-auth-helpers/react'
 import Link from 'next/link'
-import randomColor from 'randomcolor'
-import { useMemo } from 'react'
 
 import EditorPreviewSwitch from 'components/EditorPreviewSwitch'
 import UserPortrait from 'components/UserPortrait'
@@ -17,13 +15,8 @@ export interface Props {
 function Header({ app }: Props) {
   const { user } = useUser()
 
-  const color = useMemo(
-    () => randomColor({ luminosity: 'bright', seed: user?.id }),
-    [user?.id],
-  )
-
   return (
-    <div className="flex justify-between border-b border-gray-200 px-4">
+    <div className="flex items-center justify-between border-b border-slate-200 px-4">
       <Navigation app={app} />
       <div className="flex items-center space-x-4">
         <EditorPreviewSwitch />
@@ -34,11 +27,7 @@ function Header({ app }: Props) {
           passHref
         >
           <a>
-            <UserPortrait
-              color={color}
-              size={UserPortrait.size.Large}
-              username={user?.email}
-            />
+            <UserPortrait username={user?.email} />
           </a>
         </Link>
       </div>

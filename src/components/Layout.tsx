@@ -20,6 +20,7 @@ interface Props {
 
 export default function Layout({ children, meta: pageMeta, app }: Props) {
   const router = useRouter()
+  const isEditor = router.pathname === '/[slug]/edit'
   const isPreview = router.pathname === '/[slug]/preview'
   const isSignIn = router.pathname === '/signin'
 

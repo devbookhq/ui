@@ -1,16 +1,16 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import clsx from 'clsx'
 import { Layout } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
-import Button from 'components/Button'
-import Title from 'components/typography/Title'
+import SpinnerIcon from 'components/icons/Spinner'
+import Text from 'components/typography/Text'
 
 import { deleteApp } from 'queries'
 import { App } from 'queries/types'
 
 import { getSlug } from 'utils/app'
+import { showErrorNotif } from 'utils/notification'
 
 export interface Props {
   app: Required<App>
@@ -25,11 +25,12 @@ function useDate(timestamp: number) {
 
 function AppItem({ app }: Props) {
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(
     function expireConfirm() {
       if (confirmDelete) {
-        const cleanup = setTimeout(() => setConfirmDelete(false), 5000)
+        const cleanup = setTimeout(() => setConfirmDelete(false), 4000)
         return () => {
           clearTimeout(cleanup)
         }
@@ -39,71 +40,76 @@ function AppItem({ app }: Props) {
   )
 
   const created = useDate(app.created_at)
+
   return (
     <Link
-      className="flex flex-1 items-stretch"
       href={{
         pathname: '/[slug]/edit',
         query: {
           slug: getSlug(app.id, app.title),
         },
       }}
+      passHref
     >
-      <a className="group group flex items-center justify-between rounded px-4 py-1 text-gray-600 hover:text-yellow-500">
-        <div className="flex items-center space-x-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-50 text-gray-300 group-hover:border-transparent group-hover:bg-yellow-50 group-hover:text-gray-500">
+      <a className="group flex items-center justify-between space-x-4 rounded px-4 py-1">
+        <div className="flex items-center space-x-4 truncate">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-slate-100 text-slate-300 transition-all group-hover:border-transparent group-hover:bg-amber-50 group-hover:text-amber-800">
             <Layout />
           </div>
           <div className="flex flex-col">
-            <Title
-              size={Title.size.T1}
-              title={app.title}
+            <Text
+              className="text-slate-600 transition-all group-hover:text-amber-800"
+              size={Text.size.T1}
+              text={app.title}
             />
-            <div className="flex space-x-1">
-              <Title
-                rank={Title.rank.Secondary}
-                size={Title.size.T3}
-                title="App"
+            <div className="flex space-x-1 text-slate-300 transition-all group-hover:text-slate-400">
+              <Text
+                size={Text.size.T2}
+                text="App"
               />
-              <Title
-                rank={Title.rank.Secondary}
-                size={Title.size.T3}
-                title="-"
+              <Text
+                size={Text.size.T2}
+                text="-"
               />
-              <Title
-                rank={Title.rank.Secondary}
-                size={Title.size.T3}
-                title={created}
+              <Text
+                size={Text.size.T2}
+                text={created}
               />
             </div>
           </div>
         </div>
-        <div
-          className="hidden items-center group-hover:flex"
+        <button
+          className="flex items-center justify-center"
           onClick={e => {
             e.stopPropagation()
             e.preventDefault()
+
+            if (confirmDelete && !isDeleting) {
+              setIsDeleting(true)
+              deleteApp(supabaseClient, app.id).catch((e: Error) => {
+                showErrorNotif(`Error deleting app: ${e.message}`)
+              })
+            } else {
+              setConfirmDelete(true)
+            }
           }}
         >
-          <Button
-            text={confirmDelete ? 'Confirm delete' : 'Delete'}
-            className={clsx(
-              'border shadow-none hover:bg-red-50 hover:text-red-500',
-              { 'border-red-500 text-red-500 hover:border-red-500': confirmDelete },
-              { 'border-none text-red-300': !confirmDelete },
-            )}
-            onClick={e => {
-              e.stopPropagation()
-              e.preventDefault()
-
-              if (confirmDelete) {
-                deleteApp(supabaseClient, app.id)
-              } else {
-                setConfirmDelete(true)
-              }
-            }}
-          />
-        </div>
+          {isDeleting && (
+            <Text
+              className="whitespace-nowrap text-amber-800"
+              icon={<SpinnerIcon className="text-amber-800" />}
+              size={Text.size.T2}
+              text="Deleting..."
+            />
+          )}
+          {!isDeleting && (
+            <Text
+              className="whitespace-nowrap text-slate-300 hover:text-amber-800"
+              size={Text.size.T2}
+              text={confirmDelete ? 'Confirm delete' : 'Delete'}
+            />
+          )}
+        </button>
       </a>
     </Link>
   )

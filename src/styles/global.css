@@ -16,15 +16,15 @@
   }
 
   ::selection {
-    @apply text-gray-600;
-    @apply bg-yellow-200/70;
+    @apply text-slate-600;
+    @apply bg-amber-200/70;
   }
 
   html,
   body {
     @apply h-full;
     @apply bg-white;
-    @apply text-gray-800 antialiased;
+    @apply text-slate-700 antialiased;
 
     font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
       'Helvetica', sans-serif;
@@ -36,11 +36,11 @@
   }
 
   button {
-    @apply focus:outline-yellow-400;
+    @apply focus:outline-amber-400;
   }
 
   a {
-    @apply focus:outline-yellow-400;
+    @apply focus:outline-amber-400;
   }
 
   .scroller {
@@ -50,10 +50,10 @@
 }
 
 @layer components {
-  .bg-green-gradient {
+  .bg-amber-gradient {
     @apply bg-gradient-to-b;
-    @apply from-yellow-100;
-    @apply to-yellow-200;
+    @apply from-amber-100;
+    @apply to-amber-200;
   }
 
   .cs-output {
@@ -80,8 +80,8 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #fbfcfc inset;
-  -webkit-text-fill-color: #374151;
+  -webkit-box-shadow: 0 0 0px 1000px #f8fafc inset;
+  -webkit-text-fill-color: #475569;
   caret-color: #000;
 }
 
@@ -92,7 +92,7 @@ select:-webkit-autofill:focus {
 }
 
 .scroller::-webkit-scrollbar-thumb {
-  @apply bg-gray-100;
+  @apply bg-slate-100;
   @apply rounded;
 }
 

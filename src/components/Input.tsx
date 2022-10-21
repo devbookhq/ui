@@ -31,12 +31,12 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
           'py-1',
           'rounded',
           'border',
-          'border-gray-200',
+          'border-slate-200',
           'bg-white',
           'outline-none',
-          'focus:border-gray-500/30',
+          'focus:border-slate-500/30',
           'text-sm',
-          'placeholder:text-gray-300',
+          'placeholder:text-slate-300',
           className,
         )}
         onKeyDown={handleKeyDown}
@@ -64,7 +64,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
             <span
               className="
               text-sm
-            text-gray-400
+            text-slate-400
           "
             >
               {title}

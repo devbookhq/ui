@@ -10,7 +10,7 @@ function Toggle({ enabled, onChange }: Props) {
     <Switch
       checked={enabled}
       className={`${
-        enabled ? 'bg-yellow-200' : 'bg-gray-300'
+        enabled ? 'bg-amber-200' : 'bg-slate-300'
       } relative inline-flex h-6 w-11 items-center rounded-full`}
       onChange={onChange}
     >

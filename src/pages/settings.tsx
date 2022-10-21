@@ -3,7 +3,6 @@ import { useUser } from '@supabase/supabase-auth-helpers/react'
 
 import ButtonLink from 'components/ButtonLink'
 import Text from 'components/typography/Text'
-import Title from 'components/typography/Title'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -29,9 +28,9 @@ function Settings() {
     "
     >
       <div className="flex items-start justify-start">
-        <Title
-          size={Title.size.T0}
-          title="Settings"
+        <Text
+          size={Text.size.T0}
+          text="Settings"
         />
       </div>
 
@@ -51,13 +50,13 @@ function Settings() {
         space-y-1
       "
         >
-          <Title
-            rank={Title.rank.Secondary}
-            size={Title.size.T2}
-            title="Email"
+          <Text
+            className="text-slate-400"
+            size={Text.size.T2}
+            text="Email"
           />
           <Text
-            size={Text.size.S1}
+            size={Text.size.T1}
             text={user?.email || ''}
           />
         </div>

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ReactNode } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 
 import Text from 'components/typography/Text'
 
@@ -9,12 +9,12 @@ export enum Variant {
   Uncolored,
 }
 
-interface Props {
+export interface Props {
   className?: string
   text: string
   variant?: Variant
   icon?: ReactNode
-  onClick?: (e: any) => void
+  onClick?: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void
   isDisabled?: boolean
   type?: 'submit'
 }
@@ -38,10 +38,12 @@ function Button({
           'flex',
           'items-center',
           'justify-center',
+          'transition-all',
           'rounded',
-          'bg-yellow-200 hover:bg-yellow-300',
+          'stroke-amber-800 text-amber-800',
+          'bg-amber-200 hover:bg-amber-300',
           {
-            'drop-shadow-sm': !isDisabled,
+            'shadow-sm shadow-amber-100': !isDisabled,
           },
           {
             'opacity-70': isDisabled,
@@ -51,7 +53,7 @@ function Button({
           },
           className,
         )}
-        onClick={!isDisabled ? onClick : () => {}}
+        onClick={!isDisabled ? onClick : undefined}
       >
         <div
           className="
@@ -64,7 +66,7 @@ function Button({
         >
           {icon}
           <Text
-            size={Text.size.S1}
+            size={Text.size.T2}
             text={text}
           />
         </div>
@@ -77,8 +79,9 @@ function Button({
       type={type}
       className={clsx(
         'rounded',
-        'bg-white hover:bg-gray-100',
-        'border border-gray-200 hover:border-gray-300',
+        'transition-all',
+        'bg-white hover:bg-slate-100',
+        'border border-slate-200 hover:border-slate-300',
         {
           'shadow-sm': !isDisabled,
         },
@@ -90,7 +93,7 @@ function Button({
         },
         className,
       )}
-      onMouseDown={!isDisabled ? onClick : () => {}}
+      onClick={!isDisabled ? onClick : undefined}
     >
       <div
         className="
@@ -105,7 +108,7 @@ function Button({
       >
         {icon}
         <Text
-          size={Text.size.S1}
+          size={Text.size.T2}
           text={text}
         />
       </div>

@@ -796,22 +796,6 @@
     "@babel/runtime" "^7.13.10"
     "@radix-ui/react-slot" "1.0.1"
 
-"@radix-ui/react-roving-focus@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-roving-focus/-/react-roving-focus-1.0.1.tgz#475621f63aee43faa183a5270f35d49e530de3d7"
-  integrity sha512-TB76u5TIxKpqMpUAuYH2VqMhHYKa+4Vs1NHygo/llLvlffN6mLVsFhz0AnSFlSBAvTBYVHYAkHAyEt7x1gPJOA==
-  dependencies:
-    "@babel/runtime" "^7.13.10"
-    "@radix-ui/primitive" "1.0.0"
-    "@radix-ui/react-collection" "1.0.1"
-    "@radix-ui/react-compose-refs" "1.0.0"
-    "@radix-ui/react-context" "1.0.0"
-    "@radix-ui/react-direction" "1.0.0"
-    "@radix-ui/react-id" "1.0.0"
-    "@radix-ui/react-primitive" "1.0.1"
-    "@radix-ui/react-use-callback-ref" "1.0.0"
-    "@radix-ui/react-use-controllable-state" "1.0.0"
-
 "@radix-ui/react-select@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-select/-/react-select-1.1.1.tgz#eba7db6defe336ada28ccb1a7bee1b9c9bea58cd"
@@ -860,21 +844,6 @@
     "@radix-ui/react-use-controllable-state" "1.0.0"
     "@radix-ui/react-use-previous" "1.0.0"
     "@radix-ui/react-use-size" "1.0.0"
-
-"@radix-ui/react-tabs@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-tabs/-/react-tabs-1.0.1.tgz#8fcfd6f70fe3026ff8a839b120f4e87f8d985e05"
-  integrity sha512-mVNEwHwgjy2G9F7b39f9VY+jF0QUZykTm0Sdv+Uz6KC4KOEIa4HLDiHU8MeEZluRtZE3aqGYDhl93O7QbJDwhg==
-  dependencies:
-    "@babel/runtime" "^7.13.10"
-    "@radix-ui/primitive" "1.0.0"
-    "@radix-ui/react-context" "1.0.0"
-    "@radix-ui/react-direction" "1.0.0"
-    "@radix-ui/react-id" "1.0.0"
-    "@radix-ui/react-presence" "1.0.0"
-    "@radix-ui/react-primitive" "1.0.1"
-    "@radix-ui/react-roving-focus" "1.0.1"
-    "@radix-ui/react-use-controllable-state" "1.0.0"
 
 "@radix-ui/react-use-callback-ref@1.0.0":
   version "1.0.0"

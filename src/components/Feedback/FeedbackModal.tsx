@@ -39,7 +39,7 @@ function FeedbackModal({ isOpen, onClose }: Props) {
       title="Send us your feedback"
       onClose={onClose}
     >
-      {isSavingFeedback && <SpinnerIcon className="m-auto" />}
+      {isSavingFeedback && <SpinnerIcon className="m-auto text-slate-400" />}
       {!isSavingFeedback && (
         <form
           autoComplete="of"

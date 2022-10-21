@@ -25,18 +25,18 @@ function AppList({ apps }: Props) {
       max-w-[800px]
       flex-1
       flex-col
-      space-y-2
+      space-y-1
       overflow-auto
       pr-4
     "
     >
       {sorted.map(app => (
         <div
-          className="flex flex-col space-y-2"
+          className="flex flex-col space-y-2 px-1 pt-1"
           key={app.id}
         >
           <AppItem app={app} />
-          <div className="border-b border-gray-200" />
+          <div className="border-b border-slate-200" />
         </div>
       ))}
     </div>

@@ -128,19 +128,17 @@ export function getUIComponents(setup: UIComponentSetup) {
 
     return (
       <div
-        className="flex flex-1"
         ref={drag}
         style={getStyles(left, top, isDragging)}
+        className={clsx('flex flex-1 border-4', {
+          'z-50 border-amber-500': isSelected,
+          'border-transparent': !isSelected,
+        })}
         onClick={e => {
           e.stopPropagation()
           board.selectBlock(id)
         }}
       >
-        <div
-          className={clsx('flex', 'pointer-events-none', 'w-full', 'h-full', 'absolute', {
-            'z-50 rounded opacity-60 outline-dashed outline-yellow-600/80': isSelected,
-          })}
-        ></div>
         <C.Block {...props} />
       </div>
     )
@@ -184,12 +182,12 @@ export function getUIComponents(setup: UIComponentSetup) {
       <div
         ref={drag}
         {...collected}
-        className="flex flex-col items-center"
+        className="flex cursor-move flex-col rounded border border-slate-300 bg-slate-50 p-1 px-1 text-xs hover:bg-slate-400"
       >
-        <div className="flex h-14 w-14 cursor-move flex-col rounded border border-gray-300 bg-gray-50 p-1 px-1 text-xs hover:bg-gray-400">
+        <div>
           <C.Icon />
         </div>
-        <div className="text-sm text-gray-600">{C.label}</div>
+        <div className="text-sm text-slate-600">{C.label}</div>
       </div>
     )
   }
@@ -206,7 +204,10 @@ export function getUIComponents(setup: UIComponentSetup) {
     )
 
     return (
-      <div style={getTransform(offset.x, offset.y)}>
+      <div
+        className="border-4 border-transparent"
+        style={getTransform(offset.x, offset.y)}
+      >
         <C.Block {...props} />
       </div>
     )

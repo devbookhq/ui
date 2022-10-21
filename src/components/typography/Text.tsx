@@ -1,29 +1,52 @@
 import clsx from 'clsx'
+import { MouseEvent, ReactNode } from 'react'
+
+export interface Props {
+  text: string
+  className?: string
+  size?: Size
+  icon?: ReactNode
+  onClick?: (e: MouseEvent<HTMLElement, globalThis.MouseEvent>) => void
+}
 
 export enum Size {
-  S1,
-  S2,
+  T0,
+  T1,
+  T2,
 }
 
 const Sizes = {
-  [Size.S1]: 'text-sm',
-  [Size.S2]: 'text-xs',
+  [Size.T0]: 'text-2xl',
+  [Size.T1]: 'text-base',
+  [Size.T2]: 'text-xs',
 }
 
-interface Props {
-  className?: string
-  text: string
-  size?: Size
-  onClick?: (e: any) => void
-  mono?: boolean
-}
+function Text({ className, text, size = Size.T1, icon, onClick }: Props) {
+  const classes = clsx(
+    'flex',
+    'flex-row',
+    'items-center',
+    'space-x-1.5',
+    'text-left',
+    Sizes[size],
+    className,
+  )
 
-function Text({ className, text, size = Size.S2, onClick, mono }: Props) {
+  if (icon) {
+    return (
+      <div
+        className={classes}
+        onClick={onClick}
+      >
+        {icon}
+        <span>{text}</span>
+      </div>
+    )
+  }
+
   return (
     <span
-      className={clsx(Sizes[size], className, {
-        'font-mono': mono,
-      })}
+      className={classes}
       onClick={onClick}
     >
       {text}
@@ -32,4 +55,5 @@ function Text({ className, text, size = Size.S2, onClick, mono }: Props) {
 }
 
 Text.size = Size
+
 export default Text

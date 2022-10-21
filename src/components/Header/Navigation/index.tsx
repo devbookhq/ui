@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/router'
 
-import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 
 import { App } from 'queries/types'
 
@@ -15,7 +15,7 @@ function Navigation({ app }: Props) {
   const router = useRouter()
 
   return (
-    <div className="-mb-px flex items-center space-x-2">
+    <div className="flex items-center space-x-2">
       <HeaderLink
         active={router.pathname === '/'}
         href="/"
@@ -25,16 +25,15 @@ function Navigation({ app }: Props) {
         <>
           <div>
             <ChevronRight
-              className="text-gray-400"
+              className="text-slate-400"
               size="16px"
             />
           </div>
-          <div className="flex items-center space-x-2 border-b-2 border-transparent">
-            <Title
+          <div className="flex items-center space-x-2">
+            <Text
               className="whitespace-nowrap"
-              rank={Title.rank.Primary}
-              size={Title.size.T3}
-              title={app.title}
+              size={Text.size.T2}
+              text={app.title}
             />
           </div>
         </>

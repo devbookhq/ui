@@ -4,7 +4,8 @@ import { useLayoutEffect, useRef, useState } from 'react'
 
 import Button from 'components/Button'
 import Text from 'components/typography/Text'
-import Title from 'components/typography/Title'
+
+import SpinnerIcon from './icons/Spinner'
 
 export enum AuthFormType {
   SignIn,
@@ -108,15 +109,15 @@ function AuthForm({ authType }: Props) {
         self-start
         rounded
         border
-        border-gray-200
+        border-slate-200
         bg-white
         py-12
         px-4
       "
       >
-        <Title
-          size={Title.size.T0}
-          title={title}
+        <Text
+          size={Text.size.T0}
+          text={title}
         />
         <div className="flex w-full flex-col space-y-8 px-16">
           <div className="flex min-w-0 flex-col space-y-2">
@@ -135,17 +136,17 @@ function AuthForm({ authType }: Props) {
                 'py-2',
                 'rounded',
                 'border',
-                'border-gray-200',
+                'border-slate-200',
                 {
                   'bg-white': !isLoading,
                 },
                 {
-                  'bg-gray-50': isLoading,
+                  'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-yellow-400',
+                'focus:border-amber-400',
                 'text-sm',
-                'placeholder:text-gray-300',
+                'placeholder:text-slate-300',
               )}
               required
             />
@@ -165,17 +166,17 @@ function AuthForm({ authType }: Props) {
                 'flex',
                 'min-w-0',
                 'flex-1',
-                'border-gray-200',
+                'border-slate-200',
                 {
                   'bg-white': !isLoading,
                 },
                 {
-                  'bg-gray-50': isLoading,
+                  'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-yellow-400',
+                'focus:border-amber-400',
                 'text-sm',
-                'placeholder:text-gray-300',
+                'placeholder:text-slate-300',
               )}
               required
             />
@@ -183,6 +184,7 @@ function AuthForm({ authType }: Props) {
           <div className="flex flex-col space-y-4">
             <Button
               className="self-center whitespace-nowrap"
+              icon={isLoading ? <SpinnerIcon className="text-amber-800" /> : null}
               isDisabled={isLoading}
               text={isLoading ? buttonLoadingLabel : buttonLabel}
               type="submit"
@@ -190,8 +192,8 @@ function AuthForm({ authType }: Props) {
             />
             {!isLoading && !!errMessage && (
               <Text
-                className="self-center text-red-400"
-                size={Text.size.S2}
+                className="self-center text-red-500"
+                size={Text.size.T2}
                 text={errMessage}
               />
             )}

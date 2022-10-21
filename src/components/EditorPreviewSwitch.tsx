@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import Button from './Button'
@@ -14,34 +15,40 @@ function EditorPreviewSwitch({ className }: Props) {
   return (
     <>
       {isPreview && (
-        <div>
-          <Button
-            className={className}
-            text="Edit"
-            onClick={() =>
-              router.push({
-                pathname: '/[slug]/edit',
-                query: {
-                  slug: router.query.slug,
-                },
-              })
-            }
-          />
-        </div>
+        <Link
+          href={{
+            pathname: '/[slug]/edit',
+            query: {
+              slug: router.query.slug,
+            },
+          }}
+          passHref
+        >
+          <a>
+            <Button
+              className={className}
+              text="Edit"
+            />
+          </a>
+        </Link>
       )}
       {isEdit && (
-        <Button
-          className={className}
-          text="Preview"
-          onClick={() =>
-            router.push({
-              pathname: '/[slug]/preview',
-              query: {
-                slug: router.query.slug,
-              },
-            })
-          }
-        />
+        <Link
+          href={{
+            pathname: '/[slug]/preview',
+            query: {
+              slug: router.query.slug,
+            },
+          }}
+          passHref
+        >
+          <a>
+            <Button
+              className={className}
+              text="Preview"
+            />
+          </a>
+        </Link>
       )}
     </>
   )

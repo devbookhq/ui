@@ -6,6 +6,7 @@ import BuilderProvider from 'core/BuilderProvider'
 
 import Board from './Board'
 import Sidebar from './Sidebar'
+import Inspector from './Sidebar/Inspector'
 import useSaveApp from './useSaveApp'
 
 export interface Props {
@@ -16,7 +17,7 @@ function AppEditor({ app }: Props) {
   const saveAppState = useSaveApp(app.id)
 
   return (
-    <div className="flex flex-1 border-gray-200">
+    <div className="flex flex-1 flex-col border-slate-200">
       <BuilderProvider
         initialState={app.state}
         onStateChange={saveAppState}
@@ -26,10 +27,11 @@ function AppEditor({ app }: Props) {
             codeSnippetID: 'Mh3XS5Pq9ch8',
           }}
         >
-          <div className="flex flex-1 flex-col">
+          <div className="flex flex-1">
+            <Sidebar />
             <Board />
+            <Inspector />
           </div>
-          <Sidebar />
         </SessionProvider>
       </BuilderProvider>
     </div>

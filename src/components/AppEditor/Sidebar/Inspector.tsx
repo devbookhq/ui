@@ -5,7 +5,7 @@ import Input from 'components/Input'
 import List from 'components/List'
 import Textarea from 'components/Textarea'
 import Toggle from 'components/Toggle'
-import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 
 import { useRootStore } from 'core/BuilderProvider/models/RootStoreProvider'
 
@@ -26,29 +26,27 @@ function Inspector() {
   const blockProps = selectedBlock.getProps()
 
   return (
-    <div className="flex flex-col space-y-2">
-      <Title
-        className="flex self-center"
-        rank={Title.rank.Primary}
-        title={uiComponentSetup.label}
+    <div className="min-w-[250px] flex-col items-center justify-center space-y-2 border-l border-slate-200 py-2">
+      <Text
+        className="flex justify-center"
+        text={uiComponentSetup.label}
       />
-      <div className="flex flex-1 flex-col space-y-4 border-t border-gray-200 p-4">
+      <div className="flex flex-1 flex-col space-y-4 border-t border-slate-200 p-4">
         {Object.entries(uiProps).map(([name, prop]) => (
           <div
-            className="flex flex-col items-start justify-start"
+            className="flex flex-col items-start justify-start space-y-1"
             key={name}
           >
-            <Title
-              className="mr-12 flex w-12 whitespace-nowrap"
-              rank={Title.rank.Secondary}
-              size={Title.size.T2}
-              title={prop.label}
+            <Text
+              className="mr-12 flex w-12 whitespace-nowrap text-slate-400"
+              size={Text.size.T2}
+              text={prop.label}
             />
             {prop.type === UIPropType.String && !prop.values && (
               <Textarea
                 value={blockProps[name]}
                 onChange={e => selectedBlock.setProp(name, e.target.value)}
-              ></Textarea>
+              />
             )}
             {prop.type === UIPropType.String && prop.values && (
               <List
@@ -61,7 +59,7 @@ function Inspector() {
               <Input
                 value={blockProps[name]}
                 onChange={e => selectedBlock.setProp(name, Number(e.target.value))}
-              ></Input>
+              />
             )}
             {prop.type === UIPropType.Boolean && (
               <Toggle
