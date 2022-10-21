@@ -6,6 +6,7 @@ import Text from 'components/typography/Text'
 export enum Variant {
   Full,
   Outline,
+  Uncolored,
 }
 
 interface Props {
@@ -38,7 +39,7 @@ function Button({
           'items-center',
           'justify-center',
           'rounded',
-          'bg-lime-200 hover:bg-lime-300',
+          'bg-yellow-200 hover:bg-yellow-300',
           {
             'drop-shadow-sm': !isDisabled,
           },

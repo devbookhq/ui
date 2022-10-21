@@ -93,49 +93,52 @@ function Dashboard() {
         className="
       flex
       flex-1
-      items-start
-      space-x-4
-      p-16
+      flex-col
+      space-x-0
+      overflow-hidden
+      p-12
+      md:flex-row
+      md:space-y-0
+      md:p-16
     "
       >
-        <Title
-          size={Title.size.T0}
-          title="Apps"
-        />
+        <div className="flex items-start justify-start">
+          <Title
+            size={Title.size.T0}
+            title="Apps"
+          />
+        </div>
 
         <div
           className="
         flex
         flex-1
         flex-col
+        items-stretch
         space-y-4
-        border-l
-        border-gray-200
-        pl-4
+        overflow-hidden
         "
         >
           <div
             className="
           flex
           flex-col
-          items-center
+          items-stretch
           space-y-2
-
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-          sm:space-y-0
+          overflow-hidden
         "
           >
-            {apps.length > 0 && (
-              <Button
-                icon={isLoadingNewSnippet ? <SpinnerIcon /> : <Plus />}
-                isDisabled={isLoadingNewSnippet}
-                text="New app"
-                variant={Button.variant.Full}
-                onClick={openModal}
-              />
-            )}
+            <div className="flex flex-1 justify-end">
+              {apps.length > 0 && (
+                <Button
+                  icon={isLoadingNewSnippet ? <SpinnerIcon /> : <Plus />}
+                  isDisabled={isLoadingNewSnippet}
+                  text="New app"
+                  variant={Button.variant.Full}
+                  onClick={openModal}
+                />
+              )}
+            </div>
           </div>
 
           {isLoading && (
@@ -151,29 +154,33 @@ function Dashboard() {
             </div>
           )}
 
-          {!isLoading && apps.length > 0 && <AppList apps={apps} />}
+          {!isLoading && apps.length > 0 && (
+            <div className="flex flex-1 justify-center overflow-hidden">
+              <AppList apps={apps} />
+            </div>
+          )}
 
           {!isLoading && apps.length === 0 && (
             <div
               className="
             flex
-            w-full
+            w-[400px]
             flex-col
             items-center
-            space-y-16
+            space-y-8
+            self-center
             rounded
             border
             border-gray-200
             bg-transparent
-            py-6
+            py-12
+            md:w-[800px]
           "
             >
               <Title
-                size={Title.size.T2}
+                size={Title.size.T1}
                 title="Get Started"
               />
-
-              <div />
 
               <Button
                 icon={isLoadingNewSnippet ? <SpinnerIcon /> : null}

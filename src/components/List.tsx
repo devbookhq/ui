@@ -20,7 +20,7 @@ function List({ selected, onSelect, options }: Props) {
       onChange={onSelect}
     >
       <div className="relative mt-1">
-        <Listbox.Button className="relative w-full cursor-pointer rounded border border-gray-600 py-1.5 pl-3 pr-10 text-left shadow-md hover:border-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-lime-200/75 sm:text-sm">
+        <Listbox.Button className="relative w-full cursor-pointer rounded border border-gray-600 py-1.5 pl-3 pr-10 text-left shadow-md hover:border-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-yellow-200/75 sm:text-sm">
           <span className="block truncate">{selected.value}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronDown
@@ -42,7 +42,7 @@ function List({ selected, onSelect, options }: Props) {
                 value={o}
                 className={({ active }) =>
                   `relative cursor-default select-none py-2 pl-10 pr-8 ${
-                    active ? 'bg-lime-200 text-gray-500' : 'text-gray-500'
+                    active ? 'bg-yellow-200 text-gray-500' : 'text-gray-500'
                   }`
                 }
               >

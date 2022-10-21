@@ -1,145 +1,111 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { MoreHorizontal } from 'lucide-react'
+import clsx from 'clsx'
+import { Layout } from 'lucide-react'
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import Text from 'components/typography/Text'
+import Button from 'components/Button'
 import Title from 'components/typography/Title'
-
-import useOnClickOutside from 'hooks/useOnClickOutside'
 
 import { deleteApp } from 'queries'
 import { App } from 'queries/types'
 
 import { getSlug } from 'utils/app'
-import { showErrorNotif } from 'utils/notification'
 
 export interface Props {
-  app: App
+  app: Required<App>
+}
+
+function useDate(timestamp: number) {
+  return useMemo(() => {
+    const d = new Date(timestamp)
+    return d.toLocaleString()
+  }, [timestamp])
 }
 
 function AppItem({ app }: Props) {
-  const [showDropdown, setShowDropdown] = useState(false)
-  const cardRef = useRef<HTMLDivElement>(null)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
-  useOnClickOutside(cardRef, () => {
-    setShowDropdown(false)
-  })
-
-  function handleOnMoreClick(e: any) {
-    e.stopPropagation()
-    e.preventDefault()
-    setShowDropdown(c => !c)
-  }
-
-  async function handleDelete(e: any) {
-    e.stopPropagation()
-    e.preventDefault()
-    if (
-      confirm(`Are you sure you want to delete '${app.title}'? This cannot be reversed.`)
-    ) {
-      try {
-        await deleteApp(supabaseClient, app.id)
-      } catch (err: any) {
-        showErrorNotif(`Error: ${err.message}`)
-        setShowDropdown(false)
+  useEffect(
+    function expireConfirm() {
+      if (confirmDelete) {
+        const cleanup = setTimeout(() => setConfirmDelete(false), 5000)
+        return () => {
+          clearTimeout(cleanup)
+        }
       }
-    }
-  }
+    },
+    [confirmDelete],
+  )
 
+  const created = useDate(app.created_at)
   return (
-    <div
-      ref={cardRef}
-      className="
-        relative
-        w-full
-        md:max-w-[320px]
-    "
+    <Link
+      className="flex flex-1 items-stretch"
+      href={{
+        pathname: '/[slug]/edit',
+        query: {
+          slug: getSlug(app.id, app.title),
+        },
+      }}
     >
-      <Link
-        href={{
-          pathname: '/[slug]/edit',
-          query: {
-            slug: getSlug(app.id, app.title),
-          },
-        }}
-        passHref
-      >
-        <a className="hover:no-underline">
-          <div
-            ref={cardRef}
-            className="
-              cursor-pointer
-              rounded
-              p-[2px]
-              hover:shadow-lg
-              hover:shadow-lime-200/50"
-          >
-            <div
-              className="
-                flex
-                flex-col
-                rounded
-                bg-white
-        "
-            >
-              <div
-                className="
-                flex
-                flex-1
-                items-center
-                justify-between
-                truncate
-                py-1
-                px-2
-          "
-              >
-                <Title
-                  className="truncate"
-                  size={Title.size.T2}
-                  title={app.title}
-                />
-                <div
-                  className="
-                rounded
-                p-2
-                hover:bg-white/5
-              "
-                  onClick={handleOnMoreClick}
-                >
-                  <MoreHorizontal />
-                </div>
-              </div>
-            </div>
+      <a className="group group flex items-center justify-between rounded px-4 py-1 text-gray-600 hover:text-yellow-500">
+        <div className="flex items-center space-x-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-50 text-gray-300 group-hover:border-transparent group-hover:bg-yellow-50 group-hover:text-gray-500">
+            <Layout />
           </div>
-
-          {showDropdown && (
-            <div
-              className="
-              absolute
-            z-10
-            rounded
-            p-1
-            px-2
-            hover:bg-[#504E55]
-          "
-              style={{
-                left: 'calc(100% - 53px)',
-                top: 'calc(100% - 6px)',
-              }}
-            >
-              <Text
-                text="Delete"
-                className="
-              cursor-pointer
-            "
-                onClick={handleDelete}
+          <div className="flex flex-col">
+            <Title
+              size={Title.size.T1}
+              title={app.title}
+            />
+            <div className="flex space-x-1">
+              <Title
+                rank={Title.rank.Secondary}
+                size={Title.size.T3}
+                title="App"
+              />
+              <Title
+                rank={Title.rank.Secondary}
+                size={Title.size.T3}
+                title="-"
+              />
+              <Title
+                rank={Title.rank.Secondary}
+                size={Title.size.T3}
+                title={created}
               />
             </div>
-          )}
-        </a>
-      </Link>
-    </div>
+          </div>
+        </div>
+        <div
+          className="hidden items-center group-hover:flex"
+          onClick={e => {
+            e.stopPropagation()
+            e.preventDefault()
+          }}
+        >
+          <Button
+            text={confirmDelete ? 'Confirm delete' : 'Delete'}
+            className={clsx(
+              'border shadow-none hover:bg-red-50 hover:text-red-500',
+              { 'border-red-500 text-red-500 hover:border-red-500': confirmDelete },
+              { 'border-none text-red-300': !confirmDelete },
+            )}
+            onClick={e => {
+              e.stopPropagation()
+              e.preventDefault()
+
+              if (confirmDelete) {
+                deleteApp(supabaseClient, app.id)
+              } else {
+                setConfirmDelete(true)
+              }
+            }}
+          />
+        </div>
+      </a>
+    </Link>
   )
 }
 

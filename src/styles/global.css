@@ -17,7 +17,7 @@
 
   ::selection {
     @apply text-gray-600;
-    @apply bg-lime-200/70;
+    @apply bg-yellow-200/70;
   }
 
   html,
@@ -36,20 +36,34 @@
   }
 
   button {
-    @apply focus:outline-lime-400;
+    @apply focus:outline-yellow-400;
   }
 
   a {
-    @apply focus:outline-lime-400;
+    @apply focus:outline-yellow-400;
   }
+
+  .scroller {
+    scrollbar-color: #f3f4f6 transparent;
+    scrollbar-width: thin;
+  }  
 }
 
 @layer components {
   .bg-green-gradient {
     @apply bg-gradient-to-b;
-    @apply from-lime-100;
-    @apply to-lime-200;
+    @apply from-yellow-100;
+    @apply to-yellow-200;
   }
+
+  .cs-output {
+    @apply overflow-auto;
+    /* Firefox scrollbar styling */
+    scrollbar-color: #8f8f8f transparent;
+    scrollbar-width: thin;
+    height: 120px;
+  }
+
 }
 
 img {
@@ -69,4 +83,19 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #fbfcfc inset;
   -webkit-text-fill-color: #374151;
   caret-color: #000;
+}
+
+.scroller::-webkit-scrollbar {
+  /* CUSTOM */
+  width: 8px;
+  height: 8px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  @apply bg-gray-100;
+  @apply rounded;
+}
+
+.scroller::-webkit-scrollbar-corner {
+  @apply bg-transparent;
 }

@@ -39,7 +39,7 @@ function Inspector() {
             key={name}
           >
             <Title
-              className="mr-12 flex w-12"
+              className="mr-12 flex w-12 whitespace-nowrap"
               rank={Title.rank.Secondary}
               size={Title.size.T2}
               title={prop.label}

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import { App } from 'queries/types'
 
@@ -20,18 +20,24 @@ function AppList({ apps }: Props) {
   return (
     <div
       className="
+      scroller
       flex
+      max-w-[800px]
+      flex-1
       flex-col
-      items-start
-      justify-start
-      space-y-4
+      space-y-2
+      overflow-auto
+      pr-4
     "
     >
       {sorted.map(app => (
-        <AppItem
-          app={app}
+        <div
+          className="flex flex-col space-y-2"
           key={app.id}
-        />
+        >
+          <AppItem app={app} />
+          <div className="border-b border-gray-200" />
+        </div>
       ))}
     </div>
   )

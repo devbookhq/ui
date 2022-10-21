@@ -138,7 +138,7 @@ export function getUIComponents(setup: UIComponentSetup) {
       >
         <div
           className={clsx('flex', 'pointer-events-none', 'w-full', 'h-full', 'absolute', {
-            'z-50 rounded opacity-60 outline-dashed outline-lime-600/80': isSelected,
+            'z-50 rounded opacity-60 outline-dashed outline-yellow-600/80': isSelected,
           })}
         ></div>
         <C.Block {...props} />

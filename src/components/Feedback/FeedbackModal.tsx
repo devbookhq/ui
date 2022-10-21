@@ -58,7 +58,7 @@ function FeedbackModal({ isOpen, onClose }: Props) {
             onChange={e => setFeedback(e.target.value)}
           />
           <Button
-            text="Send"
+            text="Send feedback"
             variant={Button.variant.Full}
             onClick={saveFeedback}
           />

@@ -25,7 +25,7 @@ function HeaderLink({ active, title, href }: Props) {
           'border-transparent': !active,
         },
         {
-          'border-lime-200': active,
+          'border-yellow-200': active,
         },
       )}
       shallow

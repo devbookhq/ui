@@ -17,25 +17,31 @@ function Settings() {
       className="
       flex
       flex-1
-      items-start
-      space-x-4
-      p-16
+      flex-col
+      space-y-8
+      space-x-0
+      overflow-hidden
+      p-12
+      md:flex-row
+      md:space-y-0
+      md:space-x-8
+      md:p-16
     "
     >
-      <Title
-        size={Title.size.T0}
-        title="Settings"
-      />
+      <div className="flex items-start justify-start">
+        <Title
+          size={Title.size.T0}
+          title="Settings"
+        />
+      </div>
 
       <div
         className="
         flex
         flex-1
         flex-col
+        items-start
         space-y-4
-        border-l
-        border-gray-200
-        pl-4
         "
       >
         <div

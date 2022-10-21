@@ -31,7 +31,7 @@ function Modal({ title, children, isOpen, onClose }: Props) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-white/90" />
+          <div className="fixed inset-0 bg-white/40" />
         </Transition.Child>
 
         <div

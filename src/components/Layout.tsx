@@ -97,6 +97,7 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
         w-full
         flex-1
         flex-col
+        overflow-hidden
       "
       >
         {!isPreview && !isSignIn && <Header app={app} />}
@@ -105,6 +106,7 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
           flex
           flex-1
           flex-col
+          overflow-hidden
         "
         >
           {children}

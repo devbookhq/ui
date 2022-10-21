@@ -6,7 +6,10 @@ export interface Props {
 
 function Spinner({ className }: Props) {
   return (
-    <Loader className={`animate-spin stroke-gray-400 ${className ? className : ''}`} />
+    <Loader
+      className={`animate-spin stroke-gray-400 ${className ? className : ''}`}
+      size="16px"
+    />
   )
 }
 

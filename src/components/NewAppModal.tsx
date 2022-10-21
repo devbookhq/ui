@@ -33,7 +33,7 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
   return (
     <Modal
       isOpen={isOpen}
-      title="New app"
+      title="Create a new app"
       onClose={onClose}
     >
       <div
