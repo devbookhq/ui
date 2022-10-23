@@ -65,7 +65,7 @@ function Dashboard() {
         })
       })
       .catch(err => {
-        showErrorNotif(`Error: ${err.message}`)
+        showErrorNotif(`Error creating app: ${err.message}`)
         setIsLoadingNewSnippet(false)
         closeModal()
       })
@@ -74,7 +74,7 @@ function Dashboard() {
   useEffect(
     function checkAppError() {
       if (!csError) return
-      showErrorNotif(`Error: ${csError}`)
+      showErrorNotif(`Error retrieving apps: ${csError}`)
     },
     [csError],
   )

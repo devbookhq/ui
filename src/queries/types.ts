@@ -20,8 +20,8 @@ export interface App {
 }
 
 export interface DeployedApp {
-  id: string
-  creator_id?: string
+  id?: string
   created_at?: number
   state: RootState
+  app_id: string
 }

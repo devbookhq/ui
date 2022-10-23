@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-import { App, UserFeedback } from './types'
+import { App, DeployedApp, UserFeedback } from './types'
 
 export async function getApps(client: SupabaseClient, userID: string) {
   const { data, error } = await client
@@ -24,11 +24,30 @@ export async function getApp(client: SupabaseClient, id: string) {
   return data
 }
 
+export async function getDeployedApp(client: SupabaseClient, id: string) {
+  const { data, error } = await client
+    .from<Required<DeployedApp>>('deployed_apps')
+    .select('*')
+    .eq('app_id', id)
+    .limit(1)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
 export async function createApp(
   client: SupabaseClient,
   app: Required<Pick<App, 'title' | 'id' | 'state' | 'creator_id'>>,
 ) {
-  const { body, error } = await client.from<App>('apps').insert(app).limit(1).single()
+  const { body, error } = await client.from<App>('apps').insert(app)
+
+  if (error) throw error
+  return body
+}
+
+export async function upsertDeployedApp(client: SupabaseClient, app: DeployedApp) {
+  const { body, error } = await client.from<DeployedApp>('deployed_apps').upsert(app)
 
   if (error) throw error
   return body

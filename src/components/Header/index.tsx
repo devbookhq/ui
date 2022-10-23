@@ -6,6 +6,7 @@ import UserPortrait from 'components/UserPortrait'
 
 import { App } from 'queries/types'
 
+import DeployButton from './DeployButton'
 import Navigation from './Navigation'
 
 export interface Props {
@@ -18,8 +19,11 @@ function Header({ app }: Props) {
   return (
     <div className="flex items-center justify-between border-b border-slate-200 px-3">
       <Navigation app={app} />
-      <div className="flex items-center space-x-6">
-        <EditorPreviewSwitch />
+      <div className="flex items-center space-x-4">
+        <div className="flex space-x-2">
+          <DeployButton app={app} />
+          <EditorPreviewSwitch />
+        </div>
         <Link
           href={{
             pathname: '/settings',
