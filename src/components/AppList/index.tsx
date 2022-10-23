@@ -36,7 +36,7 @@ function AppList({ apps }: Props) {
           key={app.id}
         >
           <AppItem app={app} />
-          <div className="border-b border-slate-200" />
+          <div className="border-b border-slate-100" />
         </div>
       ))}
     </div>

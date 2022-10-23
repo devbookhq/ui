@@ -18,7 +18,6 @@ function useApps(userID?: string) {
       const sub = supabaseClient
         .from<Required<App>>(`apps:creator_id=eq.${userID}`)
         .on('*', p => {
-          console.log(p)
           switch (p.eventType) {
             case 'INSERT':
               if (p.errors) {

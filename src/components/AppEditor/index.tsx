@@ -1,40 +1,30 @@
-import { SessionProvider } from '@devbookhq/react'
-
 import { App } from 'queries/types'
 
-import BuilderProvider from 'core/BuilderProvider'
+import EditorProvider from 'core/EditorProvider'
 
 import Board from './Board'
-import Sidebar from './Sidebar'
-import Inspector from './Sidebar/Inspector'
-import useSaveApp from './useSaveApp'
+import InspectorSidebar from './InspectorSidebar'
+import ResourcesSidebar from './ResourcesSidebar'
+import useSaveAppState from './useSaveApp'
 
 export interface Props {
   app: App
 }
 
 function AppEditor({ app }: Props) {
-  const saveAppState = useSaveApp(app.id)
+  const saveAppState = useSaveAppState(app.id)
 
   return (
-    <div className="flex flex-1 flex-col border-slate-200">
-      <BuilderProvider
-        initialState={app.state}
-        onStateChange={saveAppState}
-      >
-        <SessionProvider
-          opts={{
-            codeSnippetID: 'Mh3XS5Pq9ch8',
-          }}
-        >
-          <div className="flex flex-1">
-            <Sidebar />
-            <Board />
-            <Inspector />
-          </div>
-        </SessionProvider>
-      </BuilderProvider>
-    </div>
+    <EditorProvider
+      initialState={app.state}
+      onStateChange={saveAppState}
+    >
+      <div className="flex flex-1">
+        <ResourcesSidebar />
+        <Board />
+        <InspectorSidebar />
+      </div>
+    </EditorProvider>
   )
 }
 

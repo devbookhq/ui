@@ -1,12 +1,13 @@
 import clsx from 'clsx'
 import { ChangeEvent, forwardRef } from 'react'
+import { KeyboardEvent } from 'react'
 
 export interface Props {
   wrapperClassName?: string // Only present if `title` is set.
   className?: string
   title?: string
   value?: string
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => any
   placeholder?: string
   onEnterDown?: () => void
 }
@@ -17,7 +18,7 @@ export interface Handler {
 
 const InputEl = forwardRef<HTMLInputElement, Props>(
   ({ className, onEnterDown, ...rest }, ref) => {
-    function handleKeyDown(e: any) {
+    function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
       if (e.key === 'Enter') onEnterDown?.()
     }
 
@@ -31,10 +32,11 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
           'py-1',
           'rounded',
           'border',
+          'transition-all',
           'border-slate-200',
           'bg-white',
           'outline-none',
-          'focus:border-slate-500/30',
+          'focus:border-amber-400',
           'text-sm',
           'placeholder:text-slate-300',
           className,
@@ -48,7 +50,7 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
 InputEl.displayName = 'InputEl'
 
 const Input = forwardRef<HTMLInputElement, Props>(
-  ({ title, wrapperClassName, className, ...rest }, ref) => {
+  ({ title, wrapperClassName, className, value = '', ...rest }, ref) => {
     return (
       <>
         {title ? (
@@ -72,6 +74,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
             <InputEl
               className={clsx('w-full', className)}
               ref={ref}
+              value={value}
               {...rest}
             />
           </div>

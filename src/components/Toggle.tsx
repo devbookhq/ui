@@ -1,4 +1,4 @@
-import { Switch } from '@headlessui/react'
+import * as Switch from '@radix-ui/react-switch'
 
 export interface Props {
   enabled: boolean
@@ -7,20 +7,14 @@ export interface Props {
 
 function Toggle({ enabled, onChange }: Props) {
   return (
-    <Switch
+    <Switch.Root
       checked={enabled}
-      className={`${
-        enabled ? 'bg-amber-200' : 'bg-slate-300'
-      } relative inline-flex h-6 w-11 items-center rounded-full`}
-      onChange={onChange}
+      className="relative h-4 w-7 rounded-full bg-slate-200 transition-all hover:bg-slate-300 radix-state-checked:bg-amber-300 hover:radix-state-checked:bg-amber-400"
+      defaultChecked={enabled}
+      onCheckedChange={onChange}
     >
-      <span className="sr-only">Enable notifications</span>
-      <span
-        className={`${
-          enabled ? 'translate-x-6' : 'translate-x-1'
-        } inline-block h-4 w-4 rounded-full bg-white transition`}
-      />
-    </Switch>
+      <Switch.Thumb className="block h-3 w-3 translate-x-0.5 rounded-full bg-white transition-all will-change-transform radix-state-checked:translate-x-3.5" />
+    </Switch.Root>
   )
 }
 

@@ -80,7 +80,7 @@ function Modal({ title, children, isOpen, onClose }: Props) {
                 bg-white
                 p-6
                 align-middle
-                text-slate-500
+                text-slate-600
                 shadow-2xl
                 shadow-slate-800/60
                 backdrop-blur

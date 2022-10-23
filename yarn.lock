@@ -681,6 +681,17 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
+"@radix-ui/react-avatar@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-avatar/-/react-avatar-1.0.1.tgz#d25ef10b56210039c152e45209dd41a1afdc192e"
+  integrity sha512-GfUgw4i/OWmb76bmM9qLnedYOsXhPvRXL6xaxyZzhiIVEwo2KbmxTaSQv5r1Oh8nNqBs1vfYPGuVmhEfpxpnvw==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/react-context" "1.0.0"
+    "@radix-ui/react-primitive" "1.0.1"
+    "@radix-ui/react-use-callback-ref" "1.0.0"
+    "@radix-ui/react-use-layout-effect" "1.0.0"
+
 "@radix-ui/react-collection@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-collection/-/react-collection-1.0.1.tgz#259506f97c6703b36291826768d3c1337edd1de5"
@@ -796,6 +807,22 @@
     "@babel/runtime" "^7.13.10"
     "@radix-ui/react-slot" "1.0.1"
 
+"@radix-ui/react-roving-focus@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-roving-focus/-/react-roving-focus-1.0.1.tgz#475621f63aee43faa183a5270f35d49e530de3d7"
+  integrity sha512-TB76u5TIxKpqMpUAuYH2VqMhHYKa+4Vs1NHygo/llLvlffN6mLVsFhz0AnSFlSBAvTBYVHYAkHAyEt7x1gPJOA==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.0"
+    "@radix-ui/react-collection" "1.0.1"
+    "@radix-ui/react-compose-refs" "1.0.0"
+    "@radix-ui/react-context" "1.0.0"
+    "@radix-ui/react-direction" "1.0.0"
+    "@radix-ui/react-id" "1.0.0"
+    "@radix-ui/react-primitive" "1.0.1"
+    "@radix-ui/react-use-callback-ref" "1.0.0"
+    "@radix-ui/react-use-controllable-state" "1.0.0"
+
 "@radix-ui/react-select@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-select/-/react-select-1.1.1.tgz#eba7db6defe336ada28ccb1a7bee1b9c9bea58cd"
@@ -844,6 +871,21 @@
     "@radix-ui/react-use-controllable-state" "1.0.0"
     "@radix-ui/react-use-previous" "1.0.0"
     "@radix-ui/react-use-size" "1.0.0"
+
+"@radix-ui/react-tabs@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-tabs/-/react-tabs-1.0.1.tgz#8fcfd6f70fe3026ff8a839b120f4e87f8d985e05"
+  integrity sha512-mVNEwHwgjy2G9F7b39f9VY+jF0QUZykTm0Sdv+Uz6KC4KOEIa4HLDiHU8MeEZluRtZE3aqGYDhl93O7QbJDwhg==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.0"
+    "@radix-ui/react-context" "1.0.0"
+    "@radix-ui/react-direction" "1.0.0"
+    "@radix-ui/react-id" "1.0.0"
+    "@radix-ui/react-presence" "1.0.0"
+    "@radix-ui/react-primitive" "1.0.1"
+    "@radix-ui/react-roving-focus" "1.0.1"
+    "@radix-ui/react-use-controllable-state" "1.0.0"
 
 "@radix-ui/react-use-callback-ref@1.0.0":
   version "1.0.0"
@@ -4006,6 +4048,11 @@ svgo@^2.7.0:
     csso "^4.2.0"
     picocolors "^1.0.0"
     stable "^0.1.8"
+
+tailwindcss-radix@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/tailwindcss-radix/-/tailwindcss-radix-2.6.1.tgz#793d72e7185fc4f5c9e2b1d1cfc9470ade41b897"
+  integrity sha512-ejh4BHkn/3g349l+JiEW6I4//uclU4nllEqnOK3/8zpORscIk9WbjLyYR2UzqwVRjjzgd72I/hMDJZm3+XO48w==
 
 tailwindcss@^3.1.3, tailwindcss@^3.1.8:
   version "3.1.8"

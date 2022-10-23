@@ -43,9 +43,6 @@ function Button({
           'stroke-amber-800 text-amber-800',
           'bg-amber-200 hover:bg-amber-300',
           {
-            'shadow-sm shadow-amber-100': !isDisabled,
-          },
-          {
             'opacity-70': isDisabled,
           },
           {
@@ -80,11 +77,8 @@ function Button({
       className={clsx(
         'rounded',
         'transition-all',
-        'bg-white hover:bg-slate-100',
-        'border border-slate-200 hover:border-slate-300',
-        {
-          'shadow-sm': !isDisabled,
-        },
+        'bg-white',
+        'border border-slate-100 hover:border-amber-800 hover:text-amber-800',
         {
           'opacity-70': isDisabled,
         },

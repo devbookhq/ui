@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-import { useBoardDrag } from '../../../core/BuilderProvider/useBoardDrag'
+import { useBoardDrag } from '../../../core/EditorProvider/useBoardDrag'
 
 const layerStyles: CSSProperties = {
   position: 'fixed',

@@ -1,13 +1,14 @@
 import clsx from 'clsx'
+import { ChangeEvent } from 'react'
 
 export interface Props {
   value: string
   className?: string
   placeholder?: string
-  onChange: (e: any) => void
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => any
 }
 
-function Textarea({ value, className, placeholder, onChange }: Props) {
+function Textarea({ value = '', className, placeholder, onChange }: Props) {
   return (
     <textarea
       placeholder={placeholder}
@@ -19,7 +20,10 @@ function Textarea({ value, className, placeholder, onChange }: Props) {
         'rounded',
         'border',
         'border-slate-200',
+        'bg-white',
+        'focus:border-amber-400',
         'outline-none',
+        'transition-all',
         'text-sm',
         'placeholder:text-slate-300',
         className,

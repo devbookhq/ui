@@ -12,11 +12,13 @@ import { useDrag } from 'react-dnd'
 import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
+import Text from 'components/typography/Text'
+
 import useHasMounted from 'hooks/useHasMounted'
 
-import { BoardBlock } from 'core/BuilderProvider/models/board'
+import { BoardBlock } from 'core/EditorProvider/models/board'
 
-import { useRootStore } from './BuilderProvider/models/RootStoreProvider'
+import { useRootStore } from './EditorProvider/models/RootStoreProvider'
 
 export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
@@ -56,7 +58,7 @@ export enum UIPropType {
   Boolean = 'boolean',
 }
 
-type UIComponentProps = keyof JSX.IntrinsicElements | JSXElementConstructor<any>
+export type UIComponentProps = keyof JSX.IntrinsicElements | JSXElementConstructor<any>
 
 export type UIProps<C extends UIComponentProps> = {
   [key in keyof ComponentProps<C>]: {
@@ -73,6 +75,10 @@ export type UIComponentSetup = {
     Icon: ComponentType
     label: string
     props: UIProps<UIComponentProps>
+    defaultSize: {
+      width: number
+      height: number
+    }
   }
 }
 
@@ -129,7 +135,7 @@ export function getUIComponents(setup: UIComponentSetup) {
     return (
       <div
         ref={drag}
-        style={getStyles(left, top, isDragging)}
+        style={{ ...getStyles(left, top, isDragging), ...C.defaultSize }}
         className={clsx('flex flex-1 border-4', {
           'z-50 border-amber-500': isSelected,
           'border-transparent': !isSelected,
@@ -150,13 +156,19 @@ export function getUIComponents(setup: UIComponentSetup) {
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
     return (
-      <div style={getStyles(left, top, false)}>
+      <div style={{ ...getStyles(left, top, false), ...C.defaultSize }}>
         <C.Block {...props} />
       </div>
     )
   }
 
-  function SidebarIcon({ componentType }: { componentType: string }) {
+  function SidebarIcon({
+    componentType,
+    className,
+  }: {
+    componentType: string
+    className?: string
+  }) {
     const C = setup[componentType]
     const [collected, drag, preview] = useDrag(() => ({
       type: sidebarIconType,
@@ -182,12 +194,37 @@ export function getUIComponents(setup: UIComponentSetup) {
       <div
         ref={drag}
         {...collected}
-        className="flex cursor-move flex-col rounded border border-slate-300 bg-slate-50 p-1 px-1 text-xs hover:bg-slate-400"
+        className={clsx(
+          'group flex cursor-move flex-col items-center space-y-0.5',
+          className,
+        )}
       >
-        <div>
+        <div
+          className="
+        flex
+        h-12
+        w-12
+        flex-col
+        items-center
+        justify-center
+        rounded-lg
+        border
+        border-slate-100
+        bg-white
+        text-slate-400
+        transition-all
+        group-hover:border-transparent
+        group-hover:bg-amber-50
+        group-hover:text-amber-800
+        "
+        >
           <C.Icon />
         </div>
-        <div className="text-sm text-slate-600">{C.label}</div>
+        <Text
+          className="text-slate-400 transition-all group-hover:text-amber-800"
+          size={Text.size.T2}
+          text={C.label}
+        />
       </div>
     )
   }
@@ -206,7 +243,10 @@ export function getUIComponents(setup: UIComponentSetup) {
     return (
       <div
         className="border-4 border-transparent"
-        style={getTransform(offset.x, offset.y)}
+        style={{
+          ...getTransform(offset.x, offset.y),
+          ...C.defaultSize,
+        }}
       >
         <C.Block {...props} />
       </div>

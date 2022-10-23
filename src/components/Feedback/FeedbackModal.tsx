@@ -1,6 +1,6 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
-import { useState } from 'react'
+import { FormEvent, MouseEvent, useState } from 'react'
 
 import Button from 'components/Button'
 import Modal from 'components/Modal'
@@ -19,7 +19,9 @@ function FeedbackModal({ isOpen, onClose }: Props) {
   const [isSavingFeedback, setIsSavingFeedback] = useState(false)
   const { user } = useUser()
 
-  async function saveFeedback(e: any) {
+  async function saveFeedback(
+    e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  ) {
     e.preventDefault()
     if (!user?.id) return
     if (!feedback) return

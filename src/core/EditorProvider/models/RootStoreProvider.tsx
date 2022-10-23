@@ -10,16 +10,16 @@ import {
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react'
 
 import { board } from './board'
+import { resources } from './resources'
 
 enableStaticRendering(typeof window === 'undefined')
 
 export const root = types.model({
-  board,
+  board: types.optional(board, {}),
+  resources: types.optional(resources, {}),
 })
 
-const defaultRootStore = root.create({
-  board: {},
-})
+const defaultRootStore = root.create()
 
 export const defaultRootState = getSnapshot(defaultRootStore)
 
@@ -38,16 +38,19 @@ function RootStoreProvider({
   initialState,
   onStateChange,
 }: PropsWithChildren<Props>) {
-  const [store] = useState(() => {
-    const newStore = root.create(defaultRootState)
-    if (initialState) {
-      applySnapshot(newStore, initialState)
-    }
-    return newStore
-  })
+  const [store] = useState(() => root.create(defaultRootState))
+
+  useEffect(
+    function initilizeStore() {
+      if (!initialState) return
+      applySnapshot(store, initialState)
+    },
+    [store, initialState],
+  )
 
   useEffect(
     function handleStoreChange() {
+      if (!store) return
       if (!onStateChange) return
       return onSnapshot(store, onStateChange)
     },

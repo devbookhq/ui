@@ -9,11 +9,14 @@ export const uiComponentsSetup: UIComponentSetup = {
     label: 'Editor',
     Icon: CodeEditorIcon,
     Block: CodeEditor,
+    defaultSize: {
+      width: 300,
+      height: 200,
+    },
     props: {
       content: {
         type: UIPropType.String,
-        label: 'Content',
-        default: '<code>',
+        label: 'Initial code',
       },
       language: {
         type: UIPropType.String,
@@ -32,6 +35,10 @@ export const uiComponentsSetup: UIComponentSetup = {
     label: 'Terminal',
     Icon: TerminalIcon,
     Block: Terminal,
+    defaultSize: {
+      width: 300,
+      height: 200,
+    },
     props: {} as UIProps<typeof Terminal>,
   },
 }

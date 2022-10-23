@@ -1,10 +1,11 @@
 import { UI, uiComponentsSetup } from '../uiComponents'
 
-function Blocks() {
+function BlocksTab() {
   return (
-    <div className="flex flex-row items-center space-x-2 border-b border-slate-200 p-2">
+    <div className="flex flex-1 flex-wrap">
       {Object.keys(uiComponentsSetup).map(c => (
         <UI.SidebarIcon
+          className="p-1"
           componentType={c}
           key={c}
         />
@@ -13,4 +14,4 @@ function Blocks() {
   )
 }
 
-export default Blocks
+export default BlocksTab

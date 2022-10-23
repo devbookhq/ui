@@ -15,7 +15,7 @@ function Navigation({ app }: Props) {
   const router = useRouter()
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-1">
       <HeaderLink
         active={router.pathname === '/'}
         href="/"
@@ -23,19 +23,15 @@ function Navigation({ app }: Props) {
       />
       {app && (
         <>
-          <div>
-            <ChevronRight
-              className="text-slate-400"
-              size="16px"
-            />
-          </div>
-          <div className="flex items-center space-x-2">
-            <Text
-              className="whitespace-nowrap"
-              size={Text.size.T2}
-              text={app.title}
-            />
-          </div>
+          <ChevronRight
+            className="items-center text-slate-200"
+            size="16px"
+          />
+          <Text
+            className="whitespace-nowrap"
+            size={Text.size.T2}
+            text={app.title}
+          />
         </>
       )}
     </div>

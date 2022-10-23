@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 
 import { updateApp } from 'queries'
 
-import { RootState } from 'core/BuilderProvider/models/RootStoreProvider'
+import { RootState } from 'core/EditorProvider/models/RootStoreProvider'
 
 const saveToDBDebounce = 1_000 // 1000ms
 const saveToDBMaxInterval = 3_000 // 3000ms
@@ -15,15 +15,13 @@ const debouncedUpdateApp = debounce(updateApp, saveToDBDebounce, {
   trailing: true,
 })
 
-function useSaveApp(id: string) {
+function useSaveAppState(appID: string) {
   const saveAppState = useCallback(
-    (state: RootState) => {
-      debouncedUpdateApp(supabaseClient, { state, id })
-    },
-    [id],
+    (state: RootState) => debouncedUpdateApp(supabaseClient, { state, id: appID }),
+    [appID],
   )
 
   return saveAppState
 }
 
-export default useSaveApp
+export default useSaveAppState

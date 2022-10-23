@@ -16,8 +16,8 @@ export enum Size {
 }
 
 const Sizes = {
-  [Size.T0]: 'text-2xl',
-  [Size.T1]: 'text-base',
+  [Size.T0]: 'text-3xl',
+  [Size.T1]: 'text-sm',
   [Size.T2]: 'text-xs',
 }
 

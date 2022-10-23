@@ -1,16 +1,27 @@
-import { CodeEditor as CE, withCasing } from '@devbookhq/react'
+import { CodeEditor as CE } from '@devbookhq/react'
+import { Code } from 'lucide-react'
 import { ComponentProps } from 'react'
 
 export function Icon() {
-  return <div></div>
+  return <Code size="18px" />
 }
-
-const CodeEditorWithCasing = withCasing(CE)
 
 function CodeEditor(props: ComponentProps<typeof CE>) {
   return (
-    <div className="flex">
-      <CodeEditorWithCasing {...props} />
+    <div
+      className="
+    m-0.5
+    flex
+    flex-1
+    flex-col
+    overflow-hidden
+    rounded-lg
+  "
+    >
+      <CE
+        {...props}
+        className="flex flex-1"
+      />
     </div>
   )
 }

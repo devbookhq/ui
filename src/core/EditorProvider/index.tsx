@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import { DndProvider } from 'react-dnd'
 
+import ResourceProvider from './ResourceProvider'
 import RootStoreProvider, {
   Props as RootStoreProviderProps,
 } from './models/RootStoreProvider'
@@ -19,7 +20,9 @@ function BuilderProvider({
       initialState={initialState}
       onStateChange={onStateChange}
     >
-      <DndProvider backend={backend}>{children}</DndProvider>
+      <ResourceProvider>
+        <DndProvider backend={backend}>{children}</DndProvider>
+      </ResourceProvider>
     </RootStoreProvider>
   )
 }

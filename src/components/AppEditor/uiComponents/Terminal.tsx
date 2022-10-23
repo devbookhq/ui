@@ -1,16 +1,24 @@
-import { Terminal as T, withCasing } from '@devbookhq/react'
+import { Terminal as T } from '@devbookhq/react'
+import { TerminalSquare } from 'lucide-react'
 import { ComponentProps } from 'react'
 
 export function Icon() {
-  return <div></div>
+  return <TerminalSquare size="18px" />
 }
-
-const TerminalWithCasing = withCasing(T)
 
 function Terminal(props: ComponentProps<typeof T>) {
   return (
-    <div className="flex">
-      <TerminalWithCasing {...props} />
+    <div
+      className="
+    m-0.5
+    flex
+    flex-1
+    flex-col
+    overflow-hidden
+    rounded-lg
+  "
+    >
+      <T {...props} />
     </div>
   )
 }

@@ -18,8 +18,6 @@ import { createApp } from 'queries'
 import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
 
-import { defaultRootState } from '../core/BuilderProvider/models/RootStoreProvider'
-
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
 })
@@ -48,7 +46,10 @@ function Dashboard() {
       title,
       id,
       creator_id: user.id,
-      state: defaultRootState,
+      state: {
+        board: { blocks: {}, selectedBlock: undefined },
+        resources: { environmentID: 'Mh3XS5Pq9ch8' },
+      },
     })
       .then((data: any) => {
         if (data.statusCode === 500 && data.message) {

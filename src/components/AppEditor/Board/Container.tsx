@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
-import { getGridStyle, xStep, yStep } from 'core/BuilderProvider/grid'
-import { useRootStore } from 'core/BuilderProvider/models/RootStoreProvider'
+import { getGridStyle, xStep, yStep } from 'core/EditorProvider/grid'
+import { useRootStore } from 'core/EditorProvider/models/RootStoreProvider'
 
-import { canvasClass, useBoard } from '../../../core/BuilderProvider/useBoard'
+import { canvasClass, useBoard } from '../../../core/EditorProvider/useBoard'
 import { UI, uiComponentsSetup } from '../uiComponents'
 
 const gridStyle = getGridStyle(xStep, yStep, '#94a3b8')

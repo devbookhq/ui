@@ -1,8 +1,8 @@
 import { SnapshotOut, destroy, types } from 'mobx-state-tree'
 
-type BlockProps = { [name: string]: any }
+export type BlockProps = { [name: string]: any }
 
-const boardBlock = types
+export const boardBlock = types
   .model({
     id: types.identifier,
     top: types.number,

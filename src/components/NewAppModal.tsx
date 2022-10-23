@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import Button from 'components/Button'
 import Input from 'components/Input'
@@ -17,9 +17,9 @@ interface Props {
 }
 
 function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
-  const [title, setTitle] = useState(createRandomTitle())
+  const [title, setTitle] = useState(createRandomTitle)
 
-  function handleTitleChange(e: any) {
+  function handleTitleChange(e: ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value)
   }
 

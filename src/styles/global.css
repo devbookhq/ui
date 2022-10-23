@@ -46,7 +46,7 @@
   .scroller {
     scrollbar-color: #f3f4f6 transparent;
     scrollbar-width: thin;
-  }  
+  }
 }
 
 @layer components {
@@ -63,7 +63,6 @@
     scrollbar-width: thin;
     height: 120px;
   }
-
 }
 
 img {
