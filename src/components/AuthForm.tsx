@@ -1,10 +1,11 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import cn from 'clsx'
+import clsx from 'clsx'
 import { useLayoutEffect, useRef, useState } from 'react'
 
 import Button from 'components/Button'
 import Text from 'components/typography/Text'
-import Title from 'components/typography/Title'
+
+import SpinnerIcon from './icons/Spinner'
 
 export enum AuthFormType {
   SignIn,
@@ -100,19 +101,24 @@ function AuthForm({ authType }: Props) {
       <div
         className="
         flex
-        w-[450px]
+        w-120
         flex-1
         flex-col
         items-center
         space-y-8
         self-start
         rounded
-        bg-black-800
+        border
+        border-slate-200
+        bg-white
         py-12
         px-4
       "
       >
-        <Title title={title} />
+        <Text
+          size={Text.size.T0}
+          text={title}
+        />
         <div className="flex w-full flex-col space-y-8 px-16">
           <div className="flex min-w-0 flex-col space-y-2">
             <input
@@ -124,23 +130,23 @@ function AuthForm({ authType }: Props) {
               placeholder="Email"
               ref={emailRef}
               type="email"
-              className={cn(
+              className={clsx(
                 'w-full',
                 'px-2.5',
                 'py-2',
-                'rounded-lg',
+                'rounded',
                 'border',
-                'border-black-700',
+                'border-slate-200',
                 {
-                  'bg-black-900': !isLoading,
+                  'bg-white': !isLoading,
                 },
                 {
-                  'bg-black-800': isLoading,
+                  'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-green-200',
+                'focus:border-amber-400',
                 'text-sm',
-                'placeholder:text-gray-600',
+                'placeholder:text-slate-300',
               )}
               required
             />
@@ -152,26 +158,25 @@ function AuthForm({ authType }: Props) {
               placeholder="Password"
               ref={passwordRef}
               type="password"
-              className={cn(
+              className={clsx(
                 'px-2.5',
                 'py-2',
-                'rounded-lg',
+                'rounded',
                 'border',
                 'flex',
                 'min-w-0',
                 'flex-1',
-                'border-black-700',
+                'border-slate-200',
                 {
-                  'bg-black-900': !isLoading,
+                  'bg-white': !isLoading,
                 },
                 {
-                  'bg-black-800': isLoading,
+                  'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-green-200',
+                'focus:border-amber-400',
                 'text-sm',
-                'font-medium',
-                'placeholder:text-gray-600',
+                'placeholder:text-slate-300',
               )}
               required
             />
@@ -179,6 +184,7 @@ function AuthForm({ authType }: Props) {
           <div className="flex flex-col space-y-4">
             <Button
               className="self-center whitespace-nowrap"
+              icon={isLoading ? <SpinnerIcon className="text-amber-800" /> : null}
               isDisabled={isLoading}
               text={isLoading ? buttonLoadingLabel : buttonLabel}
               type="submit"
@@ -186,8 +192,8 @@ function AuthForm({ authType }: Props) {
             />
             {!isLoading && !!errMessage && (
               <Text
-                className="self-center text-red-400"
-                size={Text.size.S2}
+                className="self-center text-red-500"
+                size={Text.size.T2}
                 text={errMessage}
               />
             )}

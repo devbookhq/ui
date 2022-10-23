@@ -1,19 +1,20 @@
-import cn from 'clsx'
-import { ReactNode } from 'react'
+import clsx from 'clsx'
+import { MouseEvent, ReactNode } from 'react'
 
 import Text from 'components/typography/Text'
 
 export enum Variant {
   Full,
   Outline,
+  Uncolored,
 }
 
-interface Props {
+export interface Props {
   className?: string
   text: string
   variant?: Variant
   icon?: ReactNode
-  onClick?: (e: any) => void
+  onClick?: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void
   isDisabled?: boolean
   type?: 'submit'
 }
@@ -31,20 +32,16 @@ function Button({
     return (
       <button
         type={type}
-        className={cn(
+        className={clsx(
           'py-1.5',
-          'px-2',
-
+          'px-3',
           'flex',
           'items-center',
           'justify-center',
-
-          'rounded-lg',
-          'bg-green-500',
-          'hover:shadow',
-          {
-            'hover:shadow-green-500/50': !isDisabled,
-          },
+          'transition-all',
+          'rounded',
+          'stroke-amber-800 text-amber-800',
+          'bg-amber-200 hover:bg-amber-300',
           {
             'opacity-70': isDisabled,
           },
@@ -53,7 +50,7 @@ function Button({
           },
           className,
         )}
-        onClick={!isDisabled ? onClick : () => {}}
+        onClick={!isDisabled ? onClick : undefined}
       >
         <div
           className="
@@ -62,11 +59,11 @@ function Button({
           items-center
           justify-center
           space-x-1.5
-          bg-green-500
         "
         >
+          {icon}
           <Text
-            size={Text.size.S2}
+            size={Text.size.T2}
             text={text}
           />
         </div>
@@ -77,15 +74,11 @@ function Button({
   return (
     <button
       type={type}
-      className={cn(
-        'p-[1px]',
-        'rounded-lg',
-        'bg-black-700',
-        'hover:bg-green-gradient',
-        'hover:shadow',
-        {
-          'hover:shadow-green-500/50': !isDisabled,
-        },
+      className={clsx(
+        'rounded',
+        'transition-all',
+        'bg-white',
+        'border border-slate-100 hover:border-amber-800 hover:text-amber-800',
         {
           'opacity-70': isDisabled,
         },
@@ -94,26 +87,22 @@ function Button({
         },
         className,
       )}
-      onMouseDown={!isDisabled ? onClick : () => {}}
+      onClick={!isDisabled ? onClick : undefined}
     >
       <div
         className="
         flex
         flex-row
-
         items-center
         justify-center
         space-x-1.5
-        rounded-lg
-        bg-black-900
-
-        py-1
-        px-2
+        py-1.5
+        px-3
       "
       >
         {icon}
         <Text
-          size={Text.size.S2}
+          size={Text.size.T2}
           text={text}
         />
       </div>
@@ -122,4 +111,5 @@ function Button({
 }
 
 Button.variant = Variant
+
 export default Button

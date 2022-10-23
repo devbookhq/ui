@@ -1,12 +1,13 @@
-import cn from 'clsx'
+import clsx from 'clsx'
 import { ChangeEvent, forwardRef } from 'react'
+import { KeyboardEvent } from 'react'
 
 export interface Props {
   wrapperClassName?: string // Only present if `title` is set.
   className?: string
   title?: string
   value?: string
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => any
   placeholder?: string
   onEnterDown?: () => void
 }
@@ -17,7 +18,7 @@ export interface Handler {
 
 const InputEl = forwardRef<HTMLInputElement, Props>(
   ({ className, onEnterDown, ...rest }, ref) => {
-    function handleKeyDown(e: any) {
+    function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
       if (e.key === 'Enter') onEnterDown?.()
     }
 
@@ -25,17 +26,19 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
       <input
         {...rest}
         ref={ref}
-        className={cn(
+        spellCheck={false}
+        className={clsx(
           'px-2.5',
           'py-1',
-          'rounded-lg',
+          'rounded',
           'border',
-          'border-black-700',
-          'bg-black-900',
+          'transition-all',
+          'border-slate-200',
+          'bg-white',
           'outline-none',
-          'focus:border-green-200',
+          'focus:border-amber-400',
           'text-sm',
-          'placeholder:text-gray-600',
+          'placeholder:text-slate-300',
           className,
         )}
         onKeyDown={handleKeyDown}
@@ -47,12 +50,12 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
 InputEl.displayName = 'InputEl'
 
 const Input = forwardRef<HTMLInputElement, Props>(
-  ({ title, wrapperClassName, className, ...rest }, ref) => {
+  ({ title, wrapperClassName, className, value = '', ...rest }, ref) => {
     return (
       <>
         {title ? (
           <div
-            className={cn(
+            className={clsx(
               'flex',
               'flex-col',
               'items-start',
@@ -62,15 +65,16 @@ const Input = forwardRef<HTMLInputElement, Props>(
           >
             <span
               className="
-            font-sm
-            text-gray-600
+              text-sm
+            text-slate-400
           "
             >
               {title}
             </span>
             <InputEl
-              className={cn('w-full', className)}
+              className={clsx('w-full', className)}
               ref={ref}
+              value={value}
               {...rest}
             />
           </div>

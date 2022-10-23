@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, ReactNode } from 'react'
 
-import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 
 interface Props {
   title: string
@@ -31,7 +31,7 @@ function Modal({ title, children, isOpen, onClose }: Props) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-[#000]/50" />
+          <div className="fixed inset-0 bg-white/40" />
         </Transition.Child>
 
         <div
@@ -71,18 +71,18 @@ function Modal({ title, children, isOpen, onClose }: Props) {
                 flex
                 w-full
                 max-w-full
-                transform
                 flex-col
                 items-start
                 space-y-4
-                rounded-lg
+                rounded
                 border
-                border-black-700
-                bg-black-900/30
+                border-slate-200
+                bg-white
                 p-6
                 align-middle
-                text-white-900
-                shadow-xl
+                text-slate-600
+                shadow-2xl
+                shadow-slate-800/60
                 backdrop-blur
                 transition-all
               "
@@ -95,9 +95,9 @@ function Modal({ title, children, isOpen, onClose }: Props) {
                 "
                 >
                   <Dialog.Title
-                    as={Title}
-                    size={Title.size.T1}
-                    title={title}
+                    as={Text}
+                    size={Text.size.T1}
+                    text={title}
                   />
                 </div>
                 {children}

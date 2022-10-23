@@ -1,7 +1,14 @@
 module.exports = {
   extends: ['next/core-web-vitals', 'prettier'],
-  plugins: ['prettier', 'unused-imports'],
+  plugins: ['unused-imports', 'tailwindcss', 'prettier'],
   rules: {
+    'tailwindcss/enforces-negative-arbitrary-values': 'warn',
+    'tailwindcss/enforces-shorthand': 'warn',
+    'tailwindcss/migration-from-tailwind-2': 'warn',
+    'tailwindcss/no-arbitrary-value': 'off',
+    'tailwindcss/no-custom-classname': 'error',
+    'tailwindcss/no-contradicting-classname': 'error',
+    'unused-imports/no-unused-imports': 'error',
     'react/jsx-sort-props': [
       2,
       {
@@ -22,12 +29,7 @@ module.exports = {
         ignoreTemplateLiterals: true,
       },
     ],
-    'react-hooks/exhaustive-deps': [
-      'warn',
-      {
-        additionalHooks: '(useRecoilCallback|useRecoilTransaction_UNSTABLE)',
-      },
-    ],
+    'react-hooks/exhaustive-deps': ['warn'],
     semi: ['error', 'never'],
     quotes: [
       'error',
@@ -37,6 +39,5 @@ module.exports = {
       },
     ],
     'prettier/prettier': ['error'],
-    'unused-imports/no-unused-imports': 'error',
   },
 }

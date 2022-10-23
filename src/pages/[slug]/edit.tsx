@@ -3,11 +3,12 @@ import {
   withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 
-import Editor from 'components/Editor'
+import AppEditor from 'components/AppEditor'
+
+import { getApp } from 'queries'
+import { App } from 'queries/types'
 
 import { getID } from 'utils/app'
-import { getApp } from 'utils/queries/queries'
-import { App } from 'utils/queries/types'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -57,8 +58,8 @@ interface Props {
   app: App
 }
 
-function AppEditor({ app }: Props) {
-  return <Editor app={app} />
+function Edit({ app }: Props) {
+  return <AppEditor app={app} />
 }
 
-export default AppEditor
+export default Edit

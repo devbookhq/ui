@@ -1,10 +1,6 @@
-import { DependencyList, RefObject, useEffect } from 'react'
+import { RefObject, useEffect } from 'react'
 
-function useOnClickOutside(
-  ref: RefObject<HTMLElement>,
-  cb: (e: MouseEvent) => any,
-  deps: DependencyList = [],
-) {
+function useOnClickOutside(ref: RefObject<HTMLElement>, cb: (e: MouseEvent) => any) {
   useEffect(
     function listenToMouseDownEvent() {
       function handleMouseDown(e: MouseEvent) {
@@ -16,7 +12,7 @@ function useOnClickOutside(
       document.addEventListener('mousedown', handleMouseDown, true)
       return () => document.removeEventListener('mousedown', handleMouseDown, true)
     },
-    [ref, cb, ...deps],
+    [ref, cb],
   )
 }
 

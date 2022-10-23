@@ -21,7 +21,7 @@ function SignIn() {
   )
 
   return (
-    <>
+    <div className="flex flex-1 bg-slate-100">
       {user && (
         <div
           className="
@@ -31,7 +31,7 @@ function SignIn() {
           justify-center
         "
         >
-          <SpinnerIcon />
+          <SpinnerIcon className="text-slate-400" />
         </div>
       )}
       {!user && (
@@ -76,7 +76,7 @@ function SignIn() {
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import Button from 'components/Button'
 import Input from 'components/Input'
 import Modal from 'components/Modal'
 import SpinnerIcon from 'components/icons/Spinner'
 
+import { App } from 'queries/types'
+
 import { createID, createRandomTitle } from 'utils/app'
-import { App } from 'utils/queries/types'
 
 interface Props {
   isOpen: boolean
@@ -16,9 +17,9 @@ interface Props {
 }
 
 function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
-  const [title, setTitle] = useState(createRandomTitle())
+  const [title, setTitle] = useState(createRandomTitle)
 
-  function handleTitleChange(e: any) {
+  function handleTitleChange(e: ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value)
   }
 
@@ -32,7 +33,7 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
   return (
     <Modal
       isOpen={isOpen}
-      title="Create new app"
+      title="Create a new app"
       onClose={onClose}
     >
       <div
@@ -57,8 +58,8 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
         "
         >
           <Input
-            placeholder="App title"
-            title="Title"
+            placeholder="App name"
+            title="Name"
             value={title}
             wrapperClassName="w-full"
             onChange={handleTitleChange}

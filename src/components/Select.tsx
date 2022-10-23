@@ -1,144 +1,59 @@
-import { Listbox } from '@headlessui/react'
-import { SelectorIcon } from '@heroicons/react/solid'
-import cn from 'clsx'
+import * as RadixSelect from '@radix-ui/react-select'
+import { Check, ChevronDown } from 'lucide-react'
 
-import Text from 'components/typography/Text'
-
-interface Item {
-  value: string
-  name: string
+interface Item<T> {
+  value: T
+  label: string
 }
 
-interface Props {
-  wrapperClassName?: string // Only present if `title` is set.
-  title?: string
-  items: Item[]
-  value: Item
-  onChange: (i: Item) => void
+export interface Props<T> {
+  items: Item<T>[]
+  selectedItemLabel?: string
+  onSelect?: (item?: Item<T>) => any
 }
 
-function SelectEl({ items, value, onChange }: Props) {
+function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
+  function handleSelect(label: string) {
+    const newSelected = items.find(i => i.label === label)
+    onSelect?.(newSelected)
+  }
+
   return (
-    <Listbox
-      value={value}
-      onChange={onChange}
+    <RadixSelect.Root
+      defaultValue={selectedItemLabel}
+      onValueChange={handleSelect}
     >
-      {({ open }) => (
-        <div
-          className={cn('relative', 'w-full', 'rounded-lg', 'p-[1px]', 'bg-black-700', {
-            'bg-green-gradient': open,
-          })}
-        >
-          <Listbox.Button
-            className="
-              w-full
-              cursor-pointer
-              rounded-lg
-              bg-black-900
-              py-2
-              pl-3
-              pr-10
-              text-left
-              text-sm
-          "
-          >
-            <Text
-              className="block truncate"
-              size={Text.size.S1}
-              text={value.name}
-            />
-            <span
-              className="
-              pointer-events-none
-              absolute
-              inset-y-0
-              right-0
-              flex
-              items-center
-              pr-2
-            "
-            >
-              <SelectorIcon
-                aria-hidden="true"
-                className="h-5 w-5 text-gray-400"
-              />
-            </span>
-          </Listbox.Button>
-
-          <Listbox.Options
-            className="
-            absolute
-            z-50
-            mt-1
-            max-h-60
-            w-full
-            overflow-auto
-            rounded-lg
-            border
-            border-black-700
-            bg-black-900
-            py-1
-          "
-          >
-            {items.map(item => (
-              <Listbox.Option
-                disabled={false}
-                key={item.value}
-                value={item}
-                className="
-                  relative
-                  cursor-pointer
-                  select-none
-                  py-2
-                  pl-3
-                  pr-4
-                  text-left
-                  hover:bg-black-700
-                "
-              >
-                <Text
-                  className="block truncate"
-                  size={Text.size.S1}
-                  text={item.name}
-                />
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
-        </div>
-      )}
-    </Listbox>
-  )
-}
-
-function Select({ wrapperClassName, title, items, value, onChange }: Props) {
-  return (
-    <>
-      {title ? (
-        <div
-          className={cn('flex', 'flex-col', 'items-start', 'space-y-1', wrapperClassName)}
-        >
-          <span
-            className="
-            font-sm
-            text-gray-600
-          "
-          >
-            {title}
-          </span>
-          <SelectEl
-            items={items}
-            value={value}
-            onChange={onChange}
+      <RadixSelect.Trigger className="group flex items-center justify-center space-x-1 rounded border border-slate-100 px-3 py-1.5 text-xs text-slate-600 transition-all hover:border-amber-800 hover:text-amber-800">
+        <RadixSelect.Value />
+        <RadixSelect.Icon>
+          <ChevronDown
+            className="text-slate-200 transition-all group-hover:text-amber-800"
+            size="16px"
           />
-        </div>
-      ) : (
-        <SelectEl
-          items={items}
-          value={value}
-          onChange={onChange}
-        />
-      )}
-    </>
+        </RadixSelect.Icon>
+      </RadixSelect.Trigger>
+
+      <RadixSelect.Portal>
+        <RadixSelect.Content className="rounded border border-slate-200 bg-white p-1 shadow-lg transition-all">
+          <RadixSelect.ScrollUpButton />
+          <RadixSelect.Viewport className="space-y-0.5">
+            {items.map(i => (
+              <RadixSelect.Item
+                className="group flex cursor-pointer space-x-1 rounded px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-amber-50 hover:text-amber-800"
+                key={i.label}
+                value={i.label}
+              >
+                <RadixSelect.ItemText className="">{i.label}</RadixSelect.ItemText>
+                <RadixSelect.ItemIndicator>
+                  <Check size="16px" />
+                </RadixSelect.ItemIndicator>
+              </RadixSelect.Item>
+            ))}
+          </RadixSelect.Viewport>
+          <RadixSelect.ScrollDownButton />
+        </RadixSelect.Content>
+      </RadixSelect.Portal>
+    </RadixSelect.Root>
   )
 }
 

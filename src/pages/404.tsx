@@ -1,7 +1,7 @@
-import Title from 'components/typography/Title'
+import Text from 'components/typography/Text'
 
 function Custom404() {
-  return <Title title="404 - Page Not Found" />
+  return <Text text="404 - Page Not Found" />
 }
 
 export default Custom404

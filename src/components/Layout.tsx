@@ -2,7 +2,9 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 
-import DashboardSidebar from 'components/DashboardSidebar'
+import { App } from 'queries/types'
+
+import Header from './Header'
 
 export interface PageMeta {
   title: string
@@ -11,13 +13,16 @@ export interface PageMeta {
 }
 
 interface Props {
+  app?: App
   children: ReactNode
   meta?: PageMeta
 }
 
-export default function Layout({ children, meta: pageMeta }: Props) {
+export default function Layout({ children, meta: pageMeta, app }: Props) {
   const router = useRouter()
-  const isPreview = router.pathname === '/[slug]'
+  const isEditor = router.pathname === '/[slug]/edit'
+  const isPreview = router.pathname === '/[slug]/preview'
+  const isSignIn = router.pathname === '/signin'
 
   const meta = {
     title: 'Devbook',
@@ -89,19 +94,20 @@ export default function Layout({ children, meta: pageMeta }: Props) {
 
       <div
         className="
-        item-start
         flex
         w-full
         flex-1
+        flex-col
+        overflow-hidden
       "
       >
-        {!isPreview && <DashboardSidebar />}
+        {!isPreview && !isSignIn && <Header app={app} />}
         <div
           className="
           flex
           flex-1
           flex-col
-          p-4
+          overflow-hidden
         "
         >
           {children}
