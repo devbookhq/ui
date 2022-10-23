@@ -3,7 +3,7 @@ import { TerminalSquare } from 'lucide-react'
 import { ComponentProps } from 'react'
 
 export function Icon() {
-  return <TerminalSquare size="18px" />
+  return <TerminalSquare size="20px" />
 }
 
 function Terminal(props: ComponentProps<typeof T>) {

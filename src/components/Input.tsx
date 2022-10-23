@@ -37,7 +37,7 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
           'bg-white',
           'outline-none',
           'focus:border-amber-400',
-          'text-sm',
+          'text-xs',
           'placeholder:text-slate-300',
           className,
         )}
@@ -65,7 +65,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
           >
             <span
               className="
-              text-sm
+              text-xs
             text-slate-400
           "
             >

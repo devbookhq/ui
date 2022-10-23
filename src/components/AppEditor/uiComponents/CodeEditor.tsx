@@ -3,7 +3,7 @@ import { Code } from 'lucide-react'
 import { ComponentProps } from 'react'
 
 export function Icon() {
-  return <Code size="18px" />
+  return <Code size="20px" />
 }
 
 function CodeEditor(props: ComponentProps<typeof CE>) {

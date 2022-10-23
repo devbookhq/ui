@@ -39,7 +39,7 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
           <RadixSelect.Viewport className="space-y-0.5">
             {items.map(i => (
               <RadixSelect.Item
-                className="group flex cursor-pointer space-x-1 rounded px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-amber-50 hover:text-amber-800"
+                className="group flex cursor-pointer justify-between space-x-1 rounded px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-amber-50 hover:text-amber-800"
                 key={i.label}
                 value={i.label}
               >

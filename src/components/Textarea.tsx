@@ -24,7 +24,7 @@ function Textarea({ value = '', className, placeholder, onChange }: Props) {
         'focus:border-amber-400',
         'outline-none',
         'transition-all',
-        'text-sm',
+        'text-xs',
         'placeholder:text-slate-300',
         className,
       )}
