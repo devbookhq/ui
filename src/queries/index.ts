@@ -40,7 +40,7 @@ export async function createApp(
   client: SupabaseClient,
   app: Required<Pick<App, 'title' | 'id' | 'state' | 'creator_id'>>,
 ) {
-  const { body, error } = await client.from<App>('apps').insert(app)
+  const { body, error } = await client.from<App>('apps').insert(app).limit(1).single()
 
   if (error) throw error
   return body

@@ -42,33 +42,29 @@ function Dashboard() {
     if (!user) throw new Error('User is undefined')
     setIsLoadingNewSnippet(true)
 
-    createApp(supabaseClient, {
-      title,
-      id,
-      creator_id: user.id,
-      state: {
-        board: { blocks: {}, selectedBlock: undefined },
-        resources: { environmentID: 'Mh3XS5Pq9ch8' },
-      },
-    })
-      .then((data: any) => {
-        if (data.statusCode === 500 && data.message) {
-          throw new Error(data.message)
-        }
-
-        const slug = getSlug(data.id, data.title)
-        router.push({
-          pathname: '/[slug]/edit',
-          query: {
-            slug,
-          },
-        })
+    try {
+      const app = await createApp(supabaseClient, {
+        title,
+        id,
+        creator_id: user.id,
+        state: {
+          board: { blocks: {}, selectedBlock: undefined },
+          resources: { environmentID: 'Mh3XS5Pq9ch8' },
+        },
       })
-      .catch(err => {
-        showErrorNotif(`Error creating app: ${err.message}`)
-        setIsLoadingNewSnippet(false)
-        closeModal()
+      const slug = getSlug(app.id, app.title)
+      router.push({
+        pathname: '/[slug]/edit',
+        query: {
+          slug,
+        },
       })
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      showErrorNotif(`Error creating app: ${msg}`)
+      setIsLoadingNewSnippet(false)
+      closeModal()
+    }
   }
 
   useEffect(
