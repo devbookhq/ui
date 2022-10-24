@@ -121,11 +121,11 @@ function DeployButton({ app }: Props) {
                 target="_blank"
               >
                 <Button
-                  className="px-1.5"
+                  text="Live"
                   variant={Button.variant.Full}
                   icon={
                     <Play
-                      className="ml-0.5 text-amber-800"
+                      className="text-amber-800"
                       size="16px"
                     />
                   }
