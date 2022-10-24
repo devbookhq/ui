@@ -23,7 +23,7 @@ function UserPortrait({ onClick, username = '?' }: Props) {
       )}
       onClick={onClick}
     >
-      <div className="relative select-none text-slate-100">
+      <div className="relative select-none text-slate-50">
         {username[0].toUpperCase()}
       </div>
     </div>

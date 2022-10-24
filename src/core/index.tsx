@@ -209,7 +209,7 @@ export function getUIComponents(setup: UIComponentSetup) {
         justify-center
         rounded-lg
         border
-        border-slate-100
+        border-slate-200
         bg-white
         text-slate-400
         transition-all

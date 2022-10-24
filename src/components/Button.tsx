@@ -79,7 +79,7 @@ function Button({
         'rounded',
         'transition-all',
         'bg-white',
-        'border border-slate-100 hover:border-amber-800 hover:text-amber-800',
+        'border border-slate-200 hover:border-amber-400 hover:text-amber-800',
         {
           'opacity-70': isDisabled,
         },

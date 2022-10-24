@@ -53,7 +53,7 @@ function AppItem({ app }: Props) {
     >
       <a className="group flex items-center justify-between space-x-4 rounded px-4 py-1">
         <div className="flex items-center space-x-4 truncate">
-          <div className="m-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-slate-100 text-slate-300 transition-all group-hover:border-transparent group-hover:bg-amber-50 group-hover:text-amber-800">
+          <div className="m-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-300 transition-all group-hover:border-transparent group-hover:bg-amber-50 group-hover:text-amber-800">
             <Layout size="22px" />
           </div>
           <div className="flex flex-col">
