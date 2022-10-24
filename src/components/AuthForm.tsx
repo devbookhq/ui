@@ -116,7 +116,7 @@ function AuthForm({ authType }: Props) {
       "
       >
         <Text
-          size={Text.size.T0}
+          size={Text.size.S1}
           text={title}
         />
         <div className="flex w-full flex-col space-y-8 px-16">
@@ -193,7 +193,7 @@ function AuthForm({ authType }: Props) {
             {!isLoading && !!errMessage && (
               <Text
                 className="self-center text-red-500"
-                size={Text.size.T2}
+                size={Text.size.S3}
                 text={errMessage}
               />
             )}

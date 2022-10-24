@@ -14,14 +14,10 @@ export interface ErrorRes {
 export interface App {
   id: string
   title: string
-  creator_id?: string
-  created_at?: number
+  creator_id: string
+  created_at: number
   state: RootState
+  deployed_state?: RootState | null
 }
 
-export interface DeployedApp {
-  id?: string
-  created_at?: number
-  state: RootState
-  app_id: string
-}
+export type AppTemplate = Omit<App, 'created_at'>

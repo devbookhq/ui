@@ -29,7 +29,7 @@ function Settings() {
     >
       <div className="flex items-start justify-start">
         <Text
-          size={Text.size.T0}
+          size={Text.size.S1}
           text="Settings"
         />
       </div>
@@ -52,11 +52,11 @@ function Settings() {
         >
           <Text
             className="text-slate-400"
-            size={Text.size.T2}
+            size={Text.size.S3}
             text="Email"
           />
           <Text
-            size={Text.size.T1}
+            size={Text.size.S2}
             text={user?.email || ''}
           />
         </div>

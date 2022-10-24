@@ -5,7 +5,7 @@ import { getApps } from 'queries'
 import { App } from 'queries/types'
 
 function useApps(userID?: string) {
-  const [apps, setApps] = useState<Required<App>[]>([])
+  const [apps, setApps] = useState<Pick<App, 'id' | 'title' | 'created_at'>[]>([])
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
@@ -16,30 +16,20 @@ function useApps(userID?: string) {
       setIsLoading(true)
 
       const sub = supabaseClient
-        .from<Required<App>>(`apps:creator_id=eq.${userID}`)
+        .from<App>(`apps:creator_id=eq.${userID}`)
         .on('*', p => {
           switch (p.eventType) {
+            // We don't subscribe to the UPDATE event because we don't want to receive changes when the apps are edited
             case 'INSERT':
               if (p.errors) {
                 const err = p.errors.join('\n')
                 setError(err)
               }
-              if (p.new) setApps(a => [...a, p.new])
-              break
-            case 'UPDATE':
-              if (p.errors) {
-                const err = p.errors.join('\n')
-                setError(err)
-              }
               if (p.new)
-                setApps(current => {
-                  const idx = current.findIndex(a => a.id === p.new.id)
-                  if (idx == -1) return current
-                  current[idx] = {
-                    ...p.new,
-                  }
-                  return [...current]
-                })
+                setApps(a => [
+                  ...a,
+                  { created_at: p.new.created_at, id: p.new.id, title: p.new.title },
+                ])
               break
             case 'DELETE':
               if (p.errors) {
@@ -54,7 +44,13 @@ function useApps(userID?: string) {
 
       getApps(supabaseClient, userID)
         .then(a => {
-          setApps(a)
+          setApps(
+            a.map(app => ({
+              id: app.id,
+              title: app.title,
+              created_at: app.created_at,
+            })),
+          )
         })
         .catch((e: Error) => {
           setError(e.message)

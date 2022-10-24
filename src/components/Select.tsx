@@ -23,7 +23,7 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
       defaultValue={selectedItemLabel}
       onValueChange={handleSelect}
     >
-      <RadixSelect.Trigger className="group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-all hover:border-amber-400 hover:text-amber-800">
+      <RadixSelect.Trigger className="group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-all hover:border-amber-800 hover:text-amber-800">
         <RadixSelect.Value />
         <RadixSelect.Icon>
           <ChevronDown

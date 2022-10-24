@@ -11,8 +11,8 @@ import { createID, createRandomTitle } from 'utils/app'
 
 interface Props {
   isOpen: boolean
-  onClose: () => void
-  onCreate: (app: Pick<App, 'id' | 'title'>) => void
+  onClose: () => any
+  onCreate: (app: Pick<App, 'id' | 'title'>) => any
   isLoading: boolean
 }
 

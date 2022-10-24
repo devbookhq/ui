@@ -1,6 +1,6 @@
 import produce from 'immer'
 import { enableStaticRendering } from 'mobx-react-lite'
-import { Instance, SnapshotOut, getSnapshot, onSnapshot, types } from 'mobx-state-tree'
+import { Instance, SnapshotOut, applySnapshot, onSnapshot, types } from 'mobx-state-tree'
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react'
 
 import { board } from './board'
@@ -22,37 +22,58 @@ export const root = types.snapshotProcessor(rootWithoutProcessing, {
   },
 })
 
-const defaultRootStore = root.create({})
-
-export const defaultRootState = getSnapshot(defaultRootStore)
-
-type RootInstance = Instance<typeof root>
+export type RootInstance = Instance<typeof root>
 export type RootState = SnapshotOut<typeof root>
 
-const RootStoreContext = createContext<RootInstance | null>(null)
+const RootStoreContext = createContext<RootInstance>(root.create({}))
 
 export interface Props {
   initialState?: RootState
+  onInit?: (instance?: RootInstance) => any
   onStateChange?: (state: RootState) => any
 }
 
 function RootStoreProvider({
   children,
   initialState,
+  onInit,
   onStateChange,
 }: PropsWithChildren<Props>) {
-  const [store] = useState(() => root.create(initialState))
+  const [instance, setInstance] = useState<RootInstance>(() => root.create({}))
+
+  useEffect(
+    function handleOnInit() {
+      if (!instance) return
+      onInit?.(instance)
+    },
+    [instance, onInit],
+  )
+
+  useEffect(
+    function initializeStore() {
+      const newInstance = root.create({})
+
+      if (initialState) {
+        applySnapshot(newInstance, initialState)
+      }
+
+      setInstance(newInstance)
+    },
+    [initialState],
+  )
 
   useEffect(
     function handleStoreChange() {
-      if (!store) return
+      if (!instance) return
       if (!onStateChange) return
 
-      return onSnapshot(store, onStateChange)
+      return onSnapshot(instance, onStateChange)
     },
-    [store, onStateChange],
+    [instance, onStateChange],
   )
-  return <RootStoreContext.Provider value={store}>{children}</RootStoreContext.Provider>
+  return (
+    <RootStoreContext.Provider value={instance}>{children}</RootStoreContext.Provider>
+  )
 }
 
 export function useRootStore() {

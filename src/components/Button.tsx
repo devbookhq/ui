@@ -11,10 +11,10 @@ export enum Variant {
 
 export interface Props {
   className?: string
-  text: string
+  text?: string
   variant?: Variant
   icon?: ReactNode
-  onClick?: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void
+  onClick?: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => any
   isDisabled?: boolean
   type?: 'submit'
 }
@@ -28,85 +28,37 @@ function Button({
   type,
   isDisabled,
 }: Props) {
-  if (variant === Variant.Full) {
-    return (
-      <button
-        type={type}
-        className={clsx(
-          'py-1.5',
-          'px-3',
-          'flex',
-          'border',
-          'items-center',
-          'justify-center',
-          'transition-all',
-          'rounded',
-          'stroke-amber-800 text-amber-800',
-          'border-amber-200 bg-amber-200 hover:border-amber-300 hover:bg-amber-300',
-          {
-            'opacity-70': isDisabled,
-          },
-          {
-            'cursor-not-allowed': isDisabled,
-          },
-          className,
-        )}
-        onClick={!isDisabled ? onClick : undefined}
-      >
-        <div
-          className="
-          flex
-          flex-row
-          items-center
-          justify-center
-          space-x-1.5
-        "
-        >
-          {icon}
-          <Text
-            size={Text.size.T2}
-            text={text}
-          />
-        </div>
-      </button>
-    )
-  }
-
   return (
     <button
       type={type}
       className={clsx(
-        'rounded',
+        'flex',
+        'items-center',
+        'justify-center',
         'transition-all',
-        'bg-white',
-        'border border-slate-200 hover:border-amber-400 hover:text-amber-800',
+        'rounded',
+        'border',
+        'space-x-1.5',
+        'py-1.5',
+        'px-3',
         {
-          'opacity-70': isDisabled,
-        },
-        {
-          'cursor-not-allowed': isDisabled,
+          'cursor-not-allowed opacity-70': isDisabled,
+          'border-amber-200 bg-amber-200 stroke-amber-800 text-amber-800 hover:border-amber-300 hover:bg-amber-300':
+            variant === Variant.Full,
+          'border-slate-200 bg-white hover:border-amber-800 hover:text-amber-800':
+            variant === Variant.Outline,
         },
         className,
       )}
       onClick={!isDisabled ? onClick : undefined}
     >
-      <div
-        className="
-        flex
-        flex-row
-        items-center
-        justify-center
-        space-x-1.5
-        py-1.5
-        px-3
-      "
-      >
-        {icon}
+      {icon}
+      {text && (
         <Text
-          size={Text.size.T2}
+          size={Text.size.S3}
           text={text}
         />
-      </div>
+      )}
     </button>
   )
 }

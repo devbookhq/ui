@@ -9,11 +9,11 @@ export interface Props {
   value?: string
   onChange?: (e: ChangeEvent<HTMLInputElement>) => any
   placeholder?: string
-  onEnterDown?: () => void
+  onEnterDown?: () => any
 }
 
 export interface Handler {
-  focus: () => void
+  focus: () => any
 }
 
 const InputEl = forwardRef<HTMLInputElement, Props>(

@@ -37,7 +37,7 @@ function PropsTab({ block, setupProps, blockProps }: Props) {
         >
           <Text
             className="mr-12 flex w-12 whitespace-nowrap text-slate-400"
-            size={Text.size.T2}
+            size={Text.size.S3}
             text={prop.label}
           />
           {prop.type === UIPropType.String && !prop.values && (

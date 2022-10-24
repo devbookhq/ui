@@ -11,7 +11,7 @@ import { upsertUserFeedback } from 'queries'
 
 export interface Props {
   isOpen: boolean
-  onClose: () => void
+  onClose: () => any
 }
 
 function FeedbackModal({ isOpen, onClose }: Props) {

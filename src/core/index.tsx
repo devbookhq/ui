@@ -222,7 +222,7 @@ export function getUIComponents(setup: UIComponentSetup) {
         </div>
         <Text
           className="text-slate-400 transition-all group-hover:text-amber-800"
-          size={Text.size.T2}
+          size={Text.size.S3}
           text={C.label}
         />
       </div>

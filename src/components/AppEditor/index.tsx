@@ -1,3 +1,5 @@
+import { useEditorControls } from 'components/Header/EditorControlsProvider'
+
 import { App } from 'queries/types'
 
 import EditorProvider from 'core/EditorProvider'
@@ -14,9 +16,12 @@ export interface Props {
 function AppEditor({ app }: Props) {
   const saveAppState = useSaveAppState(app.id)
 
+  const { setEditorInstance } = useEditorControls()
+
   return (
     <EditorProvider
       initialState={app.state}
+      onInit={setEditorInstance}
       onStateChange={saveAppState}
     >
       <div className="flex flex-1">

@@ -1,10 +1,13 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-import { App, DeployedApp, UserFeedback } from './types'
+import { App, AppTemplate, UserFeedback } from './types'
+
+const appsTable = 'apps'
+const userFeedbackTable = 'user_feedback'
 
 export async function getApps(client: SupabaseClient, userID: string) {
   const { data, error } = await client
-    .from<Required<App>>('apps')
+    .from<App>(appsTable)
     .select('*')
     .eq('creator_id', userID)
 
@@ -14,7 +17,7 @@ export async function getApps(client: SupabaseClient, userID: string) {
 
 export async function getApp(client: SupabaseClient, id: string) {
   const { data, error } = await client
-    .from<Required<App>>('apps')
+    .from<App>(appsTable)
     .select('*')
     .eq('id', id)
     .limit(1)
@@ -24,30 +27,8 @@ export async function getApp(client: SupabaseClient, id: string) {
   return data
 }
 
-export async function getDeployedApp(client: SupabaseClient, id: string) {
-  const { data, error } = await client
-    .from<Required<DeployedApp>>('deployed_apps')
-    .select('*')
-    .eq('app_id', id)
-    .limit(1)
-    .single()
-
-  if (error) throw error
-  return data
-}
-
-export async function createApp(
-  client: SupabaseClient,
-  app: Required<Pick<App, 'title' | 'id' | 'state' | 'creator_id'>>,
-) {
-  const { body, error } = await client.from<App>('apps').insert(app).limit(1).single()
-
-  if (error) throw error
-  return body
-}
-
-export async function upsertDeployedApp(client: SupabaseClient, app: DeployedApp) {
-  const { body, error } = await client.from<DeployedApp>('deployed_apps').upsert(app)
+export async function createApp(client: SupabaseClient, app: AppTemplate) {
+  const { body, error } = await client.from<App>(appsTable).insert(app).limit(1).single()
 
   if (error) throw error
   return body
@@ -55,15 +36,21 @@ export async function upsertDeployedApp(client: SupabaseClient, app: DeployedApp
 
 export async function updateApp(
   client: SupabaseClient,
-  app: Required<Pick<App, 'id' | 'state'>>,
+  app: Pick<App, 'id'> & Partial<Pick<App, 'state' | 'deployed_state'>>,
 ) {
-  const { error } = await client.from<App>('apps').update(app).eq('id', app.id)
+  const { error, body } = await client
+    .from<App>(appsTable)
+    .update(app)
+    .eq('id', app.id)
+    .limit(1)
+    .single()
 
   if (error) throw error
+  return body
 }
 
 export async function deleteApp(client: SupabaseClient, id: string) {
-  const { error } = await client.from<App>('apps').delete().eq('id', id)
+  const { error } = await client.from<App>(appsTable).delete().eq('id', id)
 
   if (error) throw error
 }
@@ -73,7 +60,7 @@ export async function upsertUserFeedback(
   userID: string,
   feedback: string,
 ) {
-  const { body, error } = await client.from<UserFeedback>('user_feedback').upsert({
+  const { body, error } = await client.from<UserFeedback>(userFeedbackTable).upsert({
     user_id: userID,
     feedback,
   })

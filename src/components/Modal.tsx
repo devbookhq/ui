@@ -7,7 +7,7 @@ interface Props {
   title: string
   children: ReactNode
   isOpen: boolean
-  onClose: () => void
+  onClose: () => any
 }
 
 function Modal({ title, children, isOpen, onClose }: Props) {
@@ -96,7 +96,7 @@ function Modal({ title, children, isOpen, onClose }: Props) {
                 >
                   <Dialog.Title
                     as={Text}
-                    size={Text.size.T1}
+                    size={Text.size.S2}
                     text={title}
                   />
                 </div>

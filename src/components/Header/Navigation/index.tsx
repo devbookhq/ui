@@ -29,7 +29,7 @@ function Navigation({ app }: Props) {
           />
           <Text
             className="whitespace-nowrap"
-            size={Text.size.T2}
+            size={Text.size.S3}
             text={app.title}
           />
         </>

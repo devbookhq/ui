@@ -9,17 +9,10 @@ import useDndBackend from './useDndBackend'
 
 export interface Props extends RootStoreProviderProps {}
 
-function BuilderProvider({
-  children,
-  onStateChange,
-  initialState,
-}: PropsWithChildren<Props>) {
+function BuilderProvider({ children, ...rest }: PropsWithChildren<Props>) {
   const backend = useDndBackend()
   return (
-    <RootStoreProvider
-      initialState={initialState}
-      onStateChange={onStateChange}
-    >
+    <RootStoreProvider {...rest}>
       <ResourceProvider>
         <DndProvider backend={backend}>{children}</DndProvider>
       </ResourceProvider>

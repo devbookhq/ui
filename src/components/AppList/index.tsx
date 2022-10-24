@@ -5,7 +5,7 @@ import { App } from 'queries/types'
 import AppItem from './AppItem'
 
 export interface Props {
-  apps: Required<App>[]
+  apps: Pick<App, 'id' | 'title' | 'created_at'>[]
 }
 
 function AppList({ apps }: Props) {

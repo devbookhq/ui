@@ -16,7 +16,7 @@ function HeaderLink({ active, title, href }: Props) {
         active={active}
         className="px-1 py-3"
         href={href}
-        size={TitleLink.size.T2}
+        size={TitleLink.size.S3}
         title={title}
         wrapperClassName="w-full justify-center flex"
         shallow

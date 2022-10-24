@@ -6,22 +6,22 @@ export interface Props {
   className?: string
   size?: Size
   icon?: ReactNode
-  onClick?: (e: MouseEvent<HTMLElement, globalThis.MouseEvent>) => void
+  onClick?: (e: MouseEvent<HTMLElement, globalThis.MouseEvent>) => any
 }
 
 export enum Size {
-  T0,
-  T1,
-  T2,
+  S1,
+  S2,
+  S3,
 }
 
 const Sizes = {
-  [Size.T0]: 'text-3xl',
-  [Size.T1]: 'text-sm',
-  [Size.T2]: 'text-xs',
+  [Size.S1]: 'text-3xl',
+  [Size.S2]: 'text-sm',
+  [Size.S3]: 'text-xs',
 }
 
-function Text({ className, text, size = Size.T1, icon, onClick }: Props) {
+function Text({ className, text, size = Size.S2, icon, onClick }: Props) {
   const classes = clsx(
     'flex',
     'flex-row',

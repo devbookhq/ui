@@ -10,7 +10,7 @@ import { App } from 'queries/types'
 
 import { getID } from 'utils/app'
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
   try {
     const {
       slug,
@@ -52,15 +52,19 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 }
 
 interface Props {
-  app: App
+  app?: App
+  error?: string
 }
 
-function AppPreview({ app }: Props) {
+function AppPreview({ app, error }: Props) {
   const { user } = useUser()
+
+  if (error) return <div>{error}</div>
+  if (!app) return <div>App not found</div>
 
   return (
     <>
-      <AppView app={app} />
+      <AppView state={app.state} />
       {user && <EditorPreviewSwitch className="fixed top-4 right-4" />}
     </>
   )

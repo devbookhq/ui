@@ -34,7 +34,7 @@ function Tabs({ tabs, defaultValue }: Props) {
           >
             <Text
               className="text-slate-300 transition-all group-hover:text-amber-800 group-radix-state-active:text-amber-800"
-              size={Text.size.T2}
+              size={Text.size.S3}
               text={t.label}
             />
             <div className="absolute bottom-0 -mb-px w-full rounded-t border-b-2 border-transparent transition-all group-radix-state-active:border-amber-400"></div>

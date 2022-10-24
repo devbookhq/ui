@@ -3,12 +3,12 @@ import { GetServerSideProps } from 'next'
 
 import AppView from 'components/AppView'
 
-import { getDeployedApp } from 'queries'
+import { getApp } from 'queries'
 import { App } from 'queries/types'
 
 import { getID } from 'utils/app'
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
   try {
     const {
       slug,
@@ -28,8 +28,14 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
       }
     }
 
-    const app = await getDeployedApp(supabaseServerClient(ctx), id)
+    const app = await getApp(supabaseServerClient(ctx), id)
     if (!app) {
+      return {
+        notFound: true,
+      }
+    }
+
+    if (!app.deployed_state) {
       return {
         notFound: true,
       }
@@ -50,11 +56,16 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 }
 
 interface Props {
-  app: App
+  app?: App
+  error?: string
 }
 
-function AppPreview({ app }: Props) {
-  return <AppView app={app} />
+function AppPreview({ app, error }: Props) {
+  if (error) return <div>{error}</div>
+  if (!app) return <div>App not found</div>
+  if (!app.deployed_state) return <div>App is not deployed</div>
+
+  return <AppView state={app.deployed_state} />
 }
 
 export default AppPreview

@@ -1,6 +1,7 @@
 import { supabaseClient, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { Plus } from 'lucide-react'
+import { getSnapshot } from 'mobx-state-tree'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -17,6 +18,16 @@ import { createApp } from 'queries'
 
 import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
+
+import { root } from 'core/EditorProvider/models/RootStoreProvider'
+
+const newAppDefaultState = getSnapshot(
+  root.create({
+    resources: {
+      environmentID: 'Mh3XS5Pq9ch8',
+    },
+  }),
+)
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -47,10 +58,7 @@ function Dashboard() {
         title,
         id,
         creator_id: user.id,
-        state: {
-          board: { blocks: {}, selectedBlock: undefined },
-          resources: { environmentID: 'Mh3XS5Pq9ch8' },
-        },
+        state: newAppDefaultState,
       })
       const slug = getSlug(app.id, app.title)
       router.push({
@@ -101,7 +109,7 @@ function Dashboard() {
       >
         <div className="flex items-start justify-start">
           <Text
-            size={Text.size.T0}
+            size={Text.size.S1}
             text="Apps"
           />
         </div>
@@ -176,7 +184,7 @@ function Dashboard() {
           "
             >
               <Text
-                size={Text.size.T1}
+                size={Text.size.S2}
                 text="Get Started"
               />
 

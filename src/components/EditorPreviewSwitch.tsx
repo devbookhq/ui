@@ -27,7 +27,7 @@ function EditorPreviewSwitch({ className }: Props) {
           <a>
             <Button
               className={className}
-              text="Edit"
+              text="Back to editor"
             />
           </a>
         </Link>

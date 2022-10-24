@@ -4,7 +4,7 @@ import { MouseEvent, useMemo } from 'react'
 
 export interface Props {
   username?: string
-  onClick?: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void
+  onClick?: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => any
 }
 
 function UserPortrait({ onClick, username = '?' }: Props) {

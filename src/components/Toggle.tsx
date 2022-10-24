@@ -2,7 +2,7 @@ import * as Switch from '@radix-ui/react-switch'
 
 export interface Props {
   enabled: boolean
-  onChange: (enabled: boolean) => void
+  onChange: (enabled: boolean) => any
 }
 
 function Toggle({ enabled, onChange }: Props) {

@@ -2,21 +2,21 @@ import { SessionProvider } from '@devbookhq/react'
 
 import { UI } from 'components/AppEditor/uiComponents'
 
-import { App } from 'queries/types'
+import { RootState } from 'core/EditorProvider/models/RootStoreProvider'
 
 export interface Props {
-  app: App
+  state: RootState
 }
 
-function AppView({ app }: Props) {
+function AppView({ state }: Props) {
   return (
     <SessionProvider
       opts={{
-        codeSnippetID: 'Mh3XS5Pq9ch8',
+        codeSnippetID: state.resources.environmentID,
       }}
     >
       <div className="relative flex flex-1">
-        {Object.values(app.state.board.blocks).map(b => (
+        {Object.values(state.board.blocks).map(b => (
           <UI.PreviewBoardBlock
             key={b.id}
             {...b}

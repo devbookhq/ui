@@ -49,7 +49,7 @@ function SignIn() {
             <>
               <AuthForm authType={AuthForm.type.SignIn} />
               <TitleLink
-                size={TitleLink.size.T2}
+                size={TitleLink.size.S3}
                 title="Create a new account"
                 href={{
                   pathname: router.pathname,
@@ -65,7 +65,7 @@ function SignIn() {
             <>
               <AuthForm authType={AuthForm.type.SignUp} />
               <TitleLink
-                size={TitleLink.size.T2}
+                size={TitleLink.size.S3}
                 title="Sign in with an existing account"
                 href={{
                   pathname: router.pathname,
