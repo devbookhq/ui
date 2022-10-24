@@ -141,6 +141,8 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
 
+    if (!C) return null
+
     return (
       <div
         ref={drag}
@@ -180,6 +182,8 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     const { left, top, props: rawProps } = block
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
+    if (!C) return null
+
     return (
       <div
         className="flex items-stretch justify-center border-2 border-transparent"
@@ -217,6 +221,8 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       },
       [preview],
     )
+
+    if (!C) return null
 
     return (
       <div
@@ -267,6 +273,8 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       () => Object.entries(C.props).reduce(parseDefaultProps, {}),
       [C.props],
     )
+
+    if (!C) return null
 
     return (
       <div
