@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { Trash } from 'lucide-react'
 import { observer } from 'mobx-react-lite'
 import {
   CSSProperties,
@@ -82,7 +83,11 @@ export type UIComponentSetup = {
   }
 }
 
-export function getUIComponents(setup: UIComponentSetup) {
+export interface EditorSetup {
+  componentsSetup: UIComponentSetup
+}
+
+export function getUIComponents({ componentsSetup }: EditorSetup) {
   function EditorBoardBlock({
     id,
     left,
@@ -91,7 +96,7 @@ export function getUIComponents(setup: UIComponentSetup) {
     props: rawProps,
     isSelected,
   }: BoardBlock & { isSelected: boolean }) {
-    const C = setup[componentType]
+    const C = componentsSetup[componentType]
 
     const { board } = useRootStore()
 
@@ -129,6 +134,10 @@ export function getUIComponents(setup: UIComponentSetup) {
 
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
+    function handleDeleteBlock() {
+      board.removeBlock({ id })
+    }
+
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
 
@@ -136,27 +145,46 @@ export function getUIComponents(setup: UIComponentSetup) {
       <div
         ref={drag}
         style={{ ...getStyles(left, top, isDragging), ...C.defaultSize }}
-        className={clsx('flex flex-1 border-4', {
-          'z-50 border-amber-500': isSelected,
-          'border-transparent': !isSelected,
-        })}
+        className={clsx(
+          'group relative flex items-stretch justify-center rounded-b rounded-r border-2 drop-shadow-lg transition-colors',
+          {
+            'z-50 border-amber-300 hover:border-amber-400': isSelected,
+            'border-transparent': !isSelected,
+          },
+        )}
         onClick={e => {
           e.stopPropagation()
           board.selectBlock(id)
         }}
       >
+        {isSelected && (
+          <div className="absolute -left-0.5 -top-6 z-50 flex h-5 cursor-move items-center justify-center rounded-t bg-amber-300 py-3 px-2 text-xs text-amber-800 transition-all group-hover:bg-amber-400">
+            {C.label}
+            <div className="flex flex-1 cursor-pointer pl-4">
+              <div
+                className="text-amber-700 hover:text-amber-800"
+                onClick={handleDeleteBlock}
+              >
+                <Trash size="12px" />
+              </div>
+            </div>
+          </div>
+        )}
         <C.Block {...props} />
       </div>
     )
   }
 
   function PreviewBoardBlock(block: BoardBlock) {
-    const C = setup[block.componentType]
+    const C = componentsSetup[block.componentType]
     const { left, top, props: rawProps } = block
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
     return (
-      <div style={{ ...getStyles(left, top, false), ...C.defaultSize }}>
+      <div
+        className="flex items-stretch justify-center border-2 border-transparent"
+        style={{ ...getStyles(left, top, false), ...C.defaultSize }}
+      >
         <C.Block {...props} />
       </div>
     )
@@ -169,7 +197,7 @@ export function getUIComponents(setup: UIComponentSetup) {
     componentType: string
     className?: string
   }) {
-    const C = setup[componentType]
+    const C = componentsSetup[componentType]
     const [collected, drag, preview] = useDrag(() => ({
       type: sidebarIconType,
       options: {
@@ -233,7 +261,7 @@ export function getUIComponents(setup: UIComponentSetup) {
     componentType,
     offset,
   }: Omit<BoardBlock, 'props'> & { offset: XYCoord }) {
-    const C = setup[componentType]
+    const C = componentsSetup[componentType]
 
     const props = useMemo(
       () => Object.entries(C.props).reduce(parseDefaultProps, {}),
@@ -242,12 +270,21 @@ export function getUIComponents(setup: UIComponentSetup) {
 
     return (
       <div
-        className="border-4 border-transparent"
+        className="relative z-50 flex cursor-move items-stretch justify-center rounded-b rounded-r border-2 border-amber-400 drop-shadow-lg transition-shadow"
         style={{
           ...getTransform(offset.x, offset.y),
           ...C.defaultSize,
         }}
       >
+        <div className="absolute -left-0.5 -top-6 z-50 flex h-5 cursor-move items-center justify-center rounded-t bg-amber-400 py-3 px-2 text-xs text-amber-800">
+          {C.label}
+          <div className="flex flex-1 cursor-pointer pl-4">
+            <div className="text-amber-700 hover:text-amber-800">
+              <Trash size="12px" />
+            </div>
+          </div>
+        </div>
+
         <C.Block {...props} />
       </div>
     )

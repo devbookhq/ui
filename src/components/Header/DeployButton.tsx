@@ -1,5 +1,5 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { Check, Play } from 'lucide-react'
+import { Check, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { ReactNode, useEffect, useState } from 'react'
@@ -124,7 +124,7 @@ function DeployButton({ app }: Props) {
                   text="Live"
                   variant={Button.variant.Full}
                   icon={
-                    <Play
+                    <ExternalLink
                       className="text-amber-800"
                       size="16px"
                     />

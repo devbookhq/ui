@@ -2,6 +2,7 @@ import Tabs from 'components/Tabs'
 import Text from 'components/typography/Text'
 
 import EnvTab from './EnvTab'
+import LayoutTab from './LayoutTab'
 import StyleTab from './StyleTab'
 
 function AppInspector() {
@@ -12,17 +13,22 @@ function AppInspector() {
         text="App config"
       />
       <Tabs
-        defaultValue="env"
+        defaultValue="layout"
         tabs={[
           {
-            label: 'Environemnt',
-            value: 'env',
-            component: <EnvTab />,
+            label: 'Layout',
+            value: 'layout',
+            component: <LayoutTab />,
           },
           {
             label: 'Style',
             value: 'style',
             component: <StyleTab />,
+          },
+          {
+            label: 'Environemnt',
+            value: 'env',
+            component: <EnvTab />,
           },
         ]}
       />

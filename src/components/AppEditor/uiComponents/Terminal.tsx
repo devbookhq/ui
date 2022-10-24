@@ -10,7 +10,7 @@ function Terminal(props: ComponentProps<typeof T>) {
   return (
     <div
       className="
-    m-0.5
+    m-1
     flex
     flex-1
     flex-col

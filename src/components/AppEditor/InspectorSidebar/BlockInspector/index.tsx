@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Instance } from 'mobx-state-tree'
 
-import { uiComponentsSetup } from 'components/AppEditor/uiComponents'
+import { componentsSetup } from 'components/AppEditor/uiComponents'
 import Tabs from 'components/Tabs'
 import Text from 'components/typography/Text'
 
@@ -15,7 +15,7 @@ export interface Props {
 }
 
 function BlockInspector({ block }: Props) {
-  const uiComponentSetup = uiComponentsSetup[block.componentType]
+  const uiComponentSetup = componentsSetup[block.componentType]
 
   const setupProps = uiComponentSetup.props
   const blockProps = block.getProps()

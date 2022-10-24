@@ -5,12 +5,12 @@ import { getGridStyle, xStep, yStep } from 'core/EditorProvider/grid'
 import { useRootStore } from 'core/EditorProvider/models/RootStoreProvider'
 
 import { canvasClass, useBoard } from '../../../core/EditorProvider/useBoard'
-import { UI, uiComponentsSetup } from '../uiComponents'
+import { UI, componentsSetup } from '../uiComponents'
 
 const gridStyle = getGridStyle(xStep, yStep, '#94a3b8')
 
 function Container() {
-  const { ref } = useBoard(uiComponentsSetup)
+  const { ref } = useBoard(componentsSetup)
   const { board } = useRootStore()
 
   return (

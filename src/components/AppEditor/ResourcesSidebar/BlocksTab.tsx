@@ -1,9 +1,9 @@
-import { UI, uiComponentsSetup } from '../uiComponents'
+import { UI, componentsSetup } from '../uiComponents'
 
 function BlocksTab() {
   return (
     <div className="flex flex-1 flex-wrap">
-      {Object.keys(uiComponentsSetup).map(c => (
+      {Object.keys(componentsSetup).map(c => (
         <UI.SidebarIcon
           className="p-1"
           componentType={c}

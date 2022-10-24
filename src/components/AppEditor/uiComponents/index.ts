@@ -1,17 +1,17 @@
-import { UIComponentSetup, UIPropType, UIProps, getUIComponents } from 'core'
+import { EditorSetup, UIComponentSetup, UIPropType, UIProps, getUIComponents } from 'core'
 
 import CodeEditor, { Icon as CodeEditorIcon } from './CodeEditor'
 import Terminal, { Icon as TerminalIcon } from './Terminal'
 
 // Add new board components and their sidebar icons here
-export const uiComponentsSetup: UIComponentSetup = {
+export const componentsSetup: UIComponentSetup = {
   [CodeEditor.name]: {
     label: 'Editor',
     Icon: CodeEditorIcon,
     Block: CodeEditor,
     defaultSize: {
-      width: 300,
-      height: 200,
+      width: 450,
+      height: 500,
     },
     props: {
       content: {
@@ -36,11 +36,15 @@ export const uiComponentsSetup: UIComponentSetup = {
     Icon: TerminalIcon,
     Block: Terminal,
     defaultSize: {
-      width: 300,
-      height: 200,
+      width: 450,
+      height: 300,
     },
     props: {} as UIProps<typeof Terminal>,
   },
 }
 
-export const UI = getUIComponents(uiComponentsSetup)
+export const editorSetup: EditorSetup = {
+  componentsSetup,
+}
+
+export const UI = getUIComponents(editorSetup)

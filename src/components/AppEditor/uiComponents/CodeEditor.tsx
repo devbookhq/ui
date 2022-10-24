@@ -10,7 +10,7 @@ function CodeEditor(props: ComponentProps<typeof CE>) {
   return (
     <div
       className="
-    m-0.5
+    m-1
     flex
     flex-1
     flex-col
