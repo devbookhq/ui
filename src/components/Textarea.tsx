@@ -23,7 +23,7 @@ function Textarea({ value = '', className, placeholder, onChange }: Props) {
         'bg-white',
         'focus:border-amber-400',
         'outline-none',
-        'transition-all',
+        'transition-colors',
         'text-xs',
         'placeholder:text-slate-300',
         className,

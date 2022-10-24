@@ -32,7 +32,7 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
           'py-1',
           'rounded',
           'border',
-          'transition-all',
+          'transition-colors',
           'border-slate-200',
           'bg-white',
           'outline-none',
