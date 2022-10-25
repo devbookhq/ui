@@ -5,7 +5,7 @@ import Terminal, { Icon as TerminalIcon } from './Terminal'
 
 // Add new board components and their sidebar icons here
 export const componentsSetup: UIComponentSetup = {
-  [CodeEditor.name]: {
+  Editor: {
     label: 'Editor',
     Icon: CodeEditorIcon,
     Block: CodeEditor,
@@ -31,7 +31,7 @@ export const componentsSetup: UIComponentSetup = {
       },
     } as UIProps<typeof CodeEditor>,
   },
-  [Terminal.name]: {
+  Terminal: {
     label: 'Terminal',
     Icon: TerminalIcon,
     Block: Terminal,
