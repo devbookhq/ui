@@ -28,25 +28,18 @@ export async function getApp(client: SupabaseClient, id: string) {
 }
 
 export async function createApp(client: SupabaseClient, app: AppTemplate) {
-  const { body, error } = await client.from<App>(appsTable).insert(app).limit(1).single()
+  const { error } = await client.from<App>(appsTable).insert(app)
 
   if (error) throw error
-  return body
 }
 
 export async function updateApp(
   client: SupabaseClient,
   app: Pick<App, 'id'> & Partial<Pick<App, 'state' | 'deployed_state'>>,
 ) {
-  const { error, body } = await client
-    .from<App>(appsTable)
-    .update(app)
-    .eq('id', app.id)
-    .limit(1)
-    .single()
+  const { error, body } = await client.from<App>(appsTable).update(app).eq('id', app.id)
 
   if (error) throw error
-  return body
 }
 
 export async function deleteApp(client: SupabaseClient, id: string) {

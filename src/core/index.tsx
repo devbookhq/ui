@@ -148,9 +148,10 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
         ref={drag}
         style={{ ...getStyles(left, top, isDragging), ...C.defaultSize }}
         className={clsx(
-          'group relative flex items-stretch justify-center rounded-b rounded-r border-2 drop-shadow-lg transition-colors',
+          'group relative flex items-stretch justify-center rounded-b rounded-r border-2',
           {
-            'z-50 border-amber-300 hover:border-amber-400': isSelected,
+            'z-50 border-amber-300 drop-shadow-lg transition-[colors,shadow] hover:border-amber-400':
+              isSelected,
             'border-transparent': !isSelected,
           },
         )}

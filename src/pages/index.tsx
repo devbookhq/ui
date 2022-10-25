@@ -54,13 +54,13 @@ function Dashboard() {
     setIsLoadingNewSnippet(true)
 
     try {
-      const app = await createApp(supabaseClient, {
+      await createApp(supabaseClient, {
         title,
         id,
         creator_id: user.id,
         state: newAppDefaultState,
       })
-      const slug = getSlug(app.id, app.title)
+      const slug = getSlug(id, title)
       router.push({
         pathname: '/[slug]/edit',
         query: {

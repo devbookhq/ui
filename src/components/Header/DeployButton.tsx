@@ -64,12 +64,12 @@ function DeployButton({ app }: Props) {
     setWasSuccessfullyDeployed(false)
     try {
       const localAppState = getEditorState()
-      const updatedApp = await updateApp(supabaseClient, {
+      await updateApp(supabaseClient, {
         id: app.id,
         deployed_state: localAppState,
       })
 
-      setIsDeployed(!!updatedApp.deployed_state)
+      setIsDeployed(true)
       setWasSuccessfullyDeployed(true)
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err)
