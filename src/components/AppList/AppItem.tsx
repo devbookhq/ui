@@ -65,62 +65,60 @@ function AppItem({ app }: Props) {
 
   return (
     <Link
+      className="group flex items-center justify-between space-x-4 rounded px-4 py-1"
       href={{
         pathname: '/[slug]/edit',
         query: {
           slug: getSlug(app.id, app.title),
         },
       }}
-      passHref
     >
-      <a className="group flex items-center justify-between space-x-4 rounded px-4 py-1">
-        <div className="flex items-center space-x-4 truncate">
-          <div className="m-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-300 transition-all group-hover:border-transparent group-hover:bg-amber-50 group-hover:text-amber-800">
-            <Layout size="22px" />
-          </div>
-          <div className="flex flex-col">
+      <div className="flex items-center space-x-4 truncate">
+        <div className="m-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-300 transition-all group-hover:border-transparent group-hover:bg-amber-50 group-hover:text-amber-800">
+          <Layout size="22px" />
+        </div>
+        <div className="flex flex-col">
+          <Text
+            className="text-slate-600 transition-all group-hover:text-amber-800"
+            size={Text.size.S2}
+            text={app.title}
+          />
+          <div className="flex space-x-1 text-slate-300 transition-all group-hover:text-slate-400">
             <Text
-              className="text-slate-600 transition-all group-hover:text-amber-800"
-              size={Text.size.S2}
-              text={app.title}
+              size={Text.size.S3}
+              text="App"
             />
-            <div className="flex space-x-1 text-slate-300 transition-all group-hover:text-slate-400">
-              <Text
-                size={Text.size.S3}
-                text="App"
-              />
-              <Text
-                size={Text.size.S3}
-                text="-"
-              />
-              <Text
-                size={Text.size.S3}
-                text={created}
-              />
-            </div>
+            <Text
+              size={Text.size.S3}
+              text="-"
+            />
+            <Text
+              size={Text.size.S3}
+              text={created}
+            />
           </div>
         </div>
-        <button
-          className="flex items-center justify-center"
-          onClick={handleDeleteApp}
-        >
-          {isDeleting && (
-            <Text
-              className="whitespace-nowrap text-amber-800"
-              icon={<SpinnerIcon className="text-amber-800" />}
-              size={Text.size.S3}
-              text="Deleting..."
-            />
-          )}
-          {!isDeleting && (
-            <Text
-              className="whitespace-nowrap text-slate-300 hover:text-amber-800"
-              size={Text.size.S3}
-              text={confirmDelete ? 'Confirm delete' : 'Delete'}
-            />
-          )}
-        </button>
-      </a>
+      </div>
+      <button
+        className="flex items-center justify-center"
+        onClick={handleDeleteApp}
+      >
+        {isDeleting && (
+          <Text
+            className="whitespace-nowrap text-amber-800"
+            icon={<SpinnerIcon className="text-amber-800" />}
+            size={Text.size.S3}
+            text="Deleting..."
+          />
+        )}
+        {!isDeleting && (
+          <Text
+            className="whitespace-nowrap text-slate-300 hover:text-amber-800"
+            size={Text.size.S3}
+            text={confirmDelete ? 'Confirm delete' : 'Delete'}
+          />
+        )}
+      </button>
     </Link>
   )
 }

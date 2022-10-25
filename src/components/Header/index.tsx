@@ -28,11 +28,8 @@ function Header({ app }: Props) {
           href={{
             pathname: '/settings',
           }}
-          passHref
         >
-          <a>
-            <UserPortrait username={user?.email} />
-          </a>
+          <UserPortrait username={user?.email} />
         </Link>
       </div>
     </div>

@@ -22,14 +22,11 @@ function EditorPreviewSwitch({ className }: Props) {
               slug: router.query.slug,
             },
           }}
-          passHref
         >
-          <a>
-            <Button
-              className={className}
-              text="Back to editor"
-            />
-          </a>
+          <Button
+            className={className}
+            text="Back to editor"
+          />
         </Link>
       )}
       {isEdit && (
@@ -40,14 +37,11 @@ function EditorPreviewSwitch({ className }: Props) {
               slug: router.query.slug,
             },
           }}
-          passHref
         >
-          <a>
-            <Button
-              className={className}
-              text="Preview"
-            />
-          </a>
+          <Button
+            className={className}
+            text="Preview"
+          />
         </Link>
       )}
     </>

@@ -108,29 +108,25 @@ function DeployButton({ app }: Props) {
           />
           {isDeployed && (
             <Link
+              rel="noopener noreferrer"
+              target="_blank"
               href={{
                 pathname: '/[slug]',
                 query: {
                   slug: getSlug(app.id, app.title),
                 },
               }}
-              passHref
             >
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <Button
-                  text="Live"
-                  variant={Button.variant.Full}
-                  icon={
-                    <ExternalLink
-                      className="text-amber-800"
-                      size="16px"
-                    />
-                  }
-                />
-              </a>
+              <Button
+                text="Live"
+                variant={Button.variant.Full}
+                icon={
+                  <ExternalLink
+                    className="text-amber-800"
+                    size="16px"
+                  />
+                }
+              />
             </Link>
           )}
         </>

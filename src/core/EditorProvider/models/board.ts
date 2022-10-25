@@ -6,6 +6,8 @@ export const boardBlock = types
   .model({
     id: types.identifier,
     top: types.number,
+    width: types.maybe(types.number),
+    height: types.maybe(types.number),
     left: types.number,
     props: types.optional(types.string, '{}'),
     componentType: types.string,
@@ -29,6 +31,10 @@ export const boardBlock = types
         ...props,
         [name]: value,
       })
+    },
+    resize(width: number, height: number) {
+      self.width = width
+      self.height = height
     },
     translate(top: number, left: number) {
       self.top = top

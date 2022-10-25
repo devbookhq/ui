@@ -53,6 +53,7 @@ export function useBoard(setup: UIComponentSetup) {
             left,
             top,
             props: JSON.stringify(defaultProps),
+            ...uiComponentSetup.defaultSize,
           })
           board.selectBlock(id)
         }

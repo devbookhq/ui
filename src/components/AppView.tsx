@@ -17,7 +17,7 @@ function AppView({ state }: Props) {
     >
       <div className="relative flex flex-1">
         {Object.values(state.board.blocks).map(b => (
-          <UI.PreviewBoardBlock
+          <UI.ViewBoardBlock
             key={b.id}
             {...b}
           />

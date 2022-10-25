@@ -28,23 +28,21 @@ function TitleLink({
 }: Props) {
   return (
     <Link
+      className={clsx('hover:no-underline', wrapperClassName)}
       href={href}
       shallow={shallow}
-      passHref
     >
-      <a className={clsx('hover:no-underline', wrapperClassName)}>
-        <Text
-          icon={icon}
-          size={size}
-          text={title}
-          className={clsx(
-            'whitespace-nowrap',
-            'transition-all',
-            active ? 'text-amber-800' : 'text-slate-400 hover:text-amber-800',
-            className,
-          )}
-        />
-      </a>
+      <Text
+        icon={icon}
+        size={size}
+        text={title}
+        className={clsx(
+          'whitespace-nowrap',
+          'transition-all',
+          active ? 'text-amber-800' : 'text-slate-400 hover:text-amber-800',
+          className,
+        )}
+      />
     </Link>
   )
 }

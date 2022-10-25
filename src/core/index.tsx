@@ -1,17 +1,21 @@
 import clsx from 'clsx'
-import { Trash } from 'lucide-react'
 import { observer } from 'mobx-react-lite'
 import {
   CSSProperties,
   ComponentProps,
   ComponentType,
   JSXElementConstructor,
+  memo,
   useEffect,
   useMemo,
+  useState,
 } from 'react'
 import { useDrag } from 'react-dnd'
 import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
+import { Resizable } from 'react-resizable'
+
+import 'react-resizable/css/styles.css'
 
 import Text from 'components/typography/Text'
 
@@ -19,6 +23,7 @@ import useHasMounted from 'hooks/useHasMounted'
 
 import { BoardBlock } from 'core/EditorProvider/models/board'
 
+import BlockOutline from './BlockOutline'
 import { useRootStore } from './EditorProvider/models/RootStoreProvider'
 
 export const boardBlockType = 'boardBlock'
@@ -88,10 +93,17 @@ export interface EditorSetup {
 }
 
 export function getUIComponents({ componentsSetup }: EditorSetup) {
+  // Memoize the block components
+  Object.entries(componentsSetup).forEach(([, setup]) => {
+    setup.Block = memo(setup.Block)
+  })
+
   function EditorBoardBlock({
     id,
     left,
     top,
+    width,
+    height,
     componentType,
     props: rawProps,
     isSelected,
@@ -107,6 +119,8 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
           id,
           left,
           top,
+          width,
+          height,
           componentType,
         },
         collect: monitor => ({
@@ -129,7 +143,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
           board.selectBlock(id)
         }
       },
-      [isDragging, board, id],
+      [isDragging, board, id, width, height],
     )
 
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
@@ -138,59 +152,75 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       board.removeBlock({ id })
     }
 
+    const [size, setSize] = useState(
+      width === undefined || height === undefined ? C.defaultSize : { width, height },
+    )
+    const [isResizing, setIsResizing] = useState(false)
+
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
 
-    if (!C) return null
+    if (!C) throw new Error('Unknown block')
 
     return (
-      <div
-        ref={drag}
-        style={{ ...getStyles(left, top, isDragging), ...C.defaultSize }}
-        className={clsx(
-          'group flex items-stretch justify-center rounded-b rounded-r border-2',
-          {
-            'z-50 border-amber-300 drop-shadow-lg transition-[colors,shadow] hover:border-amber-400':
-              isSelected,
-            'border-transparent': !isSelected,
-          },
-        )}
-        onClick={e => {
-          e.stopPropagation()
-          board.selectBlock(id)
+      <Resizable
+        axis={'both'}
+        className="z-50 text-slate-400 hover:text-slate-600"
+        height={size.height}
+        resizeHandles={isSelected ? ['e', 'n', 'ne', 'nw', 's', 'se', 'sw', 'w'] : []}
+        width={size.width}
+        onResize={(e, d) => setSize(d.size)}
+        onResizeStart={() => setIsResizing(true)}
+        onResizeStop={(e, d) => {
+          setSize(d.size)
+          setIsResizing(false)
+          board.getBlock(id)?.resize(d.size.width, d.size.height)
         }}
       >
-        {isSelected && (
-          <div className="absolute -left-0.5 -top-6 z-50 flex h-5 cursor-move items-center justify-center rounded-t bg-amber-300 py-3 px-2 text-xs text-amber-800 transition-all group-hover:bg-amber-400">
-            {C.label}
-            <div className="flex flex-1 cursor-pointer pl-4">
-              <div
-                className="text-amber-700 hover:text-amber-800"
-                onClick={handleDeleteBlock}
-              >
-                <Trash size="12px" />
-              </div>
-            </div>
-          </div>
-        )}
-        <C.Block {...props} />
-      </div>
+        <div
+          className="z-40 flex cursor-move items-stretch justify-center"
+          ref={isResizing ? null : drag}
+          style={{ ...getStyles(left, top, isDragging), ...size }}
+          onClick={e => {
+            e.stopPropagation()
+            board.selectBlock(id)
+          }}
+        >
+          <BlockOutline
+            isSelected={isSelected}
+            label={C.label}
+            isEnabled
+            onDelete={handleDeleteBlock}
+          >
+            <C.Block {...props} />
+          </BlockOutline>
+        </div>
+      </Resizable>
     )
   }
 
-  function PreviewBoardBlock(block: BoardBlock) {
+  function ViewBoardBlock(block: BoardBlock) {
     const C = componentsSetup[block.componentType]
-    const { left, top, props: rawProps } = block
+    const { left, top, props: rawProps, width, height } = block
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
-    if (!C) return null
+    if (!C) throw new Error('Unknown block')
+
+    const styleSize =
+      block.width === undefined || block.height === undefined
+        ? C.defaultSize
+        : { width, height }
 
     return (
       <div
-        className="flex items-stretch justify-center border-2 border-transparent"
-        style={{ ...getStyles(left, top, false), ...C.defaultSize }}
+        className="flex items-stretch justify-center"
+        style={{ ...getStyles(left, top, false), ...styleSize }}
       >
-        <C.Block {...props} />
+        {/* We use an invisible block outline because the missing outline border would
+        otherwise change the block position */}
+        <BlockOutline>
+          <C.Block {...props} />
+        </BlockOutline>
       </div>
     )
   }
@@ -223,7 +253,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       [preview],
     )
 
-    if (!C) return null
+    if (!C) throw new Error('Unknown block')
 
     return (
       <div
@@ -267,6 +297,8 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
   function DraggedBoardBlock({
     componentType,
     offset,
+    height,
+    width,
   }: Omit<BoardBlock, 'props'> & { offset: XYCoord }) {
     const C = componentsSetup[componentType]
 
@@ -275,33 +307,30 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       [C.props],
     )
 
-    if (!C) return null
+    if (!C) throw new Error('Unknown block')
+
+    const styleSize =
+      width === undefined || height === undefined ? C.defaultSize : { width, height }
 
     return (
       <div
-        className="z-50 flex cursor-move items-stretch justify-center rounded-b rounded-r border-2 border-amber-400 drop-shadow-lg transition-shadow"
-        style={{
-          ...getTransform(offset.x, offset.y),
-          ...C.defaultSize,
-        }}
+        className="z-50 flex cursor-move items-stretch justify-center"
+        style={{ ...getTransform(offset.x, offset.y), ...styleSize }}
       >
-        <div className="absolute -left-0.5 -top-6 z-50 flex h-5 cursor-move items-center justify-center rounded-t bg-amber-400 py-3 px-2 text-xs text-amber-800">
-          {C.label}
-          <div className="flex flex-1 cursor-pointer pl-4">
-            <div className="text-amber-700 hover:text-amber-800">
-              <Trash size="12px" />
-            </div>
-          </div>
-        </div>
-
-        <C.Block {...props} />
+        <BlockOutline
+          label={C.label}
+          isHovered
+          isSelected
+        >
+          <C.Block {...props} />
+        </BlockOutline>
       </div>
     )
   }
 
   return {
     DraggedBoardBlock: observer(DraggedBoardBlock),
-    PreviewBoardBlock: observer(PreviewBoardBlock),
+    ViewBoardBlock: observer(ViewBoardBlock),
     EditorBoardBlock: observer(EditorBoardBlock),
     SidebarIcon,
   }
