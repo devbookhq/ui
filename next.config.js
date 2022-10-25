@@ -14,6 +14,9 @@ module.exports = exportWrapper({
       },
     }),
   },
+  experimental: {
+    newNextLinkBehavior: true,
+  },
   env: {},
   webpack: config => ({
     ...config,
