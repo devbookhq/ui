@@ -24,7 +24,7 @@ import { root } from 'core/EditorProvider/models/RootStoreProvider'
 const newAppDefaultState = getSnapshot(
   root.create({
     resources: {
-      environmentID: 'Mh3XS5Pq9ch8',
+      environmentID: 'BSxxNRURAxjW',
     },
   }),
 )
