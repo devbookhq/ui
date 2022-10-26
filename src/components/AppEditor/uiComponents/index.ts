@@ -1,5 +1,7 @@
 import { EditorSetup, UIComponentSetup, UIPropType, UIProps, getUIComponents } from 'core'
 
+import { xStep, yStep } from 'core/EditorProvider/grid'
+
 import CodeEditor, { Icon as CodeEditorIcon } from './CodeEditor'
 import Terminal, { Icon as TerminalIcon } from './Terminal'
 
@@ -10,8 +12,8 @@ export const componentsSetup: UIComponentSetup = {
     Icon: CodeEditorIcon,
     Block: CodeEditor,
     defaultSize: {
-      width: 450,
-      height: 500,
+      width: 30 * xStep,
+      height: 32 * yStep,
     },
     props: {
       content: {
@@ -36,8 +38,8 @@ export const componentsSetup: UIComponentSetup = {
     Icon: TerminalIcon,
     Block: Terminal,
     defaultSize: {
-      width: 450,
-      height: 300,
+      width: 30 * xStep,
+      height: 20 * yStep,
     },
     props: {} as UIProps<typeof Terminal>,
   },

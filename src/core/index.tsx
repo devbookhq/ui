@@ -24,6 +24,7 @@ import useHasMounted from 'hooks/useHasMounted'
 import { BoardBlock } from 'core/EditorProvider/models/board'
 
 import BlockOutline from './BlockOutline'
+import { snapToGrid, xStep, yStep } from './EditorProvider/grid'
 import { useRootStore } from './EditorProvider/models/RootStoreProvider'
 
 export const boardBlockType = 'boardBlock'
@@ -157,6 +158,12 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     )
     const [isResizing, setIsResizing] = useState(false)
 
+    const styleSize = useMemo(() => {
+      const width = snapToGrid(size.width, xStep)
+      const height = snapToGrid(size.height, yStep)
+      return { width, height }
+    }, [size.height, size.width])
+
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
 
@@ -169,18 +176,20 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
         height={size.height}
         resizeHandles={isSelected ? ['e', 'n', 'ne', 'nw', 's', 'se', 'sw', 'w'] : []}
         width={size.width}
-        onResize={(e, d) => setSize(d.size)}
+        onResize={(_, d) => setSize(d.size)}
         onResizeStart={() => setIsResizing(true)}
-        onResizeStop={(e, d) => {
+        onResizeStop={(_, d) => {
+          const width = snapToGrid(d.size.width, xStep)
+          const height = snapToGrid(d.size.height, yStep)
           setSize(d.size)
           setIsResizing(false)
-          board.getBlock(id)?.resize(d.size.width, d.size.height)
+          board.getBlock(id)?.resize(width, height)
         }}
       >
         <div
           className="z-40 flex cursor-move items-stretch justify-center"
           ref={isResizing ? null : drag}
-          style={{ ...getStyles(left, top, isDragging), ...size }}
+          style={{ ...getStyles(left, top, isDragging), ...styleSize }}
           onClick={e => {
             e.stopPropagation()
             board.selectBlock(id)
