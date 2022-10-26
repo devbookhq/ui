@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import type { CSSProperties } from 'react'
 
 import { useBoardDrag } from '../../../core/EditorProvider/useBoardDrag'
@@ -22,4 +23,4 @@ function CustomDragLayer({}: Props) {
   return <div style={layerStyles}>{draggedChildren}</div>
 }
 
-export default CustomDragLayer
+export default observer(CustomDragLayer)

@@ -48,11 +48,14 @@ function PropsTab({ block, setupProps, blockProps }: Props) {
           )}
           {prop.type === UIPropType.String && prop.values && (
             <Select
-              selectedItemLabel={blockProps[name]}
               items={prop.values.map(p => ({
-                value: p,
-                label: p,
+                value: p.value,
+                label: p.label || p.value,
               }))}
+              selectedItemLabel={(() => {
+                const item = prop.values.find(v => v.value === blockProps[name])
+                return item?.label || item?.value
+              })()}
               onSelect={i => block.setProp(name, i?.value)}
             />
           )}

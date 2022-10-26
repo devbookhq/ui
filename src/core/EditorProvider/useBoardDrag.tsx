@@ -4,6 +4,7 @@ import { UI } from 'components/AppEditor/uiComponents'
 
 import { sidebarIconType } from '..'
 import { snapToGrid, xStep, yStep } from './grid'
+import { useRootStore } from './models/RootStoreProvider'
 import { BoardBlock } from './models/board'
 import { getCanvas } from './useBoard'
 
@@ -33,40 +34,42 @@ function getBlockOffset(
 }
 
 export function useBoardDrag() {
-  const {
-    sidebarOffset,
-    isDragging,
-    block,
-    initialOffset,
-    currentOffset,
-    isSidebarItem,
-  } = useDragLayer(monitor => ({
-    block: monitor.getItem<BoardBlock | undefined>(),
-    isSidebarItem: monitor.getItemType() === sidebarIconType,
-    initialOffset: monitor.getInitialSourceClientOffset(),
-    currentOffset: monitor.getSourceClientOffset(),
-    sidebarOffset: monitor.getClientOffset(),
-    isDragging: monitor.isDragging(),
-  }))
+  const { sidebarOffset, isDragging, block, isSidebarItem, delta } = useDragLayer(
+    monitor => ({
+      block: monitor.getItem<BoardBlock | undefined>(),
+      isSidebarItem: monitor.getItemType() === sidebarIconType,
+      initialOffset: monitor.getInitialSourceClientOffset(),
+      currentOffset: monitor.getSourceClientOffset(),
+      sidebarOffset: monitor.getClientOffset(),
+      delta: monitor.getDifferenceFromInitialOffset(),
+      isDragging: monitor.isDragging(),
+    }),
+  )
+
+  const { board } = useRootStore()
 
   if (!block) return
   if (!isDragging) return
 
-  let offset: XYCoord | undefined
-
   if (isSidebarItem) {
     const canvas = getCanvas()
-    offset = getBlockOffset({ x: canvas.left, y: canvas.top }, sidebarOffset)
+    const offset = getBlockOffset({ x: canvas.left, y: canvas.top }, sidebarOffset)
+
+    if (!offset) return null
+
+    return (
+      <UI.ViewBoardBlock
+        {...block}
+        left={offset.x}
+        top={offset.y}
+      />
+    )
   } else {
-    offset = getBlockOffset(initialOffset, currentOffset)
+    if (!delta) return null
+
+    const left = snapToGrid(block.left + delta.x, xStep)
+    const top = snapToGrid(block.top + delta.y, yStep)
+
+    board.getBlock(block.id)?.translate(top, left)
   }
-
-  if (!offset) return null
-
-  return (
-    <UI.DraggedBoardBlock
-      {...block}
-      offset={offset}
-    />
-  )
 }

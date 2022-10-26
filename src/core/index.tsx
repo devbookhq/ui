@@ -11,7 +11,6 @@ import {
   useState,
 } from 'react'
 import { useDrag } from 'react-dnd'
-import type { XYCoord } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import { Resizable } from 'react-resizable'
 
@@ -40,17 +39,6 @@ export function parseDefaultProps(
   return props
 }
 
-function getStyles(left: number, top: number, isDragging: boolean): CSSProperties {
-  return {
-    position: 'absolute',
-    ...getTransform(left, top),
-    // IE fallback: hide the real node using CSS when dragging
-    // because IE will ignore our custom "empty image" drag preview.
-    opacity: isDragging ? 0 : 1,
-    height: isDragging ? 0 : '',
-  }
-}
-
 function getTransform(left: number, top: number): CSSProperties {
   const transform = `translate3d(${left}px, ${top}px, 0)`
   return {
@@ -71,7 +59,7 @@ export type UIProps<C extends UIComponentProps> = {
   [key in keyof ComponentProps<C>]: {
     type: UIPropType
     label: string
-    values?: ComponentProps<C>[key][]
+    values?: { label?: string; value: ComponentProps<C>[key] }[]
     default: ComponentProps<C>[key]
   }
 }
@@ -99,6 +87,30 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     setup.Block = memo(setup.Block)
   })
 
+  function ViewBoardBlock(block: BoardBlock) {
+    const C = componentsSetup[block.componentType]
+    const { left, top, props: rawProps, width, height } = block
+    const props = useMemo(() => JSON.parse(rawProps), [rawProps])
+
+    const styleSize =
+      block.width === undefined || block.height === undefined
+        ? C.defaultSize
+        : { width, height }
+
+    return (
+      <div
+        className="absolute flex items-stretch justify-center"
+        style={{ ...getTransform(left, top), ...styleSize }}
+      >
+        {/* We use an invisible block outline because the missing outline border would
+        otherwise change the block position */}
+        <BlockOutline>
+          <C.Block {...props} />
+        </BlockOutline>
+      </div>
+    )
+  }
+
   function EditorBoardBlock({
     id,
     left,
@@ -113,6 +125,10 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
 
     const { board } = useRootStore()
 
+    const [size, setSize] = useState(
+      width === undefined || height === undefined ? C.defaultSize : { width, height },
+    )
+
     const [{ isDragging }, drag, preview] = useDrag(
       () => ({
         type: boardBlockType,
@@ -123,6 +139,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
           width,
           height,
           componentType,
+          props: rawProps,
         },
         collect: monitor => ({
           isDragging: monitor.isDragging(),
@@ -153,21 +170,39 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       board.removeBlock({ id })
     }
 
-    const [size, setSize] = useState(
-      width === undefined || height === undefined ? C.defaultSize : { width, height },
-    )
     const [isResizing, setIsResizing] = useState(false)
 
     const styleSize = useMemo(() => {
+      // TODO: Update mobx state so the changes to size are visible for everybody
       const width = snapToGrid(size.width, xStep)
       const height = snapToGrid(size.height, yStep)
       return { width, height }
     }, [size.height, size.width])
 
+    const [transform, setTransform] = useState({ top, left })
+
+    // function handleResize(handle: ResizeHandle, size: { width: number; height: number }) {
+    //   setSize(s => {
+    //     let deltaHeight: number | undefined
+    //     let deltaWidth: number | undefined
+
+    //     if (handle === 'n' || handle === 'ne' || handle === 'nw') {
+    //       deltaHeight = s.height - size.height
+    //     }
+
+    //     if (handle === 'w' || handle === 'nw' || handle === 'sw') {
+    //       deltaWidth = s.width - size.width
+    //     }
+
+    //     // TODO: Snap to grid
+    //     // TODO: Set position
+
+    //     // TODO: Update mobx state so the changes to position are visible for everybody
+    //   })
+    // }
+
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
-
-    if (!C) throw new Error('Unknown block')
 
     return (
       <Resizable
@@ -176,20 +211,22 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
         height={size.height}
         resizeHandles={isSelected ? ['e', 'n', 'ne', 'nw', 's', 'se', 'sw', 'w'] : []}
         width={size.width}
-        onResize={(_, d) => setSize(d.size)}
         onResizeStart={() => setIsResizing(true)}
+        onResize={(_, d) => {
+          setSize(d.size)
+        }}
         onResizeStop={(_, d) => {
           const width = snapToGrid(d.size.width, xStep)
           const height = snapToGrid(d.size.height, yStep)
+          board.getBlock(id)?.resize(width, height)
           setSize(d.size)
           setIsResizing(false)
-          board.getBlock(id)?.resize(width, height)
         }}
       >
         <div
-          className="z-40 flex cursor-move items-stretch justify-center"
+          className="absolute z-40 flex cursor-move items-stretch justify-center"
           ref={isResizing ? null : drag}
-          style={{ ...getStyles(left, top, isDragging), ...styleSize }}
+          style={{ ...getTransform(left, top), ...styleSize }}
           onClick={e => {
             e.stopPropagation()
             board.selectBlock(id)
@@ -208,32 +245,6 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     )
   }
 
-  function ViewBoardBlock(block: BoardBlock) {
-    const C = componentsSetup[block.componentType]
-    const { left, top, props: rawProps, width, height } = block
-    const props = useMemo(() => JSON.parse(rawProps), [rawProps])
-
-    if (!C) throw new Error('Unknown block')
-
-    const styleSize =
-      block.width === undefined || block.height === undefined
-        ? C.defaultSize
-        : { width, height }
-
-    return (
-      <div
-        className="flex items-stretch justify-center"
-        style={{ ...getStyles(left, top, false), ...styleSize }}
-      >
-        {/* We use an invisible block outline because the missing outline border would
-        otherwise change the block position */}
-        <BlockOutline>
-          <C.Block {...props} />
-        </BlockOutline>
-      </div>
-    )
-  }
-
   function SidebarIcon({
     componentType,
     className,
@@ -249,6 +260,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       },
       item: {
         componentType,
+        props: '{}',
       },
       collect: monitor => ({
         opacity: monitor.isDragging() ? 0 : 1,
@@ -261,8 +273,6 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       },
       [preview],
     )
-
-    if (!C) throw new Error('Unknown block')
 
     return (
       <div
@@ -303,44 +313,9 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     )
   }
 
-  function DraggedBoardBlock({
-    componentType,
-    offset,
-    height,
-    width,
-  }: Omit<BoardBlock, 'props'> & { offset: XYCoord }) {
-    const C = componentsSetup[componentType]
-
-    const props = useMemo(
-      () => Object.entries(C.props).reduce(parseDefaultProps, {}),
-      [C.props],
-    )
-
-    if (!C) throw new Error('Unknown block')
-
-    const styleSize =
-      width === undefined || height === undefined ? C.defaultSize : { width, height }
-
-    return (
-      <div
-        className="z-50 flex cursor-move items-stretch justify-center"
-        style={{ ...getTransform(offset.x, offset.y), ...styleSize }}
-      >
-        <BlockOutline
-          label={C.label}
-          isHovered
-          isSelected
-        >
-          <C.Block {...props} />
-        </BlockOutline>
-      </div>
-    )
-  }
-
   return {
-    DraggedBoardBlock: observer(DraggedBoardBlock),
-    ViewBoardBlock: observer(ViewBoardBlock),
     EditorBoardBlock: observer(EditorBoardBlock),
+    ViewBoardBlock,
     SidebarIcon,
   }
 }

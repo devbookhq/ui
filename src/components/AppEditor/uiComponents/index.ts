@@ -3,10 +3,52 @@ import { EditorSetup, UIComponentSetup, UIPropType, UIProps, getUIComponents } f
 import { xStep, yStep } from 'core/EditorProvider/grid'
 
 import CodeEditor, { Icon as CodeEditorIcon } from './CodeEditor'
+import Logo, { Icon as LogoIcon } from './Logo'
 import Terminal, { Icon as TerminalIcon } from './Terminal'
+import Text, { Icon as TextIcon } from './Text'
 
 // Add new board components and their sidebar icons here
 export const componentsSetup: UIComponentSetup = {
+  Text: {
+    label: 'Text',
+    Icon: TextIcon,
+    Block: Text,
+    defaultSize: {
+      width: 5 * xStep,
+      height: 5 * yStep,
+    },
+    props: {
+      text: {
+        type: UIPropType.String,
+        label: 'Text',
+      },
+      size: {
+        type: UIPropType.String,
+        values: [
+          { label: 'Large', value: '3xl' },
+          { label: 'Normal', value: 'base' },
+          { label: 'Small', value: 'xs' },
+        ],
+        default: 'base',
+        label: 'Text',
+      },
+    } as UIProps<typeof Text>,
+  },
+  Logo: {
+    label: 'Logo',
+    Icon: LogoIcon,
+    Block: Logo,
+    defaultSize: {
+      width: 5 * xStep,
+      height: 5 * yStep,
+    },
+    props: {
+      src: {
+        type: UIPropType.String,
+        label: 'Image source',
+      },
+    } as UIProps<typeof Logo>,
+  },
   Editor: {
     label: 'Editor',
     Icon: CodeEditorIcon,
@@ -22,7 +64,14 @@ export const componentsSetup: UIComponentSetup = {
       },
       language: {
         type: UIPropType.String,
-        values: ['Bash', 'Go', 'Nodejs', 'Python3', 'Rust', 'Typescript'],
+        values: [
+          { value: 'Bash' },
+          { value: 'Go' },
+          { value: 'Nodejs' },
+          { value: 'Python3' },
+          { value: 'Rust' },
+          { value: 'Typescript' },
+        ],
         label: 'Language',
         default: 'Nodejs',
       },

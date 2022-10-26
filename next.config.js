@@ -7,6 +7,14 @@ const exportWrapper = process.env.ANALYZE
 module.exports = exportWrapper({
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
   compiler: {
     ...(process.env.NODE_ENV === 'production' && {
       removeConsole: {
