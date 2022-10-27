@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import Button from 'components/Button'
 import Input from 'components/Input'
@@ -19,6 +19,8 @@ interface Props {
 function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
   const [title, setTitle] = useState(createRandomTitle)
 
+  const [ref, setRef] = useState<HTMLInputElement | null>(null)
+
   function handleTitleChange(e: ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value)
   }
@@ -29,6 +31,24 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
       id: createID(),
     })
   }
+
+  useEffect(
+    function selectContent() {
+      if (!isOpen) {
+        setTitle(createRandomTitle())
+      }
+    },
+    [isOpen],
+  )
+
+  useEffect(
+    function selectContent() {
+      if (!isOpen) return
+      if (!ref) return
+      ref.select()
+    },
+    [isOpen, ref],
+  )
 
   return (
     <Modal
@@ -59,6 +79,7 @@ function NewAppModal({ isOpen, onClose, onCreate, isLoading }: Props) {
         >
           <Input
             placeholder="App name"
+            ref={setRef}
             title="Name"
             value={title}
             wrapperClassName="w-full"
