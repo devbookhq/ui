@@ -1,4 +1,5 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import clsx from 'clsx'
 import { Layout } from 'lucide-react'
 import Link from 'next/link'
 import { MouseEvent, useEffect, useMemo, useState } from 'react'
@@ -100,7 +101,12 @@ function AppItem({ app }: Props) {
         </div>
       </div>
       <button
-        className="flex items-center justify-center"
+        className={clsx(
+          'flex items-center justify-center rounded border border-transparent px-3 py-1.5',
+          {
+            'border-amber-800 hover:bg-amber-800/10': confirmDelete,
+          },
+        )}
         onClick={handleDeleteApp}
       >
         {isDeleting && (
@@ -113,9 +119,12 @@ function AppItem({ app }: Props) {
         )}
         {!isDeleting && (
           <Text
-            className="whitespace-nowrap text-slate-300 hover:text-amber-800"
             size={Text.size.S3}
             text={confirmDelete ? 'Confirm delete' : 'Delete'}
+            className={clsx('whitespace-nowrap hover:text-amber-800', {
+              'text-amber-800': confirmDelete,
+              'text-slate-300': !confirmDelete,
+            })}
           />
         )}
       </button>
