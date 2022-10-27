@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
 import { useDrop } from 'react-dnd'
 
-import { UIComponentSetup, boardBlockType, parseDefaultProps, sidebarIconType } from '..'
+import { UIComponentSetup, boardBlockType, sidebarIconType } from '..'
 import { snapToGrid, xStep, yStep } from './grid'
 import { useRootStore } from './models/RootStoreProvider'
 import { BoardBlock } from './models/board'
@@ -41,18 +41,13 @@ export function useBoard(setup: UIComponentSetup) {
           const uiComponentSetup = setup[block.componentType]
           if (!uiComponentSetup) return
 
-          const defaultProps = Object.entries(uiComponentSetup.props).reduce(
-            parseDefaultProps,
-            {},
-          )
-
           const id = 'block_' + nanoid(14)
           board.setBlock({
             componentType: block.componentType,
             id,
             left,
             top,
-            props: JSON.stringify(defaultProps),
+            props: block.props,
             ...uiComponentSetup.defaultSize,
           })
           board.selectBlock(id)

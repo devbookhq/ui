@@ -87,7 +87,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     setup.Block = memo(setup.Block)
   })
 
-  function ViewBoardBlock(block: BoardBlock) {
+  function ViewBoardBlock(block: BoardBlock & { outlineEnabled?: boolean }) {
     const C = componentsSetup[block.componentType]
     const { left, top, props: rawProps, width, height } = block
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
@@ -95,16 +95,26 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     const styleSize =
       block.width === undefined || block.height === undefined
         ? C.defaultSize
-        : { width, height }
+        : {
+            width,
+            height,
+          }
 
     return (
       <div
         className="absolute flex items-stretch justify-center"
-        style={{ ...getTransform(left, top), ...styleSize }}
+        style={{
+          ...getTransform(left, top),
+          ...styleSize,
+        }}
       >
         {/* We use an invisible block outline because the missing outline border would
         otherwise change the block position */}
-        <BlockOutline>
+        <BlockOutline
+          isEnabled={block.outlineEnabled}
+          isSelected={block.outlineEnabled}
+          label={C.label}
+        >
           <C.Block {...props} />
         </BlockOutline>
       </div>
@@ -126,7 +136,12 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     const { board } = useRootStore()
 
     const [size, setSize] = useState(
-      width === undefined || height === undefined ? C.defaultSize : { width, height },
+      width === undefined || height === undefined
+        ? C.defaultSize
+        : {
+            width,
+            height,
+          },
     )
 
     const [{ isDragging }, drag, preview] = useDrag(
@@ -167,19 +182,32 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
     function handleDeleteBlock() {
-      board.removeBlock({ id })
+      board.removeBlock({
+        id,
+      })
     }
 
     const [isResizing, setIsResizing] = useState(false)
+
+    const block = board.getBlock(id)
 
     const styleSize = useMemo(() => {
       // TODO: Update mobx state so the changes to size are visible for everybody
       const width = snapToGrid(size.width, xStep)
       const height = snapToGrid(size.height, yStep)
-      return { width, height }
-    }, [size.height, size.width])
 
-    const [transform, setTransform] = useState({ top, left })
+      block?.resize(width, height)
+
+      return {
+        width,
+        height,
+      }
+    }, [size.height, size.width, block])
+
+    const [transform, setTransform] = useState({
+      top,
+      left,
+    })
 
     // function handleResize(handle: ResizeHandle, size: { width: number; height: number }) {
     //   setSize(s => {
@@ -187,11 +215,11 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     //     let deltaWidth: number | undefined
 
     //     if (handle === 'n' || handle === 'ne' || handle === 'nw') {
-    //       deltaHeight = s.height - size.height
+    //       const deltaHeight = s.height - size.height
     //     }
 
     //     if (handle === 'w' || handle === 'nw' || handle === 'sw') {
-    //       deltaWidth = s.width - size.width
+    //       const deltaWidth = s.width - size.width
     //     }
 
     //     // TODO: Snap to grid
@@ -206,7 +234,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
 
     return (
       <Resizable
-        axis={'both'}
+        axis="both"
         className="z-50 text-slate-400 hover:text-slate-600"
         height={size.height}
         resizeHandles={isSelected ? ['e', 'n', 'ne', 'nw', 's', 'se', 'sw', 'w'] : []}
@@ -216,17 +244,16 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
           setSize(d.size)
         }}
         onResizeStop={(_, d) => {
-          const width = snapToGrid(d.size.width, xStep)
-          const height = snapToGrid(d.size.height, yStep)
-          board.getBlock(id)?.resize(width, height)
-          setSize(d.size)
           setIsResizing(false)
         }}
       >
         <div
           className="absolute z-40 flex cursor-move items-stretch justify-center"
           ref={isResizing ? null : drag}
-          style={{ ...getTransform(left, top), ...styleSize }}
+          style={{
+            ...getTransform(left, top),
+            ...styleSize,
+          }}
           onClick={e => {
             e.stopPropagation()
             board.selectBlock(id)
@@ -253,6 +280,9 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     className?: string
   }) {
     const C = componentsSetup[componentType]
+
+    const defaultProps = Object.entries(C.props).reduce(parseDefaultProps, {})
+
     const [collected, drag, preview] = useDrag(() => ({
       type: sidebarIconType,
       options: {
@@ -260,7 +290,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       },
       item: {
         componentType,
-        props: '{}',
+        props: JSON.stringify(defaultProps),
       },
       collect: monitor => ({
         opacity: monitor.isDragging() ? 0 : 1,

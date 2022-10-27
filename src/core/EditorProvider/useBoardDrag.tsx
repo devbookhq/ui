@@ -61,6 +61,7 @@ export function useBoardDrag() {
       <UI.ViewBoardBlock
         {...block}
         left={offset.x}
+        outlineEnabled={true}
         top={offset.y}
       />
     )
