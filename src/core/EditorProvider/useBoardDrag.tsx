@@ -11,9 +11,9 @@ import { getCanvas } from './useBoard'
 function getBlockOffset(
   initialOffset: XYCoord | null,
   currentOffset: XYCoord | null,
-): XYCoord | undefined {
+): XYCoord | null {
   if (!initialOffset || !currentOffset) {
-    return
+    return null
   }
 
   let { x, y } = currentOffset
@@ -48,8 +48,8 @@ export function useBoardDrag() {
 
   const { board } = useRootStore()
 
-  if (!block) return
-  if (!isDragging) return
+  if (!block) return null
+  if (!isDragging) return null
 
   if (isSidebarItem) {
     const canvas = getCanvas()
@@ -71,5 +71,7 @@ export function useBoardDrag() {
     const top = snapToGrid(block.top + delta.y, yStep)
 
     board.getBlock(block.id)?.translate(top, left)
+
+    return null
   }
 }
