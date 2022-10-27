@@ -21,6 +21,7 @@ export const componentsSetup: UIComponentSetup = {
       text: {
         type: UIPropType.String,
         label: 'Text',
+        default: 'Text',
       },
       size: {
         type: UIPropType.String,
