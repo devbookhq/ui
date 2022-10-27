@@ -14,6 +14,10 @@ module.exports = {
       height: {
         inherit: 'inherit',
       },
+      colors: {
+        // We are currently using `-amber-` colors from the default palette (shades 50,100,200,300,400,800)
+        // Tailwind recommends https://palettte.app/ and https://colorbox.io/ for creating your palettes
+      },
     },
   },
   plugins: [require('tailwindcss-radix')()],
