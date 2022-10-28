@@ -17,6 +17,11 @@ function ResourcesSidebar() {
             value: 'blocks',
             component: <BlocksTab />,
           },
+          {
+            label: 'Databases',
+            value: 'databases',
+            component: <BlocksTab />,
+          },
         ]}
       />
     </Sidebar>

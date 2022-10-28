@@ -18,6 +18,9 @@ export const root = types.snapshotProcessor(rootWithoutProcessing, {
   postProcessor(snapshot) {
     return produce(snapshot, draft => {
       draft.board.selectedBlock = undefined
+      if (draft.resources.cockroachDB) {
+        draft.resources.cockroachDB.url = undefined
+      }
     })
   },
 })

@@ -5,23 +5,31 @@ const output = types.model({
   path: types.string,
 })
 
-const planetscaleDB = types.model({
-  enabled: types.optional(types.boolean, true),
-  output,
-})
+const cockroachDB = types
+  .model({
+    enabled: types.optional(types.boolean, true),
+    cached: types.optional(types.boolean, true),
+    url: types.optional(types.maybe(types.string), undefined),
+    output: types.optional(types.maybe(output), undefined),
+  })
+  .actions(self => ({
+    setURL(url: string | undefined) {
+      self.url = url
+    },
+  }))
 
-type PlanetscaleDB = SnapshotOut<typeof planetscaleDB>
+type CockroachDB = SnapshotOut<typeof cockroachDB>
 
 export const resources = types
   .model({
-    planetscaleDB: types.maybe(planetscaleDB),
+    cockroachDB: types.optional(types.maybe(cockroachDB), undefined),
     environmentID: types.optional(types.maybe(types.string), undefined),
   })
   .actions(self => ({
     setEnvironmentID(envID: string | undefined) {
       self.environmentID = envID
     },
-    setPlanetscaleDB(planetScaleDB: PlanetscaleDB | undefined) {
-      self.planetscaleDB = planetScaleDB
+    setCockroachDB(db: CockroachDB | undefined) {
+      self.cockroachDB = cockroachDB.create(db)
     },
   }))

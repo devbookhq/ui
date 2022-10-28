@@ -38,7 +38,9 @@
   },
   "dependencies": {
     "@devbookhq/react": "1.1.14",
+    "@devbookhq/sdk": "^2.5.10",
     "@headlessui/react": "^1.7.3",
+    "@radix-ui/react-accordion": "^1.0.1",
     "@radix-ui/react-select": "^1.1.1",
     "@radix-ui/react-switch": "^1.0.1",
     "@radix-ui/react-tabs": "^1.0.1",

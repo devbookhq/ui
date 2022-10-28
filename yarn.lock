@@ -452,6 +452,16 @@
     xterm-addon-fit "^0.6.0"
     xterm-addon-web-links "^0.7.0"
 
+"@devbookhq/sdk@^2.5.10":
+  version "2.5.10"
+  resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.5.10.tgz#03716863cfd6ec0f1f7c922f69f3ff5ed2b87a3a"
+  integrity sha512-4cdyYXGtJTfE2n3idXJsYUYhbLVxT6yonjaBeDoX2P5itQGU/AvQcksHFl9faHJruP0HQlQ5vxkuFCnB9QuLpw==
+  dependencies:
+    cross-fetch "^3.1.5"
+    normalize-path "^3.0.0"
+    openapi-typescript-fetch "^1.1.3"
+    rpc-websocket-client "^1.1.4"
+
 "@devbookhq/sdk@^2.5.4":
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/@devbookhq/sdk/-/sdk-2.5.4.tgz#b224b79848b81b1a43ad43ad9b02209dd00b88ff"
@@ -685,6 +695,36 @@
   integrity sha512-3e7rn8FDMin4CgeL7Z/49smCA3rFYY3Ha2rUQ7HRWFadS5iCRw08ZgVT1LaNTCNqgvrUiyczLflrVrF0SRQtNA==
   dependencies:
     "@babel/runtime" "^7.13.10"
+
+"@radix-ui/react-accordion@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-accordion/-/react-accordion-1.0.1.tgz#d956e3adb9ed32c629d0ebe4c771a80843903916"
+  integrity sha512-Ka7BQoyRRPwsOb0YEv0fQU8V8aCXCxAzNVI5BRN7WmPG2E1zQKKxmb86NVDqIj6uSnaahJ1E5S6bX5Lk9hTK+g==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.0"
+    "@radix-ui/react-collapsible" "1.0.1"
+    "@radix-ui/react-collection" "1.0.1"
+    "@radix-ui/react-compose-refs" "1.0.0"
+    "@radix-ui/react-context" "1.0.0"
+    "@radix-ui/react-id" "1.0.0"
+    "@radix-ui/react-primitive" "1.0.1"
+    "@radix-ui/react-use-controllable-state" "1.0.0"
+
+"@radix-ui/react-collapsible@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-collapsible/-/react-collapsible-1.0.1.tgz#7184312ce18e703628b9ef75cdc44b896d6f06b1"
+  integrity sha512-0maX4q91iYa4gjt3PsNf7dq/yqSR+HGAE8I5p54dQ6gnveS+ETWlMoijxrhmgV1k8svxpm34mQAtqIrJt4XZmA==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.0"
+    "@radix-ui/react-compose-refs" "1.0.0"
+    "@radix-ui/react-context" "1.0.0"
+    "@radix-ui/react-id" "1.0.0"
+    "@radix-ui/react-presence" "1.0.0"
+    "@radix-ui/react-primitive" "1.0.1"
+    "@radix-ui/react-use-controllable-state" "1.0.0"
+    "@radix-ui/react-use-layout-effect" "1.0.0"
 
 "@radix-ui/react-collection@1.0.1":
   version "1.0.1"
