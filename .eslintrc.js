@@ -12,12 +12,10 @@ module.exports = {
     'react/jsx-sort-props': [
       2,
       {
-        callbacksLast: true,
         shorthandFirst: false,
         shorthandLast: true,
-        multiline: 'last',
         ignoreCase: true,
-        noSortAlphabetically: false,
+        noSortAlphabetically: true,
       },
     ],
     'max-len': [

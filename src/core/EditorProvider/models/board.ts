@@ -1,21 +1,23 @@
 import { SnapshotOut, destroy, types } from 'mobx-state-tree'
 
+import { xStep, yStep } from '../grid'
+
 export type BlockProps = { [name: string]: any }
 
 export const boardBlock = types
   .model({
     id: types.identifier,
     top: types.number,
-    width: types.maybe(types.number),
-    height: types.maybe(types.number),
+    width: types.optional(types.number, xStep),
+    height: types.optional(types.number, yStep),
     left: types.number,
     props: types.optional(types.string, '{}'),
     componentType: types.string,
   })
   .views(self => ({
-    getProps() {
+    getProps(): BlockProps {
       const props = JSON.parse(self.props)
-      return props as BlockProps
+      return props
     },
   }))
   .views(self => ({
@@ -31,6 +33,22 @@ export const boardBlock = types
         ...props,
         [name]: value,
       })
+    },
+    reposition({
+      width,
+      height,
+      top,
+      left,
+    }: {
+      width: number
+      height: number
+      left: number
+      top: number
+    }) {
+      self.width = width
+      self.height = height
+      self.top = top
+      self.left = left
     },
     resize(width: number, height: number) {
       self.width = width

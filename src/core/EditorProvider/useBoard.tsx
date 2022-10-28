@@ -1,54 +1,68 @@
 import { nanoid } from 'nanoid'
 import { useDrop } from 'react-dnd'
 
-import { UIComponentSetup, boardBlockType, sidebarIconType } from '..'
+import { boardBlockType, sidebarIconType } from '..'
 import { snapToGrid, xStep, yStep } from './grid'
 import { useRootStore } from './models/RootStoreProvider'
 import { BoardBlock } from './models/board'
 
 export const canvasClass = 'builder-canvas'
 
-export function getCanvas() {
-  return document.getElementsByClassName(canvasClass)[0].getBoundingClientRect()
+export function getCanvasCoordinates() {
+  const canvas = document.getElementsByClassName(canvasClass)[0].getBoundingClientRect()
+
+  return {
+    x: canvas.left,
+    y: canvas.top,
+  }
 }
 
-export function useBoard(setup: UIComponentSetup) {
+export type DraggedBoardBlock = Pick<BoardBlock, 'id' | 'left' | 'top'>
+export type DraggedSidebarBlock = Pick<
+  BoardBlock,
+  'componentType' | 'props' | 'width' | 'height'
+>
+
+export function useBoard() {
   const { board } = useRootStore()
 
   const [, drop] = useDrop(
     () => ({
       accept: [boardBlockType, sidebarIconType],
-      drop(block: BoardBlock, monitor) {
+      hover(boardOrSidebarBlock: DraggedBoardBlock | DraggedSidebarBlock, monitor) {
         const type = monitor.getItemType()
 
         if (type === boardBlockType) {
+          const boardBlock = boardOrSidebarBlock as DraggedBoardBlock
+
           const delta = monitor.getDifferenceFromInitialOffset()
           if (!delta) return
 
-          const left = snapToGrid(block.left + delta.x, xStep)
-          const top = snapToGrid(block.top + delta.y, yStep)
+          const left = snapToGrid(boardBlock.left + delta.x, xStep)
+          const top = snapToGrid(boardBlock.top + delta.y, yStep)
 
-          board.getBlock(block.id)?.translate(top, left)
-        } else if (type === sidebarIconType) {
+          board.getBlock(boardBlock.id)?.translate(top, left)
+        }
+      },
+      drop(boardOrSidebarBlock: DraggedBoardBlock | DraggedSidebarBlock, monitor) {
+        const type = monitor.getItemType()
+        if (type === sidebarIconType) {
+          const sidebarBlock = boardOrSidebarBlock as DraggedSidebarBlock
+
           const offset = monitor.getClientOffset()
           if (!offset) return
 
-          const canvas = getCanvas()
+          const canvas = getCanvasCoordinates()
 
-          const left = snapToGrid(offset.x - canvas.left, xStep)
-          const top = snapToGrid(offset.y - canvas.top, yStep)
-
-          const uiComponentSetup = setup[block.componentType]
-          if (!uiComponentSetup) return
+          const left = snapToGrid(offset.x - canvas.x, xStep)
+          const top = snapToGrid(offset.y - canvas.y, yStep)
 
           const id = 'block_' + nanoid(14)
           board.setBlock({
-            componentType: block.componentType,
+            ...sidebarBlock,
             id,
             left,
             top,
-            props: block.props,
-            ...uiComponentSetup.defaultSize,
           })
           board.selectBlock(id)
         }
@@ -59,5 +73,6 @@ export function useBoard(setup: UIComponentSetup) {
 
   return {
     ref: drop,
+    boardBlocks: board.boardBlocks,
   }
 }

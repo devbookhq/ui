@@ -15,7 +15,7 @@ function AppView({ state }: Props) {
         codeSnippetID: state.resources.environmentID,
       }}
     >
-      <div className="relative flex flex-1">
+      <div className="relative flex flex-1 bg-white">
         {Object.values(state.board.blocks).map(b => (
           <UI.ViewBoardBlock
             key={b.id}

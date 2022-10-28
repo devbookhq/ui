@@ -14,17 +14,21 @@ import { useDrag } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import { Resizable } from 'react-resizable'
 
-import 'react-resizable/css/styles.css'
-
 import Text from 'components/typography/Text'
 
 import useHasMounted from 'hooks/useHasMounted'
+import useMousePosition from 'hooks/useMousePosition'
 
 import { BoardBlock } from 'core/EditorProvider/models/board'
 
 import BlockOutline from './BlockOutline'
 import { snapToGrid, xStep, yStep } from './EditorProvider/grid'
 import { useRootStore } from './EditorProvider/models/RootStoreProvider'
+import {
+  DraggedBoardBlock,
+  DraggedSidebarBlock,
+  getCanvasCoordinates,
+} from './EditorProvider/useBoard'
 
 export const boardBlockType = 'boardBlock'
 export const sidebarIconType = 'sidebarIcon'
@@ -87,32 +91,34 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     setup.Block = memo(setup.Block)
   })
 
-  function ViewBoardBlock(block: BoardBlock & { outlineEnabled?: boolean }) {
-    const C = componentsSetup[block.componentType]
-    const { left, top, props: rawProps, width, height } = block
+  function ViewBoardBlock({
+    componentType,
+    left,
+    top,
+    props: rawProps,
+    width,
+    height,
+    outlineEnabled,
+  }: Pick<BoardBlock, 'componentType' | 'left' | 'props' | 'width' | 'height' | 'top'> & {
+    outlineEnabled?: boolean
+  }) {
+    const C = componentsSetup[componentType]
     const props = useMemo(() => JSON.parse(rawProps), [rawProps])
-
-    const styleSize =
-      block.width === undefined || block.height === undefined
-        ? C.defaultSize
-        : {
-            width,
-            height,
-          }
 
     return (
       <div
         className="absolute flex items-stretch justify-center"
         style={{
           ...getTransform(left, top),
-          ...styleSize,
+          width,
+          height,
         }}
       >
         {/* We use an invisible block outline because the missing outline border would
         otherwise change the block position */}
         <BlockOutline
-          isEnabled={block.outlineEnabled}
-          isSelected={block.outlineEnabled}
+          isEnabled={outlineEnabled}
+          isSelected={outlineEnabled}
           label={C.label}
         >
           <C.Block {...props} />
@@ -132,29 +138,19 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     isSelected,
   }: BoardBlock & { isSelected: boolean }) {
     const C = componentsSetup[componentType]
+    const props = useMemo(() => JSON.parse(rawProps), [rawProps])
 
-    const { board } = useRootStore()
-
-    const [size, setSize] = useState(
-      width === undefined || height === undefined
-        ? C.defaultSize
-        : {
-            width,
-            height,
-          },
-    )
-
-    const [{ isDragging }, drag, preview] = useDrag(
+    const [{ isDragging }, drag, preview] = useDrag<
+      DraggedBoardBlock,
+      undefined,
+      { isDragging: boolean }
+    >(
       () => ({
         type: boardBlockType,
         item: {
           id,
           left,
           top,
-          width,
-          height,
-          componentType,
-          props: rawProps,
         },
         collect: monitor => ({
           isDragging: monitor.isDragging(),
@@ -170,100 +166,104 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
       [preview],
     )
 
+    const { board } = useRootStore()
+
+    const [isResizing, setIsResizing] = useState(false)
+
     useEffect(
-      function selectOnDrag() {
+      function selectOnChange() {
         if (isDragging) {
           board.selectBlock(id)
         }
       },
-      [isDragging, board, id, width, height],
+      [board, id, isDragging],
     )
 
-    const props = useMemo(() => JSON.parse(rawProps), [rawProps])
-
-    function handleDeleteBlock() {
-      board.removeBlock({
-        id,
-      })
-    }
-
-    const [isResizing, setIsResizing] = useState(false)
-
-    const block = board.getBlock(id)
-
-    const styleSize = useMemo(() => {
-      // TODO: Update mobx state so the changes to size are visible for everybody
-      const width = snapToGrid(size.width, xStep)
-      const height = snapToGrid(size.height, yStep)
-
-      block?.resize(width, height)
-
-      return {
-        width,
-        height,
-      }
-    }, [size.height, size.width, block])
-
-    const [transform, setTransform] = useState({
-      top,
-      left,
+    const [localSize, setLocalSize] = useState({
+      width,
+      height,
     })
 
-    // function handleResize(handle: ResizeHandle, size: { width: number; height: number }) {
-    //   setSize(s => {
-    //     let deltaHeight: number | undefined
-    //     let deltaWidth: number | undefined
+    const mousePosition = useMousePosition(true, !isResizing)
 
-    //     if (handle === 'n' || handle === 'ne' || handle === 'nw') {
-    //       const deltaHeight = s.height - size.height
-    //     }
-
-    //     if (handle === 'w' || handle === 'nw' || handle === 'sw') {
-    //       const deltaWidth = s.width - size.width
-    //     }
-
-    //     // TODO: Snap to grid
-    //     // TODO: Set position
-
-    //     // TODO: Update mobx state so the changes to position are visible for everybody
-    //   })
-    // }
-
+    const block = board.getBlock(id)
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
 
     return (
       <Resizable
-        axis="both"
-        className="z-50 text-slate-400 hover:text-slate-600"
-        height={size.height}
-        resizeHandles={isSelected ? ['e', 'n', 'ne', 'nw', 's', 'se', 'sw', 'w'] : []}
-        width={size.width}
-        onResizeStart={() => setIsResizing(true)}
         onResize={(_, d) => {
-          setSize(d.size)
+          const canvas = getCanvasCoordinates()
+          let newTop = top
+          let newLeft = left
+          let newHeight = height
+          let newWidth = width
+
+          if (d.size.height !== localSize.height) {
+            const y = mousePosition ? mousePosition.y - canvas.y : top
+
+            if (d.handle === 'n' || d.handle === 'ne' || d.handle === 'nw') {
+              newTop = snapToGrid(y, yStep)
+              if (newTop !== top) {
+                newHeight = snapToGrid(height + top - newTop, yStep)
+              }
+            } else {
+              newHeight = snapToGrid(d.size.height, yStep)
+            }
+          }
+
+          if (d.size.width !== localSize.width) {
+            const x = mousePosition ? mousePosition.x - canvas.x : left
+
+            if (d.handle === 'w' || d.handle === 'nw' || d.handle === 'sw') {
+              newLeft = snapToGrid(x, xStep)
+              if (newLeft !== left) {
+                newWidth = snapToGrid(width + left - newLeft, xStep)
+              }
+            } else {
+              newWidth = snapToGrid(d.size.width, xStep)
+            }
+          }
+
+          block?.reposition({
+            width: newWidth,
+            height: newHeight,
+            top: newTop,
+            left: newLeft,
+          })
+
+          setLocalSize(d.size)
         }}
-        onResizeStop={(_, d) => {
-          setIsResizing(false)
-        }}
+        onResizeStop={() => setIsResizing(false)}
+        width={localSize.width}
+        height={localSize.height}
+        resizeHandles={isSelected ? ['e', 'n', 'ne', 'nw', 's', 'se', 'sw', 'w'] : []}
+        onResizeStart={() => setIsResizing(true)}
       >
         <div
-          className="absolute z-40 flex cursor-move items-stretch justify-center"
-          ref={isResizing ? null : drag}
-          style={{
-            ...getTransform(left, top),
-            ...styleSize,
-          }}
+          className={clsx('absolute flex cursor-move items-stretch justify-center', {
+            'z-40': isSelected,
+          })}
           onClick={e => {
             e.stopPropagation()
             board.selectBlock(id)
+          }}
+          ref={isResizing ? null : drag}
+          style={{
+            ...getTransform(left, top),
+            height,
+            width,
           }}
         >
           <BlockOutline
             isSelected={isSelected}
             label={C.label}
+            onDelete={() =>
+              board.removeBlock({
+                id,
+              })
+            }
             isEnabled
-            onDelete={handleDeleteBlock}
           >
             <C.Block {...props} />
           </BlockOutline>
@@ -280,25 +280,27 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     className?: string
   }) {
     const C = componentsSetup[componentType]
-
     const defaultProps = Object.entries(C.props).reduce(parseDefaultProps, {})
+    const rawProps = JSON.stringify(defaultProps)
 
-    const [collected, drag, preview] = useDrag(() => ({
-      type: sidebarIconType,
-      options: {
-        dropEffect: 'copy',
-      },
-      item: {
-        componentType,
-        props: JSON.stringify(defaultProps),
-      },
-      collect: monitor => ({
-        opacity: monitor.isDragging() ? 0 : 1,
+    const [, drag, preview] = useDrag<DraggedSidebarBlock>(
+      () => ({
+        type: sidebarIconType,
+        options: {
+          dropEffect: 'copy',
+        },
+        item: {
+          componentType,
+          props: rawProps,
+          height: C.defaultSize.height,
+          width: C.defaultSize.width,
+        },
       }),
-    }))
+      [componentType, rawProps, C.defaultSize.width, C.defaultSize.height],
+    )
 
     useEffect(
-      function changePreview() {
+      function removePreview() {
         preview(getEmptyImage())
       },
       [preview],
@@ -306,12 +308,11 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
 
     return (
       <div
-        ref={drag}
-        {...collected}
         className={clsx(
           'group flex cursor-move flex-col items-center space-y-0.5',
           className,
         )}
+        ref={drag}
       >
         <div
           className="
@@ -345,7 +346,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
 
   return {
     EditorBoardBlock: observer(EditorBoardBlock),
-    ViewBoardBlock,
-    SidebarIcon,
+    ViewBoardBlock: memo(ViewBoardBlock),
+    SidebarIcon: memo(SidebarIcon),
   }
 }

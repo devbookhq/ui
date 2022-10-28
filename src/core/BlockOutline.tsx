@@ -23,7 +23,7 @@ function BlockOutline({
       className={clsx(
         'group relative flex h-full w-full items-stretch justify-center rounded-b rounded-r border-2 transition-colors',
         {
-          'z-40 border-amber-300 hover:border-amber-400': isSelected,
+          'border-amber-300 hover:border-amber-400': isSelected,
           'border-transparent': !isSelected,
           'rounded-tl hover:border-amber-300': isEnabled && !isSelected,
         },
@@ -31,7 +31,7 @@ function BlockOutline({
     >
       <div
         className={clsx(
-          'absolute -left-0.5 -top-6 z-50 flex h-5 cursor-move items-center justify-center rounded-t bg-amber-300 py-3 px-2 text-amber-800 transition-all group-hover:bg-amber-400',
+          'absolute -left-0.5 -top-6 flex h-5 cursor-move items-center justify-center rounded-t bg-amber-300 py-3 px-2 text-amber-800 transition-all group-hover:bg-amber-400',
           {
             'pointer-events-none hidden': !isSelected,
           },

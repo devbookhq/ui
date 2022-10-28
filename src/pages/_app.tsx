@@ -3,7 +3,6 @@ import { UserProvider } from '@supabase/supabase-auth-helpers/react'
 import { AppProps } from 'next/app'
 import { ToastContainer } from 'react-toastify'
 
-import 'react-toastify/dist/ReactToastify.css'
 import 'styles/global.css'
 
 import Layout from 'components/Layout'
