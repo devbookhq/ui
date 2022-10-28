@@ -100,5 +100,3 @@ export const board = types
       }
     },
   }))
-
-export type Board = SnapshotOut<typeof board>
