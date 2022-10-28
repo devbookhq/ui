@@ -200,28 +200,28 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
           let newWidth = width
 
           if (d.size.height !== localSize.height) {
-            const y = mousePosition ? mousePosition.y - canvas.y : top
-
             if (d.handle === 'n' || d.handle === 'ne' || d.handle === 'nw') {
+              const y = mousePosition ? mousePosition.y - canvas.y : top
               newTop = snapToGrid(y, yStep)
               if (newTop !== top) {
                 newHeight = snapToGrid(height + top - newTop, yStep)
               }
             } else {
-              newHeight = snapToGrid(d.size.height, yStep)
+              const y = mousePosition ? mousePosition.y - canvas.y : top + height
+              newHeight = snapToGrid(y - top, yStep)
             }
           }
 
           if (d.size.width !== localSize.width) {
-            const x = mousePosition ? mousePosition.x - canvas.x : left
-
             if (d.handle === 'w' || d.handle === 'nw' || d.handle === 'sw') {
+              const x = mousePosition ? mousePosition.x - canvas.x : left
               newLeft = snapToGrid(x, xStep)
               if (newLeft !== left) {
                 newWidth = snapToGrid(width + left - newLeft, xStep)
               }
             } else {
-              newWidth = snapToGrid(d.size.width, xStep)
+              const x = mousePosition ? mousePosition.x - canvas.x : left + width
+              newWidth = snapToGrid(x - left, xStep)
             }
           }
 
