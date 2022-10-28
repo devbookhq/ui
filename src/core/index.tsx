@@ -192,6 +192,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
 
     return (
       <Resizable
+        handleSize={[15, 15]}
         onResize={(_, d) => {
           const canvas = getCanvasCoordinates()
           let newTop = top
