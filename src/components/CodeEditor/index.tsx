@@ -188,7 +188,6 @@ const CodeEditor = forwardRef<Handler, Props>(
         className={`
         dbk-code-editor
         overflow-auto
-      bg-black-850
         ${className || ''}
       `}
         style={{

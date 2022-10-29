@@ -44,7 +44,7 @@ function useRunCode(session?: ReturnType<typeof useSession>) {
         setProcess({ state: CodeSnippetExecState.Running, output: [] })
 
         try {
-          await currentSession?.session?.filesystem?.writeFile(filename, runTrigger.code)
+          await currentSession?.session?.filesystem?.write(filename, runTrigger.code)
           const newProcess: Awaited<ReturnType<typeof createSessionProcess>> =
             await createSessionProcess(
               cmd,
