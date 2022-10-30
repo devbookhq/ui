@@ -116,7 +116,12 @@ export const componentsSetup: UIComponentSetup = {
       width: 26 * xStep,
       height: 20 * yStep,
     },
-    props: {} as UIProps<typeof Terminal>,
+    props: {
+      cmd: {
+        label: 'Execution command',
+        type: UIPropType.String,
+      },
+    } as UIProps<typeof Terminal>,
   },
 }
 
