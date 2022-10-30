@@ -118,8 +118,8 @@ function Editor({ files: initialFiles = [], isEditable = true, isInEditor }: Pro
               size={Text.size.S3}
               icon={<File size="16px" />}
               className={clsx('cursor-pointer rounded', {
-                'text-slate-400': selectedFileIdx === i,
-                'text-slate-200 hover:text-slate-400': selectedFileIdx !== i,
+                'text-slate-500': selectedFileIdx === i,
+                'text-slate-400 hover:text-slate-500': selectedFileIdx !== i,
               })}
               onClick={() => {
                 setSelectedFileIdx(i)
