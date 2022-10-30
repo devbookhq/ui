@@ -1,6 +1,5 @@
 import { CodeEditor, useProvidedSession } from '@devbookhq/react'
 import clsx from 'clsx'
-import produce from 'immer'
 import { File } from 'lucide-react'
 import { Code } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -21,9 +20,10 @@ export interface Props {
     language: ComponentProps<typeof CodeEditor>['language']
   }[]
   isEditable?: boolean
+  isInEditor?: boolean
 }
 
-function Editor({ files: initialFiles = [], isEditable = true }: Props) {
+function Editor({ files: initialFiles = [], isEditable = true, isInEditor }: Props) {
   const [files, setFiles] = useState(initialFiles)
   const [selectedFileIdx, setSelectedFileIdx] = useState(0)
 
@@ -31,29 +31,35 @@ function Editor({ files: initialFiles = [], isEditable = true }: Props) {
 
   const handleContentChange = useCallback(
     (content: string) => {
-      setFiles(files =>
-        produce(files, draft => {
-          if (draft.length > selectedFileIdx) {
-            const file = draft[selectedFileIdx]
+      setFiles(files => {
+        const newFiles = [...files]
+        if (files.length > selectedFileIdx) {
+          const file = files[selectedFileIdx]
+
+          newFiles[selectedFileIdx].content = content
+          if (!isInEditor) {
             session?.filesystem
               ?.write(file.name, content)
               .catch(err => showErrorNotif(JSON.stringify(err)))
-            draft[selectedFileIdx].content = content
           }
-        }),
-      )
+          return newFiles
+        }
+        return files
+      })
     },
-    [selectedFileIdx, session?.filesystem],
+    [selectedFileIdx, session?.filesystem, isInEditor],
   )
 
-  // useEffect(
-  //   function writeAllFile() {
-  //     Promise.all(files.map(f => session?.filesystem?.write(f.name, f.content))).catch(
-  //       err => showErrorNotif(JSON.stringify(err)),
-  //     )
-  //   },
-  //   [session?.filesystem, files],
-  // )
+  useEffect(
+    function writeAllFile() {
+      if (isInEditor) return
+
+      Promise.all(files.map(f => session?.filesystem?.write(f.name, f.content))).catch(
+        err => showErrorNotif(JSON.stringify(err)),
+      )
+    },
+    [session?.filesystem, files, isInEditor],
+  )
 
   useEffect(
     function reinitialize() {
@@ -131,7 +137,6 @@ function Editor({ files: initialFiles = [], isEditable = true }: Props) {
       "
       >
         <CodeEditor
-          autofocus={true}
           language={selectedFile?.language}
           content={fileInitContent}
           isReadOnly={!isEditable}
