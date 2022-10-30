@@ -8,11 +8,12 @@ export function Icon() {
 export interface Props {
   text?: string
   size?: 'xs' | 'base' | '2xl'
+  weight?: 'bold' | 'normal'
   isInEditor?: boolean
 }
 
-function Text({ text, size = 'base', isInEditor }: Props) {
-  const cls = `text-${size} text-slate-800`
+function Text({ text, size = 'base', isInEditor, weight = 'normal' }: Props) {
+  const cls = `text-${size} font-${weight} text-slate-800 items-center flex flex-1`
 
   return (
     <div

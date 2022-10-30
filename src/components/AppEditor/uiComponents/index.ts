@@ -23,6 +23,15 @@ export const componentsSetup: UIComponentSetup = {
         label: 'Text',
         default: 'Text',
       },
+      weight: {
+        label: 'Weight',
+        type: UIPropType.String,
+        values: [
+          { label: 'Normal', value: 'normal' },
+          { label: 'Bold', value: 'bold' },
+        ],
+        default: 'normal',
+      },
       size: {
         type: UIPropType.String,
         values: [
@@ -31,7 +40,7 @@ export const componentsSetup: UIComponentSetup = {
           { label: 'Small', value: 'xs' },
         ],
         default: 'base',
-        label: 'Text',
+        label: 'Size',
       },
     } as UIProps<typeof Text>,
   },
