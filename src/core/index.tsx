@@ -129,7 +129,10 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
           isSelected={outlineEnabled}
           label={C.label}
         >
-          <C.Block {...props} />
+          <C.Block
+            {...props}
+            isInEditor={false}
+          />
         </BlockOutline>
       </div>
     )
@@ -276,7 +279,10 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
             }
             isEnabled
           >
-            <C.Block {...props} />
+            <C.Block
+              {...props}
+              isInEditor={true}
+            />
           </BlockOutline>
         </div>
       </Resizable>
