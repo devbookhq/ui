@@ -42,7 +42,7 @@ function AppView({ state }: Props) {
   if (!viewCanvas) return null
 
   return (
-    <div className="flex flex-1 flex-col bg-[#fdfeff]">
+    <div className="flex flex-1 flex-col bg-[#fbfdfd]">
       <ViewProvider initialState={state}>
         <div
           style={{
