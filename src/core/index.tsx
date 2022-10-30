@@ -201,8 +201,6 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
 
-    console.log('p', props)
-
     return (
       <Resizable
         handleSize={[15, 15]}

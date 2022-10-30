@@ -37,10 +37,7 @@ function getViewCanvas(blocks: BoardBlock[]) {
 
 function AppView({ state }: Props) {
   const blocks = Object.values(state.board.blocks)
-
   const viewCanvas = getViewCanvas(blocks)
-
-  console.log(blocks, viewCanvas)
 
   if (!viewCanvas) return null
 

@@ -8,13 +8,14 @@ export function Icon() {
 
 export interface Props {
   src?: string
+  isInEditor?: boolean
 }
 
-function Logo({ src }: Props) {
+function Logo({ src, isInEditor }: Props) {
   return (
     <div
       className={clsx(
-        { 'outline-dashed outline-1': !src },
+        { 'outline-dashed outline-1': !src && isInEditor },
         `m-1
         flex
         flex-1

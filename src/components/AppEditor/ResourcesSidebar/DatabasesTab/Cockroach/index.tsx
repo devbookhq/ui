@@ -11,9 +11,6 @@ import CockroachDB from './CockroachDB'
 
 function Cockroach() {
   const { resources } = useRootStore()
-
-  console.log(resources.cockroachDB?.outputFile)
-
   return (
     <div
       className={clsx(
