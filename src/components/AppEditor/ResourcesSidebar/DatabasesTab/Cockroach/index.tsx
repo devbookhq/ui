@@ -50,10 +50,10 @@ function Cockroach() {
             <Text
               className="mr-12 flex w-12 whitespace-nowrap text-slate-400"
               size={Text.size.S3}
-              text="Output to a file"
+              text="Save connection string to a file"
             />
             <Input
-              placeholder="Save DB's URL here"
+              placeholder="Save connection string here"
               value={resources.cockroachDB?.outputFile || ''}
               onChange={e => resources.cockroachDB?.setOutputFile(e.target.value)}
             />
@@ -62,23 +62,12 @@ function Cockroach() {
             <Text
               className="mr-12 flex w-12 whitespace-nowrap text-slate-400"
               size={Text.size.S3}
-              text="Output in a format"
+              text="Save connection string in a format"
             />
             <Input
               placeholder="DATABASE_URL=${{URL}}"
               value={resources.cockroachDB?.outputStringFormat || ''}
               onChange={e => resources.cockroachDB?.setOutputStringFormat(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-1 items-center justify-between">
-            <Text
-              className="mr-12 flex w-12 whitespace-nowrap text-slate-400"
-              size={Text.size.S3}
-              text="Cache in the browser"
-            />
-            <Toggle
-              enabled={!!resources.cockroachDB?.cached}
-              onChange={e => resources.cockroachDB?.setCached(e)}
             />
           </div>
         </div>
