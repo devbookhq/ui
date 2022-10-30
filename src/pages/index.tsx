@@ -24,7 +24,7 @@ import { root } from 'core/EditorProvider/models/RootStoreProvider'
 const newAppDefaultState = getSnapshot(
   root.create({
     resources: {
-      environmentID: 'BSxxNRURAxjW',
+      environmentID: 'rrvG0aInT6Db',
     },
   }),
 )
@@ -67,7 +67,7 @@ function Dashboard() {
           slug,
         },
       })
-    } catch (err: unknown) {
+    } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       showErrorNotif(`Error creating app: ${msg}`)
       setIsLoadingNewSnippet(false)

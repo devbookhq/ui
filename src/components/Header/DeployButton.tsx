@@ -71,7 +71,7 @@ function DeployButton({ app }: Props) {
 
       setIsDeployed(true)
       setWasSuccessfullyDeployed(true)
-    } catch (err: unknown) {
+    } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       console.error(msg)
       showErrorNotif(`Error deploying app: ${msg}`)

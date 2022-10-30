@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Image as ImageIcon } from 'lucide-react'
 import Image from 'next/image'
 
@@ -12,14 +13,16 @@ export interface Props {
 function Logo({ src }: Props) {
   return (
     <div
-      className="
-    m-1
-    flex
-    flex-1
-    flex-col
-    overflow-hidden
-    rounded-lg
-  "
+      className={clsx(
+        { 'outline-dashed outline-1': !src },
+        `m-1
+        flex
+        flex-1
+        flex-col
+        overflow-hidden
+        rounded-lg
+        outline-slate-300`,
+      )}
     >
       {src && (
         <Image

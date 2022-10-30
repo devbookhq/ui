@@ -2,6 +2,7 @@ import Sidebar from 'components/Sidebar'
 import Tabs from 'components/Tabs'
 
 import BlocksTab from './BlocksTab'
+import DatabasesTab from './DatabasesTab'
 
 function ResourcesSidebar() {
   return (
@@ -20,7 +21,7 @@ function ResourcesSidebar() {
           {
             label: 'Databases',
             value: 'databases',
-            component: <BlocksTab />,
+            component: <DatabasesTab />,
           },
         ]}
       />

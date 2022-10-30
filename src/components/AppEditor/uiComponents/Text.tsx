@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Type as TypeIcon } from 'lucide-react'
 
 export function Icon() {
@@ -14,14 +15,17 @@ function Text({ text, size = 'base' }: Props) {
 
   return (
     <div
-      className="
-    m-1
-    flex
-    flex-1
-    flex-col
-    overflow-hidden
-    rounded-lg
-  "
+      className={clsx(
+        { 'outline-dashed outline-1': !text },
+        `m-1
+        flex
+        flex-1
+        flex-col
+        overflow-hidden
+        rounded-lg
+        outline-slate-300
+        transition-all`,
+      )}
     >
       <div className={cls}>{text}</div>
     </div>

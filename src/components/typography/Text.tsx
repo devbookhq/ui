@@ -16,9 +16,9 @@ export enum Size {
 }
 
 const Sizes = {
-  [Size.S1]: 'text-3xl',
-  [Size.S2]: 'text-sm',
-  [Size.S3]: 'text-xs',
+  [Size.S1]: 'text-3xl space-x-2',
+  [Size.S2]: 'text-sm space-x-1.5',
+  [Size.S3]: 'text-xs space-x-1',
 }
 
 function Text({ className, text, size = Size.S2, icon, onClick }: Props) {
@@ -26,7 +26,6 @@ function Text({ className, text, size = Size.S2, icon, onClick }: Props) {
     'flex',
     'flex-row',
     'items-center',
-    'space-x-1.5',
     'text-left',
     Sizes[size],
     className,

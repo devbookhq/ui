@@ -42,7 +42,7 @@ function RootStoreProvider({
   onInit,
   onStateChange,
 }: PropsWithChildren<Props>) {
-  const [instance, setInstance] = useState<RootInstance>(() => root.create({}))
+  const [instance] = useState<RootInstance>(() => root.create({}))
 
   useEffect(
     function handleOnInit() {
@@ -54,15 +54,11 @@ function RootStoreProvider({
 
   useEffect(
     function initializeStore() {
-      const newInstance = root.create({})
-
       if (initialState) {
-        applySnapshot(newInstance, initialState)
+        applySnapshot(instance, initialState)
       }
-
-      setInstance(newInstance)
     },
-    [initialState],
+    [instance, initialState],
   )
 
   useEffect(

@@ -52,7 +52,7 @@ function AppItem({ app }: Props) {
       setIsDeleting(true)
       try {
         await deleteApp(supabaseClient, app.id)
-      } catch (err: unknown) {
+      } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
         console.error(msg)
         showErrorNotif(`Error deleting app: ${msg}`)

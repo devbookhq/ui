@@ -55,16 +55,24 @@ export enum UIPropType {
   String = 'string',
   Number = 'number',
   Boolean = 'boolean',
+  Array = 'array',
 }
 
 export type UIComponentProps = keyof JSX.IntrinsicElements | JSXElementConstructor<any>
 
+export interface UIProp<T> {
+  type: UIPropType
+  label: string
+  values?: { label?: string; value: T }[]
+  default: T
+}
+
 export type UIProps<C extends UIComponentProps> = {
-  [key in keyof ComponentProps<C>]: {
-    type: UIPropType
-    label: string
-    values?: { label?: string; value: ComponentProps<C>[key] }[]
-    default: ComponentProps<C>[key]
+  [key in keyof ComponentProps<C>]: UIProp<ComponentProps<C>[key]> & {
+    nestedLabel?: string
+    nestedType?: {
+      [name: string]: UIProp<any>
+    }
   }
 }
 
@@ -189,6 +197,8 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     const block = board.getBlock(id)
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
+
+    console.log('p', props)
 
     return (
       <Resizable

@@ -1,78 +1,71 @@
-import clsx from 'clsx'
-import { UIComponentProps, UIPropType, UIProps } from 'core'
+import { UIComponentProps, UIPropType, UIProps, parseDefaultProps } from 'core'
+import produce from 'immer'
 import { observer } from 'mobx-react-lite'
-import { Instance } from 'mobx-state-tree'
 
-import Input from 'components/Input'
-import Select from 'components/Select'
-import Textarea from 'components/Textarea'
-import Toggle from 'components/Toggle'
-import Text from 'components/typography/Text'
+import { BlockProps } from 'core/EditorProvider/models/board'
 
-import { BlockProps, boardBlock } from 'core/EditorProvider/models/board'
+import NestedArrayProps from './NestedArrayProps'
+import Prop from './Prop'
 
 export interface Props {
-  block: Instance<typeof boardBlock>
+  setProps: (name: string, value: any) => any
   blockProps: BlockProps
   setupProps: UIProps<UIComponentProps>
 }
 
-function PropsTab({ block, setupProps, blockProps }: Props) {
+function PropsTab({ setProps, setupProps, blockProps }: Props) {
   return (
-    <div className="flex flex-1 flex-col space-y-2 px-1">
-      {Object.entries(setupProps).map(([name, prop]) => (
-        <div
-          key={name}
-          className={clsx('flex', {
-            // Rended the props in a ROW
-            'flex-1 flex-row items-center justify-between space-x-1':
-              (prop.type === UIPropType.String && prop.values) ||
-              prop.type === UIPropType.Boolean,
-            // Render the prop in a COL
-            'flex-col items-start space-y-1': !(
-              (prop.type === UIPropType.String && prop.values) ||
-              prop.type === UIPropType.Boolean
-            ),
-          })}
-        >
-          <Text
-            className="mr-12 flex w-12 whitespace-nowrap text-slate-400"
-            size={Text.size.S3}
-            text={prop.label}
+    <div className="flex flex-1 flex-col space-y-4 overflow-auto px-1">
+      {Object.entries(setupProps).map(([name, prop]) =>
+        prop.type === UIPropType.Array && prop.nestedType ? (
+          <NestedArrayProps
+            key={name}
+            nestedLabel={prop.nestedLabel || prop.label}
+            label={prop.label}
+            blockArrayProps={blockProps[name]}
+            setupProps={prop.nestedType}
+            addItem={() => {
+              const props = blockProps[name]
+
+              const defaultProps = Object.entries(prop.nestedType || {}).reduce(
+                parseDefaultProps,
+                {},
+              )
+
+              const newProps = produce(props, (draft: { [x: string]: any }[]) => {
+                draft.push(defaultProps)
+              })
+
+              setProps(name, newProps)
+            }}
+            deleteItem={(idx: number) => {
+              const props = blockProps[name]
+
+              const newProps = produce(props, (draft: { [x: string]: any }[]) => {
+                draft.splice(idx, 1)
+              })
+
+              setProps(name, newProps)
+            }}
+            setArrayProps={(idx: number, nestedName: string, value: any) => {
+              const props = blockProps[name]
+
+              const newProps = produce(props, (draft: { [x: string]: any }[]) => {
+                draft[idx][nestedName] = value
+              })
+
+              setProps(name, newProps)
+            }}
           />
-          {prop.type === UIPropType.String && !prop.values && (
-            <Textarea
-              value={blockProps[name]}
-              onChange={e => block.setProp(name, e.target.value)}
-            />
-          )}
-          {prop.type === UIPropType.String && prop.values && (
-            <Select
-              items={prop.values.map(p => ({
-                value: p.value,
-                label: p.label || p.value,
-              }))}
-              selectedItemLabel={(() => {
-                const item = prop.values.find(v => v.value === blockProps[name])
-                return item?.label || item?.value
-              })()}
-              onSelect={i => block.setProp(name, i?.value)}
-            />
-          )}
-          {prop.type === UIPropType.Number && (
-            <Input
-              value={blockProps[name]}
-              onChange={e => block.setProp(name, Number(e.target.value))}
-            />
-          )}
-          {prop.type === UIPropType.Boolean && (
-            <Toggle
-              enabled={!!blockProps[name]}
-              onChange={e => block.setProp(name, e)}
-            />
-          )}
-        </div>
-      ))}
+        ) : (
+          <Prop
+            key={name}
+            setProp={val => setProps(name, val)}
+            blockProp={blockProps[name]}
+            setupProp={prop}
+          />
+        ),
+      )}
     </div>
   )
 }

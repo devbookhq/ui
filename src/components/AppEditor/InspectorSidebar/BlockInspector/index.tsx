@@ -21,7 +21,7 @@ function BlockInspector({ block }: Props) {
   const blockProps = block.getProps()
 
   return (
-    <div className="flex flex-col items-stretch">
+    <div className="flex flex-col items-stretch overflow-hidden">
       <Text
         className="self-center py-3"
         text={`${uiComponentSetup.label} config`}
@@ -34,7 +34,7 @@ function BlockInspector({ block }: Props) {
             value: 'props',
             component: (
               <PropsTab
-                block={block}
+                setProps={block.setProp}
                 blockProps={blockProps}
                 setupProps={setupProps}
               />

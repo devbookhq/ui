@@ -1,3 +1,4 @@
+import produce from 'immer'
 import { SnapshotOut, destroy, types } from 'mobx-state-tree'
 
 import { xStep, yStep } from '../grid'
@@ -28,11 +29,11 @@ export const boardBlock = types
   .actions(self => ({
     setProp(name: string, value: any) {
       const props = self.getProps()
-
-      self.props = JSON.stringify({
-        ...props,
-        [name]: value,
-      })
+      self.props = JSON.stringify(
+        produce(props, draft => {
+          draft[name] = value
+        }),
+      )
     },
     reposition({
       width,

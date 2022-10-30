@@ -1,6 +1,7 @@
 @import 'react-toastify/dist/ReactToastify.css';
 /* @import 'react-resizable/css/styles.css'; */
 
+@import './codemirror.css';
 @import './resize.css';
 
 @tailwind base;
@@ -52,6 +53,27 @@
     scrollbar-color: #f3f4f6 transparent;
     scrollbar-width: thin;
   }
+
+  .custom-scrollbar {
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      /* @apply bg-black-650; */
+      &:hover {
+        /* @apply bg-black-600; */
+      }
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background: transparent;
+    }
+  }
+
+
+
 }
 
 @layer components {

@@ -1,20 +1,25 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
 
-const output = types.model({
-  type: types.optional(types.enumeration(['file']), 'file'),
-  path: types.string,
-})
-
 const cockroachDB = types
   .model({
-    enabled: types.optional(types.boolean, true),
-    cached: types.optional(types.boolean, true),
+    enabled: types.optional(types.maybe(types.boolean), true),
+    cached: types.optional(types.maybe(types.boolean), true),
     url: types.optional(types.maybe(types.string), undefined),
-    output: types.optional(types.maybe(output), undefined),
+    outputFile: types.optional(types.maybe(types.string), undefined),
+    outputStringFormat: types.optional(types.maybe(types.string), undefined),
   })
   .actions(self => ({
     setURL(url: string | undefined) {
       self.url = url
+    },
+    setOutputFile(file: string | undefined) {
+      self.outputFile = file
+    },
+    setOutputStringFormat(format: string | undefined) {
+      self.outputStringFormat = format
+    },
+    setCached(cached: boolean) {
+      self.cached = cached
     },
   }))
 
@@ -33,3 +38,5 @@ export const resources = types
       self.cockroachDB = cockroachDB.create(db)
     },
   }))
+
+export type Resources = SnapshotOut<typeof resources>

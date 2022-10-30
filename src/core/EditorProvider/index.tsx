@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import { DndProvider } from 'react-dnd'
 
-import ResourceProvider from './ResourceProvider'
+import EnvironmentProvider from '../../components/EnvironmentProvider'
 import RootStoreProvider, {
   Props as RootStoreProviderProps,
 } from './models/RootStoreProvider'
@@ -13,9 +13,9 @@ function BuilderProvider({ children, ...rest }: PropsWithChildren<Props>) {
   const backend = useDndBackend()
   return (
     <RootStoreProvider {...rest}>
-      <ResourceProvider>
+      <EnvironmentProvider>
         <DndProvider backend={backend}>{children}</DndProvider>
-      </ResourceProvider>
+      </EnvironmentProvider>
     </RootStoreProvider>
   )
 }

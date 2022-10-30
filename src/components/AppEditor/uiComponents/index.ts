@@ -2,7 +2,7 @@ import { EditorSetup, UIComponentSetup, UIPropType, UIProps, getUIComponents } f
 
 import { xStep, yStep } from 'core/EditorProvider/grid'
 
-import CodeEditor, { Icon as CodeEditorIcon } from './CodeEditor'
+import Editor, { Icon as EditorIcon } from './Editor'
 import Logo, { Icon as LogoIcon } from './Logo'
 import Terminal, { Icon as TerminalIcon } from './Terminal'
 import Text, { Icon as TextIcon } from './Text'
@@ -52,36 +52,61 @@ export const componentsSetup: UIComponentSetup = {
   },
   Editor: {
     label: 'Editor',
-    Icon: CodeEditorIcon,
-    Block: CodeEditor,
+    Icon: EditorIcon,
+    Block: Editor,
     defaultSize: {
       width: 30 * xStep,
       height: 32 * yStep,
     },
     props: {
-      content: {
-        type: UIPropType.String,
-        label: 'Initial code',
+      files: {
+        label: 'Tabs',
+        default: [] as {
+          name: string
+          content: string
+          language:
+            | 'Nodejs'
+            | 'Go'
+            | 'Bash'
+            | 'Rust'
+            | 'Python3'
+            | 'Typescript'
+            | undefined
+        }[],
+        nestedLabel: 'Tab',
+        nestedType: {
+          content: {
+            type: UIPropType.String,
+            label: 'Content',
+            default: '',
+          },
+          name: {
+            type: UIPropType.String,
+            label: 'Filename',
+            default: '',
+          },
+          language: {
+            type: UIPropType.String,
+            values: [
+              { value: 'Bash' },
+              { value: 'Go' },
+              { value: 'Nodejs' },
+              { value: 'Python3' },
+              { value: 'Rust' },
+              { value: 'Typescript' },
+            ],
+            label: 'Language',
+            default: 'Nodejs',
+          },
+        },
+        type: UIPropType.Array,
       },
-      language: {
-        type: UIPropType.String,
-        values: [
-          { value: 'Bash' },
-          { value: 'Go' },
-          { value: 'Nodejs' },
-          { value: 'Python3' },
-          { value: 'Rust' },
-          { value: 'Typescript' },
-        ],
-        label: 'Language',
-        default: 'Nodejs',
-      },
-      isReadOnly: {
+      isEditable: {
         type: UIPropType.Boolean,
-        label: 'Read-only',
-        default: false,
+        label: 'Editable',
+        default: true,
       },
-    } as UIProps<typeof CodeEditor>,
+    } as UIProps<typeof Editor>,
   },
   Terminal: {
     label: 'Terminal',

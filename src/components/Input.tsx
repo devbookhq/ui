@@ -50,7 +50,7 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
 InputEl.displayName = 'InputEl'
 
 const Input = forwardRef<HTMLInputElement, Props>(
-  ({ title, wrapperClassName, className, value = '', ...rest }, ref) => {
+  ({ title, wrapperClassName, className, value, ...rest }, ref) => {
     return (
       <>
         {title ? (
@@ -80,6 +80,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
           </div>
         ) : (
           <InputEl
+            value={value}
             {...rest}
             ref={ref}
           />

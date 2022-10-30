@@ -1,19 +1,36 @@
 import { api } from '@devbookhq/sdk'
 
+import { showErrorNotif } from 'utils/notification'
+
 const createCockroachDB = api.path('/prisma-hub/db').method('post').create()
 
 const cacheKey = 'cockroachDB'
 
 export async function getURL(cache?: boolean) {
-  const url = cache ? localStorage.getItem(cacheKey) : (await createCockroachDB({})).url
+  let url: string | null | undefined
+
+  if (cache) {
+    url = localStorage.getItem(cacheKey)
+  }
 
   if (!url) {
-    throw new Error('CockroachDB URL from server was empty')
+    try {
+      const result = await createCockroachDB({})
+      url = result.data.dbURL
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : JSON.stringify(err)
+      console.error(msg)
+      showErrorNotif(msg)
+    }
   }
 
   if (cache) {
-    localStorage.setItem(cacheKey, url)
+    if (url) {
+      localStorage.setItem(cacheKey, url)
+    }
+  } else {
+    localStorage.removeItem(cacheKey)
   }
 
-  return url
+  return url ? url : undefined
 }
