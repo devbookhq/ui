@@ -42,24 +42,26 @@ function AppView({ state }: Props) {
   if (!viewCanvas) return null
 
   return (
-    <ViewProvider initialState={state}>
-      <div
-        style={{
-          width: viewCanvas.width,
-          height: viewCanvas.height,
-          top: -viewCanvas.top / 2,
-          left: -viewCanvas.left / 2,
-        }}
-        className="relative m-auto flex"
-      >
-        {blocks.map(b => (
-          <UI.ViewBoardBlock
-            key={b.id}
-            {...b}
-          />
-        ))}
-      </div>
-    </ViewProvider>
+    <div className="flex flex-1 flex-col bg-[#fdfeff]">
+      <ViewProvider initialState={state}>
+        <div
+          style={{
+            width: viewCanvas.width,
+            height: viewCanvas.height,
+            top: -viewCanvas.top / 2,
+            left: -viewCanvas.left / 2,
+          }}
+          className="relative m-auto flex"
+        >
+          {blocks.map(b => (
+            <UI.ViewBoardBlock
+              key={b.id}
+              {...b}
+            />
+          ))}
+        </div>
+      </ViewProvider>
+    </div>
   )
 }
 
