@@ -55,8 +55,8 @@ export const componentsSetup: UIComponentSetup = {
     Icon: EditorIcon,
     Block: Editor,
     defaultSize: {
-      width: 30 * xStep,
-      height: 32 * yStep,
+      width: 24 * xStep,
+      height: 28 * yStep,
     },
     props: {
       files: {
@@ -113,7 +113,7 @@ export const componentsSetup: UIComponentSetup = {
     Icon: TerminalIcon,
     Block: Terminal,
     defaultSize: {
-      width: 30 * xStep,
+      width: 26 * xStep,
       height: 20 * yStep,
     },
     props: {} as UIProps<typeof Terminal>,
