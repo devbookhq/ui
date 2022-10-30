@@ -13,7 +13,7 @@ export interface Props {
 }
 
 function Text({ text, size = 'base', isInEditor, weight = 'normal' }: Props) {
-  const cls = `text-${size} font-${weight} text-slate-800 items-center flex flex-1`
+  const cls = `text-${size} text-slate-800 items-center flex flex-1`
 
   return (
     <div
@@ -29,7 +29,14 @@ function Text({ text, size = 'base', isInEditor, weight = 'normal' }: Props) {
         transition-all`,
       )}
     >
-      <div className={cls}>{text}</div>
+      <div
+        className={cls}
+        style={{
+          fontWeight: weight,
+        }}
+      >
+        {text}
+      </div>
     </div>
   )
 }
