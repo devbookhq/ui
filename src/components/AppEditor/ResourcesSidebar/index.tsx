@@ -3,6 +3,7 @@ import Tabs from 'components/Tabs'
 
 import BlocksTab from './BlocksTab'
 import DatabasesTab from './DatabasesTab'
+import PagesTab from './PagesTab'
 
 function ResourcesSidebar() {
   return (
@@ -22,6 +23,11 @@ function ResourcesSidebar() {
             label: 'Databases',
             value: 'databases',
             component: <DatabasesTab />,
+          },
+          {
+            label: 'Pages',
+            value: 'pages',
+            component: <PagesTab />,
           },
         ]}
       />

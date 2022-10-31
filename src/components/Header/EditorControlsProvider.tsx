@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
 import {
   PropsWithChildren,
@@ -36,8 +37,9 @@ export function useEditorControls() {
 
   return {
     getEditorState,
+    instance: context?.instance,
     setEditorInstance: context?.setInstance,
   }
 }
 
-export default EditorControlsProvider
+export default observer(EditorControlsProvider)

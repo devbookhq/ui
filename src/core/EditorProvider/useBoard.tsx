@@ -41,7 +41,7 @@ export function useBoard() {
           const left = snapToGrid(boardBlock.left + delta.x, xStep)
           const top = snapToGrid(boardBlock.top + delta.y, yStep)
 
-          board.getBlock(boardBlock.id)?.translate(top, left)
+          board?.getBlock(boardBlock.id)?.translate(top, left)
         }
       },
       drop(boardOrSidebarBlock: DraggedBoardBlock | DraggedSidebarBlock, monitor) {
@@ -58,13 +58,13 @@ export function useBoard() {
           const top = snapToGrid(offset.y - canvas.y, yStep)
 
           const id = 'block_' + nanoid(14)
-          board.setBlock({
+          board?.setBlock({
             ...sidebarBlock,
             id,
             left,
             top,
           })
-          board.selectBlock(id)
+          board?.selectBlock(id)
         }
       },
     }),
@@ -73,6 +73,6 @@ export function useBoard() {
 
   return {
     ref: drop,
-    boardBlocks: board.boardBlocks,
+    boardBlocks: board?.boardBlocks || [],
   }
 }

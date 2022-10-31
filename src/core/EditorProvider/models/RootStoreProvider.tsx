@@ -8,16 +8,44 @@ import { resources } from './resources'
 
 enableStaticRendering(typeof window === 'undefined')
 
-const rootWithoutProcessing = types.model({
-  board: types.optional(board, {}),
-  resources: types.optional(resources, {}),
-})
+const rootWithoutProcessing = types
+  .model({
+    pages: types.optional(types.array(board), [{}]),
+    selectedPage: types.optional(types.number, 0),
+    resources: types.optional(resources, {}),
+  })
+  .views(self => ({
+    get board() {
+      if (self.pages.length > self.selectedPage) {
+        return self.pages[self.selectedPage]
+      }
+      return undefined
+    },
+  }))
+  .actions(self => ({
+    createPage() {
+      self.pages.push(board.create({}))
+    },
+    deletePage(idx: number) {
+      self.pages.splice(idx, 1)
+    },
+    selectPage(idx: number) {
+      if (self.pages.length > idx) {
+        self.selectedPage = idx
+      }
+    },
+  }))
 
 // Because we don't want to serialize and save some parts of the state we filter them in the snapshot post processing function.
 export const root = types.snapshotProcessor(rootWithoutProcessing, {
   postProcessor(snapshot) {
     return produce(snapshot, draft => {
-      draft.board.selectedBlock = undefined
+      Object.values(draft.pages).forEach(v => {
+        v.selectedBlock = undefined
+      })
+
+      draft.selectedPage = 0
+
       if (draft.resources.cockroachDB) {
         draft.resources.cockroachDB.url = undefined
       }

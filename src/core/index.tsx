@@ -184,7 +184,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
     useEffect(
       function selectOnChange() {
         if (isDragging) {
-          board.selectBlock(id)
+          board?.selectBlock(id)
         }
       },
       [board, id, isDragging],
@@ -197,7 +197,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
 
     const mousePosition = useMousePosition(true, !isResizing)
 
-    const block = board.getBlock(id)
+    const block = board?.getBlock(id)
     const hasMounted = useHasMounted()
     if (!hasMounted) return null
 
@@ -258,7 +258,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
           })}
           onClick={e => {
             e.stopPropagation()
-            board.selectBlock(id)
+            board?.selectBlock(id)
           }}
           ref={isResizing ? null : drag}
           style={{
@@ -271,7 +271,7 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
             isSelected={isSelected}
             label={C.label}
             onDelete={() =>
-              board.removeBlock({
+              board?.removeBlock({
                 id,
               })
             }

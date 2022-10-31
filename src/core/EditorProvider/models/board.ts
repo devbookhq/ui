@@ -65,6 +65,7 @@ export type BoardBlock = SnapshotOut<typeof boardBlock>
 
 export const board = types
   .model({
+    name: types.optional(types.string, 'page'),
     blocks: types.map(boardBlock),
     selectedBlock: types.safeReference(boardBlock),
   })
@@ -92,6 +93,9 @@ export const board = types
     },
     setBlock(block: BoardBlock) {
       return self.blocks.put(block)
+    },
+    setName(name: string) {
+      self.name = name
     },
     removeBlock(block: Pick<BoardBlock, 'id'>) {
       const currentBlock = self.blocks.get(block.id)

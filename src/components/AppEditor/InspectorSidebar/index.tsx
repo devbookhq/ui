@@ -10,7 +10,7 @@ import BlockInspector from './BlockInspector'
 function InspectorSidebar() {
   const { board } = useRootStore()
 
-  const selectedBlock = board.selectedBlock
+  const selectedBlock = board?.selectedBlock
 
   return (
     <Sidebar

@@ -1,10 +1,12 @@
 import { ChevronRight } from 'lucide-react'
+import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/router'
 
 import Text from 'components/typography/Text'
 
 import { App } from 'queries/types'
 
+import { useEditorControls } from '../EditorControlsProvider'
 import HeaderLink from './HeaderLink'
 
 export interface Props {
@@ -13,6 +15,8 @@ export interface Props {
 
 function Navigation({ app }: Props) {
   const router = useRouter()
+
+  const { instance } = useEditorControls()
 
   return (
     <div className="flex items-center space-x-1">
@@ -34,8 +38,21 @@ function Navigation({ app }: Props) {
           />
         </>
       )}
+      {instance?.board?.name && instance.pages.length > 1 && (
+        <>
+          <ChevronRight
+            className="items-center text-slate-200"
+            size="16px"
+          />
+          <Text
+            className="whitespace-nowrap"
+            size={Text.size.S3}
+            text={instance.board.name}
+          />
+        </>
+      )}
     </div>
   )
 }
 
-export default Navigation
+export default observer(Navigation)

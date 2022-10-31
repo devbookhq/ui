@@ -1,3 +1,6 @@
+import clsx from 'clsx'
+import { useState } from 'react'
+
 import { UI } from 'components/AppEditor/uiComponents'
 
 import { RootState } from 'core/EditorProvider/models/RootStoreProvider'
@@ -5,6 +8,7 @@ import { BoardBlock } from 'core/EditorProvider/models/board'
 import ViewProvider from 'core/ViewProvider'
 
 import { headerBoardHeight } from './AppEditor/Board'
+import Text from './typography/Text'
 
 export interface Props {
   state: RootState
@@ -16,6 +20,8 @@ interface ViewCanvas {
   width: number
   height: number
 }
+
+const sidebarWidth = 160
 
 function getBoundingRectangle(blocks: BoardBlock[]) {
   return (
@@ -40,9 +46,15 @@ function getBoundingRectangle(blocks: BoardBlock[]) {
 }
 
 function AppView({ state }: Props) {
-  const blocks = Object.values(state.board.blocks)
+  const [selectedPage, setSelectedPage] = useState(state.selectedPage)
 
-  const headerBlocks = blocks.filter(b => b.top < headerBoardHeight)
+  const board = state.pages[selectedPage]
+  const blocks = Object.values(board.blocks)
+
+  // We use header from the first page on every other page
+  const firstPageBlocks = Object.values(state.pages[0].blocks)
+
+  const headerBlocks = firstPageBlocks.filter(b => b.top < headerBoardHeight)
   const contentBlocks = blocks.filter(b => b.top >= headerBoardHeight)
 
   const contentCanvas = getBoundingRectangle(contentBlocks)
@@ -64,8 +76,6 @@ function AppView({ state }: Props) {
 
   const leftHeaderCanvas = getBoundingRectangle(leftHeaderBlocks)
   const rightHeaderCanvas = getBoundingRectangle(rightHeaderBlocks)
-
-  console.log({ leftHeaderCanvas })
 
   return (
     <div className="flex flex-1 flex-col bg-[#fbfdfd]">
@@ -106,6 +116,31 @@ function AppView({ state }: Props) {
                 />
               ))}
             </div>
+          </div>
+        )}
+        {state.pages.length > 1 && (
+          <div
+            style={{
+              top: headerCanvas.height,
+              width: sidebarWidth,
+            }}
+            className="absolute h-full items-center justify-center space-y-2 px-6 py-8"
+          >
+            {state.pages.map((p, i) => (
+              <Text
+                key={i}
+                className={clsx(
+                  'cursor-pointer border-l-2 border-transparent py-1 px-3 font-normal transition-all',
+                  {
+                    'border-green-600 text-slate-500': selectedPage === i,
+                    'border-slate-300 text-slate-300 hover:border-green-500 hover:text-slate-500':
+                      selectedPage !== i,
+                  },
+                )}
+                text={p.name || `Page ${i + 1}`}
+                onClick={() => setSelectedPage(i)}
+              />
+            ))}
           </div>
         )}
         {contentCanvas && (

@@ -24,7 +24,7 @@ function Board() {
         className={clsx('relative', 'bg-slate-50', 'flex', 'flex-1', canvasClass)}
         ref={ref}
         style={gridStyle}
-        onClick={board.resetBlockSelection}
+        onClick={board?.resetBlockSelection}
       >
         <div
           style={{ height: headerBoardHeight }}
@@ -40,7 +40,7 @@ function Board() {
         {boardBlocks.map(b => (
           <UI.EditorBoardBlock
             {...b}
-            isSelected={b.id === board.selectedBlock?.id}
+            isSelected={b.id === board?.selectedBlock?.id}
             key={b.id}
           />
         ))}
