@@ -423,10 +423,10 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@devbookhq/react@^1.1.15":
-  version "1.1.15"
-  resolved "https://registry.yarnpkg.com/@devbookhq/react/-/react-1.1.15.tgz#c9f72e5af28931c9c1411c7078eec2d847d2c6a9"
-  integrity sha512-pZSL+Xw+rGM0ubJbK+YiGNGIFRxpC8N2kvLbl4StzZ5E6u/dbqDp2zCYMdqsR/Q4OjmrZ64gCl+of1hYmlaV3w==
+"@devbookhq/react@^1.1.17":
+  version "1.1.17"
+  resolved "https://registry.yarnpkg.com/@devbookhq/react/-/react-1.1.17.tgz#0eca48000774604ea8ed6441533325af473327e5"
+  integrity sha512-fVxdmswlXCrgpapL3QyL2Z8Qq2hnosrZ2hJrzgjEHg3jgynWF7WBllqSbv0mMr5ByLFeNXy13nHfn6VXwpP/Ag==
   dependencies:
     "@codemirror/autocomplete" "^0.19.15"
     "@codemirror/closebrackets" "^0.19.1"

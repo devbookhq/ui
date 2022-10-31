@@ -15,6 +15,7 @@ function EnvironmentProvider({ children }: PropsWithChildren) {
       <SessionProvider
         opts={{
           codeSnippetID: resources.environmentID,
+          inactivityTimeout: 0,
         }}
       >
         <ResourceProvider>{children}</ResourceProvider>
