@@ -18,7 +18,7 @@
 }
 
 .cm-editor .cm-scroller {
-  @apply overflow-auto;
+  @apply overflow-auto cursor-text;
   @apply pt-1 pb-4;
   /* Firefox scrollbar styling */
   scrollbar-color: #8F8F8F transparent;
