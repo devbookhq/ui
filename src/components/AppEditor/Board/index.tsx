@@ -28,13 +28,14 @@ function Board() {
       >
         <div
           style={{ height: headerBoardHeight }}
-          className=" group absolute flex h-[90px] w-full flex-1 items-center justify-center border-b border-slate-200 hover:bg-slate-100/40"
+          className=" group relative flex h-[90px] w-full flex-1 items-center justify-center border-b border-slate-200 hover:bg-slate-100/40"
         >
           <Text
-            className="pointer-events-none select-none text-transparent group-hover:text-slate-300"
+            className="pointer-events-none z-10 select-none text-transparent group-hover:text-slate-200"
             text="Header"
             size={Text.size.S1}
           />
+          <div className="absolute left-0 h-full w-[50%] border-r border-transparent group-hover:border-slate-200"></div>
         </div>
         {boardBlocks.map(b => (
           <UI.EditorBoardBlock
