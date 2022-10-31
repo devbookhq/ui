@@ -20,7 +20,9 @@ function useSession({
    */
   debug,
   /**
-   * If enabled, the session will close after the specified time (in ms) of inactivity from user.
+   * If defined the session will close after the specified time (in ms) of inactivity from user.
+   *
+   * To disable closing session when inactive the value of this argument should be `undefined`.
    *
    * The default inactivity timeout is 15 minutes.
    */
