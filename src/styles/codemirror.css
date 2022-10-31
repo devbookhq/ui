@@ -51,7 +51,7 @@
   @apply font-mono;
   @apply text-sm;
   /* @apply h-auto border-none; */
-  /* @apply bg-black-800; */
+  @apply bg-white;
 
   .cm-gutterElement {
     position: relative;
