@@ -3,6 +3,7 @@ import { EditorSetup, UIComponentSetup, UIPropType, UIProps, getUIComponents } f
 import { xStep, yStep } from 'core/EditorProvider/grid'
 
 import Editor, { Icon as EditorIcon } from './Editor'
+import Guide, { Icon as GuideIcon } from './Guide'
 import Logo, { Icon as LogoIcon } from './Logo'
 import Terminal, { Icon as TerminalIcon } from './Terminal'
 import Text, { Icon as TextIcon } from './Text'
@@ -43,6 +44,35 @@ export const componentsSetup: UIComponentSetup = {
         label: 'Size',
       },
     } as UIProps<typeof Text>,
+  },
+  Guide: {
+    label: 'Guide',
+    Icon: GuideIcon,
+    Block: Guide,
+    defaultSize: {
+      width: 10 * xStep,
+      height: 5 * yStep,
+    },
+    props: {
+      steps: {
+        label: 'Steps',
+        nestedLabel: 'Step',
+        type: UIPropType.Array,
+        default: [] as { name: string; text: string }[],
+        nestedType: {
+          name: {
+            type: UIPropType.String,
+            label: 'Name',
+            default: '',
+          },
+          text: {
+            type: UIPropType.String,
+            label: 'Text',
+            default: '',
+          },
+        },
+      },
+    } as UIProps<typeof Guide>,
   },
   Logo: {
     label: 'Logo',

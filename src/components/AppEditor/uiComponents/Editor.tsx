@@ -1,4 +1,4 @@
-import { CodeEditor, useProvidedSession } from '@devbookhq/react'
+import { CodeEditor, useLanguageServer, useProvidedSession } from '@devbookhq/react'
 import clsx from 'clsx'
 import { File } from 'lucide-react'
 import { Code } from 'lucide-react'
@@ -28,6 +28,23 @@ function Editor({ files: initialFiles = [], isEditable = true, isInEditor }: Pro
   const [selectedFileIdx, setSelectedFileIdx] = useState(0)
 
   const { session } = useProvidedSession()
+
+  const [startLS, setStartLS] = useState(false)
+
+  const { server: languageServer, error: languageServerError } = useLanguageServer({
+    session: startLS ? session : undefined,
+    language: 'Nodejs',
+    debug: true,
+  })
+
+  useEffect(function delayedLSStart() {}, [session?.filesystem])
+
+  useEffect(
+    function logError() {
+      console.error(languageServerError)
+    },
+    [languageServerError],
+  )
 
   const handleContentChange = useCallback(
     (content: string) => {
@@ -137,6 +154,7 @@ function Editor({ files: initialFiles = [], isEditable = true, isInEditor }: Pro
       "
       >
         <CodeEditor
+          languageServer={languageServer}
           language={selectedFile?.language}
           content={fileInitContent}
           isReadOnly={!isEditable}

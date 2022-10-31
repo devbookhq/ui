@@ -4,7 +4,7 @@ import { sortByOrder } from 'utils/sortByOrder'
 import { UI, componentsSetup } from '../uiComponents'
 
 // Use this array to arrange the order of blocks in the sidebar
-const blocksOrder = ['Editor', 'Terminal', 'Text', 'Logo']
+const blocksOrder = ['Editor', 'Terminal', 'Text', 'Logo', 'Guide']
 const blocks = Object.keys(componentsSetup).sort(sortByOrder(blocksOrder, identity))
 
 function BlocksTab() {
