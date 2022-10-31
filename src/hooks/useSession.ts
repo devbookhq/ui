@@ -7,6 +7,7 @@ export type SessionState = 'closed' | 'opening' | 'open'
 export interface Opts {
   codeSnippetID?: string
   debug?: boolean
+  inactivityTimeout: number
 }
 
 function useSession({
@@ -14,10 +15,16 @@ function useSession({
    * If the `codeSnippetID` is undefined the session will not be initialized.
    */
   codeSnippetID,
-  /**s
+  /**
    * If enabled, the edits to a VM's filesystem will be saved for the next session.
    */
   debug,
+  /**
+   * If enabled, the session will close after the specified time (in ms) of inactivity from user.
+   *
+   * The default inactivity timeout is 15 minutes.
+   */
+  inactivityTimeout = 15 * 60 * 1000,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
     session?: Session
@@ -61,6 +68,8 @@ function useSession({
   }, [debug, codeSnippetID])
 
   const onIdle = useCallback(() => {
+    if (!inactivityTimeout) return
+
     setSessionState(s => {
       if (s.state === 'closed') return s
 
@@ -70,10 +79,10 @@ function useSession({
 
       return { state: 'closed' }
     })
-  }, [])
+  }, [inactivityTimeout])
 
   const { reset } = useIdleTimer({
-    timeout: 15 * 60 * 1000,
+    timeout: inactivityTimeout,
     onIdle,
   })
 
