@@ -7,7 +7,7 @@ export type SessionState = 'closed' | 'opening' | 'open'
 export interface Opts {
   codeSnippetID?: string
   debug?: boolean
-  inactivityTimeout: number
+  inactivityTimeout?: number
 }
 
 function useSession({
