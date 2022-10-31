@@ -72,7 +72,7 @@ function AppView({ state }: Props) {
       <ViewProvider initialState={state}>
         {headerCanvas && (
           <div
-            className="flex justify-between border-b bg-[#fbfcfc]"
+            className="flex justify-between border-b bg-[#fefeff]"
             style={{ width: '100%' }}
           >
             <div
