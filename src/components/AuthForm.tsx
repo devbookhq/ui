@@ -122,7 +122,6 @@ function AuthForm({ authType }: Props) {
         <div className="flex w-full flex-col space-y-8 px-16">
           <div className="flex min-w-0 flex-col space-y-2">
             <input
-              value={'vasek.mlejnsky@gmail.com'}
               autoCapitalize="off"
               autoComplete="email"
               autoCorrect="off"
@@ -156,7 +155,6 @@ function AuthForm({ authType }: Props) {
               autoCorrect="off"
               disabled={isLoading}
               name="password"
-              value={'JUV0avz2vmr.ruf2xet'}
               placeholder="Password"
               ref={passwordRef}
               type="password"
