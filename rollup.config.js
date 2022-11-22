@@ -20,6 +20,13 @@ export default {
     },
     {
       name: pkg.name,
+      file: pkg.main,
+      format: 'cjs',
+      sourcemap: true,
+      exports: 'auto',
+    },
+    {
+      name: pkg.name,
       file: pkg.module,
       format: 'es',
       sourcemap: true,

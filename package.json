@@ -14,10 +14,11 @@
     "type": "git",
     "url": "https://github.com/DevbookHQ/ui"
   },
-  "main": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "esnext": "src/index.ts",
   "umd": "dist/umd/index.js",
+  "type": "module",
   "scripts": {
     "prepublishOnly": "npm run use-tag-version; rollup -c",
     "build": "rollup -c",
