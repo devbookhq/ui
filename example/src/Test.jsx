@@ -1,6 +1,15 @@
-import { CodeEditor, defaultLanguages, useLanguageServer } from '@devbookhq/code-editor'
+import { CodeEditor, useLanguageServer } from '@devbookhq/code-editor'
 import { useProvidedSession } from '@devbookhq/react'
 import React from 'react'
+
+export const defaultLanguages = [
+  {
+    // Necessary packages were installed by `npm i -g typescript-language-server typescript`
+    languageServerCommand: 'typescript-language-server',
+    fileExtensions: ['.js', '.ts'],
+    languageID: 'typescript',
+  },
+]
 
 function Test() {
   const s = useProvidedSession()

@@ -14,6 +14,12 @@ export default {
   output: [
     {
       name: pkg.name,
+      file: pkg.umd,
+      format: 'umd',
+      sourcemap: true,
+    },
+    {
+      name: pkg.name,
       file: pkg.module,
       format: 'es',
       sourcemap: true,
