@@ -1,8 +1,30 @@
-import { Session } from '@devbookhq/sdk'
-import { useCallback, useEffect, useState } from 'react'
+import {
+  CodeSnippetExecState,
+  OutStderrResponse,
+  OutStdoutResponse,
+  ProcessManager,
+  Session,
+} from '@devbookhq/sdk'
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { useIdleTimer } from 'react-idle-timer'
 
+import { createDeferredPromise } from './createDeferredPromise'
+
+export const rootdir = '/code'
+
+
 export type SessionState = 'closed' | 'opening' | 'open'
+
+export enum CodeSnippetExtendedState {
+  Failed = 'Failed',
+  Loading = 'Loading',
+}
+
+export type CodeSnippetState = CodeSnippetExtendedState | CodeSnippetExecState
 
 export interface Opts {
   codeSnippetID?: string
@@ -22,32 +44,40 @@ function useSession({
   /**
    * If defined the session will close after the specified time (in ms) of inactivity from user.
    *
-   * To disable closing session when inactive the value of this argument should be `undefined`.
+   * To disable closing session when inactive the value of this argument should be `0`.
    *
    * The default inactivity timeout is 15 minutes.
    */
   inactivityTimeout = 15 * 60 * 1000,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
-    session?: Session
-    state: SessionState
-    id?: string
+    session?: Session,
+    state: SessionState,
+    id?: string,
     open?: Promise<void>
   }>({ state: codeSnippetID ? 'opening' : 'closed' })
-
   const initSession = useCallback(async () => {
     if (!codeSnippetID) return
 
     const newSession = new Session({
       id: codeSnippetID,
       onDisconnect() {
-        setSessionState(s => (s.session === newSession ? { ...s, state: 'opening' } : s))
+        setSessionState(s => s.session === newSession ? {
+          ...s,
+          state: 'opening',
+        } : s)
       },
       onReconnect() {
-        setSessionState(s => (s.session === newSession ? { ...s, state: 'open' } : s))
+        setSessionState(s => s.session === newSession ? {
+          ...s,
+          state: 'open',
+        } : s)
       },
       onClose() {
-        setSessionState(s => (s.session === newSession ? { ...s, state: 'closed' } : s))
+        setSessionState(s => s.session === newSession ? {
+          ...s,
+          state: 'closed',
+        } : s)
       },
       debug,
     })
@@ -56,18 +86,30 @@ function useSession({
     let close: (() => Promise<void>) | undefined
 
     setSessionState(oldState => {
-      oldState.session?.close().catch(err => {
+      oldState.session?.close().catch((err) => {
         console.error(err)
       })
-      return { session: newSession, state: 'opening', id: codeSnippetID, open }
+      return {
+        session: newSession,
+        state: 'opening',
+        id: codeSnippetID,
+        open,
+      }
     })
 
     await open
 
-    setSessionState(s => (s.session === newSession ? { ...s, state: 'open' } : s))
+    setSessionState(s => s.session === newSession ? {
+      ...s,
+      state: 'open',
+    } : s)
 
-    return { session: newSession, close }
-  }, [debug, codeSnippetID])
+    return {
+      session: newSession,
+      close,
+    }
+  },
+  [debug, codeSnippetID])
 
   const onIdle = useCallback(() => {
     if (!inactivityTimeout) return
@@ -75,13 +117,14 @@ function useSession({
     setSessionState(s => {
       if (s.state === 'closed') return s
 
-      s.session?.close().catch(err => {
+      s.session?.close().catch((err) => {
         console.error(err)
       })
 
       return { state: 'closed' }
     })
-  }, [inactivityTimeout])
+  },
+  [inactivityTimeout])
 
   const { reset } = useIdleTimer({
     timeout: inactivityTimeout,
@@ -100,18 +143,22 @@ function useSession({
       await sessionState.open
       return { session: sessionState.session }
     }
-  }, [sessionState, initSession, reset])
+  },
+  [
+    sessionState,
+    initSession,
+    reset,
+  ])
 
-  useEffect(
-    function startSession() {
-      const result = initSession()
+  useEffect(function startSession() {
+    const result = initSession()
 
-      return () => {
-        result.then(r => r?.close?.())
-      }
-    },
-    [initSession],
-  )
+    return () => {
+      result.then(r => r?.close?.())
+    }
+  },
+  [initSession])
+
 
   return {
     refresh,

@@ -1,41 +1,37 @@
-import { closeBrackets, closeBracketsKeymap } from '@codemirror/closebrackets'
-import { defaultKeymap, indentWithTab } from '@codemirror/commands'
-import { commentKeymap } from '@codemirror/comment'
-import { foldGutter, foldKeymap } from '@codemirror/fold'
-import { highlightActiveLineGutter, lineNumbers } from '@codemirror/gutter'
-import { classHighlightStyle } from '@codemirror/highlight'
-import { history, historyKeymap } from '@codemirror/history'
-import { indentOnInput } from '@codemirror/language'
-import { bracketMatching } from '@codemirror/matchbrackets'
+import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete'
+import {
+  defaultKeymap,
+  history,
+  historyKeymap,
+  indentWithTab,
+} from '@codemirror/commands'
+import {
+  bracketMatching,
+  foldKeymap,
+  indentOnInput,
+  syntaxHighlighting,
+} from '@codemirror/language'
 import { Compartment, EditorState } from '@codemirror/state'
 import {
   EditorView,
   drawSelection,
   dropCursor,
   highlightActiveLine,
+  highlightActiveLineGutter,
   highlightSpecialChars,
   keymap,
+  lineNumbers,
+  scrollPastEnd,
 } from '@codemirror/view'
-
-import type { Language } from '../../hooks/usePublishedCodeSnippet'
-import { getLanguageHighlight } from './language'
+import { classHighlighter } from '@lezer/highlight'
 
 const disableSpellchecking = {
   'data-gramm': 'false',
   spellcheck: 'false',
 }
 
-export interface Options {
-  content?: string
-  isReadOnly?: boolean
-  onContentChange?: (content: string) => void
-  language: Language
-  filename?: string
-}
-
-export function createEditorState({ content = '', language }: Options) {
-  const languageHighlight = getLanguageHighlight(language)
-
+function createEditorState(content: string) {
+  const languageHighlightExtension = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
   const editabilityExtensions = new Compartment()
@@ -46,40 +42,43 @@ export function createEditorState({ content = '', language }: Options) {
       EditorView.contentAttributes.of(disableSpellchecking),
       editabilityExtensions.of([]),
       lineNumbers(),
+      bracketMatching(),
       highlightActiveLineGutter(),
       highlightSpecialChars(),
       history(),
-      foldGutter(),
+      scrollPastEnd(),
+      EditorState.tabSize.of(2),
       drawSelection(),
       dropCursor(),
-      indentOnInput(),
-      bracketMatching(),
       closeBrackets(),
+      indentOnInput(),
       highlightActiveLine(),
       keymap.of([
-        ...closeBracketsKeymap,
         ...defaultKeymap,
+        ...closeBracketsKeymap,
         ...historyKeymap,
         ...foldKeymap,
-        ...commentKeymap,
         indentWithTab,
-        // Override default browser Ctrl/Cmd+S shortcut when a code editor is focused.
         {
+          // Override default browser Ctrl/Cmd+S shortcut when a code editor is focused.
           key: 'Mod-s',
           run: () => true,
         },
       ]),
       languageServiceExtensions.of([]),
       contentHandlingExtensions.of([]),
-      languageHighlight,
-      classHighlightStyle,
+      languageHighlightExtension.of([]),
+      syntaxHighlighting(classHighlighter),
     ],
   })
 
   return {
     state,
+    languageHighlightExtension,
     languageServiceExtensions,
     contentHandlingExtensions,
     editabilityExtensions,
   }
 }
+
+export default createEditorState

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export function createDeferredPromise<T = void>() {
   let resolve: (value: T) => void
   let reject: (reason?: unknown) => void
@@ -8,7 +7,9 @@ export function createDeferredPromise<T = void>() {
   })
 
   return {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     resolve: resolve!,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     reject: reject!,
     promise,
   }

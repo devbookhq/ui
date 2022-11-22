@@ -1,7 +1,9 @@
+import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import autoExternal from 'rollup-plugin-auto-external'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
 import postcss from 'rollup-plugin-postcss'
+import { string } from 'rollup-plugin-string'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
@@ -30,9 +32,17 @@ export default {
       sourcemap: true,
     },
   ],
-  external: ['react', 'react-dom', 'react/jsx-runtime'],
+  external: ['react', 'react-dom', 'react/jsx-runtime', '@devbookhq/sdk'],
   plugins: [
+    string({
+      // Required to be specified
+      include: '**/*.svg',
+    }),
     autoExternal({ builtins: false }),
+    commonjs({
+      include: /node_modules/,
+      requireReturnsDefault: 'auto',
+    }),
     postcss({
       extensions: ['.css'],
       inject: {

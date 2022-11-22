@@ -9,21 +9,36 @@ import React, {
   useState,
 } from 'react'
 
-import type { Language } from '../../hooks/usePublishedCodeSnippet'
-import type { LanguageServer } from '../../utils/languageServer'
-import { languageService } from '../../utils/languageService'
-import { createEditorState } from './createEditorState'
+import { LSClients, LanguageSetup, getLanguageSetup } from '../../hooks/useLanguageServer'
+import { createExtension } from '../../hooks/useLanguageServer/codeMirror'
+import { getFileURI } from '../../hooks/useLanguageServer/utils'
+import createEditorState from './createEditorState'
 
 export interface Props {
   content?: string
   isReadOnly?: boolean
   onContentChange?: (content: string) => void
-  language?: Language
+  supportedLanguages: LanguageSetup[]
   height?: string
   className?: string
   autofocus?: boolean
-  filename?: string
-  languageServer?: LanguageServer
+  /**
+   *
+   * **Absolute** path to the file in the filesystem
+   *
+   */
+  filename: string
+  /**
+   *
+   * The result of the `useLanguageServer` hook should be passed here.
+   *
+   */
+  languageClients?: LSClients
+  /**
+   * Indicates if the file should be opened in the language server.
+   * If `false` the file must have been opened before.
+   */
+  openFileInLanguageServer?: boolean
 }
 
 export interface Handler {
@@ -33,15 +48,16 @@ export interface Handler {
 const CodeEditor = forwardRef<Handler, Props>(
   (
     {
-      content,
-      isReadOnly = false,
-      language = 'Nodejs',
-      height,
+      content = '',
       onContentChange,
-      className,
+      isReadOnly = false,
+      supportedLanguages,
+      height,
+      className = '',
       autofocus,
       filename,
-      languageServer,
+      languageClients,
+      openFileInLanguageServer = true,
     },
     ref,
   ) => {
@@ -50,16 +66,14 @@ const CodeEditor = forwardRef<Handler, Props>(
       view: EditorView
       editabilityExtensions: Compartment
       languageServiceExtensions: Compartment
+      languageHighlightExtension: Compartment
       contentHandlingExtensions: Compartment
     }>()
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        focus: () => editor?.view.focus(),
-      }),
-      [editor],
-    )
+    const languageSetup = getLanguageSetup(filename, supportedLanguages)
+    const languageClient = languageSetup && languageClients?.[languageSetup?.languageID]
+
+    useImperativeHandle(ref, () => ({ focus: () => editor?.view.focus() }), [editor])
 
     useLayoutEffect(
       function initEditor() {
@@ -68,18 +82,21 @@ const CodeEditor = forwardRef<Handler, Props>(
         const {
           languageServiceExtensions,
           contentHandlingExtensions,
+          languageHighlightExtension,
           editabilityExtensions,
           state,
-        } = createEditorState({
-          content,
-          language,
+        } = createEditorState(content)
+
+        const view = new EditorView({
+          state,
+          parent: editorEl.current,
         })
 
-        const view = new EditorView({ state, parent: editorEl.current })
         setEditor({
           view,
           languageServiceExtensions,
           contentHandlingExtensions,
+          languageHighlightExtension,
           editabilityExtensions,
         })
 
@@ -92,24 +109,42 @@ const CodeEditor = forwardRef<Handler, Props>(
           setEditor(undefined)
         }
       },
-      [autofocus, language, content],
+      [autofocus, content],
+    )
+
+    useEffect(
+      function configureHighlight() {
+        if (!editor) return
+        if (!languageSetup?.syntaxHighlight) return
+
+        editor.view.dispatch({
+          effects: editor.languageHighlightExtension.reconfigure(
+            languageSetup.syntaxHighlight,
+          ),
+        })
+        return () => {
+          editor.view.dispatch({
+            effects: editor.languageHighlightExtension.reconfigure([]),
+          })
+        }
+      },
+      [editor, languageSetup],
     )
 
     useEffect(
       function configureEditability() {
         if (!editor) return
 
-        editor.view.dispatch({
-          effects: editor.editabilityExtensions.reconfigure([
-            EditorState.readOnly.of(isReadOnly),
-            EditorView.editable.of(!isReadOnly),
-          ]),
-        })
+        const extension = [
+          EditorState.readOnly.of(isReadOnly),
+          EditorView.editable.of(!isReadOnly),
+        ]
 
+        editor.view.dispatch({
+          effects: editor.editabilityExtensions.reconfigure(extension),
+        })
         return () => {
-          editor.view.dispatch({
-            effects: editor.editabilityExtensions.reconfigure([]),
-          })
+          editor.view.dispatch({ effects: editor.editabilityExtensions.reconfigure([]) })
         }
       },
       [editor, isReadOnly],
@@ -120,14 +155,13 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!editor) return
         if (!onContentChange) return
 
-        const changeWatcher = EditorView.updateListener.of(update => {
+        const extension = EditorView.updateListener.of(update => {
           if (update.docChanged) onContentChange?.(update.state.doc.toString())
         })
 
         editor.view.dispatch({
-          effects: editor.contentHandlingExtensions.reconfigure(changeWatcher),
+          effects: editor.contentHandlingExtensions.reconfigure(extension),
         })
-
         return () => {
           editor.view.dispatch({
             effects: editor.contentHandlingExtensions.reconfigure([]),
@@ -139,60 +173,33 @@ const CodeEditor = forwardRef<Handler, Props>(
 
     useEffect(
       function configureLanguageService() {
-        async function init() {
-          if (!filename) return
-          if (!languageServer) return
-          if (!editor) return
-          if (!languageServer.hasValidExtension(filename)) return
+        if (!editor) return
+        if (!filename) return
+        if (!languageClient) return
 
-          const transport = await languageServer.createConnection()
-          if (!transport) return
+        const extension = createExtension({
+          client: languageClient,
+          documentURI: getFileURI(filename),
+          openFile: openFileInLanguageServer,
+        })
 
-          console.log(
-            'uri',
-            languageServer.getRootdirURI(),
-            languageServer.getDocumentURI(filename),
-          )
-
-          const service = languageService({
-            transport,
-            rootUri: languageServer.getRootdirURI(),
-            documentUri: languageServer.getDocumentURI(filename),
-            languageId: languageServer.languageID,
-            workspaceFolders: null,
-          })
-
-          editor.view.dispatch({
-            effects: editor.languageServiceExtensions.reconfigure(service),
-          })
-
-          return () => {
-            editor.view.dispatch({
-              effects: editor.languageServiceExtensions.reconfigure([]),
-            })
-          }
-        }
-
-        const result = init()
-
+        editor.view.dispatch({
+          effects: editor.languageServiceExtensions.reconfigure(extension),
+        })
         return () => {
-          result.then(cleanup => cleanup?.())
+          editor.view.dispatch({
+            effects: editor.languageServiceExtensions.reconfigure([]),
+          })
         }
       },
-      [editor, languageServer, filename],
+      [editor, languageClient, filename, openFileInLanguageServer],
     )
 
     return (
       <div
+        className={`overflow-auto ${className}`}
         ref={editorEl}
-        className={`
-        dbk-code-editor
-        overflow-auto
-        ${className || ''}
-      `}
-        style={{
-          ...(height && { height }),
-        }}
+        style={{ ...(height && { height }) }}
       />
     )
   },

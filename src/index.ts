@@ -1,15 +1,6 @@
 import '../styles/index.css'
 
-export { default as CodeSnippet } from './components/CodeSnippet'
 export { default as CodeEditor } from './components/CodeEditor'
-export { default as Terminal } from './components/Terminal'
-export type { Language } from './hooks/usePublishedCodeSnippet'
-export { default as SessionProvider, useProvidedSession } from './utils/SessionProvider'
-export { default as Casing, withCasing } from './components/Casing'
-export { default as useLanguageServer } from './hooks/useLanguageServer'
-export { default as useTerminal } from './hooks/useTerminal'
-export { createSessionProcess } from './utils/createSessionProcess'
-export { createTerminalProcess } from './utils/createTerminalProcess'
-export { LanguageServer } from './utils/languageServer'
-export { languageService } from './utils/languageService'
-export { default as useRunCode } from './hooks/useRunCode'
+export { default as useLanguageServer, defaultLanguages } from './hooks/useLanguageServer'
+
+export type { LanguageSetup, LSClients } from './hooks/useLanguageServer'

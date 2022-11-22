@@ -1,221 +1,503 @@
-.dbk-code-editor {
-  .cm-editor {
-    @apply flex h-full min-w-0 flex-1 text-left;
-    @apply bg-transparent;
+@import 'highlight.js/styles/github.css';
 
-    ::selection {
-      @apply text-white-900;
-      @apply bg-white-900/70;
+/* Editor  */
+
+pre code.hljs {
+  @apply p-0 bg-transparent whitespace-pre-wrap;
+}
+
+h1 {
+  @apply text-2xl font-medium py-1;
+}
+
+h2 {
+  @apply text-xl font-medium py-0.5;
+}
+
+h3 {
+  @apply text-base font-medium;
+}
+
+@layer components {
+  .custom-scrollbar {
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      /* @apply bg-black-650; */
+      &:hover {
+        /* @apply bg-black-600; */
+      }
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background: transparent;
     }
   }
+}
 
-  .cm-content {
-    @apply font-mono text-xs;
-    @apply h-auto;
-    @apply text-gray-200;
-    @apply caret-gray-500;
-  }
+.cm-editor {
+  @apply min-w-0 flex flex-1 h-full text-left text-gray-800;
+  @apply bg-transparent;
+}
 
-  .cm-editor .cm-scroller {
-    @apply overflow-auto;
-    /* Firefox scrollbar styling */
-    scrollbar-color: #8f8f8f transparent;
-    scrollbar-width: thin;
-  }
-
-  .cm-scroller::-webkit-scrollbar {
-    @apply h-[10px] w-[10px];
-  }
-
-  .cm-scroller::-webkit-scrollbar-corner {
-    @apply bg-transparent;
-  }
-
-  .cm-scroller::-webkit-scrollbar-thumb {
-    @apply bg-black-700 pb-16;
-  }
-
-  .cm-editor.cm-focused {
-    @apply outline-none;
-  }
-
-  .cm-editor.cm-focused .cm-cursor {
-    @apply border-l-gray-500;
-  }
-
-  .cm-editor.cm-focused .cm-selectionBackground,
+.cm-selectionLayer {
   .cm-selectionBackground {
-    @apply bg-white-900/30 !important;
+    background: #e2f2ff !important;
+  }
+}
+
+.cm-content {
+  @apply font-mono;
+  @apply text-sm;
+  @apply h-auto;
+  @apply text-gray-200;
+  @apply caret-gray-500;
+}
+
+.cm-editor .cm-scroller {
+  @apply overflow-auto cursor-text;
+  @apply pb-4;
+  /* Firefox scrollbar styling */
+  scrollbar-color: #8F8F8F transparent;
+  scrollbar-width: thin;
+}
+
+.cm-scroller::-webkit-scrollbar {
+  @apply h-[8px] w-[8px];
+}
+
+.cm-scroller::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
+.cm-scroller::-webkit-scrollbar-thumb {
+  /* @apply bg-black-700; */
+}
+
+.cm-editor.cm-focused {
+  @apply outline-none;
+}
+
+.cm-editor .cm-gutters {
+  @apply text-gray-300;
+  @apply bg-transparent;
+  @apply border-none;
+}
+
+.cm-gutter {
+  @apply font-mono;
+  @apply text-sm;
+  /* @apply h-auto border-none; */
+  @apply bg-white;
+
+  .cm-gutterElement {
+    position: relative;
+  }
+}
+
+.cm-gutter.cm-lineNumbers {
+  @apply text-right;
+  @apply rounded-bl-xl;
+  @apply text-[#CBD5E1];
+}
+
+.cm-editor .cm-activeLineGutter {
+  @apply bg-[#F1F5F9];
+}
+
+.cm-editor.cm-focused .cm-activeLineGutter {
+  @apply bg-[#F1F5F9];
+}
+
+.cm-editor .cm-line.cm-activeLine {
+  @apply bg-[#F1F5F9];
+}
+
+.cm-foldPlaceholder {
+  @apply bg-transparent;
+  @apply border-none;
+  @apply text-gray-300;
+}
+
+/* Token styling */
+/* regexp, escape, and special(string) are mapped to "tok-string2" */
+.tok-string2 {
+  @apply text-[#56b6c2];
+}
+
+/* special(variableName) to "tok-variableName2" */
+.tok-variableName2 {
+  @apply text-[#d19a66];
+}
+
+/* local(variableName) to "tok-variableName tok-local" */
+.tok-variableName .tok-local {
+  @apply text-[#30a];
+}
+
+/* definition(variableName) to "tok-variableName tok-definition" */
+.tok-variableName .tok-definition {
+  @apply text-[#61afef];
+}
+
+/* definition(propertyName) to "tok-propertyName tok-definition" */
+.tok-propertyName .tok-definition {
+  @apply text-[#abb2bf];
+}
+
+.tok-link {
+  @apply underline;
+  @apply text-[#7d8799];
+}
+
+.tok-heading {
+  @apply font-bold underline;
+}
+
+.tok-strikethrough {
+  @apply line-through;
+}
+
+.tok-emphasis {
+  @apply italic;
+}
+
+.tok-strong {
+  @apply font-bold;
+}
+
+.tok-keyword {
+  @apply text-[#c678dd];
+}
+
+.tok-atom {
+  @apply text-[#d19a66];
+}
+
+.tok-bool {
+  @apply text-[#d19a66];
+}
+
+.tok-url {
+  @apply text-[#56b6c2];
+}
+
+.tok-labelName {
+  @apply text-[#61afef];
+}
+
+.tok-inserted {
+  @apply text-[#98c379];
+}
+
+.tok-deleted {
+  @apply text-[#e06c75];
+}
+
+.tok-literal {
+  @apply text-[#98c379];
+}
+
+.tok-string {
+  @apply text-[#98c379];
+}
+
+.tok-number {
+  @apply text-[#e5c07b];
+}
+
+.tok-variableName {
+  @apply text-[#d19a66];
+}
+
+.tok-typeName {
+  @apply text-[#e5c07b];
+}
+
+.tok-namespace {
+  @apply text-[#e5c07b];
+}
+
+.tok-className {
+  @apply text-[#e5c07b];
+}
+
+.tok-macroName {
+  @apply text-[#e06c75];
+}
+
+.tok-propertyName {
+  @apply text-[#e06c75];
+}
+
+.tok-operator {
+  @apply text-[#56b6c2];
+}
+
+.tok-comment {
+  @apply text-[#7d8799];
+}
+
+.tok-meta {
+  @apply text-[#7d8799];
+}
+
+.tok-punctuation {}
+
+.tok-invalid {
+  @apply text-[#ffffff];
+}
+
+.preview {
+  .cm-editor .cm-scroller {
+    @apply overflow-hidden;
   }
 
-  .cm-editor .cm-gutters {
-    @apply pr-2;
-    @apply text-gray-800;
-    @apply bg-transparent;
-    @apply border-none;
+  .cm-editor .cm-gutter.cm-lineNumbers {
+    @apply rounded-none;
+    /* Reset border radius */
+    @apply rounded-tl-lg;
+  }
+}
+
+/* Language features */
+
+.cm-tooltip-section {
+  @apply border-none;
+}
+
+
+.signature-label {
+  @apply text-gray-800;
+}
+
+.selected-param {
+  @apply text-green-600 font-semibold;
+}
+
+.autocomplete-icon {
+  @apply mr-1 fill-gray-800;
+}
+
+.autocomplete-icon.autocomplete-icon-method {
+  @apply fill-green-700;
+}
+
+.autocomplete-icon.autocomplete-icon-property {
+  @apply fill-green-600;
+}
+
+.cm-editor {
+  /* Hover info and linting info */
+  .cm-tooltip-section:not(:first-child) { @apply border-none pt-1;}
+  .cm-diagnostic {@apply p-0 border-none block whitespace-pre-wrap; }
+  .cm-diagnostic-error {@apply text-[#ce4646] border-none font-normal text-xs leading-5;}
+  .cm-diagnostic-warning {@apply text-[orange] border-none font-normal text-xs leading-5;}
+  .cm-diagnostic-info {@apply text-[#6d6c6c] border-none font-normal text-xs leading-5;}
+
+  .cm-tooltip-hover {
+    @apply whitespace-pre-wrap;
+    @apply z-50;
+    @apply border border-gray-300 rounded;
+    @apply text-xs space-y-1;
+    @apply max-w-[400px] max-h-[600px] p-2 overflow-auto;
+    @apply bg-gray-200 text-gray-800;
+    @apply drop-shadow-lg;
+    a {
+      @apply text-green-600; 
+    }
+  }
+  
+  /* Signature help */
+  .documentation.cm-tooltip {
+    @apply whitespace-pre-wrap;
+    @apply z-50;
+    @apply border border-gray-300 rounded;
+    @apply text-xs space-y-1;
+    @apply max-w-[400px] max-h-[600px] p-2 overflow-auto;
+    @apply bg-gray-200 text-gray-800;
+    @apply drop-shadow-lg;
+    a {
+      @apply text-green-600; 
+    }
+  }
+  
+  .cm-tooltip {
+    @apply rounded;
   }
 
-  .cm-gutter {
-    @apply font-mono text-xs;
-    @apply h-auto border-none;
-    @apply bg-black-800;
-  }
+  /* Autocomplete */
+  .cm-tooltip-autocomplete {
+    @apply z-50;
+    @apply border border-gray-300 rounded;
+    @apply text-xs space-y-0.5;
+    @apply bg-gray-100 text-gray-800;
+    @apply drop-shadow-lg;
+    
+    .cm-completionInfo {
+      @apply whitespace-pre-wrap absolute w-max;
+      @apply z-50;
+      @apply border border-gray-300 rounded;
+      @apply text-xs space-y-0.5;
+      @apply max-w-[400px] max-h-[600px] p-2 overflow-auto;
+      @apply bg-gray-100 text-gray-800;
+      a {
+        @apply text-green-600;
+      }
+    }
 
-  .cm-gutter.cm-lineNumbers {
-    @apply min-w-[36px];
-    @apply text-right;
-  }
+    ul[role=listbox] {
+      @apply rounded overflow-hidden;
+      @apply custom-scrollbar;
 
-  .cm-editor .cm-activeLineGutter {
-    @apply bg-black-800;
-  }
+      li[role=option] {
+        @apply p-1;
+        @apply flex;
+        @apply items-center;
 
-  .cm-editor.cm-focused .cm-activeLineGutter {
-    @apply text-gray-400;
-  }
+        &[aria-selected=true] {
+          @apply text-gray-800;
+        }
+      }
+    }
 
-  .cm-editor .cm-line.cm-activeLine {
-    @apply bg-transparent;
-  }
+    .cm-completionLabel {
+      @apply text-xs;
+      @apply font-mono;
 
-  .cm-foldPlaceholder {
-    @apply bg-transparent;
-    @apply border-none;
-    @apply text-gray-300;
-  }
+      .cm-completionMatchedText {
+        @apply text-[#00A4FB] font-semibold;
+      }
+    }
 
-  .cm-content .cm-line,
-  .cm-editor .cm-gutters .cm-lineNumbers {
-    @apply py-px;
+    .cm-completionDetail {
+      @apply text-xs flex justify-end flex-1 text-gray-800/50 not-italic;
+    }
   }
+}
 
-  /* Token styling */
-  /* regexp, escape, and special(string) are mapped to "cmt-string2" */
-  .cmt-string2 {
-    @apply text-[#56b6c2];
-  }
+/* ////////////////// */
+/* PRISMA CSS */
+/* ////////////////// */
 
-  /* special(variableName) to "cmt-variableName2" */
-  .cmt-variableName2 {
-    @apply text-[#d19a66];
-  }
+/* Using ͼ to style CodeMirror is discouraged - https://discuss.codemirror.net/t/why-does-cm6-use-the-character-in-class-names/2821/12
+because the ͼ class is not guaranteed to be stable. */
 
-  /* local(variableName) to "cmt-variableName cmt-local" */
-  .cmt-variableName .cmt-local {
-    @apply text-[#30a];
-  }
+.ͼ1 {position: relative !important; box-sizing: border-box; display: flex !important; flex-direction: column;}
+.ͼ1 .cm-scroller {display: flex !important; align-items: flex-start !important; font-family: monospace; line-height: 1.4; height: 100%; overflow-x: auto; position: relative; z-index: 0;}
+.ͼ1 .cm-content {margin: 0; flex-grow: 2; min-height: 100%; display: block; white-space: pre; word-wrap: normal; box-sizing: border-box; padding: 4px 0; outline: none;}
+.ͼ1 .cm-lineWrapping {white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;}
+.ͼ2 .cm-content {caret-color: black;}
+.ͼ3 .cm-content {caret-color: white;}
+.ͼ1 .cm-line {display: block; padding: 0 2px 0 4px;}
+.ͼ1 .cm-selectionLayer {z-index: -1; contain: size style;}
+.ͼ1 .cm-selectionBackground {position: absolute;}
+.ͼ2 .cm-selectionBackground {background: #d9d9d9;}
+.ͼ3 .cm-selectionBackground {background: #222;}
+.ͼ2.cm-focused .cm-selectionBackground {background: #d7d4f0;}
+.ͼ3.cm-focused .cm-selectionBackground {background: #233;}
+.ͼ1 .cm-cursorLayer {z-index: 100; contain: size style; pointer-events: none;}
+.ͼ1.cm-focused .cm-cursorLayer {animation: steps(1) cm-blink 1.2s infinite;}
+@keyframes cm-blink {50% {visibility: hidden;}}
+@keyframes cm-blink2 {50% {visibility: hidden;}}
+.ͼ1 .cm-cursor {position: absolute; border-left: 1.2px solid black; margin-left: -0.6px; pointer-events: none; display: none; border-color: black;}
+.ͼ3 .cm-cursor {border-left-color: #444;}
+.ͼ1.cm-focused .cm-cursor {display: block;}
+.ͼ2 .cm-activeLine {background-color: #f3f9ff;}
+.ͼ3 .cm-activeLine {background-color: #223039;}
+.ͼ2 .cm-specialChar {color: red;}
+.ͼ3 .cm-specialChar {color: #f78;}
+.ͼ1 .cm-tab {display: inline-block; overflow: hidden; vertical-align: bottom;}
+.ͼ1 .cm-placeholder {color: #888; display: inline-block;}
+.ͼ1 .cm-button {vertical-align: middle; color: inherit; font-size: 70%; padding: .2em 1em; border-radius: 3px;}
+.ͼ2 .cm-button:active {background-image: linear-gradient(#b4b4b4, #d0d3d6);}
+.ͼ2 .cm-button {background-image: linear-gradient(#eff1f5, #d9d9df); border: 1px solid #888;}
+.ͼ3 .cm-button:active {background-image: linear-gradient(#111, #333);}
+.ͼ3 .cm-button {background-image: linear-gradient(#393939, #111); border: 1px solid #888;}
+.ͼ1 .cm-textfield {vertical-align: middle; color: inherit; font-size: 70%; border: 1px solid silver; padding: .2em .5em;}
+.ͼ2 .cm-textfield {background-color: white;}
+.ͼ3 .cm-textfield {border: 1px solid #555; background-color: inherit;}
+.ͼ1 .cm-diagnosticAction {font: inherit; border: none; padding: 2px 4px; background-color: #444; color: white; border-radius: 3px; margin-left: 8px;}
+.ͼ1 .cm-diagnosticSource {font-size: 70%; opacity: 0.7;}
+.ͼ1 .cm-lintRange {background-position: left bottom; background-repeat: repeat-x;}
+.ͼ1 .cm-lintRange-error {background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjMiPgogICAgPHBhdGggZD0ibTAgMyBsMiAtMiBsMSAwIGwyIDIgbDEgMCIgc3Ryb2tlPSIjZDExIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9Ii43Ii8+CiAgPC9zdmc+');}
+.ͼ1 .cm-lintRange-warning {background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjMiPgogICAgPHBhdGggZD0ibTAgMyBsMiAtMiBsMSAwIGwyIDIgbDEgMCIgc3Ryb2tlPSJvcmFuZ2UiIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iLjciLz4KICA8L3N2Zz4=');}
+.ͼ1 .cm-lintRange-info {background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjMiPgogICAgPHBhdGggZD0ibTAgMyBsMiAtMiBsMSAwIGwyIDIgbDEgMCIgc3Ryb2tlPSIjOTk5IiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9Ii43Ii8+CiAgPC9zdmc+');}
+.ͼ1 .cm-lintRange-active {background-color: #ffdd9980;}
+.ͼ1 .cm-tooltip-lint {padding: 0; margin: 0;}
+.ͼ1 .cm-lintPoint:after {content: ""; position: absolute; bottom: 0; left: -2px; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 4px solid #d11;}
+.ͼ1 .cm-lintPoint {position: relative;}
+.ͼ1 .cm-lintPoint-warning:after {border-bottom-color: orange;}
+.ͼ1 .cm-lintPoint-info:after {border-bottom-color: #999;}
+.ͼ1 .cm-panel.cm-panel-lint ul [aria-selected] u {text-decoration: underline;}
+.ͼ1 .cm-panel.cm-panel-lint ul [aria-selected] {background-color: #ddd;}
+.ͼ1 .cm-panel.cm-panel-lint ul:focus [aria-selected] {background: #bdf; background-color: Highlight; color: white; color: HighlightText;}
+.ͼ1 .cm-panel.cm-panel-lint ul u {text-decoration: none;}
+.ͼ1 .cm-panel.cm-panel-lint ul {max-height: 100px; overflow-y: auto; padding: 0; margin: 0;}
+.ͼ1 .cm-panel.cm-panel-lint [name=close] {position: absolute; top: 0; right: 2px; background: inherit; border: none; font: inherit; padding: 0; margin: 0;}
+.ͼ1 .cm-panel.cm-panel-lint {position: relative;}
+.ͼ1 .cm-panels {box-sizing: border-box; position: sticky; left: 0; right: 0;}
+.ͼ2 .cm-panels {background-color: #f5f5f5; color: black;}
+.ͼ2 .cm-panels-top {border-bottom: 1px solid #ddd;}
+.ͼ2 .cm-panels-bottom {border-top: 1px solid #ddd;}
+.ͼ3 .cm-panels {background-color: #333338; color: white;}
+.ͼ2 .cm-line {color: #94A3B8;}
+.ͼ2 .tok-keyword {color: #BE185D;}
+.ͼ2 .tok-literal, .ͼ2 .tok-bool {color: #0F766E;}
+.ͼ2 .tok-string, .ͼ2 .cm-prismaQuery .tok-string2 {color: #0F766E;}
+.ͼ2 .tok-definition.tok-variableName {color: #1D4ED8;}
+.ͼ2 .tok-variableName, .ͼ2 .cm-prismaQuery .tok-typeName, .ͼ2 .cm-prismaQuery .tok-namespace, .ͼ2 .cm-prismaQuery .tok-className, .ͼ2 .cm-prismaQuery .tok-punctuation, .ͼ2 .cm-prismaQuery .tok-operator {color: #1E293B;}
+.ͼ2 .tok-propertyName {color: #9333EA;}
+.ͼ2 .tok-function {color: #EA580C;}
+.ͼ2 .tok-comment {color: #52525B;}
 
-  /* definition(variableName) to "cmt-variableName cmt-definition" */
-  .cmt-variableName .cmt-definition {
-    @apply text-[#61afef];
-  }
+.ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul > li {cursor: pointer; padding: 1px 1em 1px 3px; line-height: 1.2;}
+.ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] {background: #bdf; background-color: Highlight; color: white; color: HighlightText;}
+.ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul {font-family: monospace; white-space: nowrap; max-width: 700px; max-width: min(700px, 95vw); max-height: 10em; list-style: none; margin: 0; padding: 0;}
+.ͼ1 .cm-completionListIncompleteTop:before, .ͼ1 .cm-completionListIncompleteBottom:after {content: "···"; opacity: 0.5; display: block; text-align: center;}
+.ͼ1 .cm-completionInfo.cm-completionInfo-left {right: 100%;}
+.ͼ1 .cm-completionInfo.cm-completionInfo-right {left: 100%;}
+.ͼ2 .cm-snippetField {background-color: #00000022;}
+.ͼ3 .cm-snippetField {background-color: #ffffff22;}
+.ͼ1 .cm-snippetFieldPosition {vertical-align: text-top; width: 0; height: 1.15em; margin: 0 -0.7px -.7em; border-left: 1.4px dotted #888;}
+.ͼ1 .cm-completionMatchedText {text-decoration: none;}
+.ͼ1 .cm-completionIcon {font-size: 90%; width: .8em; display: inline-block; text-align: center; padding-right: .6em; opacity: 0.6;}
+.ͼ1 .cm-completionIcon-function:after, .ͼ1 .cm-completionIcon-method:after {content: 'ƒ';}
+.ͼ1 .cm-completionIcon-class:after {content: '○';}
+.ͼ1 .cm-completionIcon-interface:after {content: '◌';}
+.ͼ1 .cm-completionIcon-variable:after {content: '𝑥';}
+.ͼ1 .cm-completionIcon-constant:after {content: '𝐶';}
+.ͼ1 .cm-completionIcon-type:after {content: '𝑡';}
+.ͼ1 .cm-completionIcon-enum:after {content: '∪';}
+.ͼ1 .cm-completionIcon-property:after {content: '□';}
+.ͼ1 .cm-completionIcon-keyword:after {content: '';}
+.ͼ1 .cm-completionIcon-namespace:after {content: '▢';}
+.ͼ1 .cm-completionIcon-text:after {content: 'abc'; font-size: 50%; vertical-align: middle;}
+.ͼ1 .cm-lineNumbers .cm-gutterElement {padding: 0 8px 0 8px;}
+.ͼ1 .cm-lineNumbers {display: flex;}
+.ͼ1 .cm-gutterElement {user-select: none;}
+.ͼ1 .cm-prismaQueryRunButton:hover {color: #16A34A;}
+.ͼ1 .cm-prismaQueryRunButton.active:hover {color: #16A34A;}
+.ͼ1 .cm-prismaQueryRunButton.active {color: #22C55E;}
+.ͼ1 .cm-prismaQueryRunButton {cursor: pointer; width: 24px; height: 24; color: #E2E8F0;}
+.ͼ1 .cm-foldPlaceholder {background-color: #eee; border: 1px solid #ddd; color: #888; border-radius: .2em; margin: 0 1px; padding: 0 1px; cursor: pointer;}
+.ͼ1 .cm-foldGutter .cm-gutterElement {padding: 0 1px; cursor: pointer;}
+.ͼ1 .cm-matchingBracket {color: #0b0;}
+.ͼ1 .cm-nonmatchingBracket {color: #a22;}
+/* .ͼ1 .cm-gutters {display: flex; height: 100%; box-sizing: border-box; left: 0; z-index: 200;}
+.ͼ2 .cm-gutters {background-color: #f5f5f5; color: #999; border-right: 1px solid #ddd;}
+.ͼ3 .cm-gutters {background-color: #333338; color: #ccc;}
+.ͼ1 .cm-gutter {display: flex !important; flex-direction: column; flex-shrink: 0; box-sizing: border-box; height: 100%; overflow: hidden;} */
+/* .ͼ1 .cm-gutterElement {box-sizing: border-box;} */
+/* .ͼ1 .cm-lineNumbers .cm-gutterElement {padding: 0 3px 0 5px; min-width: 20px; text-align: right; white-space: nowrap;} */
+/* .ͼ2 .cm-activeLineGutter {background-color: #e2f2ff;}
+.ͼ3 .cm-activeLineGutter {background-color: #222227;} */
 
-  /* definition(propertyName) to "cmt-propertyName cmt-definition" */
-  .cmt-propertyName .cmt-definition {
-    @apply text-[#abb2bf];
-  }
-
-  .cmt-link {
-    @apply underline;
-    @apply text-[#7d8799];
-  }
-
-  .cmt-heading {
-    @apply font-bold underline;
-  }
-
-  .cmt-strikethrough {
-    @apply line-through;
-  }
-
-  .cmt-emphasis {
-    @apply italic;
-  }
-
-  .cmt-strong {
-    @apply font-bold;
-  }
-
-  .cmt-keyword {
-    @apply text-[#c678dd];
-  }
-
-  .cmt-atom {
-    @apply text-[#d19a66];
-  }
-
-  .cmt-bool {
-    @apply text-[#d19a66];
-  }
-
-  .cmt-url {
-    @apply text-[#56b6c2];
-  }
-
-  .cmt-labelName {
-    @apply text-[#61afef];
-  }
-
-  .cmt-inserted {
-    @apply text-[#98c379];
-  }
-
-  .cmt-deleted {
-    @apply text-[#e06c75];
-  }
-
-  .cmt-literal {
-    @apply text-[#98c379];
-  }
-
-  .cmt-string {
-    @apply text-[#98c379];
-  }
-
-  .cmt-number {
-    @apply text-[#e5c07b];
-  }
-
-  .cmt-variableName {
-    @apply text-[#d19a66];
-  }
-
-  .cmt-typeName {
-    @apply text-[#e5c07b];
-  }
-
-  .cmt-namespace {
-    @apply text-[#e5c07b];
-  }
-
-  .cmt-className {
-    @apply text-[#e5c07b];
-  }
-
-  .cmt-macroName {
-    @apply text-[#e06c75];
-  }
-
-  .cmt-propertyName {
-    @apply text-[#e06c75];
-  }
-
-  .cmt-operator {
-    @apply text-[#56b6c2];
-  }
-
-  .cmt-comment {
-    @apply text-[#7d8799];
-  }
-
-  .cmt-meta {
-    @apply text-[#7d8799];
-  }
-
-  .cmt-punctuation {
-  }
-
-  .cmt-invalid {
-    @apply text-[#ffffff];
+.cm-cursorLayer {
+  .cm-cursor.cm-cursor-primary {
+    border-color: black;
   }
 }
