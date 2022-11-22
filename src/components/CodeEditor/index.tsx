@@ -66,7 +66,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       view: EditorView
       editabilityExtensions: Compartment
       languageServiceExtensions: Compartment
-      languageHighlightExtension: Compartment
+      languageExtensions: Compartment
       contentHandlingExtensions: Compartment
     }>()
 
@@ -82,7 +82,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         const {
           languageServiceExtensions,
           contentHandlingExtensions,
-          languageHighlightExtension,
+          languageExtensions,
           editabilityExtensions,
           state,
         } = createEditorState(content)
@@ -96,7 +96,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           view,
           languageServiceExtensions,
           contentHandlingExtensions,
-          languageHighlightExtension,
+          languageExtensions,
           editabilityExtensions,
         })
 
@@ -113,18 +113,18 @@ const CodeEditor = forwardRef<Handler, Props>(
     )
 
     useEffect(
-      function configureHighlight() {
+      function configureLanguageExtensions() {
         if (!editor) return
-        if (!languageSetup?.cmLanguageProvider) return
+        if (!languageSetup?.languageExtensions) return
 
         editor.view.dispatch({
-          effects: editor.languageHighlightExtension.reconfigure(
-            languageSetup.cmLanguageProvider,
+          effects: editor.languageExtensions.reconfigure(
+            languageSetup.languageExtensions,
           ),
         })
         return () => {
           editor.view.dispatch({
-            effects: editor.languageHighlightExtension.reconfigure([]),
+            effects: editor.languageExtensions.reconfigure([]),
           })
         }
       },

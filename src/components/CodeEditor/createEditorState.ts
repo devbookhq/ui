@@ -31,7 +31,7 @@ const disableSpellchecking = {
 }
 
 function createEditorState(content: string) {
-  const languageHighlightExtension = new Compartment()
+  const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
   const editabilityExtensions = new Compartment()
@@ -67,14 +67,14 @@ function createEditorState(content: string) {
       ]),
       languageServiceExtensions.of([]),
       contentHandlingExtensions.of([]),
-      languageHighlightExtension.of([]),
+      languageExtensions.of([]),
       syntaxHighlighting(classHighlighter),
     ],
   })
 
   return {
     state,
-    languageHighlightExtension,
+    languageExtensions,
     languageServiceExtensions,
     contentHandlingExtensions,
     editabilityExtensions,
