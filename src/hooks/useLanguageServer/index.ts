@@ -1,5 +1,4 @@
-import { typescriptLanguage } from '@codemirror/lang-javascript'
-import { LRLanguage, StreamLanguage } from '@codemirror/language'
+import { Extension } from '@codemirror/state'
 import type { Session } from '@devbookhq/sdk'
 import { useEffect, useState } from 'react'
 
@@ -8,13 +7,6 @@ import { LanguageServerProcess } from './languageServerProcess'
 import { startLS } from './lsp'
 import useMaybeEmptyPort from './useMaybeEmptyPort'
 import { getRootURI } from './utils'
-
-export interface LanguageSetup {
-  languageServerCommand?: string
-  fileExtensions: string[]
-  languageID: string
-  syntaxHighlight?: LRLanguage | StreamLanguage<any>
-}
 
 /**
  * The language server ws wrapper was installed with the following commands:
@@ -25,15 +17,12 @@ export interface LanguageSetup {
  * rm lsp-ws-proxy.tar.gz
  * ```
  */
-export const defaultLanguages: LanguageSetup[] = [
-  {
-    // Necessary packages were installed by `npm i -g typescript-language-server typescript`
-    languageServerCommand: 'typescript-language-server',
-    fileExtensions: ['.js', '.ts'],
-    syntaxHighlight: typescriptLanguage,
-    languageID: 'typescript',
-  },
-]
+export interface LanguageSetup {
+  languageServerCommand?: string
+  fileExtensions: string[]
+  languageID: string
+  languageExtensions?: Extension
+}
 
 export function getLanguageSetup(filename: string, supportedLanguages: LanguageSetup[]) {
   return supportedLanguages.find(({ fileExtensions }) =>

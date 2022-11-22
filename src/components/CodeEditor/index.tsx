@@ -115,11 +115,11 @@ const CodeEditor = forwardRef<Handler, Props>(
     useEffect(
       function configureHighlight() {
         if (!editor) return
-        if (!languageSetup?.syntaxHighlight) return
+        if (!languageSetup?.cmLanguageProvider) return
 
         editor.view.dispatch({
           effects: editor.languageHighlightExtension.reconfigure(
-            languageSetup.syntaxHighlight,
+            languageSetup.cmLanguageProvider,
           ),
         })
         return () => {
