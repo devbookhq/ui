@@ -178,7 +178,7 @@ run() {
 main() {
   help_if_needed $@
 
-  check_if_npm
+  # check_if_npm
   download_update_if_needed $@
   process_args $@
   run
