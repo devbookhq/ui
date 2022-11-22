@@ -1,5 +1,3 @@
-import { babel } from '@rollup/plugin-babel'
-import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import autoExternal from 'rollup-plugin-auto-external'
 import nodePolyfills from 'rollup-plugin-polyfill-node'
@@ -35,15 +33,12 @@ export default {
   ],
   external: ['react', 'react-dom', 'react/jsx-runtime', '@devbookhq/sdk'],
   plugins: [
+    autoExternal({ builtins: false }),
     string({
       // Required to be specified
       include: '**/*.svg',
     }),
-    autoExternal({ builtins: false }),
-    commonjs({
-      include: /node_modules/,
-      requireReturnsDefault: 'auto',
-    }),
+    nodeResolve(),
     postcss({
       extensions: ['.css'],
       inject: {
@@ -55,8 +50,6 @@ export default {
     }),
     typescript(),
     nodePolyfills(),
-    nodeResolve(),
-    babel({ babelHelpers: 'bundled' }),
     terser(),
   ],
 }

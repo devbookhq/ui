@@ -16,7 +16,6 @@
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "esnext": "src/index.ts",
   "umd": "dist/umd/index.js",
   "scripts": {
     "prepublishOnly": "npm run use-tag-version; rollup -c",
