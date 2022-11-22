@@ -50,7 +50,7 @@ export default {
         insertAt: 'top',
       },
       config: {
-        path: './postcss.config.cjs',
+        path: './postcss.config.js',
       },
     }),
     typescript(),
