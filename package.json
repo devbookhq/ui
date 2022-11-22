@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/DevbookHQ/ui"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "esnext": "src/index.ts",
   "umd": "dist/umd/index.js",
@@ -60,6 +60,7 @@
     "vscode-ws-jsonrpc": "^2.0.0"
   },
   "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.2",
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@trivago/prettier-plugin-sort-imports": "^3.3.0",

@@ -1,3 +1,4 @@
+import { babel } from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import autoExternal from 'rollup-plugin-auto-external'
@@ -49,12 +50,13 @@ export default {
         insertAt: 'top',
       },
       config: {
-        path: './postcss.config.js',
+        path: './postcss.config.cjs',
       },
     }),
     typescript(),
     nodePolyfills(),
     nodeResolve(),
+    babel({ babelHelpers: 'bundled' }),
     terser(),
   ],
 }
