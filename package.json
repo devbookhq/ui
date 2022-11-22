@@ -96,8 +96,8 @@
     "typescript": "^4.8.4"
   },
   "files": [
-    "build",
     "src",
+    "dist",
     "README.md",
     "LICENSE",
     "package.json",
