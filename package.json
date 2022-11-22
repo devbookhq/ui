@@ -14,9 +14,8 @@
     "type": "git",
     "url": "https://github.com/DevbookHQ/ui"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
-  "umd": "dist/umd/index.js",
   "scripts": {
     "prepublishOnly": "npm run use-tag-version; rollup -c",
     "build": "rollup -c",
