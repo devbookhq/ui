@@ -1,5 +1,3 @@
-import '../styles/index.css'
-
 export { default as CodeEditor } from './components/CodeEditor'
 export { default as useLanguageServer, getLanguageSetup } from './hooks/useLanguageServer'
 export { getFileURI, getRootURI } from './hooks/useLanguageServer/utils'

@@ -31,6 +31,10 @@
     "create-release-tag": "./scripts/autotag.sh b",
     "push-release-tag": "git push && git push --tags"
   },
+  "peerDependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
   "dependencies": {
     "@codemirror/autocomplete": "6.3.3",
     "@codemirror/commands": "^6.1.2",
@@ -83,6 +87,8 @@
     "prettier-plugin-tailwindcss": "^0.1.13",
     "rollup": "^2.79.1",
     "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-filesize": "^9.1.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-polyfill-node": "^0.10.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-string": "^3.0.0",
@@ -92,7 +98,7 @@
     "typescript": "^4.8.4"
   },
   "files": [
-    "dist",
+    "build",
     "src",
     "README.md",
     "LICENSE",
