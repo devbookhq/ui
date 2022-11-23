@@ -1,5 +1,5 @@
 import * as folderIcon from '@vscode/codicons/src/icons/folder.svg'
-import * as referencesIcon from '@vscode/codicons/src/icons/references.svg'
+import * as goToFileIcon from '@vscode/codicons/src/icons/go-to-file.svg'
 import * as classIcon from '@vscode/codicons/src/icons/symbol-class.svg'
 import * as colorIcon from '@vscode/codicons/src/icons/symbol-color.svg'
 import * as enumMemberIcon from '@vscode/codicons/src/icons/symbol-enum-member.svg'
@@ -12,6 +12,7 @@ import * as keywordIcon from '@vscode/codicons/src/icons/symbol-keyword.svg'
 import * as methodIcon from '@vscode/codicons/src/icons/symbol-method.svg'
 import * as namespaceIcon from '@vscode/codicons/src/icons/symbol-namespace.svg'
 import * as operatorIcon from '@vscode/codicons/src/icons/symbol-operator.svg'
+import * as parameterIcon from '@vscode/codicons/src/icons/symbol-parameter.svg'
 import * as propertyIcon from '@vscode/codicons/src/icons/symbol-property.svg'
 import * as rulerIcon from '@vscode/codicons/src/icons/symbol-ruler.svg'
 import * as snippetIcon from '@vscode/codicons/src/icons/symbol-snippet.svg'
@@ -60,7 +61,7 @@ function getIcon(type: CompletionItemKind): { default: 'string' } {
     case CompletionItemKind.Property:
       return propertyIcon
     case CompletionItemKind.Reference:
-      return referencesIcon
+      return goToFileIcon
     case CompletionItemKind.Snippet:
       return snippetIcon
     case CompletionItemKind.Struct:
@@ -68,7 +69,7 @@ function getIcon(type: CompletionItemKind): { default: 'string' } {
     case CompletionItemKind.Text:
       return textIcon
     case CompletionItemKind.TypeParameter:
-      return classIcon
+      return parameterIcon
     case CompletionItemKind.Unit:
       return rulerIcon
     case CompletionItemKind.Value:

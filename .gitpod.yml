@@ -1,6 +1,6 @@
 tasks:
   - name: Setup
-    init: yarn
+    init: npm i
 
 github:
   prebuilds:
