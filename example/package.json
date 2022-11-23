@@ -2,28 +2,18 @@
   "name": "example",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@devbookhq/react": "^1.1.17",
-    "@devbookhq/sdk": "^2.6.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
-  },
   "scripts": {
-    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@devbookhq/code-editor": "^0.0.12",
+    "@devbookhq/react": "^1.1.17",
+    "next": "13.0.4",
+    "next-transpile-modules": "^10.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
