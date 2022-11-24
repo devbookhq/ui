@@ -1,6 +1,6 @@
 tasks:
   - name: Setup
-    init: npm i
+    init: pnpm install
 
 github:
   prebuilds:
