@@ -27,13 +27,5 @@ jobs:
           version: 7
           run_install: true
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm publish
-          createGithubReleases: true
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to NPM
+        run: pnpm publish
