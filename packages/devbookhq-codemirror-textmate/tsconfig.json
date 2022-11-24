@@ -1,5 +1,5 @@
 {
   "extends": "@devbookhq/tsconfig/react-library.json",
-  "include": [".", "../devbookhq-utils/src/createDeferredPromise.ts"],
-  "exclude": ["dist", "build", "node_modules", "src/modules.d.ts"]
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"]
 }

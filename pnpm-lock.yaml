@@ -58,12 +58,10 @@ importers:
       '@types/diff': ^5.0.2
       '@types/path-browserify': ^1.0.0
       '@types/react': ^17.0.13
-      '@types/react-dom': ^17.0.8
       '@vscode/codicons': ^0.0.32
       autoprefixer: ^10.4.12
       cssnano: ^5.1.13
       diff: ^5.1.0
-      eslint: ^7.32.0
       eslint-config-devbookhq: workspace:*
       highlight.js: ^11.6.0
       path-browserify: ^1.0.1
@@ -116,10 +114,8 @@ importers:
       '@types/diff': 5.0.2
       '@types/path-browserify': 1.0.0
       '@types/react': 17.0.52
-      '@types/react-dom': 17.0.18
       autoprefixer: 10.4.13_postcss@8.4.19
       cssnano: 5.1.14_postcss@8.4.19
-      eslint: 7.32.0
       eslint-config-devbookhq: link:../eslint-config-devbookhq
       postcss: 8.4.19
       postcss-import: 15.0.0_postcss@8.4.19
@@ -130,87 +126,27 @@ importers:
 
   packages/devbookhq-codemirror-textmate:
     specifiers:
-      '@codemirror/autocomplete': 6.3.3
-      '@codemirror/commands': ^6.1.2
       '@codemirror/language': ^6.3.1
-      '@codemirror/lint': ^6.1.0
-      '@codemirror/state': ^6.1.4
-      '@codemirror/view': ^6.5.1
-      '@devbookhq/sdk': ^2.6.9
       '@devbookhq/tsconfig': workspace:*
-      '@devbookhq/utils': workspace:*
-      '@lezer/highlight': ^1.1.2
-      '@types/diff': ^5.0.2
-      '@types/path-browserify': ^1.0.0
       '@types/react': ^17.0.13
-      '@types/react-dom': ^17.0.8
-      '@vscode/codicons': ^0.0.32
-      autoprefixer: ^10.4.12
-      cssnano: ^5.1.13
-      diff: ^5.1.0
-      eslint: ^7.32.0
       eslint-config-devbookhq: workspace:*
-      highlight.js: ^11.6.0
-      path-browserify: ^1.0.1
-      postcss: ^8.4.17
-      postcss-import: ^15.0.0
       react: ^17.0.2
-      rehype-external-links: ^2.0.1
-      rehype-highlight: ^6.0.0
-      rehype-raw: ^6.1.1
-      rehype-sanitize: ^5.0.1
-      rehype-stringify: ^9.0.3
-      remark-gfm: ^3.0.1
-      remark-parse: ^10.0.1
-      remark-rehype: ^10.1.0
-      tailwindcss: ^3.1.8
       tsup: ^5.10.1
       typescript: ^4.5.3
-      unified: ^10.1.2
-      vscode-jsonrpc: ^8.0.2
       vscode-languageserver-protocol: ^3.17.2
-      vscode-ws-jsonrpc: ^2.0.0
+      vscode-oniguruma: ^1.6.2
+      vscode-textmate: ^7.0.3
     dependencies:
-      '@codemirror/autocomplete': 6.3.3_j43uvr2w5rteirgavbu2oybvla
-      '@codemirror/commands': 6.1.2
       '@codemirror/language': 6.3.1
-      '@codemirror/lint': 6.1.0
-      '@codemirror/state': 6.1.4
-      '@codemirror/view': 6.5.1
-      '@devbookhq/sdk': 2.6.10
-      '@devbookhq/utils': link:../devbookhq-utils
-      '@lezer/highlight': 1.1.2
-      '@vscode/codicons': 0.0.32
-      diff: 5.1.0
-      highlight.js: 11.7.0
-      path-browserify: 1.0.1
-      rehype-external-links: 2.0.1
-      rehype-highlight: 6.0.0
-      rehype-raw: 6.1.1
-      rehype-sanitize: 5.0.1
-      rehype-stringify: 9.0.3
-      remark-gfm: 3.0.1
-      remark-parse: 10.0.1
-      remark-rehype: 10.1.0
-      unified: 10.1.2
-      vscode-jsonrpc: 8.0.2
       vscode-languageserver-protocol: 3.17.2
-      vscode-ws-jsonrpc: 2.0.0
+      vscode-oniguruma: 1.6.2
+      vscode-textmate: 7.0.3
     devDependencies:
       '@devbookhq/tsconfig': link:../devbookhq-tsconfig
-      '@types/diff': 5.0.2
-      '@types/path-browserify': 1.0.0
       '@types/react': 17.0.52
-      '@types/react-dom': 17.0.18
-      autoprefixer: 10.4.13_postcss@8.4.19
-      cssnano: 5.1.14_postcss@8.4.19
-      eslint: 7.32.0
       eslint-config-devbookhq: link:../eslint-config-devbookhq
-      postcss: 8.4.19
-      postcss-import: 15.0.0_postcss@8.4.19
       react: 17.0.2
-      tailwindcss: 3.2.4_postcss@8.4.19
-      tsup: 5.12.9_idbjo54bpfgfu5hzy4ncsoa6f4
+      tsup: 5.12.9_typescript@4.9.3
       typescript: 4.9.3
 
   packages/devbookhq-tsconfig:
@@ -5758,6 +5694,14 @@ packages:
 
   /vscode-languageserver-types/3.17.2:
     resolution: {integrity: sha512-zHhCWatviizPIq9B7Vh9uvrH6x3sK8itC84HkamnBWoDFJtzBf7SWlpLCZUit72b3os45h6RWQNC9xHRDF8dRA==}
+    dev: false
+
+  /vscode-oniguruma/1.6.2:
+    resolution: {integrity: sha512-KH8+KKov5eS/9WhofZR8M8dMHWN2gTxjMsG4jd04YhpbPR91fUj7rYQ2/XjeHCJWbg7X++ApRIU9NUwM2vTvLA==}
+    dev: false
+
+  /vscode-textmate/7.0.3:
+    resolution: {integrity: sha512-OkE/mYm1h5ZX9IEKeKR/2zKDt2SzYyIfTEOVFX4QhA+B3BPROvNEmDDXvBThz3qknKO3Cy/VVb8/sx1UlqP/Xw==}
     dev: false
 
   /vscode-ws-jsonrpc/2.0.0:

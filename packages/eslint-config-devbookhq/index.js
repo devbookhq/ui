@@ -22,15 +22,6 @@ module.exports = {
         noSortAlphabetically: true,
       },
     ],
-    'max-len': [
-      'error',
-      {
-        code: 90,
-        ignoreComments: true,
-        ignoreStrings: true,
-        ignoreTemplateLiterals: true,
-      },
-    ],
     'react-hooks/exhaustive-deps': ['warn'],
     semi: ['error', 'never'],
     quotes: [
