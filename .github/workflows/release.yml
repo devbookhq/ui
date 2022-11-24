@@ -28,4 +28,4 @@ jobs:
           run_install: true
 
       - name: Publish to NPM
-        run: pnpm publish
+        run: pnpm release
