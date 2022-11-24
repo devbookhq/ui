@@ -20,7 +20,6 @@ jobs:
         with:
           node-version: '16.11'
 
-
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         id: pnpm-install
@@ -33,7 +32,8 @@ jobs:
         uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm release
+          publish: pnpm publish
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
