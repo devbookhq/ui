@@ -20,8 +20,13 @@ jobs:
         with:
           node-version: '16.11'
 
-      - name: Install Dependencies
-        run: pnpm install
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: true
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
