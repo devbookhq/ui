@@ -14,7 +14,6 @@ import {
 import { Compartment, EditorState } from '@codemirror/state'
 import {
   EditorView,
-  drawSelection,
   dropCursor,
   highlightSpecialChars,
   keymap,
@@ -45,7 +44,7 @@ function createEditorState(content: string) {
       highlightSpecialChars(),
       history(),
       EditorState.tabSize.of(2),
-      drawSelection(),
+      // drawSelection(),
       dropCursor(),
       closeBrackets(),
       indentOnInput(),

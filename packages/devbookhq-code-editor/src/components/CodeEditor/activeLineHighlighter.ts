@@ -5,7 +5,7 @@ import { EditorView, highlightActiveLine, highlightActiveLineGutter } from '@cod
  * This extension highlights the active line and line gutter only if there is no (main) active selection in the editor.
  */
 export function activeLineHighlighter() {
-  const extensionCompartment = new Compartment()
+  const compartment = new Compartment()
 
   const enabledCompartmentValue = [
     highlightActiveLine(),
@@ -14,29 +14,25 @@ export function activeLineHighlighter() {
 
   const disabledCompartmentValue: Extension = []
 
-  function reconfigureCompartment(view: EditorView, value: Extension) {
-    view.dispatch({ effects: extensionCompartment.reconfigure(value) })
+  function configureCompartment(view: EditorView, enable: boolean) {
+    view.dispatch({ effects: compartment.reconfigure(enable ? enabledCompartmentValue : disabledCompartmentValue) })
   }
 
   const highlightToggler = EditorView.updateListener.of((update) => {
     const state = update.state
 
-    const compartmentValue = extensionCompartment.get(state)
+    const compartmentValue = compartment.get(state)
     const isCompartmnetDisabled = compartmentValue === disabledCompartmentValue
 
     if (state.selection.main.empty) {
-      if (isCompartmnetDisabled) {
-        reconfigureCompartment(update.view, enabledCompartmentValue)
-      }
+      if (isCompartmnetDisabled) configureCompartment(update.view, true)
     } else {
-      if (!isCompartmnetDisabled) {
-        reconfigureCompartment(update.view, disabledCompartmentValue)
-      }
+      if (!isCompartmnetDisabled) configureCompartment(update.view, false)
     }
   })
 
   return [
     highlightToggler,
-    extensionCompartment.of(enabledCompartmentValue),
+    compartment.of(enabledCompartmentValue),
   ]
 }
