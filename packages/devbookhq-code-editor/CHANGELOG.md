@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.7
+
+### Patch Changes
+
+- Add CJS build output
+
 ## 0.1.6
 
 ### Patch Changes
