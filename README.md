@@ -1,28 +1,4 @@
-# Turborepo Design System starter with Changesets
-
-This is an official React design system starter powered by Turborepo. Versioning and package publishing is handled by [Changesets](https://github.com/changesets/changesets) and fully automated with GitHub Actions.
-
-## What's inside?
-
-This Turborepo includes the following:
-
-### Apps and Packages
-
-- `docs`: A placeholder documentation site powered by [Next.js](https://nextjs.org/)
-- `@devbookhq/code-editor`: core React components
-- `@devbookhq/utils`: shared React utilities
-- `@devbookhq/tsconfig`: shared `tsconfig.json`s used throughout the monorepo
-- `eslint-config-devbookhq`: ESLint preset
-
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+# Devbook UI
 
 ## Using this example
 
