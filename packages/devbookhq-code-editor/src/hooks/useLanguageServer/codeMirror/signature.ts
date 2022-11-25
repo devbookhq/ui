@@ -41,7 +41,7 @@ class SignatureState implements PluginValue {
     private readonly view: EditorView,
     private readonly getPlugin: () => LanguageServerPlugin | null,
     private readonly setSignatureHelp: StateEffectType<Tooltip | null>,
-  ) {}
+  ) { }
 
   async update(update: ViewUpdate) {
     const plugin = this.getPlugin()

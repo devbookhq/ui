@@ -451,8 +451,6 @@ export class LanguageServerPlugin implements PluginValue {
       if (!context.explicit) return null
     }
 
-    console.log(match, token, options)
-
     const longestCompletion = options.reduce(
       (length, current) => Math.max(length, current.label.length),
       0,

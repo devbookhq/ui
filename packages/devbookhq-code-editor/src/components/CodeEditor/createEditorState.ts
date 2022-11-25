@@ -16,13 +16,12 @@ import {
   EditorView,
   drawSelection,
   dropCursor,
-  highlightActiveLineGutter,
   highlightSpecialChars,
   keymap,
   lineNumbers,
-  highlightActiveLine,
 } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
+import { activeLineHighlighter } from './activeLineHighlighter'
 
 const disableSpellchecking = {
   'data-gramm': 'false',
@@ -42,7 +41,7 @@ function createEditorState(content: string) {
       editabilityExtensions.of([]),
       lineNumbers(),
       bracketMatching(),
-      highlightActiveLineGutter(),
+      activeLineHighlighter(),
       highlightSpecialChars(),
       history(),
       EditorState.tabSize.of(2),
@@ -50,7 +49,6 @@ function createEditorState(content: string) {
       dropCursor(),
       closeBrackets(),
       indentOnInput(),
-      highlightActiveLine(),
       keymap.of([
         ...defaultKeymap,
         ...closeBracketsKeymap,
