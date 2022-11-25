@@ -13,7 +13,6 @@
   ],
   "scripts": {
     "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/utils,@devbookhq/tsconfig,eslint-config-devbookhq\"",
-    "postpublish": "node ./scripts/restore-pkg",
     "build": "tsup src/index.ts --format esm --dts --external react --external @devbookhq/sdk --loader .svg=text --sourcemap --minify",
     "dev": "tsup src/index.ts --format esm --dts --watch --external react --external @devbookhq/sdk --loader .svg=text --sourcemap",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",

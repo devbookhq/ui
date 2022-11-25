@@ -3,7 +3,6 @@ const path = require('path');
 
 // Define absolute paths for original pkg and temporary pkg.
 const ORIG_PKG_PATH = path.resolve(__dirname, '../package.json');
-const CACHED_PKG_PATH = path.resolve(__dirname, '../../cached-package.json');
 
 // Obtain original `package.json` contents.
 const pkgData = require(ORIG_PKG_PATH);
@@ -15,11 +14,6 @@ if (process.argv.length <= 2) {
 // Get list of arguments passed to script.
 const scriptsToRemove = process.argv[2].split(',');
 const devDepsToRemove = process.argv[3] ? process.argv[3].split(',') : [];
-
-// Write/cache the original `package.json` data to `cached-package.json` file.
-fs.writeFile(CACHED_PKG_PATH, JSON.stringify(pkgData), function (err) {
-  if (err) throw err;
-});
 
 // Remove the specified named scripts from the scripts section.
 scriptsToRemove.forEach(function (scriptName) {
