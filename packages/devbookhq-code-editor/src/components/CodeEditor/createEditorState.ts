@@ -20,6 +20,7 @@ import {
   highlightSpecialChars,
   keymap,
   lineNumbers,
+  highlightActiveLine,
 } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
 
@@ -49,7 +50,7 @@ function createEditorState(content: string) {
       dropCursor(),
       closeBrackets(),
       indentOnInput(),
-      // highlightActiveLine(),
+      highlightActiveLine(),
       keymap.of([
         ...defaultKeymap,
         ...closeBracketsKeymap,
