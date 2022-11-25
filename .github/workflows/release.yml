@@ -30,6 +30,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
+          check-latest: true
           node-version: '16.11'
           registry-url: 'https://registry.npmjs.org'
           cache: pnpm
