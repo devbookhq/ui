@@ -26,9 +26,6 @@ jobs:
 
       - name: Setup Node.js 16.11
         uses: actions/setup-node@v3
-        # env:
-        #   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        #   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           check-latest: true
           node-version: '16.11'
@@ -47,6 +44,3 @@ jobs:
 
       - name: Publish to NPM
         run: pnpm release
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
