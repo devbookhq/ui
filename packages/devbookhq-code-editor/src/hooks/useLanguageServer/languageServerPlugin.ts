@@ -19,7 +19,7 @@ import {
   SignatureHelp,
   SignatureHelpTriggerKind,
 } from 'vscode-languageserver-protocol'
-import { getLast } from '@devbookhq/utils'
+import { getLast } from '../../utils'
 
 import { LanguageServerClient } from './languageServerClient'
 import { mdToElements } from './md'

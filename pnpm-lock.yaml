@@ -21,7 +21,6 @@ importers:
       '@devbookhq/codemirror-textmate': workspace:*
       '@devbookhq/react': ^1.1.17
       '@devbookhq/tsconfig': workspace:*
-      '@devbookhq/utils': workspace:*
       '@types/node': ^17.0.12
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
@@ -35,7 +34,6 @@ importers:
       '@devbookhq/code-editor': link:../../packages/devbookhq-code-editor
       '@devbookhq/codemirror-textmate': link:../../packages/devbookhq-codemirror-textmate
       '@devbookhq/react': 1.1.17_biqbaboplfbrettd7655fr4n2y
-      '@devbookhq/utils': link:../../packages/devbookhq-utils
       next: 13.0.5_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -57,7 +55,6 @@ importers:
       '@codemirror/view': ^6.5.1
       '@devbookhq/sdk': ^2.6.9
       '@devbookhq/tsconfig': workspace:*
-      '@devbookhq/utils': workspace:*
       '@lezer/highlight': ^1.1.2
       '@types/diff': ^5.0.2
       '@types/path-browserify': ^1.0.0
@@ -95,7 +92,6 @@ importers:
       '@codemirror/state': 6.1.4
       '@codemirror/view': 6.5.1
       '@devbookhq/sdk': 2.6.10
-      '@devbookhq/utils': link:../devbookhq-utils
       '@lezer/highlight': 1.1.2
       '@vscode/codicons': 0.0.32
       diff: 5.1.0

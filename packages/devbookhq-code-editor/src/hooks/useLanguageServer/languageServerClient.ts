@@ -1,7 +1,7 @@
 import * as LSP from 'vscode-languageserver-protocol'
 import { ServerCapabilities } from 'vscode-languageserver-protocol'
 
-import { logger } from '@devbookhq/utils'
+import { logger } from '../../utils'
 import { LanguageServerPlugin } from './languageServerPlugin'
 import { LSPConnection } from './lsp/lspConnection'
 

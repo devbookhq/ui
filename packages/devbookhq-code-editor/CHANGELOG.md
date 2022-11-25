@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.5
+
+### Patch Changes
+
+- Cleanup
+
 ## 0.1.4
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 import type { Session } from '@devbookhq/sdk'
-import { createDeferredPromise, createSessionProcess, Logger, notEmpty } from '@devbookhq/utils'
+import { createDeferredPromise, createSessionProcess, Logger, notEmpty } from '../../utils'
 
 import { LanguageSetup } from '.'
 

@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/tsconfig,eslint-config-devbookhq\"",
-    "build": "tsup src/index.ts --format esm --target es2020 --dts --external react --sourcemap --loader .wasm=dataurl --minify",
+    "build": "tsup src/index.ts --format esm --target es2020 --dts --external react --sourcemap --loader .wasm=dataurl",
     "dev": "tsup src/index.ts --format esm --dts --target es2020 --watch --external react --sourcemap --loader .wasm=dataurl",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"

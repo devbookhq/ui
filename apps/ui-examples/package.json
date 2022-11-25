@@ -14,7 +14,6 @@
     "@devbookhq/code-editor": "workspace:*",
     "@devbookhq/codemirror-textmate": "workspace:*",
     "@devbookhq/react": "^1.1.17",
-    "@devbookhq/utils": "workspace:*",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

@@ -73,6 +73,8 @@ const CodeEditor = forwardRef<Handler, Props>(
     const languageSetup = getLanguageSetup(filename, supportedLanguages)
     const languageClient = languageSetup && languageClients?.[languageSetup?.languageID]
 
+    console.log({ languageSetup })
+
     useImperativeHandle(ref, () => ({ focus: () => editor?.view.focus() }), [editor])
 
     useLayoutEffect(
@@ -116,6 +118,8 @@ const CodeEditor = forwardRef<Handler, Props>(
       function configureLanguageExtensions() {
         if (!editor) return
         if (!languageSetup?.languageExtensions) return
+
+        console.log('setting language extension')
 
         editor.view.dispatch({
           effects: editor.languageExtensions.reconfigure(

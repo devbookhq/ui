@@ -1,6 +1,6 @@
 {
   "name": "@devbookhq/code-editor",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -12,8 +12,8 @@
     "package.json"
   ],
   "scripts": {
-    "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/utils,@devbookhq/tsconfig,eslint-config-devbookhq\"",
-    "build": "tsup src/index.ts --format esm --dts --external react --external @devbookhq/sdk --loader .svg=text --sourcemap --minify",
+    "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/tsconfig,eslint-config-devbookhq\"",
+    "build": "tsup src/index.ts --format esm --dts --external react --external @devbookhq/sdk --loader .svg=text --sourcemap",
     "dev": "tsup src/index.ts --format esm --dts --watch --external react --external @devbookhq/sdk --loader .svg=text --sourcemap",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
@@ -37,12 +37,10 @@
     "access": "public"
   },
   "bundledDependencies": [
-    "@devbookhq/utils",
     "@devbookhq/tsconfig",
     "eslint-config-devbookhq"
   ],
   "dependencies": {
-    "@devbookhq/utils": "workspace:*",
     "@codemirror/autocomplete": "6.3.3",
     "@codemirror/commands": "^6.1.2",
     "@codemirror/language": "^6.3.1",
