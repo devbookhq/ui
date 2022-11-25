@@ -1,5 +1,11 @@
 # @devbookhq/codemirror-textmate
 
+## 0.0.2
+
+### Patch Changes
+
+- Remove internal deps from package.json when publishing
+
 ## 0.0.1
 
 ### Patch Changes

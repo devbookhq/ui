@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.3
+
+### Patch Changes
+
+- Remove internal deps from package.json when publishing
+
 ## 0.1.2
 
 ### Patch Changes

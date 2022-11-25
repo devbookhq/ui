@@ -1,6 +1,6 @@
 {
   "name": "@devbookhq/codemirror-textmate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -12,6 +12,8 @@
     "package.json"
   ],
   "scripts": {
+    "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/tsconfig,eslint-config-devbookhq\"",
+    "postpublish": "node ./scripts/restore-pkg",
     "build": "tsup src/index.ts --format esm --target es2020 --dts --external react --sourcemap --loader .wasm=dataurl --minify",
     "dev": "tsup src/index.ts --format esm --dts --target es2020 --watch --external react --sourcemap --loader .wasm=dataurl",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
