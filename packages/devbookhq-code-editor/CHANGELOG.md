@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.8
+
+### Patch Changes
+
+- Improve editor selection styling
+
 ## 0.1.7
 
 ### Patch Changes
