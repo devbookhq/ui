@@ -34,16 +34,32 @@ export function formatContents(
   }
 }
 
+const autocompletionToken = '\\w'
+
 function toSet(chars: Set<string>) {
   let preamble = ''
   let flat = Array.from(chars).join('')
-  const words = /\w/.test(flat)
+  const words = new RegExp(autocompletionToken).test(flat)
   if (words) {
-    preamble += '\\w'
-    flat = flat.replace(/\w/g, '')
+    preamble += autocompletionToken
+
+    flat = flat.replace(new RegExp(autocompletionToken, 'g'), '')
   }
-  return `[${preamble}${flat.replace(/[^\w\s]/g, '\\$&')}]`
+  return `[${preamble}${flat.replace(new RegExp(`[^${autocompletionToken}\\s]`, 'g'), '\\$&')}]`
 }
+
+
+// function toSet(chars: Set<string>) {
+//   console.log('')
+//   let preamble = ''
+//   let flat = Array.from(chars).join('')
+//   const words = /\w/.test(flat)
+//   if (words) {
+//     preamble += '\\w'
+//     flat = flat.replace(/\w/g, '')
+//   }
+//   return `[${preamble}${flat.replace(/[^\w\s]/g, '\\$&')}]`
+// }
 
 export function prefixMatch(options: Completion[]) {
   const first = new Set<string>()

@@ -16,12 +16,10 @@ import {
   EditorView,
   drawSelection,
   dropCursor,
-  highlightActiveLine,
   highlightActiveLineGutter,
   highlightSpecialChars,
   keymap,
   lineNumbers,
-  scrollPastEnd,
 } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
 
@@ -46,13 +44,12 @@ function createEditorState(content: string) {
       highlightActiveLineGutter(),
       highlightSpecialChars(),
       history(),
-      scrollPastEnd(),
       EditorState.tabSize.of(2),
       drawSelection(),
       dropCursor(),
       closeBrackets(),
       indentOnInput(),
-      highlightActiveLine(),
+      // highlightActiveLine(),
       keymap.of([
         ...defaultKeymap,
         ...closeBracketsKeymap,

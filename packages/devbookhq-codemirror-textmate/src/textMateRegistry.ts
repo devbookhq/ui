@@ -6,8 +6,9 @@ import {
 } from 'vscode-oniguruma'
 
 export async function initializeTextMateRegistry() {
+  // tsup (esbuild) is not bundling the files correctly when we use '@vscode-oniguruma/release/onig.wasm` path.
   // @ts-ignore
-  const wasmModule = await import('vscode-oniguruma/release/onig.wasm')
+  const wasmModule = await import('../node_modules/vscode-oniguruma/release/onig.wasm')
   const response = await fetch(wasmModule.default)
   const arrayBuffer = await response.arrayBuffer()
 

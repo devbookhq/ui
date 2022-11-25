@@ -1,3 +1,5 @@
+// tsup (esbuild) is not bundling the files correctly when we use '@vscode/codicons/src/icons/*.svg` path.
+
 import folderIcon from '../../../node_modules/@vscode/codicons/src/icons/folder.svg'
 import goToFileIcon from '../../../node_modules/@vscode/codicons/src/icons/go-to-file.svg'
 import classIcon from '../../../node_modules/@vscode/codicons/src/icons/symbol-class.svg'

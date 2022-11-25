@@ -16,7 +16,9 @@ importers:
 
   apps/ui-examples:
     specifiers:
+      '@codemirror/lang-javascript': ^6.1.1
       '@devbookhq/code-editor': workspace:*
+      '@devbookhq/codemirror-textmate': workspace:*
       '@devbookhq/react': ^1.1.17
       '@devbookhq/tsconfig': workspace:*
       '@devbookhq/utils': workspace:*
@@ -27,9 +29,11 @@ importers:
       next: latest
       react: ^18.2.0
       react-dom: ^18.2.0
-      typescript: ^4.5.4
+      typescript: ^4.9.3
     dependencies:
+      '@codemirror/lang-javascript': 6.1.1
       '@devbookhq/code-editor': link:../../packages/devbookhq-code-editor
+      '@devbookhq/codemirror-textmate': link:../../packages/devbookhq-codemirror-textmate
       '@devbookhq/react': 1.1.17_biqbaboplfbrettd7655fr4n2y
       '@devbookhq/utils': link:../../packages/devbookhq-utils
       next: 13.0.5_biqbaboplfbrettd7655fr4n2y
@@ -78,7 +82,7 @@ importers:
       remark-rehype: ^10.1.0
       tailwindcss: ^3.1.8
       tsup: ^5.10.1
-      typescript: ^4.5.3
+      typescript: ^4.9.3
       unified: ^10.1.2
       vscode-jsonrpc: ^8.0.2
       vscode-languageserver-protocol: ^3.17.2
@@ -132,7 +136,7 @@ importers:
       eslint-config-devbookhq: workspace:*
       react: ^17.0.2
       tsup: ^5.10.1
-      typescript: ^4.5.3
+      typescript: ^4.9.3
       vscode-languageserver-protocol: ^3.17.2
       vscode-oniguruma: ^1.6.2
       vscode-textmate: ^7.0.3
@@ -150,7 +154,10 @@ importers:
       typescript: 4.9.3
 
   packages/devbookhq-tsconfig:
-    specifiers: {}
+    specifiers:
+      typescript: ^4.9.3
+    devDependencies:
+      typescript: 4.9.3
 
   packages/devbookhq-utils:
     specifiers:
@@ -162,7 +169,7 @@ importers:
       eslint-config-devbookhq: workspace:*
       react: ^17.0.2
       tsup: ^5.10.1
-      typescript: ^4.5.3
+      typescript: ^4.9.3
     devDependencies:
       '@devbookhq/sdk': 2.6.10
       '@devbookhq/tsconfig': link:../devbookhq-tsconfig
@@ -519,6 +526,18 @@ packages:
       '@codemirror/view': 0.19.48
     dev: false
 
+  /@codemirror/lang-javascript/6.1.1:
+    resolution: {integrity: sha512-F4+kiuC5d5dUSJmff96tJQwpEXs/tX/4bapMRnZWW6bHKK1Fx6MunTzopkCUWRa9bF87GPmb9m7Qtg7Yv8f3uQ==}
+    dependencies:
+      '@codemirror/autocomplete': 6.3.3_j43uvr2w5rteirgavbu2oybvla
+      '@codemirror/language': 6.3.1
+      '@codemirror/lint': 6.1.0
+      '@codemirror/state': 6.1.4
+      '@codemirror/view': 6.5.1
+      '@lezer/common': 1.0.2
+      '@lezer/javascript': 1.2.0
+    dev: false
+
   /@codemirror/language/0.19.10:
     resolution: {integrity: sha512-yA0DZ3RYn2CqAAGW62VrU8c4YxscMQn45y/I9sjBlqB1e2OTQLg4CCkMBuMSLXk4xaqjlsgazeOQWaJQOKfV8Q==}
     dependencies:
@@ -755,6 +774,13 @@ packages:
     resolution: {integrity: sha512-CAun1WR1glxG9ZdOokTZwXbcwB7PXkIEyZRUMFBVwSrhTcogWq634/ByNImrkUnQhjju6xsIaOBIxvcRJtplXQ==}
     dependencies:
       '@lezer/common': 1.0.2
+    dev: false
+
+  /@lezer/javascript/1.2.0:
+    resolution: {integrity: sha512-oUkbTNEFvERS5mFFBK8eJ3DufiNQvt1qghWbxwLAGb9h1qUexUHd9zuF0jbZj7AfnZwqkxfDc0q+Km3kaWzrLw==}
+    dependencies:
+      '@lezer/highlight': 1.1.2
+      '@lezer/lr': 1.2.5
     dev: false
 
   /@lezer/lr/0.15.8:

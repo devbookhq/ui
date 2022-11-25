@@ -1,6 +1,6 @@
 import { LRUCache } from 'vscode-languageserver-protocol'
 
-// We may want to use lezer tags here
+// We may want to use lezer tags from here
 // https://lezer.codemirror.net/docs/ref/#highlight.Tag
 export enum CMToken {
   Atom = 'atom',
@@ -26,12 +26,18 @@ export enum CMToken {
   Type = 'type',
   Variable = 'variable',
   Variable2 = 'variable-2',
-  Variable3 = 'variable-3',
+  // TODO: Find a proper distinct token for variable 3
+  Variable3 = 'variable-2',
+}
+
+interface ScopeSegment {
+  $?: CMToken
+  [scope: string]: ScopeSegment | CMToken | undefined
 }
 
 // The naming conventions are under the 'Naming Conventions' heading at
 // https://macromates.com/manual/en/language_grammars
-const tmToCm = {
+const tmToCm: ScopeSegment = {
   comment: { $: CMToken.Comment },
 
   constant: {
@@ -55,7 +61,7 @@ const tmToCm = {
       function: { $: CMToken.Def },
       tag: { $: CMToken.Tag },
       type: {
-        $: CMToken.Type,
+        $: CMToken.Variable2,
         class: { $: CMToken.Variable },
       },
     },
@@ -152,12 +158,13 @@ export class TokenMatcher {
     return this.cache.get(scope)
   }
 
-  private static walk(scopeSegments: string[], tree: any = tmToCm): CMToken | null {
+  private static walk(scopeSegments: string[], tree = tmToCm): CMToken | null {
     const first = scopeSegments.shift()
     if (first === undefined) return null
 
-    const node = tree[first as keyof typeof tmToCm]
-    if (node) {
+    const node = tree[first]
+
+    if (node && typeof node === 'object') {
       return TokenMatcher.walk(scopeSegments, node) || node.$ || null
     }
     return null

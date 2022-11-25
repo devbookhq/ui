@@ -1,4 +1,4 @@
-import { Extension } from '@codemirror/state'
+import type { Extension } from '@codemirror/state'
 import type { Session } from '@devbookhq/sdk'
 import { useEffect, useState } from 'react'
 
