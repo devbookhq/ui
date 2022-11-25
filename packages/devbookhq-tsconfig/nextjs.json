@@ -15,9 +15,9 @@
     ],
     "module": "esnext",
     "noEmit": true,
-    "target": "es2020",
     "resolveJsonModule": true,
-    "rootDir": "src"
+    "rootDir": "src",
+    "target": "es5"
   },
   "include": [
     "src",
