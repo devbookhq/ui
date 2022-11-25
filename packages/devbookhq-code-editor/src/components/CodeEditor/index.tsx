@@ -1,6 +1,6 @@
 import { Compartment, EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
-import {
+import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
