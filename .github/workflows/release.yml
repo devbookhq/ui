@@ -18,6 +18,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+
       - name: Setup Node.js 16.11
         uses: actions/setup-node@v3
         with:
@@ -25,12 +31,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        id: pnpm-install
-        with:
-          version: 7
-          run_install: true
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Publish to NPM
         run: pnpm release
