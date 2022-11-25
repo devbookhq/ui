@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.4
+
+### Patch Changes
+
+- Enable active line highlight
+
 ## 0.1.3
 
 ### Patch Changes
