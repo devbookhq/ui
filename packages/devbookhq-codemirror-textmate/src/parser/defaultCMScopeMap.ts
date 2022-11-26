@@ -1,4 +1,4 @@
-import { LRUCache } from 'vscode-languageserver-protocol'
+import { ScopeSegment } from './scopeMapper'
 
 // We may want to use lezer tags from here
 // https://lezer.codemirror.net/docs/ref/#highlight.Tag
@@ -30,14 +30,9 @@ export enum CMToken {
   Variable3 = 'variable-2',
 }
 
-interface ScopeSegment {
-  $?: CMToken
-  [scope: string]: ScopeSegment | CMToken | undefined
-}
-
 // The naming conventions are under the 'Naming Conventions' heading at
 // https://macromates.com/manual/en/language_grammars
-const tmToCm: ScopeSegment = {
+export const defaultCMScopeMap: ScopeSegment<CMToken> = {
   comment: { $: CMToken.Comment },
 
   constant: {
@@ -133,40 +128,3 @@ const tmToCm: ScopeSegment = {
     parameter: { $: CMToken.Def },
   },
 } as const
-
-export class TokenMatcher {
-  private readonly cache = new LRUCache<string, CMToken>(2000)
-  private static readonly dotRE = /\./
-
-  firstCMToken(scopes: string[]) {
-    let i = scopes.length - 1
-    let cmToken = null
-    do {
-      cmToken = this.toCMToken(scopes[i--])
-    } while (!cmToken && i >= 0)
-
-    return cmToken
-  }
-
-  private toCMToken(scope: string) {
-    if (!this.cache.has(scope)) {
-      const subtree = TokenMatcher.walk(scope.split(TokenMatcher.dotRE))
-      if (subtree) {
-        this.cache.set(scope, subtree)
-      }
-    }
-    return this.cache.get(scope)
-  }
-
-  private static walk(scopeSegments: string[], tree = tmToCm): CMToken | null {
-    const first = scopeSegments.shift()
-    if (first === undefined) return null
-
-    const node = tree[first]
-
-    if (node && typeof node === 'object') {
-      return TokenMatcher.walk(scopeSegments, node) || node.$ || null
-    }
-    return null
-  }
-}

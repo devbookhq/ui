@@ -9,8 +9,10 @@ import {
   StreamParser,
   StringStream,
 } from '@codemirror/language'
-import { TokenMatcher } from './tokenMapping'
 import type { parseRawGrammar } from 'vscode-textmate'
+
+import { ScopeMapper, ScopeSegment } from './scopeMapper'
+import { defaultCMScopeMap } from './defaultCMScopeMap'
 
 export type IRawGrammar = ReturnType<typeof parseRawGrammar>
 
@@ -19,8 +21,8 @@ export interface ParserState {
   tokensCache: IToken[]
 }
 
-function createTokenizer(grammar: IGrammar) {
-  const tokenMatcher = new TokenMatcher()
+function createTokenizer<T extends string>(grammar: IGrammar, scopeMap: ScopeSegment<T>) {
+  const tokenMapper = new ScopeMapper(scopeMap)
 
   return (stream: StringStream, state: ParserState): string => {
     const {
@@ -51,12 +53,12 @@ function createTokenizer(grammar: IGrammar) {
     } = nextToken
     stream.eatWhile(() => stream.pos < endIndex)
 
-    return tokenMatcher.firstCMToken(scopes) || ''
+    return tokenMapper.firstMatchingToken(scopes) || ''
   }
 }
 
-function createStreamParser(scopeName: string, grammar: IGrammar): StreamParser<ParserState> {
-  const tokenizer = createTokenizer(grammar)
+function createStreamParser(scopeName: string, grammar: IGrammar, scopeMap = defaultCMScopeMap): StreamParser<ParserState> {
+  const tokenizer = createTokenizer(grammar, scopeMap)
   return {
     name: scopeName,
     copyState: (state) => ({
