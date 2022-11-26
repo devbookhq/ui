@@ -1,52 +1,16 @@
 # Devbook UI
 
-## Using this example
+Monorepo for all Devbook's webapps and packages.
 
-Run the following command:
+## Commands
 
-```sh
-npx degit vercel/turbo/examples/with-changesets with-changesets
-cd with-changesets
-pnpm install
-git init . && git add . && git commit -m "Init"
-```
+- `pnpm install` - Install dependencies for all packages and app
+- `pnpm build` - Build all packages and apps
+- `pnpm dev` - Develop all packages and apps
+- `pnpm lint` - Lint all packages
+- `pnpm changeset` - Generate a changeset (it will guide you)
+- `pnpm version-packages` - Create changelog from the changeset and increment packages' versions accordingly
+- `pnpm clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
 
-### Useful commands
-
-- `yarn build` - Build all packages and the docs site
-- `yarn dev` - Develop all packages and the docs site
-- `yarn lint` - Lint all packages
-- `yarn changeset` - Generate a changeset
-- `yarn clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
-
-### Changing the npm organization scope
-
-The npm organization scope for this design system starter is `@devbookhq`. To change this, it's a bit manual at the moment, but you'll need to do the following:
-
-- Rename folders in `packages/*` to replace `devbookhq` with your desired scope
-- Search and replace `devbookhq` with your desired scope
-- Re-run `yarn install`
-
-## Versioning and Publishing packages
-
-Package publishing has been configured using [Changesets](https://github.com/changesets/changesets). Please review their [documentation](https://github.com/changesets/changesets#documentation) to familiarize yourself with the workflow.
-
-This example comes with automated npm releases setup in a [GitHub Action](https://github.com/changesets/action). To get this working, you will need to create an `NPM_TOKEN` and `GITHUB_TOKEN` in your repository settings. You should also install the [Changesets bot](https://github.com/apps/changeset-bot) on your GitHub repository as well.
-
-For more information about this automation, refer to the official [changesets documentation](https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md)
-
-### npm
-
-If you want to publish package to the public npm registry and make them publicly available, this is already setup.
-
-To publish packages to a private npm organization scope, **remove** the following from each of the `package.json`'s
-
-```diff
-- "publishConfig": {
--  "access": "public"
-- },
-```
-
-### GitHub Package Registry
-
-See [Working with the npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#publishing-a-package-using-publishconfig-in-the-packagejson-file)
+## Deployment
+Run `pnpm changeset` to mark packages you want to release then run `pnpm version-packages` and commit the resulting changes. Marked packages will be published when you push to `master`.

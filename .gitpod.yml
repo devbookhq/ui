@@ -1,6 +1,6 @@
 tasks:
   - name: Setup
-    init: pnpm install
+    init: pnpm install --frozen-lockfile
 
 github:
   prebuilds:
