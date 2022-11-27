@@ -1,9 +1,7 @@
 # Devbook UI
-
 Monorepo for all Devbook's webapps and packages.
 
-## Commands
-
+## Development
 - `pnpm install` - Install dependencies for all packages and app
 - `pnpm build` - Build all packages and apps
 - `pnpm dev` - Develop all packages and apps
@@ -14,3 +12,10 @@ Monorepo for all Devbook's webapps and packages.
 
 ## Deployment
 Run `pnpm changeset` to mark packages you want to release then run `pnpm version-packages` and commit the resulting changes. Marked packages will be published when you push to `master`.
+
+**If the deployment fails don't run the previous commands again, just fix the error and push to `master`.**
+
+## Improvement
+Check how to handle internal packages
+https://github.com/formbricks/formbricks/blob/main/packages/react/package.json
+ 
