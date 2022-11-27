@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ApplyWorkspaceEditRequest,
   CodeActionRequest,
+  CodeActionResolveRequest,
   CodeLensRequest,
   CodeLensResolveRequest,
   CompletionRequest,
@@ -80,24 +80,24 @@ export const createLSPConnection = (conn: MessageConnection) => {
       cond: () => boolean,
       type: T,
     ) =>
-    (params: Params<T>, token?: CancellationToken): Promise<Result<T> | null> =>
-      cond() ? conn.sendRequest(type, params, token) : Promise.resolve(null)
+      (params: Params<T>, token?: CancellationToken): Promise<Result<T> | null> =>
+        cond() ? conn.sendRequest(type, params, token) : Promise.resolve(null)
 
   const maybeNotify =
     <T extends ProtocolNotificationType<any, any>>(cond: () => boolean, type: T) =>
-    (params: Params<T>): Promise<void> =>
-      cond() ? conn.sendNotification(type, params) : Promise.resolve()
+      (params: Params<T>): Promise<void> =>
+        cond() ? conn.sendNotification(type, params) : Promise.resolve()
 
   const notifier =
     <T extends ProtocolNotificationType<any, any>>(type: T) =>
-    (params: Params<T>): Promise<void> =>
-      conn.sendNotification(type, params)
+      (params: Params<T>): Promise<void> =>
+        conn.sendNotification(type, params)
 
   const onNotification =
     <T extends ProtocolNotificationType<any, any>>(type: T) =>
-    (handler: NotificationHandler<Params<T>>): void => {
-      conn.onNotification(type, handler)
-    }
+      (handler: NotificationHandler<Params<T>>): void => {
+        conn.onNotification(type, handler)
+      }
 
   const hasTextDocumentWillSave = () => {
     const c = capabilities.textDocumentSync ?? TextDocumentSyncKind.None
@@ -208,12 +208,17 @@ export const createLSPConnection = (conn: MessageConnection) => {
      */
     watchedFilesChanged: notifier(DidChangeWatchedFilesNotification.type),
 
+    /** If supported, request details of the code action. */
+    resolveCodeAction: maybeReq(
+      () => !!capabilities.codeActionProvider,
+      CodeActionResolveRequest.type,
+    ),
     /** If supported, request formatting of the document. */
     getDocumentFormatting: maybeReq(
       () => !!capabilities.documentFormattingProvider,
       DocumentFormattingRequest.type,
     ),
-    /** If supported, execute command for the workspace. */
+    /** If supported, applu edits in the workspace. */
     applyEdits: maybeReq(() => !!capabilities.workspace, ApplyWorkspaceEditRequest.type),
     /** If supported, execute command for the workspace. */
     executeCommand: maybeReq(
@@ -339,6 +344,7 @@ const METHOD_TO_PROVIDER: { [m: string]: Provider } = {
   'workspace/executeCommand': 'executeCommandProvider',
   'workspace/applyEdit': 'workspace',
   'textDocument/codeAction': 'codeActionProvider',
+  'codeAction/resolve': 'codeActionProvider',
   'textDocument/codeLens': 'codeLensProvider',
   'textDocument/color': 'colorProvider',
   'textDocument/completion': 'completionProvider',
