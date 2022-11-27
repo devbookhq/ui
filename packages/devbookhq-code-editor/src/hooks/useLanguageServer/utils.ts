@@ -2,7 +2,7 @@ import { Completion } from '@codemirror/autocomplete'
 import { ChangeSet, ChangeSpec, Text } from '@codemirror/state'
 import path from 'path-browserify'
 import * as LSP from 'vscode-languageserver-protocol'
-import { Position } from 'vscode-languageserver-protocol'
+import { Position, Range as LSRange } from 'vscode-languageserver-protocol'
 
 // Offset should be calculated with UTF-16 (JS uses UTF-16 strings by default)
 export function posToOffset(doc: Text, pos: Position) {
@@ -75,6 +75,37 @@ export function prefixMatch(options: Completion[]) {
 
   const source = toSet(first) + toSet(rest) + '*$'
   return [new RegExp('^' + source), new RegExp(source)]
+}
+
+export type OffsetRange = { from: number, to: number }
+
+export function areOffsetsOverlapping(range: OffsetRange, otherRange: OffsetRange) {
+  if (otherRange.from < range.from) {
+    return otherRange.to > range.from
+  } else {
+    return otherRange.from < range.to
+  }
+}
+
+export function posToOffsetRange(doc: Text, range: LSRange): OffsetRange {
+  return {
+    from: posToOffset(doc, range.start),
+    to: posToOffset(doc, range.end),
+  }
+}
+
+export function offsetToPosRange(doc: Text, range: OffsetRange): LSRange {
+  return {
+    start: offsetToPos(doc, range.from),
+    end: offsetToPos(doc, range.to),
+  }
+}
+
+export function arePositionsOverlapping(doc: Text, range: LSRange, otherPos: LSRange) {
+  const offsetRange = posToOffsetRange(doc, range)
+  const otherOffsetRange = posToOffsetRange(doc, otherPos)
+
+  return areOffsetsOverlapping(offsetRange, otherOffsetRange)
 }
 
 export function applyChanges(text: string, changes: ChangeSpec[]) {
