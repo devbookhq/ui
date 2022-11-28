@@ -27,6 +27,7 @@ async function mdToHtml(md: string) {
     .data('settings', { fragment: true })
     .use(rehypeHighlight, {
       detect: true,
+      subset: ['javascript', 'typescript'],
     })
     .use(rehypeExternalLinks, {
       rel: 'noopener noreferrer',
