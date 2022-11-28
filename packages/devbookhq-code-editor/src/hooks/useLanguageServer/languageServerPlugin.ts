@@ -21,7 +21,7 @@ import {
   SignatureHelp,
   SignatureHelpTriggerKind,
 } from 'vscode-languageserver-protocol'
-import { getLast } from '../../utils'
+import { getLast, notEmpty } from '../../utils'
 
 import { LanguageServerClient } from './languageServerClient'
 import { mdToElements } from './md'
@@ -225,9 +225,7 @@ export class LanguageServerPlugin implements PluginValue {
     if (!this.client.capabilities?.codeActionProvider) return null
 
     const state = view.state
-
     const positionRange = offsetToPosRange(state.doc, range)
-
     const diagnostics = this.diagnostics?.filter(d => arePositionsOverlapping(state.doc, positionRange, d.range)) || []
 
     const actions = await this.client.lsp.getCodeAction({
@@ -241,28 +239,22 @@ export class LanguageServerPlugin implements PluginValue {
 
     if (!actions) return null
 
-    const actionDetails = await Promise.all(
-      actions.map(async a => {
-
-        if ('kind' in a) {
+    const actionDetails = (
+      await Promise.all(
+        actions.map(async a => {
+          if ('kind' in a) {
+            // code action
+            const action = await this.client.lsp.resolveCodeAction(a)
+            return action
+          }
           // command
-          const action = await this.client.lsp.resolveCodeAction(a)
+          return a
+        })
+      )
+    ).filter(notEmpty)
 
-        } else {
-          // command
-        }
-
-
-
-      })
-    )
-
-
-
-
-
+    return actionDetails
   }
-
 
   async executeAction(
     command: string,
@@ -273,7 +265,6 @@ export class LanguageServerPlugin implements PluginValue {
     const result = await this.client.lsp.executeCommand({
       command,
       arguments: args,
-
     })
 
     return result
