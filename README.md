@@ -2,6 +2,21 @@
 Monorepo for all Devbook's webapps and packages.
 
 ## Development
+
+This whole repo is a pnpm **workspace** that has multiple **packages** in the [`apps/`](./apps/) and [`packages/`](./packages) subdirectories.
+
+### Initial installation
+In the top directory run `pnpm install` to install deps in all packages.
+
+### Installing dependencies
+Run `pnpm install <deps>` in any subdirectory to install the dependencies there.
+
+Run `pnpm install <deps> --filter <package-name-or-regex>` to install dependencies in specified packages.
+
+### Developing
+Run `pnpm dev` to start watching and compiling all changes in this monorepo.
+
+### Commands overview
 - `pnpm install` - Install dependencies for all packages and app
 - `pnpm build` - Build all packages and apps
 - `pnpm dev` - Develop all packages and apps
