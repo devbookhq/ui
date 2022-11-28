@@ -5,7 +5,7 @@ import { useProvidedSession } from '@devbookhq/react'
 import React, { useMemo } from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
-import { prisma, ts } from '../grammars/file'
+import { prisma, ts } from '../grammars/examples'
 
 const textMateGrammars: IRawGrammar[] = [prismaTextMate as unknown as IRawGrammar]
 
@@ -46,8 +46,6 @@ export function useSupportedLangaugesWithTextMate() {
   }, [textMateLanguages])
 
   return languages
-
-  // return supportedLanguages
 }
 
 function Test() {

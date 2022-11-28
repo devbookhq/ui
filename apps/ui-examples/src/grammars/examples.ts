@@ -1,6 +1,6 @@
 
-export const prisma = `
-generator client {
+export const prisma =
+  `generator client {
   provider = "prisma-client-js"
 }
 
@@ -33,15 +33,24 @@ model User {
   name    String?
   posts   Post[]
   profile Profile?
-}
-`
-export const prisma2 = `
-model Profile {
-  id     Int
-}
-`
+}`
 
-export const ts = `
-console.log(4)
-const a = 
-`
+export const ts =
+  `import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+const alice = await prisma.user.upsert({
+  update: {
+        age: 34,
+  },
+  where: {
+    email: 'alice@prisma.io',
+  },
+  create: {
+    name: 'Alice',
+    email: 'alice@prisma.io',
+    country: 'England',
+    age: 43,
+  },
+})`
