@@ -23,8 +23,7 @@
 
 /* Editor */
 .cm-editor {
-  @apply min-w-0 flex flex-1 h-full text-left text-gray-800;
-  @apply bg-transparent;
+  @apply min-w-0 flex flex-1 h-full text-left text-gray-800 bg-white;
 
   pre code.hljs {
     @apply p-0 bg-transparent whitespace-pre-wrap;
@@ -43,7 +42,7 @@
   }
 
   .cm-content {
-    @apply font-mono;
+    @apply font-mono bg-white;
     @apply text-sm;
     @apply h-auto;
     @apply text-gray-700;
@@ -93,7 +92,6 @@
 
   .cm-gutter.cm-lineNumbers {
     @apply text-right;
-    @apply rounded-bl-xl;
     @apply text-[#CBD5E1];
   }
 
