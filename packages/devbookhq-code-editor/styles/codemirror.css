@@ -46,11 +46,11 @@
     @apply text-sm;
     @apply h-auto;
     @apply text-gray-700;
-    @apply caret-gray-500;
+    @apply caret-gray-800 cursor-text;
   }
 
   .cm-scroller {
-    @apply overflow-auto cursor-text;
+    @apply overflow-auto;
     @apply pb-4;
     /* Firefox scrollbar styling */
     scrollbar-color: #8F8F8F transparent;
