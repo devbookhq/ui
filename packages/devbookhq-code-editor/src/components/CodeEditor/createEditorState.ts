@@ -11,6 +11,7 @@ import {
   indentOnInput,
   syntaxHighlighting,
 } from '@codemirror/language'
+import { lintGutter } from '@codemirror/lint'
 import { Compartment, EditorState } from '@codemirror/state'
 import {
   EditorView,
@@ -20,6 +21,7 @@ import {
   lineNumbers,
 } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
+
 import { activeLineHighlighter } from './activeLineHighlighter'
 
 const disableSpellchecking = {
@@ -32,12 +34,15 @@ function createEditorState(content: string) {
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
   const editabilityExtensions = new Compartment()
-
   const state = EditorState.create({
     doc: content,
     extensions: [
       EditorView.contentAttributes.of(disableSpellchecking),
       editabilityExtensions.of([]),
+      lintGutter({
+        tooltipFilter: d => [],
+        markerFilter: d => d.filter(v => v.severity === 'error'),
+      }),
       lineNumbers(),
       bracketMatching(),
       activeLineHighlighter(),
