@@ -9,7 +9,9 @@ import { ChangeSpec, Facet, Transaction } from '@codemirror/state'
 import { EditorView, PluginValue, Tooltip, ViewUpdate } from '@codemirror/view'
 import * as Diff from 'diff'
 import {
+  CodeActionTriggerKind,
   CompletionItem,
+  Diagnostic,
   CompletionItemKind,
   CompletionTriggerKind,
   DiagnosticSeverity,
@@ -25,8 +27,10 @@ import { LanguageServerClient } from './languageServerClient'
 import { mdToElements } from './md'
 import {
   applyChanges,
+  arePositionsOverlapping,
   formatContents,
   offsetToPos,
+  offsetToPosRange,
   posToOffset,
   prefixMatch,
 } from './utils'
@@ -54,6 +58,7 @@ export class LanguageServerPlugin implements PluginValue {
 
   private readonly documentURI: string
   private documentVersion = 0
+  private diagnostics?: Diagnostic[]
 
   constructor(private view: EditorView, openFile: boolean) {
     const state = this.view.state
@@ -211,6 +216,67 @@ export class LanguageServerPlugin implements PluginValue {
       create: () => ({ dom: el }),
       above: true,
     }
+  }
+
+  async requestCodeActions(
+    view: EditorView,
+    range: { from: number, to: number },
+  ) {
+    if (!this.client.capabilities?.codeActionProvider) return null
+
+    const state = view.state
+
+    const positionRange = offsetToPosRange(state.doc, range)
+
+    const diagnostics = this.diagnostics?.filter(d => arePositionsOverlapping(state.doc, positionRange, d.range)) || []
+
+    const actions = await this.client.lsp.getCodeAction({
+      textDocument: { uri: this.documentURI },
+      range: positionRange,
+      context: {
+        triggerKind: CodeActionTriggerKind.Invoked,
+        diagnostics,
+      },
+    })
+
+    if (!actions) return null
+
+    const actionDetails = await Promise.all(
+      actions.map(async a => {
+
+        if ('kind' in a) {
+          // command
+          const action = await this.client.lsp.resolveCodeAction(a)
+
+        } else {
+          // command
+        }
+
+
+
+      })
+    )
+
+
+
+
+
+  }
+
+
+  async executeAction(
+    command: string,
+    args: any[],
+  ) {
+    if (!this.client.capabilities?.executeCommandProvider) return null
+
+    const result = await this.client.lsp.executeCommand({
+      command,
+      arguments: args,
+
+    })
+
+    return result
   }
 
   async requestSignatureHelp(
@@ -476,6 +542,7 @@ export class LanguageServerPlugin implements PluginValue {
     if (params.uri !== this.documentURI) return
 
     const state = this.view.state
+    this.diagnostics = params.diagnostics
 
     const diagnostics = params.diagnostics
       .map(({ range, message, severity }) => ({

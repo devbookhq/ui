@@ -68,7 +68,7 @@ async function initialize(conn: LSPConnection, rootURI: string) {
         //   dynamicRegistration: true,
         //   hierarchicalDocumentSymbolSupport: true,
         // },
-        codeAction: { dynamicRegistration: true },
+        codeAction: { dynamicRegistration: true, dataSupport: true },
         // codeLens: {},
         // documentLink: {
         //   dynamicRegistration: true,
@@ -90,6 +90,7 @@ async function initialize(conn: LSPConnection, rootURI: string) {
         moniker: {},
       },
       workspace: {
+        executeCommand: { dynamicRegistration: true },
         didChangeConfiguration: { dynamicRegistration: true },
         didChangeWatchedFiles: { dynamicRegistration: true },
       },
