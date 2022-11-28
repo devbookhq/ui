@@ -272,8 +272,6 @@
     @apply fill-green-600;
   }
 
-  .cm-completionMatchedText {text-decoration: none;}
-
   /* Hover info and linting info */
   .cm-tooltip-section:not(:first-child) { @apply border-none pt-1;}
   .cm-diagnostic {@apply p-0 border-none block whitespace-pre-wrap; }
@@ -333,7 +331,7 @@
     }
 
     ul[role=listbox] {
-      @apply rounded overflow-hidden;
+      @apply overflow-hidden;
       @apply custom-scrollbar;
 
       li[role=option] {
@@ -352,7 +350,7 @@
       @apply font-mono;
 
       .cm-completionMatchedText {
-        @apply text-[#00A4FB] font-semibold;
+        @apply text-[#6495ED] font-semibold no-underline;
       }
     }
 
@@ -404,7 +402,7 @@
   .cm-line {color: #94A3B8;}
 
   .cm-tooltip.cm-tooltip-autocomplete > ul > li {cursor: pointer; padding: 1px 1em 1px 3px; line-height: 1.2;}
-  .cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] {background: #bdf; background-color: Highlight; color: white; color: HighlightText;}
+  .cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] {background: rgb(204, 229, 255);}
   .cm-tooltip.cm-tooltip-autocomplete > ul {font-family: monospace; white-space: nowrap; max-width: 700px; max-width: min(700px, 95vw); max-height: 10em; list-style: none; margin: 0; padding: 0;}
   .cm-completionListIncompleteTop:before,  .cm-completionListIncompleteBottom:after {content: "···"; opacity: 0.5; display: block; text-align: center;}
   .cm-completionInfo.cm-completionInfo-left {right: 100%;}

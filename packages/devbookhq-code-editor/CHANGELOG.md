@@ -1,5 +1,12 @@
 # @devbookhq/code-editor
 
+## 0.1.9
+
+### Patch Changes
+
+- Fix autocomplete bug
+- Add linting gutter; Improve default CSS
+
 ## 0.1.8
 
 ### Patch Changes

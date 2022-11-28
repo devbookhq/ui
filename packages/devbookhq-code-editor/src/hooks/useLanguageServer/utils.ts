@@ -34,41 +34,25 @@ export function formatContents(
   }
 }
 
-const autocompletionToken = '\\w'
-
 function toSet(chars: Set<string>) {
   let preamble = ''
   let flat = Array.from(chars).join('')
-  const words = new RegExp(autocompletionToken).test(flat)
+  const words = /\w/.test(flat)
   if (words) {
-    preamble += autocompletionToken
-
-    flat = flat.replace(new RegExp(autocompletionToken, 'g'), '')
+    preamble += '\\w'
+    flat = flat.replace(/\w/g, '')
   }
-  return `[${preamble}${flat.replace(new RegExp(`[^${autocompletionToken}\\s]`, 'g'), '\\$&')}]`
+  return `[${preamble}${flat.replace(/[^\w\s]/g, '\\$&')}]`
 }
-
-
-// function toSet(chars: Set<string>) {
-//   console.log('')
-//   let preamble = ''
-//   let flat = Array.from(chars).join('')
-//   const words = /\w/.test(flat)
-//   if (words) {
-//     preamble += '\\w'
-//     flat = flat.replace(/\w/g, '')
-//   }
-//   return `[${preamble}${flat.replace(/[^\w\s]/g, '\\$&')}]`
-// }
 
 export function prefixMatch(options: Completion[]) {
   const first = new Set<string>()
   const rest = new Set<string>()
 
   for (const { label } of options) {
-    const [initial, ...restStr] = label
+    const [initial, restStr] = label
     first.add(initial)
-    for (const char of restStr) {
+    for (const char of restStr.replace(/\W/, '')) {
       rest.add(char)
     }
   }

@@ -505,7 +505,7 @@ export class LanguageServerPlugin implements PluginValue {
           })
       }
     } else {
-      if (!context.explicit) return null
+      if (!context.explicit && triggerKind !== CompletionTriggerKind.TriggerCharacter) return null
     }
 
     const longestCompletion = options.reduce(
