@@ -23,7 +23,7 @@ export function createExtension(options: {
   let plugin: LanguageServerPlugin | null = null
 
   const getPlugin = () => plugin
-  
+
   const { getImage: getIconImage } = createIconImages()
 
   return [
@@ -59,8 +59,11 @@ export function createExtension(options: {
       const positon = offsetToPos(view.state.doc, pos)
 
       return await plugin.requestHoverTooltip(view, positon)
+    }, {
+      hoverTime: 0,
     }),
     autocompletion({
+      interactionDelay: 0,
       activateOnTyping: true,
       maxRenderedOptions: 40,
       closeOnBlur: false,
