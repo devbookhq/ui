@@ -178,13 +178,14 @@ const Terminal = forwardRef<Handler, Props>(({
       const fitAddon = new fit.FitAddon()
       term.loadAddon(fitAddon)
 
+
+      term.open(terminalRef.current)
+      fitAddon.fit()
+
       setTerminal({
         fitAddon,
         terminal: term,
       })
-
-      term.open(terminalRef.current)
-      fitAddon.fit()
 
       if (autofocus) term.focus()
 
@@ -224,7 +225,7 @@ const Terminal = forwardRef<Handler, Props>(({
     <div className={`py-2 pl-2 flex-1 bg-[#000] flex ${isHidden ? 'hidden' : ''}`}>
       <div className="flex-1 flex relative bg-[#000]">
         <div ref={terminalRef} className="terminal terminal-wrapper absolute h-full w-full bg-[#000]" />
-        {(errMessage || !terminal) &&
+        {(errMessage || !terminal || (!terminalSession && !isReadOnly)) &&
           <div className="absolute h-full w-full top-0 left-0 bg-[#000]">
             <div className="text-white flex flex-1 h-full items-center justify-center">
               {errMessage &&
@@ -233,7 +234,7 @@ const Terminal = forwardRef<Handler, Props>(({
                   text={errMessage}
                 />
               }
-              {!terminal && <Spinner />}
+              {(!terminal || (!terminalSession && !isReadOnly)) && <Spinner />}
             </div>
           </div>
         }

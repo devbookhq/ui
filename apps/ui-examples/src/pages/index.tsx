@@ -80,7 +80,7 @@ function Test() {
   }, [ref])
 
   return (
-    <div style={{ backgroundColor: 'gold' }}>
+    <div className="bg-yellow-200">
       <CodeEditor
         content={ts}
         filename="/code/index.ts"
@@ -97,7 +97,7 @@ function Test() {
         handleRun={() => console.log('run')}
         supportedLanguages={languages}
       />
-      <div style={{ height: '300px', display: 'flex' }}>
+      <div className="flex h-[300px]">
         <Terminal
           canStartTerminalSession={true}
           session={s.session}
