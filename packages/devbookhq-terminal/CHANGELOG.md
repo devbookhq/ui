@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.8
+
+### Patch Changes
+
+- Improve terminal run
+
 ## 0.1.7
 
 ### Patch Changes
