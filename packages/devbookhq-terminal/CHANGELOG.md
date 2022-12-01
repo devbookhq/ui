@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.4
+
+### Patch Changes
+
+- Change terminal padding
+
 ## 0.1.3
 
 ### Patch Changes
