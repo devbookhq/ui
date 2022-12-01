@@ -1,5 +1,11 @@
 # @devbookhq/codemirror-textmate
 
+## 0.0.3
+
+### Patch Changes
+
+- 47d5f3c: Create react and terminal package; Fix delays in langauge features
+
 ## 0.0.2
 
 ### Patch Changes
