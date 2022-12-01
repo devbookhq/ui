@@ -1,5 +1,11 @@
 # @devbookhq/react
 
+## 2.0.2
+
+### Patch Changes
+
+- Change default export
+
 ## 2.0.1
 
 ### Patch Changes

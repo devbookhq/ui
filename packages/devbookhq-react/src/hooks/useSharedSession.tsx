@@ -26,13 +26,13 @@ export function SharedSessionProvider({
 
   const session = shouldCreateNewSession ? newSession : existingSession
   return (
-    <sharedSessionContext.Provider value= { session } >
-    {children}
+    <sharedSessionContext.Provider value={session} >
+      {children}
     </sharedSessionContext.Provider>
   )
 }
 
-export default function useSharedSession() {
+export function useSharedSession() {
   const ctx = useContext(sharedSessionContext)
   if (ctx === undefined) {
     throw new Error('useSharedSession must be used within the SharedSessionContextProvider.')
