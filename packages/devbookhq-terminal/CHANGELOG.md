@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.5
+
+### Patch Changes
+
+- Change terminal hiding
+
 ## 0.1.4
 
 ### Patch Changes

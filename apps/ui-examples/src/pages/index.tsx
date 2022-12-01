@@ -3,7 +3,7 @@ import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmat
 import { typescriptLanguage } from '@codemirror/lang-javascript'
 import { useSharedSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
 import { prisma, ts } from '../grammars/examples'
@@ -67,19 +67,17 @@ function Test() {
     console.log('ch')
   }, [])
 
-  // useEffect(() => {
-  //   if (!ref.current) return
+  const [isHidden, setIsHidden] = useState(false)
 
-  //   const ina = setInterval(() => {
-  //     const ds = ref.current?.getDiagnostics()
-  //     console.log('getds', ds)
-  //   }, 4000)
+  useEffect(() => {
+    const ina = setInterval(() => {
+      setIsHidden(s => !s)
+    }, 4000)
 
-
-  //   return () => {
-  //     clearInterval(ina)
-  //   }
-  // }, [ref])
+    return () => {
+      clearInterval(ina)
+    }
+  }, [ref])
 
   return (
     <div style={{ backgroundColor: 'gold' }}>
@@ -99,10 +97,11 @@ function Test() {
         handleRun={() => console.log('run')}
         supportedLanguages={languages}
       />
-      <div style={{ height: '300px' }}>
+      <div style={{ height: '300px', display: 'flex' }}>
         <Terminal
           canStartTerminalSession={true}
           session={s.session}
+          isHidden={isHidden}
           onRunningCmdChange={() => { }}
         />
       </div>
