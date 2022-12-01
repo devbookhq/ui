@@ -221,21 +221,23 @@ const Terminal = forwardRef<Handler, Props>(({
   )
 
   return (
-    <div className={`w-full h-full relative bg-[#000] ${isHidden ? 'hidden' : ''}`}>
-      <div ref={terminalRef} className="terminal terminal-wrapper p-2 h-full w-full bg-[#000]" />
-      {(errMessage || !terminal) &&
-        <div className="absolute h-full w-full top-0 left-0">
-          <div className="text-white flex flex-1 h-full items-center justify-center">
-            {errMessage &&
-              <Text
-                color="text-red"
-                text={errMessage}
-              />
-            }
-            {!terminal && <Spinner />}
+    <div className="p-2 flex-1 bg-[#000] flex">
+      <div className={`flex-1 flex relative bg-[#000] ${isHidden ? 'hidden' : ''}`}>
+        <div ref={terminalRef} className="terminal terminal-wrapper absolute h-full w-full bg-[#000]" />
+        {(errMessage || !terminal) &&
+          <div className="absolute h-full w-full top-0 left-0 bg-[#000]">
+            <div className="text-white flex flex-1 h-full items-center justify-center">
+              {errMessage &&
+                <Text
+                  color="text-red"
+                  text={errMessage}
+                />
+              }
+              {!terminal && <Spinner />}
+            </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </div>
   )
 })

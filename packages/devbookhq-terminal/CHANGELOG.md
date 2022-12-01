@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.3
+
+### Patch Changes
+
+- Change terminal wrapper
+
 ## 0.1.2
 
 ### Patch Changes

@@ -82,7 +82,7 @@ function Test() {
   // }, [ref])
 
   return (
-    <div style={{ backgroundColor: 'gold', height: '700px' }}>
+    <div style={{ backgroundColor: 'gold' }}>
       <CodeEditor
         content={ts}
         filename="/code/index.ts"
@@ -99,11 +99,13 @@ function Test() {
         handleRun={() => console.log('run')}
         supportedLanguages={languages}
       />
-      <Terminal
-        canStartTerminalSession={true}
-        session={s.session}
-        onRunningCmdChange={() => { }}
-      />
+      <div style={{ height: '300px' }}>
+        <Terminal
+          canStartTerminalSession={true}
+          session={s.session}
+          onRunningCmdChange={() => { }}
+        />
+      </div>
     </div>
   )
 }
