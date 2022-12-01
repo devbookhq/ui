@@ -6,7 +6,7 @@ import '../../styles/index.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SharedSessionProvider opts={{ codeSnippetID: 's8GzxcGmvrpf' }}>
+    <SharedSessionProvider opts={{ codeSnippetID: 's8GzxcGmvrpf', inactivityTimeout: 5000 }}>
       <Component {...pageProps} />
     </SharedSessionProvider>
   )

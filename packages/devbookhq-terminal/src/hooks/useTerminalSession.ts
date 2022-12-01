@@ -27,7 +27,7 @@ function useTerminalSession({
       if (!canStart) return
       if (!terminal) return
 
-      terminal.clear()
+      terminal.writeln('')
 
       let isEnabled = true
 
@@ -42,7 +42,6 @@ function useTerminalSession({
             rows: terminal.rows,
           },
         })
-
 
         const disposeOnData = terminal.onData(data => {
           if (!isEnabled) return

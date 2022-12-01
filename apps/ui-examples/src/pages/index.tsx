@@ -2,7 +2,7 @@ import { useLanguageServer, LanguageSetup, CodeEditor, CodeEditorHandler } from 
 import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { typescriptLanguage } from '@codemirror/lang-javascript'
 import { useSharedSession } from '@devbookhq/react'
-import { Terminal } from '@devbookhq/terminal'
+import { Terminal, TerminalHandler } from '@devbookhq/terminal'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
@@ -62,6 +62,7 @@ function Test() {
   })
 
   const ref = useRef<CodeEditorHandler>(null)
+  const terminalRef = useRef<TerminalHandler>(null)
 
   const onDiagnosticsChange = useCallback((d: any) => {
     console.log('ch')
@@ -79,8 +80,27 @@ function Test() {
   //   }
   // }, [ref])
 
+
+  const runTerm = useCallback(() => {
+    if (!terminalRef.current) return
+
+    terminalRef.current.runCmd('echo 2')
+  }, [])
+
   return (
     <div className="bg-yellow-200">
+      <div className="cursor-pointer bg-gray-50" onClick={s.refresh}>{s.state}</div>
+      <div className="cursor-pointer bg-gray-50" onClick={runTerm}>Term</div>
+      <div className="flex h-[300px]">
+        <Terminal
+          ref={terminalRef}
+          canStartTerminalSession={true}
+          session={s.session}
+          isReadOnly={true}
+          isHidden={isHidden}
+          onRunningCmdChange={() => { }}
+        />
+      </div>
       <CodeEditor
         content={ts}
         filename="/code/index.ts"
@@ -97,14 +117,6 @@ function Test() {
         handleRun={() => console.log('run')}
         supportedLanguages={languages}
       />
-      <div className="flex h-[300px]">
-        <Terminal
-          canStartTerminalSession={true}
-          session={s.session}
-          isHidden={isHidden}
-          onRunningCmdChange={() => { }}
-        />
-      </div>
     </div>
   )
 }

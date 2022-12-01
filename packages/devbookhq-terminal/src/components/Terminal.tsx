@@ -88,6 +88,7 @@ const Terminal = forwardRef<Handler, Props>(({
         terminal?.terminal.writeln(cmd)
       } else {
         terminal?.terminal.clear()
+        terminal?.terminal.writeln(cmd)
       }
       onRunningCmdChange?.(CodeSnippetExecState.Running)
       terminalSession?.toggleIO(false)
