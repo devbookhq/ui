@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.12
+
+### Patch Changes
+
+- Export additional types
+
 ## 0.1.11
 
 ### Patch Changes
