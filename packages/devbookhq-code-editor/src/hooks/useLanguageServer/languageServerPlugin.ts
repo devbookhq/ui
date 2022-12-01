@@ -71,8 +71,6 @@ export class LanguageServerPlugin implements PluginValue {
 
     this.client = state.facet(client)
     this.documentURI = view.state.facet(documentURI)
-    console.log('constructor', this.documentURI)
-
     this.client.attachPlugin(this)
 
     if (openFile) {
@@ -123,7 +121,6 @@ export class LanguageServerPlugin implements PluginValue {
   destroy() {
     // TODO: We ideally want to close the textDocument here,
     // but there is some race condition between this closing and opening of the same file in the next guide's step.
-    console.log('destroy', this.documentURI)
     this.client.detachPlugin(this)
   }
 

@@ -1,7 +1,7 @@
 import { useLanguageServer, LanguageSetup, CodeEditor, CodeEditorHandler } from '@devbookhq/code-editor'
 import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { typescriptLanguage } from '@codemirror/lang-javascript'
-import { useProvidedSession } from '@devbookhq/react'
+import { useSharedSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
 import React, { useCallback, useMemo, useRef } from 'react'
 
@@ -50,7 +50,7 @@ export function useSupportedLangaugesWithTextMate() {
 }
 
 function Test() {
-  const s = useProvidedSession()
+  const s = useSharedSession()
 
   const languages = useSupportedLangaugesWithTextMate()
 
@@ -81,8 +81,6 @@ function Test() {
   //   }
   // }, [ref])
 
-
-
   return (
     <div style={{ backgroundColor: 'gold', height: '700px' }}>
       <CodeEditor
@@ -98,6 +96,7 @@ function Test() {
         onContentChange={onDiagnosticsChange}
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
+        handleRun={() => console.log('run')}
         supportedLanguages={languages}
       />
       <Terminal
