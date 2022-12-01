@@ -1,5 +1,28 @@
 @import './codemirror.css';
 
+/* Styling for highlighted markdown */
+@import 'highlight.js/styles/github.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .custom-scrollbar {
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      /* @apply bg-black-650; */
+      &:hover {
+        /* @apply bg-black-600; */
+      }
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background: transparent;
+    }
+  }
+}

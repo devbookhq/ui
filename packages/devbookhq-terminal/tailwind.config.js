@@ -1,0 +1,70 @@
+module.exports = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx}',
+  ],
+  darkMode: 'class',
+  important: true,
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: [
+          '"ABC Whyte"',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Helvetica, Arial',
+          'sans-serif',
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+        ],
+        mono: ['\'JetBrains Mono\'', 'monospace'],
+      },
+      fontWeight: {
+        normal: 400,
+        bold: 600,
+      },
+      lineClamp: { 10: '10' },
+      colors: {
+        transparent: 'transparent',
+        green: {
+          800: '#22543D',
+          700: '#276749',
+          600: '#38A169',
+          500: '#48BB78',
+          400: '#68D391',
+          300: '#9AE6B4',
+          200: '#C6F6D5',
+          100: '#F0FFF4',
+        },
+        'red': '#da3125',
+        brand: {
+          900: '#3c2494',
+          800: '#4025a2',
+          700: '#4427b0',
+          600: '#4727b9',
+          500: '#4b29c7',
+          400: '#745ad3',
+          300: '#9c89e1',
+          200: '#d6cff2',
+          100: '#e5e2f3',
+          50: '#f2f1f9',
+          10: '#f8f7fd',
+        },
+        gray: {
+          800: '#3d4657',
+          700: '#585f6f',
+          600: '#717784',
+          500: '#8c919b',
+          400: '#a5a9b1',
+          300: '#c0c3c8',
+          200: '#d9dbde',
+          100: '#f4f5f5',
+          50: '#fcfdfd',
+          10: '#ffffff',
+        },
+      },
+      height: { inherit: 'inherit' },
+      maxWidth: { notification: 'calc(100vw - 32px)' },
+    },
+  }
+}

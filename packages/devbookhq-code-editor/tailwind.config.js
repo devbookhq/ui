@@ -1,7 +1,7 @@
 module.exports = {
   content: ['./components/**/*.{js,ts,jsx,tsx}', './styles/**/*.css'],
   darkMode: 'class',
-  // important: true,
+  important: true,
   theme: {
     extend: {
       colors: {

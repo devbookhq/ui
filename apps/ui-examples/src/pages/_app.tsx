@@ -3,6 +3,7 @@ import React from 'react'
 import { SessionProvider } from '@devbookhq/react'
 
 import '@devbookhq/code-editor/dist/index.css'
+import '@devbookhq/terminal/dist/index.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

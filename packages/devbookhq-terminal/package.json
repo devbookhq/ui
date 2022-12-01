@@ -1,7 +1,7 @@
 {
-  "name": "@devbookhq/codemirror-textmate",
-  "version": "0.0.2",
-  "main": "./dist/index.mjs",
+  "name": "@devbookhq/terminal",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
@@ -13,15 +13,20 @@
   ],
   "scripts": {
     "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/tsconfig,eslint-config-devbookhq\"",
-    "build": "tsup src/index.ts --format esm --target es2020 --dts --external react --sourcemap --loader .wasm=dataurl",
-    "dev": "tsup src/index.ts --format esm --dts --target es2020 --watch --external react --sourcemap --loader .wasm=dataurl",
+    "build": "tsup src/index.ts --target es2020 --format esm,cjs --dts --external react --external @devbookhq/sdk --sourcemap",
+    "dev": "tsup src/index.ts --target es2020 --format esm,cjs --dts --watch --external react --external @devbookhq/sdk --sourcemap",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
     "@devbookhq/tsconfig": "workspace:*",
     "@types/react": "^18.0.25",
+    "autoprefixer": "^10.4.12",
+    "cssnano": "^5.1.13",
     "eslint-config-devbookhq": "workspace:*",
+    "postcss": "^8.4.17",
+    "postcss-import": "^15.0.0",
+    "tailwindcss": "^3.1.8",
     "tsup": "^5.10.1",
     "typescript": "^4.9.3"
   },
@@ -29,10 +34,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@codemirror/language": "^6.3.1",
+    "@devbookhq/sdk": "^2.6.33",
+    "classnames": "^2.3.2",
     "react": "^18.2.0",
-    "vscode-languageserver-protocol": "^3.17.2",
-    "vscode-oniguruma": "^1.6.2",
-    "vscode-textmate": "^7.0.3"
+    "react-resize-detector": "^7.1.2",
+    "xterm": "^5.0.0",
+    "xterm-addon-fit": "^0.6.0",
+    "xterm-addon-web-links": "^0.7.0"
   }
 }

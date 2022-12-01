@@ -1,7 +1,8 @@
-import { CodeEditor, useLanguageServer, LanguageSetup } from '@devbookhq/code-editor'
+import { useLanguageServer, LanguageSetup, CodeEditor } from '@devbookhq/code-editor'
 import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { typescriptLanguage } from '@codemirror/lang-javascript'
 import { useProvidedSession } from '@devbookhq/react'
+import { Terminal } from '@devbookhq/terminal'
 import React, { useMemo } from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
@@ -61,18 +62,23 @@ function Test() {
   })
 
   return (
-    <div>
+    <div style={{ backgroundColor: 'gold', height: '700px' }}>
+      <CodeEditor
+        content={ts}
+        filename="/code/index.ts"
+        languageClients={languageClients}
+        supportedLanguages={languages}
+      />
       <CodeEditor
         content={prisma}
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
         supportedLanguages={languages}
       />
-      <CodeEditor
-        content={ts}
-        filename="/code/index.ts"
-        languageClients={languageClients}
-        supportedLanguages={languages}
+      <Terminal
+        canStartTerminalSession={true}
+        session={s.session}
+        onRunningCmdChange={() => { }}
       />
     </div>
   )

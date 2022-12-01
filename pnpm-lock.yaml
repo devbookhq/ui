@@ -19,10 +19,11 @@ importers:
       '@codemirror/lang-javascript': ^6.1.1
       '@devbookhq/code-editor': workspace:*
       '@devbookhq/codemirror-textmate': workspace:*
-      '@devbookhq/react': ^1.1.17
+      '@devbookhq/react': workspace:*
+      '@devbookhq/terminal': workspace:*
       '@devbookhq/tsconfig': workspace:*
       '@types/node': ^17.0.12
-      '@types/react': ^18.0.22
+      '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.7
       eslint-config-devbookhq: workspace:*
       next: latest
@@ -33,7 +34,8 @@ importers:
       '@codemirror/lang-javascript': 6.1.1
       '@devbookhq/code-editor': link:../../packages/devbookhq-code-editor
       '@devbookhq/codemirror-textmate': link:../../packages/devbookhq-codemirror-textmate
-      '@devbookhq/react': 1.1.17_biqbaboplfbrettd7655fr4n2y
+      '@devbookhq/react': link:../../packages/devbookhq-react
+      '@devbookhq/terminal': link:../../packages/devbookhq-terminal
       next: 13.0.5_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -53,12 +55,12 @@ importers:
       '@codemirror/lint': ^6.1.0
       '@codemirror/state': ^6.1.4
       '@codemirror/view': ^6.5.1
-      '@devbookhq/sdk': ^2.6.9
+      '@devbookhq/sdk': ^2.6.33
       '@devbookhq/tsconfig': workspace:*
       '@lezer/highlight': ^1.1.2
       '@types/diff': ^5.0.2
       '@types/path-browserify': ^1.0.0
-      '@types/react': ^17.0.13
+      '@types/react': ^18.0.25
       '@vscode/codicons': ^0.0.32
       autoprefixer: ^10.4.12
       cssnano: ^5.1.13
@@ -68,7 +70,7 @@ importers:
       path-browserify: ^1.0.1
       postcss: ^8.4.17
       postcss-import: ^15.0.0
-      react: ^17.0.2
+      react: ^18.2.0
       rehype-external-links: ^2.0.1
       rehype-highlight: ^6.0.0
       rehype-raw: ^6.1.1
@@ -91,12 +93,13 @@ importers:
       '@codemirror/lint': 6.1.0
       '@codemirror/state': 6.1.4
       '@codemirror/view': 6.5.1
-      '@devbookhq/sdk': 2.6.10
+      '@devbookhq/sdk': 2.6.33
       '@lezer/highlight': 1.1.2
       '@vscode/codicons': 0.0.32
       diff: 5.1.0
       highlight.js: 11.7.0
       path-browserify: 1.0.1
+      react: 18.2.0
       rehype-external-links: 2.0.1
       rehype-highlight: 6.0.0
       rehype-raw: 6.1.1
@@ -113,13 +116,12 @@ importers:
       '@devbookhq/tsconfig': link:../devbookhq-tsconfig
       '@types/diff': 5.0.2
       '@types/path-browserify': 1.0.0
-      '@types/react': 17.0.52
+      '@types/react': 18.0.25
       autoprefixer: 10.4.13_postcss@8.4.19
       cssnano: 5.1.14_postcss@8.4.19
       eslint-config-devbookhq: link:../eslint-config-devbookhq
       postcss: 8.4.19
       postcss-import: 15.0.0_postcss@8.4.19
-      react: 17.0.2
       tailwindcss: 3.2.4_postcss@8.4.19
       tsup: 5.12.9_idbjo54bpfgfu5hzy4ncsoa6f4
       typescript: 4.9.3
@@ -128,9 +130,9 @@ importers:
     specifiers:
       '@codemirror/language': ^6.3.1
       '@devbookhq/tsconfig': workspace:*
-      '@types/react': ^17.0.13
+      '@types/react': ^18.0.25
       eslint-config-devbookhq: workspace:*
-      react: ^17.0.2
+      react: ^18.2.0
       tsup: ^5.10.1
       typescript: ^4.9.3
       vscode-languageserver-protocol: ^3.17.2
@@ -138,15 +140,75 @@ importers:
       vscode-textmate: ^7.0.3
     dependencies:
       '@codemirror/language': 6.3.1
+      react: 18.2.0
       vscode-languageserver-protocol: 3.17.2
       vscode-oniguruma: 1.6.2
       vscode-textmate: 7.0.3
     devDependencies:
       '@devbookhq/tsconfig': link:../devbookhq-tsconfig
-      '@types/react': 17.0.52
+      '@types/react': 18.0.25
       eslint-config-devbookhq: link:../eslint-config-devbookhq
-      react: 17.0.2
       tsup: 5.12.9_typescript@4.9.3
+      typescript: 4.9.3
+
+  packages/devbookhq-react:
+    specifiers:
+      '@devbookhq/sdk': ^2.6.33
+      '@devbookhq/tsconfig': workspace:*
+      '@types/react': ^18.0.25
+      eslint-config-devbookhq: workspace:*
+      react: ^18.2.0
+      react-idle-timer: ^5.4.2
+      tsup: ^5.10.1
+      typescript: ^4.9.3
+    dependencies:
+      '@devbookhq/sdk': 2.6.33
+      react: 18.2.0
+      react-idle-timer: 5.4.2_biqbaboplfbrettd7655fr4n2y
+    devDependencies:
+      '@devbookhq/tsconfig': link:../devbookhq-tsconfig
+      '@types/react': 18.0.25
+      eslint-config-devbookhq: link:../eslint-config-devbookhq
+      tsup: 5.12.9_typescript@4.9.3
+      typescript: 4.9.3
+
+  packages/devbookhq-terminal:
+    specifiers:
+      '@devbookhq/sdk': ^2.6.33
+      '@devbookhq/tsconfig': workspace:*
+      '@types/react': ^18.0.25
+      autoprefixer: ^10.4.12
+      classnames: ^2.3.2
+      cssnano: ^5.1.13
+      eslint-config-devbookhq: workspace:*
+      postcss: ^8.4.17
+      postcss-import: ^15.0.0
+      react: ^18.2.0
+      react-resize-detector: ^7.1.2
+      tailwindcss: ^3.1.8
+      tsup: ^5.10.1
+      typescript: ^4.9.3
+      xterm: ^5.0.0
+      xterm-addon-fit: ^0.6.0
+      xterm-addon-web-links: ^0.7.0
+    dependencies:
+      '@devbookhq/sdk': 2.6.33
+      classnames: 2.3.2
+      react: 18.2.0
+      react-resize-detector: 7.1.2_biqbaboplfbrettd7655fr4n2y
+      xterm: 5.0.0
+      xterm-addon-fit: 0.6.0_xterm@5.0.0
+      xterm-addon-web-links: 0.7.0_xterm@5.0.0
+    devDependencies:
+      '@devbookhq/tsconfig': link:../devbookhq-tsconfig
+      '@types/react': 18.0.25
+      autoprefixer: 10.4.13_postcss@8.4.19
+      cssnano: 5.1.14_postcss@8.4.19
+      eslint-config-devbookhq: link:../eslint-config-devbookhq
+      postcss: 8.4.19
+      postcss-import: 15.0.0_postcss@8.4.19
+      tailwindcss: 3.2.4_postcss@8.4.19
+      tsup: 5.12.9_idbjo54bpfgfu5hzy4ncsoa6f4
       typescript: 4.9.3
 
   packages/devbookhq-tsconfig:
@@ -395,17 +457,6 @@ packages:
       prettier: 2.8.0
     dev: true
 
-  /@codemirror/autocomplete/0.19.15:
-    resolution: {integrity: sha512-GQWzvvuXxNUyaEk+5gawbAD8s51/v2Chb++nx0e2eGWrphWk42isBtzOMdc3DxrxrZtPZ55q2ldNp+6G8KJLIQ==}
-    dependencies:
-      '@codemirror/language': 0.19.10
-      '@codemirror/state': 0.19.9
-      '@codemirror/text': 0.19.6
-      '@codemirror/tooltip': 0.19.16
-      '@codemirror/view': 0.19.48
-      '@lezer/common': 0.15.12
-    dev: false
-
   /@codemirror/autocomplete/6.3.3_j43uvr2w5rteirgavbu2oybvla:
     resolution: {integrity: sha512-8MGqPuKvE0W0XjabDYX3BFJNJRsYFAYpDBol+YCg6o5t2JyoDeoMYrqRMVnJv1B1FBgNAkvdDVrNrVE/7c9qvQ==}
     peerDependencies:
@@ -420,28 +471,6 @@ packages:
       '@lezer/common': 1.0.2
     dev: false
 
-  /@codemirror/closebrackets/0.19.2:
-    resolution: {integrity: sha512-ClMPzPcPP0eQiDcVjtVPl6OLxgdtZSYDazsvT0AKl70V1OJva0eHgl4/6kCW3RZ0pb2n34i9nJz4eXCmK+TYDA==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/autocomplete
-    dependencies:
-      '@codemirror/language': 0.19.10
-      '@codemirror/rangeset': 0.19.9
-      '@codemirror/state': 0.19.9
-      '@codemirror/text': 0.19.6
-      '@codemirror/view': 0.19.48
-    dev: false
-
-  /@codemirror/commands/0.19.8:
-    resolution: {integrity: sha512-65LIMSGUGGpY3oH6mzV46YWRrgao6NmfJ+AuC7jNz3K5NPnH6GCV1H5I6SwOFyVbkiygGyd0EFwrWqywTBD1aw==}
-    dependencies:
-      '@codemirror/language': 0.19.10
-      '@codemirror/matchbrackets': 0.19.4
-      '@codemirror/state': 0.19.9
-      '@codemirror/text': 0.19.6
-      '@codemirror/view': 0.19.48
-      '@lezer/common': 0.15.12
-    dev: false
-
   /@codemirror/commands/6.1.2:
     resolution: {integrity: sha512-sO3jdX1s0pam6lIdeSJLMN3DQ6mPEbM4yLvyKkdqtmd/UDwhXA5+AwFJ89rRXm6vTeOXBsE5cAmlos/t7MJdgg==}
     dependencies:
@@ -449,55 +478,6 @@ packages:
       '@codemirror/state': 6.1.4
       '@codemirror/view': 6.5.1
       '@lezer/common': 1.0.2
-    dev: false
-
-  /@codemirror/comment/0.19.1:
-    resolution: {integrity: sha512-uGKteBuVWAC6fW+Yt8u27DOnXMT/xV4Ekk2Z5mRsiADCZDqYvryrJd6PLL5+8t64BVyocwQwNfz1UswYS2CtFQ==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/commands
-    dependencies:
-      '@codemirror/state': 0.19.9
-      '@codemirror/text': 0.19.6
-      '@codemirror/view': 0.19.48
-    dev: false
-
-  /@codemirror/fold/0.19.4:
-    resolution: {integrity: sha512-0SNSkRSOa6gymD6GauHa3sxiysjPhUC0SRVyTlvL52o0gz9GHdc8kNqNQskm3fBtGGOiSriGwF/kAsajRiGhVw==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/language
-    dependencies:
-      '@codemirror/gutter': 0.19.9
-      '@codemirror/language': 0.19.10
-      '@codemirror/rangeset': 0.19.9
-      '@codemirror/state': 0.19.9
-      '@codemirror/view': 0.19.48
-    dev: false
-
-  /@codemirror/gutter/0.19.9:
-    resolution: {integrity: sha512-PFrtmilahin1g6uL27aG5tM/rqR9DZzZYZsIrCXA5Uc2OFTFqx4owuhoU9hqfYxHp5ovfvBwQ+txFzqS4vog6Q==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/view
-    dependencies:
-      '@codemirror/rangeset': 0.19.9
-      '@codemirror/state': 0.19.9
-      '@codemirror/view': 0.19.48
-    dev: false
-
-  /@codemirror/highlight/0.19.8:
-    resolution: {integrity: sha512-v/lzuHjrYR8MN2mEJcUD6fHSTXXli9C1XGYpr+ElV6fLBIUhMTNKR3qThp611xuWfXfwDxeL7ppcbkM/MzPV3A==}
-    deprecated: As of 0.20.0, this package has been split between @lezer/highlight and @codemirror/language
-    dependencies:
-      '@codemirror/language': 0.19.10
-      '@codemirror/rangeset': 0.19.9
-      '@codemirror/state': 0.19.9
-      '@codemirror/view': 0.19.48
-      '@lezer/common': 0.15.12
-      style-mod: 4.0.0
-    dev: false
-
-  /@codemirror/history/0.19.2:
-    resolution: {integrity: sha512-unhP4t3N2smzmHoo/Yio6ueWi+il8gm9VKrvi6wlcdGH5fOfVDNkmjHQ495SiR+EdOG35+3iNebSPYww0vN7ow==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/commands
-    dependencies:
-      '@codemirror/state': 0.19.9
-      '@codemirror/view': 0.19.48
     dev: false
 
   /@codemirror/lang-javascript/6.1.1:
@@ -512,16 +492,6 @@ packages:
       '@lezer/javascript': 1.2.0
     dev: false
 
-  /@codemirror/language/0.19.10:
-    resolution: {integrity: sha512-yA0DZ3RYn2CqAAGW62VrU8c4YxscMQn45y/I9sjBlqB1e2OTQLg4CCkMBuMSLXk4xaqjlsgazeOQWaJQOKfV8Q==}
-    dependencies:
-      '@codemirror/state': 0.19.9
-      '@codemirror/text': 0.19.6
-      '@codemirror/view': 0.19.48
-      '@lezer/common': 0.15.12
-      '@lezer/lr': 0.15.8
-    dev: false
-
   /@codemirror/language/6.3.1:
     resolution: {integrity: sha512-MK+G1QKaGfSEUg9YEFaBkMBI6j1ge4VMBPZv9fDYotw7w695c42x5Ba1mmwBkesYnzYFBfte6Hh9TDcKa6xORQ==}
     dependencies:
@@ -533,12 +503,6 @@ packages:
       style-mod: 4.0.0
     dev: false
 
-  /@codemirror/legacy-modes/0.19.1:
-    resolution: {integrity: sha512-vYPLsD/ON+3SXhlGj9Qb3fpFNNU3Ya/AtDiv/g3OyqVzhh5vs5rAnOvk8xopGWRwppdhlNPD9VyXjiOmZUQtmQ==}
-    dependencies:
-      '@codemirror/stream-parser': 0.19.9
-    dev: false
-
   /@codemirror/lint/6.1.0:
     resolution: {integrity: sha512-mdvDQrjRmYPvQ3WrzF6Ewaao+NWERYtpthJvoQ3tK3t/44Ynhk8ZGjTSL9jMEv8CgSMogmt75X8ceOZRDSXHtQ==}
     dependencies:
@@ -547,66 +511,8 @@ packages:
       crelt: 1.0.5
     dev: false
 
-  /@codemirror/matchbrackets/0.19.4:
-    resolution: {integrity: sha512-VFkaOKPNudAA5sGP1zikRHCEKU0hjYmkKpr04pybUpQvfTvNJXlReCyP0rvH/1iEwAGPL990ZTT+QrLdu4MeEA==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/language
-    dependencies:
-      '@codemirror/language': 0.19.10
-      '@codemirror/state': 0.19.9
-      '@codemirror/view': 0.19.48
-      '@lezer/common': 0.15.12
-    dev: false
-
-  /@codemirror/rangeset/0.19.9:
-    resolution: {integrity: sha512-V8YUuOvK+ew87Xem+71nKcqu1SXd5QROMRLMS/ljT5/3MCxtgrRie1Cvild0G/Z2f1fpWxzX78V0U4jjXBorBQ==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/state
-    dependencies:
-      '@codemirror/state': 0.19.9
-    dev: false
-
-  /@codemirror/state/0.19.9:
-    resolution: {integrity: sha512-psOzDolKTZkx4CgUqhBQ8T8gBc0xN5z4gzed109aF6x7D7umpDRoimacI/O6d9UGuyl4eYuDCZmDFr2Rq7aGOw==}
-    dependencies:
-      '@codemirror/text': 0.19.6
-    dev: false
-
   /@codemirror/state/6.1.4:
     resolution: {integrity: sha512-g+3OJuRylV5qsXuuhrc6Cvs1NQluNioepYMM2fhnpYkNk7NgX+j0AFuevKSVKzTDmDyt9+Puju+zPdHNECzCNQ==}
-    dev: false
-
-  /@codemirror/stream-parser/0.19.9:
-    resolution: {integrity: sha512-WTmkEFSRCetpk8xIOvV2yyXdZs3DgYckM0IP7eFi4ewlxWnJO/H4BeJZLs4wQaydWsAqTQoDyIwNH1BCzK5LUQ==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/language
-    dependencies:
-      '@codemirror/highlight': 0.19.8
-      '@codemirror/language': 0.19.10
-      '@codemirror/state': 0.19.9
-      '@codemirror/text': 0.19.6
-      '@lezer/common': 0.15.12
-      '@lezer/lr': 0.15.8
-    dev: false
-
-  /@codemirror/text/0.19.6:
-    resolution: {integrity: sha512-T9jnREMIygx+TPC1bOuepz18maGq/92q2a+n4qTqObKwvNMg+8cMTslb8yxeEDEq7S3kpgGWxgO1UWbQRij0dA==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/state
-    dev: false
-
-  /@codemirror/tooltip/0.19.16:
-    resolution: {integrity: sha512-zxKDHryUV5/RS45AQL+wOeN+i7/l81wK56OMnUPoTSzCWNITfxHn7BToDsjtrRKbzHqUxKYmBnn/4hPjpZ4WJQ==}
-    deprecated: As of 0.20.0, this package has been merged into @codemirror/view
-    dependencies:
-      '@codemirror/state': 0.19.9
-      '@codemirror/view': 0.19.48
-    dev: false
-
-  /@codemirror/view/0.19.48:
-    resolution: {integrity: sha512-0eg7D2Nz4S8/caetCTz61rK0tkHI17V/d15Jy0kLOT8dTLGGNJUponDnW28h2B6bERmPlVHKh8MJIr5OCp1nGw==}
-    dependencies:
-      '@codemirror/rangeset': 0.19.9
-      '@codemirror/state': 0.19.9
-      '@codemirror/text': 0.19.6
-      style-mod: 4.0.0
-      w3c-keyname: 2.2.6
     dev: false
 
   /@codemirror/view/6.5.1:
@@ -617,42 +523,8 @@ packages:
       w3c-keyname: 2.2.6
     dev: false
 
-  /@devbookhq/react/1.1.17_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-fVxdmswlXCrgpapL3QyL2Z8Qq2hnosrZ2hJrzgjEHg3jgynWF7WBllqSbv0mMr5ByLFeNXy13nHfn6VXwpP/Ag==}
-    dependencies:
-      '@codemirror/autocomplete': 0.19.15
-      '@codemirror/closebrackets': 0.19.2
-      '@codemirror/commands': 0.19.8
-      '@codemirror/comment': 0.19.1
-      '@codemirror/fold': 0.19.4
-      '@codemirror/gutter': 0.19.9
-      '@codemirror/highlight': 0.19.8
-      '@codemirror/history': 0.19.2
-      '@codemirror/language': 0.19.10
-      '@codemirror/legacy-modes': 0.19.1
-      '@codemirror/matchbrackets': 0.19.4
-      '@codemirror/state': 0.19.9
-      '@codemirror/stream-parser': 0.19.9
-      '@codemirror/view': 0.19.48
-      '@devbookhq/sdk': 2.6.10
-      '@open-rpc/client-js': 1.7.1
-      clsx: 1.2.1
-      react-idle-timer: 5.4.2_biqbaboplfbrettd7655fr4n2y
-      react-resize-detector: 7.1.2_biqbaboplfbrettd7655fr4n2y
-      vscode-languageserver-protocol: 3.17.2
-      xterm: 5.0.0
-      xterm-addon-fit: 0.6.0_xterm@5.0.0
-      xterm-addon-web-links: 0.7.0_xterm@5.0.0
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - react
-      - react-dom
-      - utf-8-validate
-    dev: false
-
-  /@devbookhq/sdk/2.6.10:
-    resolution: {integrity: sha512-0OVPCe6GujSNgQeSpDec0egpm7SBIgfJGiBtkhsUmgecmW7cVIAl/+0+naoTNDZrtXpzcFoNDFcVMDoWzeGtTA==}
+  /@devbookhq/sdk/2.6.33:
+    resolution: {integrity: sha512-6v1FbCYsxWxxfvSoN9AMOtCW6mpc9zmCoMAEv/0OQ4RgjamYvzTFSU+W8/a6d4+n6DVM0zxTImw0u4ZsnpfkJQ==}
     dependencies:
       cross-fetch: 3.1.5
       normalize-path: 3.0.0
@@ -698,7 +570,7 @@ packages:
       debug: 4.3.4
       espree: 9.4.1
       globals: 13.18.0
-      ignore: 5.2.0
+      ignore: 5.2.1
       import-fresh: 3.3.0
       js-yaml: 4.1.0
       minimatch: 3.1.2
@@ -737,10 +609,6 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
 
-  /@lezer/common/0.15.12:
-    resolution: {integrity: sha512-edfwCxNLnzq5pBA/yaIhwJ3U3Kz8VAUOTRg0hhxaizaI1N+qxV7EXDv/kLCkLeq2RzSFvxexlaj5Mzfn2kY0Ig==}
-    dev: false
-
   /@lezer/common/1.0.2:
     resolution: {integrity: sha512-SVgiGtMnMnW3ActR8SXgsDhw7a0w0ChHSYAyAUxxrOiJ1OqYWEKk/xJd84tTSPo1mo6DXLObAJALNnd0Hrv7Ng==}
     dev: false
@@ -756,12 +624,6 @@ packages:
     dependencies:
       '@lezer/highlight': 1.1.2
       '@lezer/lr': 1.2.5
-    dev: false
-
-  /@lezer/lr/0.15.8:
-    resolution: {integrity: sha512-bM6oE6VQZ6hIFxDNKk8bKPa14hqFrV07J/vHGOeiAbJReIaQXmkVb6xQu4MR+JBTLa5arGRyAAjJe1qaQt3Uvg==}
-    dependencies:
-      '@lezer/common': 0.15.12
     dev: false
 
   /@lezer/lr/1.2.5:
@@ -935,19 +797,6 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@open-rpc/client-js/1.7.1:
-    resolution: {integrity: sha512-DycSYZUGSUwFl+k9T8wLBSGA8f2hYkvS5A9AB94tBOuU8QlP468NS5ZtAxy72dF4g2WW0genwNJdfeFnHnaxXQ==}
-    dependencies:
-      isomorphic-fetch: 3.0.0
-      isomorphic-ws: 4.0.1_ws@7.5.9
-      strict-event-emitter-types: 2.0.0
-      ws: 7.5.9
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: false
@@ -1031,14 +880,6 @@ packages:
     resolution: {integrity: sha512-qnVvHxASt/H7i+XG1U1xMiY5t+IHcPGUK7TDMDzom08xa7e86eCeKOiLZezwCKVxJn6NEiiy2ekgX8aQssjIKg==}
     dependencies:
       '@types/react': 18.0.25
-    dev: true
-
-  /@types/react/17.0.52:
-    resolution: {integrity: sha512-vwk8QqVODi0VaZZpDXQCmEmiOuyjEFPY7Ttaw5vjM112LOq37yz1CDJGrRJwA1fYEq4Iitd5rnjd1yWAc/bT+A==}
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.2
-      csstype: 3.1.1
     dev: true
 
   /@types/react/18.0.25:
@@ -1364,7 +1205,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001434
+      caniuse-lite: 1.0.30001435
       electron-to-chromium: 1.4.284
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -1417,13 +1258,17 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001434
+      caniuse-lite: 1.0.30001435
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
   /caniuse-lite/1.0.30001434:
     resolution: {integrity: sha512-aOBHrLmTQw//WFa2rcF1If9fa3ypkC1wzqqiKHgfdrXTWcU8C4gKVZT77eQAPWN1APys3+uQ0Df07rKauXGEYA==}
+    dev: true
+
+  /caniuse-lite/1.0.30001435:
+    resolution: {integrity: sha512-kdCkUTjR+v4YAJelyiDTqiu82BDr4W4CP5sgTA0ZBmqn30XfS2ZghPLMowik9TPhS+psWJiUNxsqLyurDbmutA==}
 
   /ccount/2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -1480,6 +1325,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
+
   /client-only/0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
     dev: false
@@ -1505,11 +1354,6 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
     dev: true
-
-  /clsx/1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
-    engines: {node: '>=6'}
-    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -2521,7 +2365,7 @@ packages:
       glob-parent: 6.0.2
       globals: 13.18.0
       grapheme-splitter: 1.0.4
-      ignore: 5.2.0
+      ignore: 5.2.1
       import-fresh: 3.3.0
       imurmurhash: 0.1.4
       is-glob: 4.0.3
@@ -3029,6 +2873,11 @@ packages:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
     engines: {node: '>= 4'}
 
+  /ignore/5.2.1:
+    resolution: {integrity: sha512-d2qQLzTJ9WxQftPAuEQpSPmKqzxePjzVbpAVv62AQ64NTL+wR4JkrVqR/LqFsFEUsHDAiId52mJteHDFuDkElA==}
+    engines: {node: '>= 4'}
+    dev: false
+
   /import-fresh/3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -3213,15 +3062,6 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  /isomorphic-fetch/3.0.0:
-    resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
-    dependencies:
-      node-fetch: 2.6.7
-      whatwg-fetch: 3.6.2
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
   /isomorphic-ws/4.0.1_ws@7.5.9:
     resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
     peerDependencies:
@@ -3390,6 +3230,7 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+    dev: false
 
   /lowlight/2.8.0:
     resolution: {integrity: sha512-WeExw1IKEkel9ZcYwzpvcFzORIB0IlleTcxJYoEuUgHASuYe/OBYbV6ym/AetG7unNVCBU/SXpgTgs2nT93mhg==}
@@ -3916,7 +3757,7 @@ packages:
     dependencies:
       '@next/env': 13.0.5
       '@swc/helpers': 0.4.14
-      caniuse-lite: 1.0.30001434
+      caniuse-lite: 1.0.30001435
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -4675,14 +4516,6 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /react/17.0.2:
-    resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-    dev: true
-
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
@@ -5070,10 +4903,6 @@ packages:
     dependencies:
       mixme: 0.5.4
     dev: true
-
-  /strict-event-emitter-types/2.0.0:
-    resolution: {integrity: sha512-Nk/brWYpD85WlOgzw5h173aci0Teyv8YdIAEtV+N88nDB0dLlazZyJMIsN6eo1/AR61l+p6CJTG1JIyFaoNEEA==}
-    dev: false
 
   /string-width/4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
@@ -5734,10 +5563,6 @@ packages:
   /webidl-conversions/4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
     dev: true
-
-  /whatwg-fetch/3.6.2:
-    resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
-    dev: false
 
   /whatwg-url/5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}

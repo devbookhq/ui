@@ -197,7 +197,8 @@ const CodeEditor = forwardRef<Handler, Props>(
 
     return (
       <div
-        className={`overflow-auto ${className}`}
+        // eslint-disable-next-line tailwindcss/no-custom-classname
+        className={`overflow-auto editor ${className}`}
         ref={editorEl}
         style={{ ...(height && { height }) }}
       />

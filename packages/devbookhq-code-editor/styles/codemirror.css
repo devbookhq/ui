@@ -1,27 +1,7 @@
-/* Styling for highlighted markdown */
-@import 'highlight.js/styles/github.css';
-
-@layer components {
-  .custom-scrollbar {
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      /* @apply bg-black-650; */
-      &:hover {
-        /* @apply bg-black-600; */
-      }
-    }
-    &::-webkit-scrollbar-track {
-      border-radius: 10px;
-      background: transparent;
-    }
-  }
-}
-
 /* Editor */
+
+.editor .cm-editor.cm-focused { outline: none; }
+
 .cm-editor {
   @apply min-w-0 flex flex-1 h-full text-left text-gray-800 bg-white;
 
@@ -67,10 +47,6 @@
 
   .cm-scroller::-webkit-scrollbar-thumb {
     /* @apply bg-black-700; */
-  }
-
-  .cm-focused {
-    @apply outline-none;
   }
 
   .cm-gutters {
