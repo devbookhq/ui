@@ -1,5 +1,5 @@
-import type { Session } from '@devbookhq/sdk'
-import { createDeferredPromise, createSessionProcess, Logger, notEmpty } from '../../utils'
+import { Session, createSessionProcess } from '@devbookhq/sdk'
+import { createDeferredPromise, Logger, notEmpty } from '../../utils'
 
 import { LanguageSetup } from '.'
 
@@ -71,13 +71,13 @@ export class LanguageServerProcess {
 
     try {
       this.languageServer = {
-        ...(await createSessionProcess(
-          this.startCmd,
-          this.rootdir,
-          this.session.process,
-          o => this.logger.log(`Output: ${o.line}`),
-          o => this.logger.error(`Error: ${o.line}`),
-        )),
+        ...(await createSessionProcess({
+          cmd: this.startCmd,
+          rootdir: this.rootdir,
+          manager: this.session.process,
+          onStderr: o => this.logger.error(`Error: ${o.line}`),
+          onStdout: o => this.logger.log(`Output: ${o.line}`),
+        })),
         websocketURL,
       }
 
