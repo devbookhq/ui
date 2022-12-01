@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.7
+
+### Patch Changes
+
+- Change terminal cleanup; Remove focus on run
+
 ## 0.1.6
 
 ### Patch Changes

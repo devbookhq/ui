@@ -62,7 +62,14 @@ const Terminal = forwardRef<Handler, Props>(({
     canStart: canStartTerminalSession,
   })
 
-  useEffect(function reset() {
+  useEffect(function clearTerminal() {
+    terminal?.terminal.clear()
+  }, [
+    terminal,
+    terminalSession,
+  ])
+
+  useEffect(function removeErrorMessage() {
     setErrMessage('')
   }, [
     terminalSession,
@@ -72,16 +79,12 @@ const Terminal = forwardRef<Handler, Props>(({
 
   const focus = useCallback(() => {
     terminal?.terminal.focus()
-  },
-    [terminal?.terminal])
+  }, [terminal?.terminal])
 
   const runCmd = useCallback(async (cmd: string) => {
     setErrMessage('')
     try {
-      // We are using onMouseDown in the execution button.
-      // This hack puts "waits" for all the sync code to execute then refocuses terminal.
       if (terminalSession) {
-        setTimeout(focus, 0)
         terminal?.terminal.writeln(cmd)
       } else {
         terminal?.terminal.clear()
@@ -109,7 +112,6 @@ const Terminal = forwardRef<Handler, Props>(({
     terminalSession,
     terminal?.terminal,
     rootdir,
-    focus,
   ])
 
   const stopCmd = useCallback(async () => {
@@ -117,21 +119,12 @@ const Terminal = forwardRef<Handler, Props>(({
     setErrMessage('')
 
     try {
-      // We are using onMouseDown in the execution button.
-      // This hack puts "waits" for all the sync code to execute then refocuses terminal.
-      if (terminalSession) {
-        setTimeout(focus, 0)
-      }
       await currentTerminalProcess.kill()
     } catch (err) {
       const message = err instanceof Error ? err.message : JSON.stringify(err)
       setErrMessage(message)
     }
-  }, [
-    currentTerminalProcess,
-    focus,
-    terminalSession,
-  ])
+  }, [currentTerminalProcess])
 
   const onResize = useCallback(() => {
     if (!terminal?.fitAddon) return

@@ -3,7 +3,7 @@ import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmat
 import { typescriptLanguage } from '@codemirror/lang-javascript'
 import { useSharedSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
 import { prisma, ts } from '../grammars/examples'
@@ -69,15 +69,15 @@ function Test() {
 
   const [isHidden, setIsHidden] = useState(false)
 
-  useEffect(() => {
-    const ina = setInterval(() => {
-      setIsHidden(s => !s)
-    }, 4000)
+  // useEffect(() => {
+  //   const ina = setInterval(() => {
+  //     setIsHidden(s => !s)
+  //   }, 4000)
 
-    return () => {
-      clearInterval(ina)
-    }
-  }, [ref])
+  //   return () => {
+  //     clearInterval(ina)
+  //   }
+  // }, [ref])
 
   return (
     <div className="bg-yellow-200">
