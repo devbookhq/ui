@@ -1,3 +1,4 @@
+import { Diagnostic as CMDiagnostic, forEachDiagnostic } from '@codemirror/lint'
 import { Compartment, EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
 import {
@@ -18,6 +19,7 @@ export interface Props {
   content?: string
   isReadOnly?: boolean
   onContentChange?: (content: string) => void
+  onDiagnosticsChange?: (diagnostics: ExtendedCMDiagnostic[]) => void
   supportedLanguages: LanguageSetup[]
   height?: string
   className?: string
@@ -41,8 +43,13 @@ export interface Props {
   openFileInLanguageServer?: boolean
 }
 
+export interface ExtendedCMDiagnostic extends CMDiagnostic {
+  filename: string
+}
+
 export interface Handler {
   focus: () => void
+  getDiagnostics: () => ExtendedCMDiagnostic[] | undefined
 }
 
 const CodeEditor = forwardRef<Handler, Props>(
@@ -55,6 +62,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       height,
       className = '',
       autofocus,
+      onDiagnosticsChange,
       filename,
       languageClients,
       openFileInLanguageServer = true,
@@ -73,7 +81,21 @@ const CodeEditor = forwardRef<Handler, Props>(
     const languageSetup = getLanguageSetup(filename, supportedLanguages)
     const languageClient = languageSetup && languageClients?.[languageSetup?.languageID]
 
-    useImperativeHandle(ref, () => ({ focus: () => editor?.view.focus() }), [editor])
+    useImperativeHandle(ref, () => ({
+      focus: () => editor?.view.focus(),
+      getDiagnostics: () => {
+        if (!editor) return
+
+        const diagnostics: ExtendedCMDiagnostic[] = []
+
+        forEachDiagnostic(editor.view.state, (d, from, to) => diagnostics.push({
+          ...d,
+          filename,
+        }))
+
+        return diagnostics
+      }
+    }), [editor, filename])
 
     useLayoutEffect(
       function initEditor() {
@@ -181,6 +203,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           client: languageClient,
           documentURI: getFileURI(filename),
           openFile: openFileInLanguageServer,
+          onDiagnosticsChange: onDiagnosticsChange ? (ds) => ds.map(d => ({ ...d, filename })) : undefined,
         })
 
         editor.view.dispatch({
@@ -192,7 +215,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           })
         }
       },
-      [editor, languageClient, filename, openFileInLanguageServer],
+      [editor, languageClient, filename, openFileInLanguageServer, onDiagnosticsChange],
     )
 
     return (

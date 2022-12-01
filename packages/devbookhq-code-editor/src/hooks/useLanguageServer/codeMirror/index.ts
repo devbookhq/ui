@@ -1,4 +1,5 @@
 import { Completion, autocompletion } from '@codemirror/autocomplete'
+import { Diagnostic } from '@codemirror/lint'
 import { Extension, Prec } from '@codemirror/state'
 import { ViewPlugin, closeHoverTooltips, hoverTooltip, keymap } from '@codemirror/view'
 import { CompletionTriggerKind } from 'vscode-languageserver-protocol'
@@ -14,11 +15,11 @@ import {
 import { offsetToPos } from '../utils'
 import { closeSignatureHelpTooltip, signature } from './signature'
 
-
 export function createExtension(options: {
   documentURI: string
   client: LanguageServerClient
   openFile: boolean
+  onDiagnosticsChange?: (diagnostics: Diagnostic[]) => void
 }): Extension {
   let plugin: LanguageServerPlugin | null = null
 
@@ -31,7 +32,7 @@ export function createExtension(options: {
     documentURI.of(options.documentURI),
     languageID.of(options.client.languageID),
     ViewPlugin.define(
-      view => (plugin = new LanguageServerPlugin(view, options.openFile)),
+      view => (plugin = new LanguageServerPlugin(view, options.openFile, options.onDiagnosticsChange)),
     ),
     Prec.highest(
       keymap.of([

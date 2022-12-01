@@ -4,7 +4,7 @@ import {
   CompletionResult,
   pickedCompletion,
 } from '@codemirror/autocomplete'
-import { setDiagnostics } from '@codemirror/lint'
+import { setDiagnostics, Diagnostic as CMDiagnostic } from '@codemirror/lint'
 import { ChangeSpec, Facet, Transaction } from '@codemirror/state'
 import { EditorView, PluginValue, Tooltip, ViewUpdate } from '@codemirror/view'
 import * as Diff from 'diff'
@@ -60,7 +60,7 @@ export class LanguageServerPlugin implements PluginValue {
   private documentVersion = 0
   private diagnostics?: Diagnostic[]
 
-  constructor(private view: EditorView, openFile: boolean) {
+  constructor(private view: EditorView, openFile: boolean, private readonly onDiagnosticsChange?: (diagnostics: CMDiagnostic[]) => void) {
     const state = this.view.state
 
     this.client = state.facet(client)
@@ -567,5 +567,6 @@ export class LanguageServerPlugin implements PluginValue {
       })
 
     this.view.dispatch(setDiagnostics(state, diagnostics))
+    this.onDiagnosticsChange?.(diagnostics)
   }
 }
