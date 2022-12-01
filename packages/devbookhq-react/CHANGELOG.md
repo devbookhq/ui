@@ -1,5 +1,11 @@
 # @devbookhq/react
 
+## 2.0.1
+
+### Patch Changes
+
+- Remove duplicate code
+
 ## 2.0.0
 
 ### Major Changes
