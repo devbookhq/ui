@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.11
+
+### Patch Changes
+
+- Expose diagnostics and run (cmd/ctrl+enter) shortcut handler from CodeEditor component; Fix language server update duplication
+
 ## 0.1.10
 
 ### Patch Changes
