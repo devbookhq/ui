@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.2
+
+### Patch Changes
+
+- Make prop optional
+
 ## 0.1.1
 
 ### Patch Changes
