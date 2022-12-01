@@ -1,9 +1,9 @@
-import { useLanguageServer, LanguageSetup, CodeEditor } from '@devbookhq/code-editor'
+import { useLanguageServer, LanguageSetup, CodeEditor, CodeEditorHandler } from '@devbookhq/code-editor'
 import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { typescriptLanguage } from '@codemirror/lang-javascript'
 import { useProvidedSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
 import { prisma, ts } from '../grammars/examples'
@@ -61,6 +61,28 @@ function Test() {
     rootdir: '/code',
   })
 
+  const ref = useRef<CodeEditorHandler>(null)
+
+  const onDiagnosticsChange = useCallback((d: any) => {
+    console.log('ch')
+  }, [])
+
+  // useEffect(() => {
+  //   if (!ref.current) return
+
+  //   const ina = setInterval(() => {
+  //     const ds = ref.current?.getDiagnostics()
+  //     console.log('getds', ds)
+  //   }, 4000)
+
+
+  //   return () => {
+  //     clearInterval(ina)
+  //   }
+  // }, [ref])
+
+
+
   return (
     <div style={{ backgroundColor: 'gold', height: '700px' }}>
       <CodeEditor
@@ -70,7 +92,10 @@ function Test() {
         supportedLanguages={languages}
       />
       <CodeEditor
+        ref={ref}
+        // onDiagnosticsChange={onDiagnosticsChange}
         content={prisma}
+        onContentChange={onDiagnosticsChange}
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
         supportedLanguages={languages}

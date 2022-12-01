@@ -29,7 +29,7 @@ const disableSpellchecking = {
   spellcheck: 'false',
 }
 
-function createEditorState(content: string) {
+function createEditorState(content: string, onRun?: () => void) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
@@ -54,6 +54,13 @@ function createEditorState(content: string) {
       closeBrackets(),
       indentOnInput(),
       keymap.of([
+        {
+          key: 'Mod-Enter',
+          run: () => {
+            onRun?.()
+            return !!onRun
+          },
+        },
         ...defaultKeymap,
         ...closeBracketsKeymap,
         ...historyKeymap,

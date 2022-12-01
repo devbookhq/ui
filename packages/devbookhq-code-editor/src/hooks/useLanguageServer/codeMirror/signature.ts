@@ -34,7 +34,7 @@ function wrapActiveParameterInLabel(
   return wrappedLabel
 }
 
-class SignatureState implements PluginValue {
+export class SignatureState implements PluginValue {
   private lastSignature?: SignatureHelp
 
   constructor(
@@ -43,10 +43,10 @@ class SignatureState implements PluginValue {
     private readonly setSignatureHelp: StateEffectType<Tooltip | null>,
   ) { }
 
-  async update(update: ViewUpdate) {
-    const plugin = this.getPlugin()
-    if (!plugin) return
-
+  /**
+   * Call this after the change to the textDocument is propagated to the language server
+   */
+  async handleUpdate(update: ViewUpdate) {
     const isTriggeredByMouseSelection = update.transactions.some(tr =>
       tr.isUserEvent('select.pointer'),
     )
@@ -56,9 +56,6 @@ class SignatureState implements PluginValue {
       update.docChanged ||
       update.startState.selection.main.head !== update.state.selection.main.head
     ) {
-      // TODO: Ideally we should let the language plugin update the textDocument in LS first, without explicitly calling update here.
-      await plugin.update(update)
-
       const pos = update.state.selection.main.head
       const context = new CompletionContext(update.state, pos, false)
       await this.updateSignature(update.state, context, update.docChanged)
@@ -181,10 +178,17 @@ export function signature(getPlugin: () => LanguageServerPlugin | null) {
       }),
   })
 
-  return [
-    ViewPlugin.define(
-      view => new SignatureState(view, getPlugin, setSignatureHelpTooltip),
-    ),
-    tooltipState,
-  ]
+  let signatureState: SignatureState
+
+  const getSignatureState = () => signatureState
+
+  return {
+    extension: [
+      ViewPlugin.define(
+        view => signatureState = new SignatureState(view, getPlugin, setSignatureHelpTooltip),
+      ),
+      tooltipState,
+    ],
+    getSignatureState,
+  }
 }

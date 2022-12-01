@@ -4,7 +4,7 @@ import {
   CompletionResult,
   pickedCompletion,
 } from '@codemirror/autocomplete'
-import { setDiagnostics, Diagnostic as CMDiagnostic } from '@codemirror/lint'
+import { Diagnostic as CMDiagnostic, setDiagnostics } from '@codemirror/lint'
 import { ChangeSpec, Facet, Transaction } from '@codemirror/state'
 import { EditorView, PluginValue, Tooltip, ViewUpdate } from '@codemirror/view'
 import * as Diff from 'diff'
@@ -23,6 +23,7 @@ import {
 } from 'vscode-languageserver-protocol'
 import { getLast, notEmpty } from '../../utils'
 
+import { SignatureState } from './codeMirror/signature'
 import { LanguageServerClient } from './languageServerClient'
 import { mdToElements } from './md'
 import {
@@ -60,11 +61,17 @@ export class LanguageServerPlugin implements PluginValue {
   private documentVersion = 0
   private diagnostics?: Diagnostic[]
 
-  constructor(private view: EditorView, openFile: boolean, private readonly onDiagnosticsChange?: (diagnostics: CMDiagnostic[]) => void) {
+  constructor(
+    private view: EditorView,
+    openFile: boolean,
+    private readonly getSignatureState: () => SignatureState,
+    private readonly onDiagnosticsChange?: (diagnostics: CMDiagnostic[]) => void,
+  ) {
     const state = this.view.state
 
     this.client = state.facet(client)
     this.documentURI = view.state.facet(documentURI)
+    console.log('constructor', this.documentURI)
 
     this.client.attachPlugin(this)
 
@@ -92,24 +99,31 @@ export class LanguageServerPlugin implements PluginValue {
     return ++this.documentVersion
   }
 
-  async update({ docChanged, state }: ViewUpdate) {
-    if (!docChanged) return
-    await this.openPromise
+  async update(viewUpdate: ViewUpdate) {
+    const { docChanged, state } = viewUpdate
 
-    // There is some bug when we are incrementally updating language server after formatting the document.
-    // TODO: We are temporarily solving this by sending the whole document's content as an update.
-    await this.client.lsp.textDocumentChanged({
-      textDocument: {
-        uri: this.documentURI,
-        version: this.nextDocumentVersion,
-      },
-      contentChanges: [{ text: state.doc.toString() }],
-    })
+    if (docChanged) {
+      await this.openPromise
+
+      // There is some bug when we are incrementally updating language server after formatting the document.
+      // TODO: We are temporarily solving this by sending the whole document's content as an update.
+      await this.client.lsp.textDocumentChanged({
+        textDocument: {
+          uri: this.documentURI,
+          version: this.nextDocumentVersion,
+        },
+        contentChanges: [{ text: state.doc.toString() }],
+      })
+    }
+
+    const signatureState = this.getSignatureState()
+    await signatureState.handleUpdate(viewUpdate)
   }
 
   destroy() {
     // TODO: We ideally want to close the textDocument here,
     // but there is some race condition between this closing and opening of the same file in the next guide's step.
+    console.log('destroy', this.documentURI)
     this.client.detachPlugin(this)
   }
 

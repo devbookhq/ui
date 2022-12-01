@@ -16,7 +16,6 @@ import useTerminalSession from '../hooks/useTerminalSession'
 import Spinner from './Spinner'
 import Text from './Text'
 
-
 export interface Handler {
   focus: () => void
   resize: () => void
@@ -34,7 +33,6 @@ export interface Props {
   rootdir?: string
   session?: Session,
 }
-
 
 const Terminal = forwardRef<Handler, Props>(({
   autofocus,
@@ -173,9 +171,9 @@ const Terminal = forwardRef<Handler, Props>(({
       }
 
       const fit = await import('xterm-addon-fit')
-      // const webLinks = await import('xterm-addon-web-links')
+      const webLinks = await import('xterm-addon-web-links')
 
-      // term.loadAddon(new webLinks.WebLinksAddon())
+      term.loadAddon(new webLinks.WebLinksAddon())
 
       const fitAddon = new fit.FitAddon()
       term.loadAddon(fitAddon)

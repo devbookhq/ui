@@ -19,6 +19,7 @@ export interface Props {
   content?: string
   isReadOnly?: boolean
   onContentChange?: (content: string) => void
+  handleRun?: () => void
   onDiagnosticsChange?: (diagnostics: ExtendedCMDiagnostic[]) => void
   supportedLanguages: LanguageSetup[]
   height?: string
@@ -61,6 +62,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       supportedLanguages,
       height,
       className = '',
+      handleRun,
       autofocus,
       onDiagnosticsChange,
       filename,
@@ -107,7 +109,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           languageExtensions,
           editabilityExtensions,
           state,
-        } = createEditorState(content)
+        } = createEditorState(content, handleRun)
 
         const view = new EditorView({
           state,
@@ -131,7 +133,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           setEditor(undefined)
         }
       },
-      [autofocus, content],
+      [autofocus, content, handleRun],
     )
 
     useEffect(
@@ -178,7 +180,8 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!onContentChange) return
 
         const extension = EditorView.updateListener.of(update => {
-          if (update.docChanged) onContentChange?.(update.state.doc.toString())
+          if (!update.docChanged) return
+          onContentChange?.(update.state.doc.toString())
         })
 
         editor.view.dispatch({
@@ -199,20 +202,22 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!filename) return
         if (!languageClient) return
 
-        const extension = createExtension({
+        const { extension, dispose } = createExtension({
           client: languageClient,
           documentURI: getFileURI(filename),
           openFile: openFileInLanguageServer,
-          onDiagnosticsChange: onDiagnosticsChange ? (ds) => ds.map(d => ({ ...d, filename })) : undefined,
+          onDiagnosticsChange: onDiagnosticsChange ? (ds) => onDiagnosticsChange(ds.map(d => ({ ...d, filename }))) : undefined,
         })
 
         editor.view.dispatch({
           effects: editor.languageServiceExtensions.reconfigure(extension),
         })
+
         return () => {
           editor.view.dispatch({
             effects: editor.languageServiceExtensions.reconfigure([]),
           })
+          dispose()
         }
       },
       [editor, languageClient, filename, openFileInLanguageServer, onDiagnosticsChange],
