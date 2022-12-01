@@ -25,7 +25,7 @@ export interface Handler {
 
 export interface Props {
   autofocus?: boolean
-  onRunningCmdChange: (state: CodeSnippetExecState) => void
+  onRunningCmdChange?: (state: CodeSnippetExecState) => void
   isHidden?: boolean
   canStartTerminalSession: boolean
   isReadOnly?: boolean
@@ -86,7 +86,7 @@ const Terminal = forwardRef<Handler, Props>(({
       } else {
         terminal?.terminal.clear()
       }
-      onRunningCmdChange(CodeSnippetExecState.Running)
+      onRunningCmdChange?.(CodeSnippetExecState.Running)
       terminalSession?.toggleIO(false)
       const termProcess = await createTerminalProcess({
         cmd,
@@ -95,13 +95,13 @@ const Terminal = forwardRef<Handler, Props>(({
       termProcess?.exited.finally(() => {
         terminalSession?.toggleIO(true)
         terminalSession?.session.sendData('\n')
-        onRunningCmdChange(CodeSnippetExecState.Stopped)
+        onRunningCmdChange?.(CodeSnippetExecState.Stopped)
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : JSON.stringify(err)
       setErrMessage(message)
       terminalSession?.toggleIO(true)
-      onRunningCmdChange(CodeSnippetExecState.Stopped)
+      onRunningCmdChange?.(CodeSnippetExecState.Stopped)
     }
   }, [
     createTerminalProcess,
