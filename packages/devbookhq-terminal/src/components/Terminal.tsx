@@ -221,7 +221,7 @@ const Terminal = forwardRef<Handler, Props>(({
   )
 
   return (
-    <div className="p-2 flex-1 bg-[#000] flex">
+    <div className="py-2 pl-2 flex-1 bg-[#000] flex">
       <div className={`flex-1 flex relative bg-[#000] ${isHidden ? 'hidden' : ''}`}>
         <div ref={terminalRef} className="terminal terminal-wrapper absolute h-full w-full bg-[#000]" />
         {(errMessage || !terminal) &&
