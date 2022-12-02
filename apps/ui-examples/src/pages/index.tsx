@@ -96,7 +96,8 @@ function Test() {
           ref={terminalRef}
           canStartTerminalSession={true}
           session={s.session}
-          isReadOnly={true}
+          placeholder="place"
+          isReadOnly={false}
           isHidden={isHidden}
           onRunningCmdChange={() => { }}
         />

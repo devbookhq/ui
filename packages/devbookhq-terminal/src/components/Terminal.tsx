@@ -62,13 +62,6 @@ const Terminal = forwardRef<Handler, Props>(({
     canStart: canStartTerminalSession,
   })
 
-  useEffect(function clearTerminal() {
-    terminal?.terminal.clear()
-  }, [
-    terminal,
-    terminalSession,
-  ])
-
   useEffect(function removeErrorMessage() {
     setErrMessage('')
   }, [
@@ -160,7 +153,7 @@ const Terminal = forwardRef<Handler, Props>(({
         disableStdin: isReadOnly,
       })
 
-      if (placeholder) {
+      if (placeholder && isReadOnly) {
         term.writeln(placeholder)
       }
 
@@ -171,7 +164,6 @@ const Terminal = forwardRef<Handler, Props>(({
 
       const fitAddon = new fit.FitAddon()
       term.loadAddon(fitAddon)
-
 
       term.open(terminalRef.current)
       fitAddon.fit()

@@ -28,6 +28,7 @@ function useTerminalSession({
       if (!terminal) return
 
       terminal.writeln('')
+      setTimeout(() => terminal.clear(), 0)
 
       let isEnabled = true
 
