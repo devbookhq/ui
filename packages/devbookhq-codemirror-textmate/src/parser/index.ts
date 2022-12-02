@@ -2,7 +2,7 @@ import {
   IGrammar,
   INITIAL,
   IToken,
-  StateStack,
+  StackElement,
 } from 'vscode-textmate'
 import {
   StreamLanguage,
@@ -17,7 +17,7 @@ import { defaultCMScopeMap } from './defaultCMScopeMap'
 export type IRawGrammar = ReturnType<typeof parseRawGrammar>
 
 export interface ParserState {
-  ruleStack: StateStack
+  ruleStack: StackElement
   tokensCache: IToken[]
 }
 
