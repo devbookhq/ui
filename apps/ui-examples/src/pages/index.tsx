@@ -84,7 +84,7 @@ function Test() {
   const runTerm = useCallback(() => {
     if (!terminalRef.current) return
 
-    terminalRef.current.runCmd('echo 2')
+    terminalRef.current.runCmd('echo 2 && sleep 20')
   }, [])
 
   return (
@@ -97,9 +97,10 @@ function Test() {
           canStartTerminalSession={true}
           session={s.session}
           placeholder="place"
-          isReadOnly={false}
+          // isReadOnly
           isHidden={isHidden}
           onRunningCmdChange={() => { }}
+          isPersistent={false}
         />
       </div>
       <CodeEditor

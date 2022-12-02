@@ -29,6 +29,7 @@ export interface Props {
   isHidden?: boolean
   canStartTerminalSession: boolean
   isReadOnly?: boolean
+  isPersistent?: boolean
   placeholder?: string
   rootdir?: string
   session?: Session,
@@ -42,6 +43,7 @@ const Terminal = forwardRef<Handler, Props>(({
   rootdir = '/',
   canStartTerminalSession,
   isReadOnly,
+  isPersistent,
   placeholder,
 }, ref) => {
   const [errMessage, setErrMessage] = useState('')
@@ -50,7 +52,7 @@ const Terminal = forwardRef<Handler, Props>(({
   const terminalSession = useTerminalSession({
     terminal: terminal?.terminal,
     terminalManager: session?.terminal,
-    canStart: canStartTerminalSession && !isReadOnly,
+    canStart: canStartTerminalSession && !!isPersistent,
   })
 
   const {
@@ -153,7 +155,7 @@ const Terminal = forwardRef<Handler, Props>(({
         disableStdin: isReadOnly,
       })
 
-      if (placeholder && isReadOnly) {
+      if (placeholder && !isPersistent) {
         term.writeln(placeholder)
       }
 
@@ -189,6 +191,7 @@ const Terminal = forwardRef<Handler, Props>(({
     isReadOnly,
     autofocus,
     placeholder,
+    isPersistent,
   ])
 
   useImperativeHandle(
@@ -211,7 +214,7 @@ const Terminal = forwardRef<Handler, Props>(({
     <div className={`py-2 pl-2 flex-1 bg-[#000] flex ${isHidden ? 'hidden' : ''}`}>
       <div className="flex-1 flex relative bg-[#000]">
         <div ref={terminalRef} className="terminal terminal-wrapper absolute h-full w-full bg-[#000]" />
-        {(errMessage || !terminal || (!terminalSession && !isReadOnly)) &&
+        {(errMessage || !terminal || (!terminalSession && isPersistent)) &&
           <div className="absolute h-full w-full top-0 left-0 bg-[#000]">
             <div className="text-white flex flex-1 h-full items-center justify-center">
               {errMessage &&
@@ -220,7 +223,7 @@ const Terminal = forwardRef<Handler, Props>(({
                   text={errMessage}
                 />
               }
-              {(!terminal || (!terminalSession && !isReadOnly)) && <Spinner />}
+              {(!terminal || (!terminalSession && isPersistent)) && <Spinner />}
             </div>
           </div>
         }
