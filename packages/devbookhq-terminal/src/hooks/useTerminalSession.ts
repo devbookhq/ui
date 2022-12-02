@@ -27,7 +27,10 @@ function useTerminalSession({
       if (!canStart) return
       if (!terminal) return
 
-      terminal.writeln('')
+      await new Promise<void>((res, rej) => {
+        terminal.writeln('', res)
+      })
+
       setTimeout(() => terminal.clear(), 0)
 
       let isEnabled = true

@@ -79,12 +79,14 @@ const Terminal = forwardRef<Handler, Props>(({
   const runCmd = useCallback(async (cmd: string) => {
     setErrMessage('')
     try {
-      if (terminalSession) {
-        terminal?.terminal.writeln(cmd)
-      } else {
-        terminal?.terminal.clear()
-        terminal?.terminal.writeln(cmd)
-      }
+      await new Promise<void>((res, rej) => {
+        if (!terminal?.terminal) {
+          rej()
+        } else {
+          terminal.terminal.writeln(cmd, res)
+        }
+      })
+
       onRunningCmdChange?.(CodeSnippetExecState.Running)
       terminalSession?.toggleIO(false)
       const termProcess = await createTerminalProcess({
@@ -156,7 +158,9 @@ const Terminal = forwardRef<Handler, Props>(({
       })
 
       if (placeholder && !isPersistent) {
-        term.writeln(placeholder)
+        await new Promise<void>((res, rej) => {
+          term.writeln(placeholder, res)
+        })
       }
 
       const fit = await import('xterm-addon-fit')

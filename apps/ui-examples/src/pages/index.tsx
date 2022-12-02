@@ -97,10 +97,10 @@ function Test() {
           canStartTerminalSession={true}
           session={s.session}
           placeholder="place"
-          // isReadOnly
           isHidden={isHidden}
           onRunningCmdChange={() => { }}
           isPersistent={false}
+          isReadOnly
         />
       </div>
       <CodeEditor
