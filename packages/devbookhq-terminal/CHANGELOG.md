@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.9
+
+### Patch Changes
+
+- Fix placeholder bug
+
 ## 0.1.8
 
 ### Patch Changes
