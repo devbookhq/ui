@@ -81,14 +81,6 @@ const Terminal = forwardRef<Handler, Props>(({
   const runCmd = useCallback(async (cmd: string) => {
     setErrMessage('')
     try {
-      await new Promise<void>((res, rej) => {
-        if (!terminal?.terminal) {
-          rej()
-        } else {
-          terminal.terminal.writeln(cmd, res)
-        }
-      })
-
       onRunningCmdChange?.(CodeSnippetExecState.Running)
       terminalSession?.toggleIO(false)
       const termProcess = await createTerminalProcess({
@@ -110,7 +102,6 @@ const Terminal = forwardRef<Handler, Props>(({
     createTerminalProcess,
     onRunningCmdChange,
     terminalSession,
-    terminal?.terminal,
     rootdir,
   ])
 
