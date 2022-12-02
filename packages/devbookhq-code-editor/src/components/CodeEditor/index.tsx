@@ -10,8 +10,9 @@ import {
   useState,
 } from 'react'
 
-import { LSClients, LanguageSetup, getLanguageSetup } from '../../hooks/useLanguageServer'
 import { createExtension } from '../../hooks/useLanguageServer/codeMirror'
+import { LanguageSetup, getLanguageSetup } from '../../hooks/useLanguageServer/setup'
+import { LSClients } from '../../hooks/useLanguageServer/useLanguageServerClients'
 import { getFileURI } from '../../hooks/useLanguageServer/utils'
 import createEditorState from './createEditorState'
 
