@@ -21,6 +21,8 @@ export interface Handler {
   resize: () => void
   runCmd: (cmd: string) => Promise<void>
   stopCmd: () => Promise<void>
+  write: (content: string) => Promise<void>
+  clear: () => void
 }
 
 export interface Props {
@@ -198,6 +200,20 @@ const Terminal = forwardRef<Handler, Props>(({
     isPersistent,
   ])
 
+  const write = useCallback(async (content: string) => {
+    return new Promise<void>((res, rej) => {
+      if (!terminal?.terminal) {
+        rej()
+      } else {
+        terminal.terminal.write(content, res)
+      }
+    })
+  }, [terminal?.terminal])
+
+  const clear = useCallback(() => {
+    terminal?.terminal.clear()
+  }, [terminal?.terminal])
+
   useImperativeHandle(
     ref,
     () => ({
@@ -205,9 +221,13 @@ const Terminal = forwardRef<Handler, Props>(({
       runCmd,
       stopCmd,
       resize: onResize,
+      write,
+      clear,
     }),
     [
+      write,
       focus,
+      clear,
       runCmd,
       stopCmd,
       onResize,
