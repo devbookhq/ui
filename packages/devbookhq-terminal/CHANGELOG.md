@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.13
+
+### Patch Changes
+
+- Remove automtic writing of cmd to terminal with terminal processes
+
 ## 0.1.12
 
 ### Patch Changes
