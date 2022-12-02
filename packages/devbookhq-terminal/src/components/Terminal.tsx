@@ -191,12 +191,17 @@ const Terminal = forwardRef<Handler, Props>(({
     isPersistent,
   ])
 
-  const write = useCallback(async (content: string) => {
+  /**
+   * Use ANSI escape codes with this function to manipulate the terminal.
+   * 
+   * There are several ANSI codes libraries like `ansi-escapes`.
+   */
+  const write = useCallback(async (data: string | Uint8Array) => {
     return new Promise<void>((res, rej) => {
       if (!terminal?.terminal) {
         rej()
       } else {
-        terminal.terminal.write(content, res)
+        terminal.terminal.write(data, res)
       }
     })
   }, [terminal?.terminal])
