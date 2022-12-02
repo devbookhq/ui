@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.11
+
+### Patch Changes
+
+- Fix async writing to terminal
+
 ## 0.1.10
 
 ### Patch Changes
