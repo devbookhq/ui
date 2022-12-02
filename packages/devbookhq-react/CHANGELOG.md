@@ -1,5 +1,11 @@
 # @devbookhq/react
 
+## 2.0.3
+
+### Patch Changes
+
+- Update dependencies; Fix terminal rendering performance
+
 ## 2.0.2
 
 ### Patch Changes
