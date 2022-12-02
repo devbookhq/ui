@@ -22,7 +22,7 @@
     "@devbookhq/tsconfig": "workspace:*",
     "@types/react": "^18.0.25",
     "eslint-config-devbookhq": "workspace:*",
-    "tsup": "^5.10.1",
+    "tsup": "^6.5.0",
     "typescript": "^4.9.3"
   },
   "publishConfig": {

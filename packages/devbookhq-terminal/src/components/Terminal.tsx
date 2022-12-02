@@ -145,7 +145,6 @@ const Terminal = forwardRef<Handler, Props>(({
           foreground: '#FFFFFF',
           cursor: '#FFFFFF',
         },
-        allowTransparency: true,
         allowProposedApi: true,
         disableStdin: isReadOnly,
       })
@@ -156,15 +155,12 @@ const Terminal = forwardRef<Handler, Props>(({
         })
       }
 
-      const fit = await import('xterm-addon-fit')
-      const webLinks = await import('xterm-addon-web-links')
+      const { FitAddon } = await import('xterm-addon-fit')
 
-      term.loadAddon(new webLinks.WebLinksAddon())
-
-      const fitAddon = new fit.FitAddon()
+      const fitAddon = new FitAddon()
       term.loadAddon(fitAddon)
-
       term.open(terminalRef.current)
+
       fitAddon.fit()
 
       setTerminal({
@@ -173,6 +169,18 @@ const Terminal = forwardRef<Handler, Props>(({
       })
 
       if (autofocus) term.focus()
+
+      // TODO: Add fallback to `xterm-addon-canvas` rendering when WebGL support is not available.
+      const { WebglAddon } = await import('xterm-addon-webgl')
+      const webGLAddon = new WebglAddon()
+      term.loadAddon(webGLAddon)
+      webGLAddon.onContextLoss(e => {
+        // TODO: Improve WebGL context loss handling
+        webGLAddon.dispose()
+      })
+
+      const { WebLinksAddon } = await import('xterm-addon-web-links')
+      term.loadAddon(new WebLinksAddon())
 
       return term
     }
@@ -231,7 +239,7 @@ const Terminal = forwardRef<Handler, Props>(({
   )
 
   return (
-    <div className={`py-2 pl-2 flex-1 bg-[#000] flex ${isHidden ? 'hidden' : ''}`}>
+    <div className={`py-2 flex-1 bg-[#000] flex ${isHidden ? 'hidden' : ''}`}>
       <div className="flex-1 flex relative bg-[#000]">
         <div ref={terminalRef} className="terminal terminal-wrapper absolute h-full w-full bg-[#000]" />
         {(errMessage || !terminal || (!terminalSession && isPersistent)) &&

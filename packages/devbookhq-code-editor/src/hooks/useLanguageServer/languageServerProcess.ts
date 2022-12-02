@@ -1,7 +1,7 @@
 import { Session, createSessionProcess } from '@devbookhq/sdk'
-import { createDeferredPromise, Logger, notEmpty } from '../../utils'
 
-import { LanguageSetup } from '.'
+import { createDeferredPromise, Logger, notEmpty } from '../../utils'
+import { LanguageSetup } from './setup'
 
 // The language server ws wrapper was installed with the following commands:
 // curl -L https://github.com/qualified/lsp-ws-proxy/releases/download/v0.9.0-rc.4/lsp-ws-proxy_linux-musl.tar.gz > lsp-ws-proxy.tar.gz
@@ -9,7 +9,12 @@ import { LanguageSetup } from '.'
 // mv lsp-ws-proxy /usr/bin/
 // rm lsp-ws-proxy.tar.gz
 
-export class LanguageServerProcess {
+export interface LanguageServer {
+  readonly languages: string[]
+  getConnectionString: (languageID: string) => Promise<string | undefined>
+}
+
+export class LanguageServerProcess implements LanguageServer {
   protected readonly logger: Logger
 
   private isDestroyed = false

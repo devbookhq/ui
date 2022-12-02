@@ -99,8 +99,8 @@ function Test() {
           placeholder="place"
           isHidden={isHidden}
           onRunningCmdChange={() => { }}
-          isPersistent={false}
-          isReadOnly
+          isPersistent
+        // isReadOnly
         />
       </div>
       <CodeEditor
