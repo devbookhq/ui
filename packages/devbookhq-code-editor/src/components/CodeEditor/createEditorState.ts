@@ -45,7 +45,7 @@ function createEditorState(content: string, isReadOnly?: boolean, onRun?: () => 
       }),
       lineNumbers(),
       bracketMatching(),
-      ...isReadOnly ? [activeLineHighlighter()] : [],
+      ...isReadOnly ? [] : [activeLineHighlighter()],
       highlightSpecialChars(),
       history(),
       EditorState.tabSize.of(2),

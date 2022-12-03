@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.16
+
+### Patch Changes
+
+- Fix active highlighter bug
+
 ## 0.1.15
 
 ### Patch Changes
