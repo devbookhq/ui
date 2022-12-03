@@ -40,6 +40,5 @@ export const createMessageWriter = (wsocket: WebSocket): MessageWriter => {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toError = (err: any): Error =>
   err instanceof Error ? err : new Error(err?.message || 'Unknown error')

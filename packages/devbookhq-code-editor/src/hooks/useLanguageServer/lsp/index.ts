@@ -1,4 +1,4 @@
-import { DiagnosticTag } from 'vscode-languageserver-protocol'
+import { DiagnosticTag, ServerCapabilities } from 'vscode-languageserver-protocol'
 
 import { LSPConnection, createLSPConnection } from './lspConnection'
 import { createMessageConnection } from './ws'
@@ -107,9 +107,14 @@ async function initialize(conn: LSPConnection, rootURI: string) {
 export async function startLS({
   rootURI,
   connectionString,
+  defaultCapabilities,
 }: {
   connectionString: string
   rootURI: string
+  /**
+   * If defined the initialize request will **not** be send.
+   */
+  defaultCapabilities?: ServerCapabilities
 }) {
   const ws = new WebSocket(connectionString)
 
@@ -117,10 +122,19 @@ export async function startLS({
   connection.listen()
 
   const lsp = createLSPConnection(connection)
-  const { capabilities } = await initialize(lsp, rootURI)
+
+  if (!defaultCapabilities) {
+    const { capabilities } = await initialize(lsp, rootURI)
+    return {
+      lsp,
+      capabilities,
+    }
+  }
+
+  lsp.setCapabilities(defaultCapabilities)
 
   return {
     lsp,
-    capabilities,
+    capabilities: defaultCapabilities,
   }
 }

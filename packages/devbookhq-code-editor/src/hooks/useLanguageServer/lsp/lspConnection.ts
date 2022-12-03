@@ -118,6 +118,10 @@ export const createLSPConnection = (conn: MessageConnection) => {
     /** Dispose connection. */
     dispose: () => conn.dispose(),
 
+    setCapabilities(defaultCapabilities: ServerCapabilities) {
+      capabilities = defaultCapabilities
+    },
+
     /**
      * Send initialize request with params and store the server capability.
      */

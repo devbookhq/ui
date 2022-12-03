@@ -101,8 +101,8 @@ function useTerminalProcess({
     terminalProcess?.disconnect()
 
     terminalProcess?.kill().catch(err => {
-      const message = err instanceof Error ? err.message : JSON.stringify(err)
-      console.error(message)
+
+      
       setTerminalProcess(t => t === terminalProcess ? undefined : t)
     })
 

@@ -13,4 +13,4 @@ export { LanguageServerProcess } from './hooks/useLanguageServer/languageServerP
 
 export type { LSClients } from './hooks/useLanguageServer/useLanguageServerClients'
 export type { Handler as CodeEditorHandler, ExtendedCMDiagnostic, Props as CodeEditorProps } from './components/CodeEditor'
-export type { LanguageSetup } from './hooks/useLanguageServer/setup'
+export type { LanguageSetup, ServerCapabilities } from './hooks/useLanguageServer/setup'

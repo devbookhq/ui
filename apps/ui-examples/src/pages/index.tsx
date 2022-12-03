@@ -1,14 +1,22 @@
-import { useLanguageServer, LanguageSetup, CodeEditor, CodeEditorHandler } from '@devbookhq/code-editor'
-import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
-import { typescriptLanguage } from '@codemirror/lang-javascript'
-import { useSharedSession } from '@devbookhq/react'
-import { Terminal, TerminalHandler } from '@devbookhq/terminal'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { LanguageSetup, CodeEditor, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities } from '@devbookhq/code-editor'
+import { IRawGrammar } from '@devbookhq/codemirror-textmate'
+import { useSession } from '@devbookhq/react'
+import { Terminal } from '@devbookhq/terminal'
+import React from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
+
 import { prisma, ts } from '../grammars/examples'
+import { typescriptLanguage } from '@codemirror/lang-javascript'
+
+// import prismaInitializeRequest from '../defaultCapabilities/prisma.json'
+import typescriptInitializeRequest from '../defaultCapabilities/typescript.json'
 
 const textMateGrammars: IRawGrammar[] = [prismaTextMate as unknown as IRawGrammar]
+
+const rootdir = '/code'
+
+const cmd = 'lsp-ws-proxy -l 5523 -- typescript-language-server --stdio -- prisma-language-server --stdio'
 
 export const supportedLanguages: LanguageSetup[] = [
   {
@@ -17,110 +25,93 @@ export const supportedLanguages: LanguageSetup[] = [
     fileExtensions: ['.js', '.ts'],
     languageID: 'typescript',
     languageExtensions: typescriptLanguage,
+    defaultServerCapabilities: typescriptInitializeRequest.result.capabilities as ServerCapabilities,
   },
-  {
-    // Necessary packages were installed by `npm i -g typescript-language-server typescript`
-    languageServerCommand: 'prisma-language-server',
-    fileExtensions: ['.prisma'],
-    languageID: 'prisma',
-  },
+  // {
+  //   // Necessary packages were installed by `npm i -g @prisma/language-server`
+  //   languageServerCommand: 'prisma-language-server',
+  //   fileExtensions: ['.prisma'],
+  //   languageID: 'prisma',
+  //   // defaultServerCapabilities: prismaInitializeRequest.result.capabilities as ServerCapabilities,
+  // },
 ]
 
-export function useSupportedLangaugesWithTextMate() {
-  const textMateLanguages = useTextMateLanguages({ textMateGrammars })
+// export function useSupportedLangaugesWithTextMate() {
+//   const textMateLanguages = useTextMateLanguages({ textMateGrammars })
 
-  const languages = useMemo(() => {
-    if (!textMateLanguages) return supportedLanguages
+//   const languages = useMemo(() => {
+//     if (!textMateLanguages) return supportedLanguages
 
-    return supportedLanguages.map(s => {
-      if (s.languageExtensions) return s
+//     return supportedLanguages.map(s => {
+//       if (s.languageExtensions) return s
 
-      const languageExtensions = textMateLanguages[`source.${s.languageID}`]
-      if (!languageExtensions) return s
+//       const languageExtensions = textMateLanguages[`source.${s.languageID}`]
+//       if (!languageExtensions) return s
 
 
-      return {
-        ...s,
-        languageExtensions,
-      }
-    })
-  }, [textMateLanguages])
+//       return {
+//         ...s,
+//         languageExtensions,
+//       }
+//     })
+//   }, [textMateLanguages])
 
-  return languages
-}
+//   return languages
+// }
 
-function Test() {
-  const s = useSharedSession()
-
-  const languages = useSupportedLangaugesWithTextMate()
-
-  const languageClients = useLanguageServer({
-    supportedLanguages: languages,
-    session: s.session,
-    debug: true,
-    rootdir: '/code',
+function Index() {
+  const session = useSession({
+    codeSnippetID: 'M3gFVIbpd2tU',
+    inactivityTimeout: 0,
+    // editEnabled: true,
+    // apiKey: '',
   })
 
-  const ref = useRef<CodeEditorHandler>(null)
-  const terminalRef = useRef<TerminalHandler>(null)
+  // const languages = useSupportedLangaugesWithTextMate()
 
-  const onDiagnosticsChange = useCallback((d: any) => {
-    console.log('ch')
-  }, [])
+  // const languageClients = useLanguageServer({
+  //   supportedLanguages,
+  //   session: session.session,
+  //   debug: true,
+  //   rootdir: '/code',
+  // })
 
-  const [isHidden, setIsHidden] = useState(false)
+  const server = useExternalLanguageServer({
+    supportedLanguages,
+    session: session.session,
+    port: 5523,
+  })
 
-  // useEffect(() => {
-  //   const ina = setInterval(() => {
-  //     setIsHidden(s => !s)
-  //   }, 4000)
-
-  //   return () => {
-  //     clearInterval(ina)
-  //   }
-  // }, [ref])
-
-
-  const runTerm = useCallback(() => {
-    if (!terminalRef.current) return
-
-    terminalRef.current.runCmd('echo 2 && sleep 20')
-  }, [])
+  const languageClients = useLanguageServerClients({
+    server,
+    rootdir,
+  })
 
   return (
     <div className="bg-yellow-200">
-      <div className="cursor-pointer bg-gray-50" onClick={s.refresh}>{s.state}</div>
-      <div className="cursor-pointer bg-gray-50" onClick={runTerm}>Term</div>
+      <div className="cursor-pointer bg-gray-50" onClick={session.refresh}>{session.state}</div>
       <div className="flex h-[300px]">
         <Terminal
-          ref={terminalRef}
           canStartTerminalSession={true}
-          session={s.session}
+          session={session.session}
           placeholder="place"
-          isHidden={isHidden}
-          onRunningCmdChange={() => { }}
           isPersistent
-        // isReadOnly
         />
       </div>
       <CodeEditor
         content={ts}
         filename="/code/index.ts"
         languageClients={languageClients}
-        supportedLanguages={languages}
+        supportedLanguages={supportedLanguages}
       />
       <CodeEditor
-        ref={ref}
-        // onDiagnosticsChange={onDiagnosticsChange}
         content={prisma}
-        onContentChange={onDiagnosticsChange}
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
-        handleRun={() => console.log('run')}
-        supportedLanguages={languages}
+        supportedLanguages={supportedLanguages}
       />
     </div>
   )
 }
 
-export default Test
+export default Index

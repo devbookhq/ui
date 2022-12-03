@@ -1,4 +1,5 @@
 import { Session, createSessionProcess } from '@devbookhq/sdk'
+import { ServerCapabilities } from 'vscode-languageserver-protocol'
 
 import { createDeferredPromise, Logger, notEmpty } from '../../utils'
 import { LanguageSetup } from './setup'
@@ -12,6 +13,7 @@ import { LanguageSetup } from './setup'
 export interface LanguageServer {
   readonly languages: string[]
   getConnectionString: (languageID: string) => Promise<string | undefined>
+  getDefaultCapabilities?: (languageID: string) => ServerCapabilities | undefined
 }
 
 export class LanguageServerProcess implements LanguageServer {

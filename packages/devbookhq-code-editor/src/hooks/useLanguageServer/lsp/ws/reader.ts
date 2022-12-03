@@ -9,7 +9,7 @@ import { Emitter } from 'vscode-ws-jsonrpc'
 
 export const createMessageReader = (wsocket: WebSocket): MessageReader => {
   let state: 'initial' | 'listening' | 'closed' = 'initial'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const buffer: { message?: any; error?: any }[] = []
   const errorEmitter = new Emitter<Error>()
   const closeEmitter = new Emitter<void>()
@@ -17,7 +17,6 @@ export const createMessageReader = (wsocket: WebSocket): MessageReader => {
   const partialMessageEmitter = new Emitter<PartialMessageInfo>()
   const messageEmitter = new Emitter<Message>()
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const readMessage = (message: any) => {
     if (state === 'initial') {
       buffer.push({ message })

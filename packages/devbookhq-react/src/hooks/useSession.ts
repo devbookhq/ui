@@ -1,6 +1,7 @@
 import {
   CodeSnippetExecState,
   Session,
+  SessionOpts,
 } from '@devbookhq/sdk'
 import {
   useCallback,
@@ -18,10 +19,9 @@ export enum CodeSnippetExtendedState {
 
 export type CodeSnippetState = CodeSnippetExtendedState | CodeSnippetExecState
 
-export interface Opts {
-  codeSnippetID?: string
-  debug?: boolean
+export interface Opts extends Omit<SessionOpts, 'onClose' | 'onReconnect' | 'onDisconnect' | 'id'> {
   inactivityTimeout?: number
+  codeSnippetID?: string
 }
 
 export function useSession({
@@ -41,6 +41,11 @@ export function useSession({
    * The default inactivity timeout is 15 minutes.
    */
   inactivityTimeout = 15 * 60 * 1000,
+  apiKey,
+  editEnabled,
+  __debug_devEnv,
+  __debug_hostname,
+  __debug_port,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
@@ -53,6 +58,11 @@ export function useSession({
 
     const newSession = new Session({
       id: codeSnippetID,
+      apiKey,
+      editEnabled,
+      __debug_devEnv,
+      __debug_hostname,
+      __debug_port,
       onDisconnect() {
         setSessionState(s => s.session === newSession ? {
           ...s,
@@ -100,8 +110,15 @@ export function useSession({
       session: newSession,
       close,
     }
-  },
-    [debug, codeSnippetID])
+  }, [
+    debug,
+    codeSnippetID,
+    apiKey,
+    editEnabled,
+    __debug_devEnv,
+    __debug_hostname,
+    __debug_port,
+  ])
 
   const onIdle = useCallback(() => {
     if (!inactivityTimeout) return

@@ -21,6 +21,13 @@ export interface Handler {
   resize: () => void
   runCmd: (cmd: string) => Promise<void>
   stopCmd: () => Promise<void>
+  /**
+   * Use ANSI escape codes with this function to manipulate the terminal.
+   * 
+   * There are several ANSI codes libraries like [`ansi-escapes`](https://www.npmjs.com/package/ansi-escapes).
+   * 
+   * Here is a quick [overview of ANSI codes](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797).
+   */
   write: (content: string) => Promise<void>
   clear: () => void
 }
@@ -199,11 +206,6 @@ const Terminal = forwardRef<Handler, Props>(({
     isPersistent,
   ])
 
-  /**
-   * Use ANSI escape codes with this function to manipulate the terminal.
-   * 
-   * There are several ANSI codes libraries like `ansi-escapes`.
-   */
   const write = useCallback(async (data: string | Uint8Array) => {
     return new Promise<void>((res, rej) => {
       if (!terminal?.terminal) {

@@ -1,4 +1,5 @@
 import type { Extension } from '@codemirror/state'
+import { ServerCapabilities } from 'vscode-languageserver-protocol'
 
 /**
  * The language server ws wrapper was installed with the following commands:
@@ -14,6 +15,7 @@ export interface LanguageSetup {
   fileExtensions: string[]
   languageID: string
   languageExtensions?: Extension
+  defaultServerCapabilities?: ServerCapabilities
 }
 
 export function getLanguageSetup(filename: string, supportedLanguages: LanguageSetup[]) {
@@ -21,3 +23,5 @@ export function getLanguageSetup(filename: string, supportedLanguages: LanguageS
     fileExtensions?.some(ext => filename.endsWith(ext)),
   )
 }
+
+export type { ServerCapabilities }

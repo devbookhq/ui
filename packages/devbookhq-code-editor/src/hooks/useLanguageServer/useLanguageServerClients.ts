@@ -33,10 +33,13 @@ function useLanguageServerClients({
             const connectionString = await server.getConnectionString(languageID)
             if (!connectionString) return
 
+            const defaultCapabilities = server.getDefaultCapabilities?.(languageID)
+
             // TODO: We need to retry connection to the LS because it may not take a longer to start.
             const { lsp, capabilities } = await startLS({
               rootURI: getRootURI(rootdir),
               connectionString,
+              defaultCapabilities,
             })
 
             const client = new LanguageServerClient({

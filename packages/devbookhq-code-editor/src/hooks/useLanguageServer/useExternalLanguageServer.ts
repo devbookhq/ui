@@ -30,7 +30,13 @@ function useExternalLanguageServer({
           const opts = supportedLanguages.find(l => l.languageID === languageID)
           if (!opts) return
           return encodeURI(`${websocketURL}?name=${opts.languageServerCommand}`)
-        }
+          // return encodeURI(`${websocketURL}/${opts.languageServerCommand}`)
+          // return encodeURI(websocketURL)
+          // return 'wss://5523-s2v8pklf-7f9db52e.ondevbook.com/ '
+        },
+        getDefaultCapabilities(languageID: string) {
+          return supportedLanguages.find(l => l.languageID === languageID)?.defaultServerCapabilities
+        },
       }
 
       setServer(externalServer)
