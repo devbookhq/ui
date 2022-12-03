@@ -163,7 +163,6 @@ const Terminal = forwardRef<Handler, Props>(({
       }
 
       const { FitAddon } = await import('xterm-addon-fit')
-
       const fitAddon = new FitAddon()
       term.loadAddon(fitAddon)
       term.open(terminalRef.current)
@@ -177,14 +176,9 @@ const Terminal = forwardRef<Handler, Props>(({
 
       if (autofocus) term.focus()
 
-      // TODO: Add fallback to `xterm-addon-canvas` rendering when WebGL support is not available.
-      const { WebglAddon } = await import('xterm-addon-webgl')
-      const webGLAddon = new WebglAddon()
-      term.loadAddon(webGLAddon)
-      webGLAddon.onContextLoss(e => {
-        // TODO: Improve WebGL context loss handling
-        webGLAddon.dispose()
-      })
+      const { CanvasAddon } = await import('xterm-addon-canvas')
+      const canvasAddon = new CanvasAddon()
+      term.loadAddon(canvasAddon)
 
       const { WebLinksAddon } = await import('xterm-addon-web-links')
       term.loadAddon(new WebLinksAddon())
@@ -242,11 +236,48 @@ const Terminal = forwardRef<Handler, Props>(({
 
   return (
     <div className={`py-2 flex-1 bg-[#000] flex ${isHidden ? 'hidden' : ''}`}>
-      <div className="flex-1 flex relative bg-[#000]">
-        <div ref={terminalRef} className="terminal terminal-wrapper absolute h-full w-full bg-[#000]" />
+      <div
+        className="
+          flex-1
+          flex
+          relative
+          bg-[#000]
+        ">
+        {/*
+           * We assign the `sizeRef` and the `terminalRef` to a child element intentionally
+           * because the fit addon for xterm.js resizes the terminal based on the PARENT'S size.
+           * The child element MUST have set the same width and height of it's parent, hence
+           * the `w-full` and `h-full`.
+           */}
+        <div
+          ref={terminalRef}
+          className="
+            terminal
+            terminal-wrapper
+            absolute
+            h-full
+            w-full
+            bg-[#000]
+          " />
         {(errMessage || !terminal || (!terminalSession && isPersistent)) &&
-          <div className="absolute h-full w-full top-0 left-0 bg-[#000]">
-            <div className="text-white flex flex-1 h-full items-center justify-center">
+          <div
+            className="
+              absolute
+              h-full
+              w-full
+              top-0
+              left-0
+              bg-[#000]
+              ">
+            <div
+              className="
+                text-white
+                flex
+                flex-1
+                h-full
+                items-center
+                justify-center
+              ">
               {errMessage &&
                 <Text
                   color="text-red"
