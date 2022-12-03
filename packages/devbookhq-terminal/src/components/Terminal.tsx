@@ -166,6 +166,8 @@ const Terminal = forwardRef<Handler, Props>(({
       term.loadAddon(fitAddon)
       term.open(terminalRef.current)
 
+      fitAddon.fit()
+
       setTerminal({
         fitAddon,
         terminal: term,
