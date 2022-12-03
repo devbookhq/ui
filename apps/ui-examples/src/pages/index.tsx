@@ -103,6 +103,7 @@ function Index() {
         filename="/code/index.ts"
         languageClients={languageClients}
         supportedLanguages={supportedLanguages}
+        isReadOnly
       />
       <CodeEditor
         content={prisma}

@@ -4,7 +4,6 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
-  useLayoutEffect,
   useState,
 } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
@@ -137,7 +136,7 @@ const Terminal = forwardRef<Handler, Props>(({
 
   const { ref: terminalRef } = useResizeDetector<HTMLDivElement>({ onResize })
 
-  useLayoutEffect(function initialize() {
+  useEffect(function initialize() {
     async function init() {
       if (!terminalRef.current) return
       if (!canStartTerminalSession) return
@@ -167,8 +166,6 @@ const Terminal = forwardRef<Handler, Props>(({
       term.loadAddon(fitAddon)
       term.open(terminalRef.current)
 
-      fitAddon.fit()
-
       setTerminal({
         fitAddon,
         terminal: term,
@@ -179,6 +176,8 @@ const Terminal = forwardRef<Handler, Props>(({
       const { CanvasAddon } = await import('xterm-addon-canvas')
       const canvasAddon = new CanvasAddon()
       term.loadAddon(canvasAddon)
+
+      fitAddon.fit()
 
       const { WebLinksAddon } = await import('xterm-addon-web-links')
       term.loadAddon(new WebLinksAddon())
