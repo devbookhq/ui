@@ -166,8 +166,6 @@ const Terminal = forwardRef<Handler, Props>(({
       term.loadAddon(fitAddon)
       term.open(terminalRef.current)
 
-      fitAddon.fit()
-
       setTerminal({
         fitAddon,
         terminal: term,
@@ -175,9 +173,15 @@ const Terminal = forwardRef<Handler, Props>(({
 
       if (autofocus) term.focus()
 
-      const { CanvasAddon } = await import('xterm-addon-canvas')
-      const canvasAddon = new CanvasAddon()
-      term.loadAddon(canvasAddon)
+
+      // TODO: Add fallback to `xterm-addon-canvas` rendering when WebGL support is not available.
+      const { WebglAddon } = await import('xterm-addon-webgl')
+      const webGLAddon = new WebglAddon()
+      term.loadAddon(webGLAddon)
+      webGLAddon.onContextLoss(e => {
+        // TODO: Improve WebGL context loss handling
+        webGLAddon.dispose()
+      })
 
       fitAddon.fit()
 
@@ -236,7 +240,7 @@ const Terminal = forwardRef<Handler, Props>(({
   )
 
   return (
-    <div className={`py-2 flex-1 bg-[#000] flex ${isHidden ? 'hidden' : ''}`}>
+    <div className={`py-2 pl-2 flex-1 bg-[#000] flex ${isHidden ? 'hidden' : ''}`}>
       <div
         className="
           flex-1

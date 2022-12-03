@@ -197,18 +197,18 @@ importers:
       tsup: ^6.5.0
       typescript: ^4.9.3
       xterm: ^5.0.0
-      xterm-addon-canvas: ^0.2.0
       xterm-addon-fit: ^0.6.0
       xterm-addon-web-links: ^0.7.0
+      xterm-addon-webgl: ^0.13.0
     dependencies:
       '@devbookhq/sdk': 2.6.34
       classnames: 2.3.2
       react: 18.2.0
       react-resize-detector: 7.1.2_biqbaboplfbrettd7655fr4n2y
       xterm: 5.0.0
-      xterm-addon-canvas: 0.2.0_xterm@5.0.0
       xterm-addon-fit: 0.6.0_xterm@5.0.0
       xterm-addon-web-links: 0.7.0_xterm@5.0.0
+      xterm-addon-webgl: 0.13.0_xterm@5.0.0
     devDependencies:
       '@devbookhq/tsconfig': link:../devbookhq-tsconfig
       '@types/react': 18.0.25
@@ -5695,14 +5695,6 @@ packages:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
 
-  /xterm-addon-canvas/0.2.0_xterm@5.0.0:
-    resolution: {integrity: sha512-b4tMT05US9Rlqv6R0XZTHsfq8MRKzwxITwpvckuod/l4lokcCokHPbgpYAytOgrzqkzWjYI+Ol8en6cMGf8ncg==}
-    peerDependencies:
-      xterm: ^5.0.0
-    dependencies:
-      xterm: 5.0.0
-    dev: false
-
   /xterm-addon-fit/0.6.0_xterm@5.0.0:
     resolution: {integrity: sha512-9/7A+1KEjkFam0yxTaHfuk9LEvvTSBi0PZmEkzJqgafXPEXL9pCMAVV7rB09sX6ATRDXAdBpQhZkhKj7CGvYeg==}
     peerDependencies:
@@ -5713,6 +5705,14 @@ packages:
 
   /xterm-addon-web-links/0.7.0_xterm@5.0.0:
     resolution: {integrity: sha512-6PqoqzzPwaeSq22skzbvyboDvSnYk5teUYEoKBwMYvhbkwOQkemZccjWHT5FnNA8o1aInTc4PRYAl4jjPucCKA==}
+    peerDependencies:
+      xterm: ^5.0.0
+    dependencies:
+      xterm: 5.0.0
+    dev: false
+
+  /xterm-addon-webgl/0.13.0_xterm@5.0.0:
+    resolution: {integrity: sha512-xL4qBQWUHjFR620/8VHCtrTMVQsnZaAtd1IxFoiKPhC63wKp6b+73a45s97lb34yeo57PoqZhE9Jq5pB++ksPQ==}
     peerDependencies:
       xterm: ^5.0.0
     dependencies:

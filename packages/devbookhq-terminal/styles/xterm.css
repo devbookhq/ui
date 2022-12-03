@@ -108,12 +108,6 @@
   position: absolute;
   left: 0;
   top: 0;
-
-  /* CUSTOM */
-  /* This way we add a padding. We must resize the whole screen. */
-  left: 0.5rem;
-  width: calc(100% - 0.5rem) !important;
-  /* height: calc(100% - 0.5rem) !important; */
 }
 
 .xterm .xterm-scroll-area {
@@ -198,7 +192,7 @@
 
   /* CUSTOM */
   @apply overflow-auto;
-  @apply inset-2;
+  @apply inset-x-1;
 }
 
 .xterm-viewport::-webkit-scrollbar {

@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.15
+
+### Patch Changes
+
+- Fix terminal canvas width; Fix cursor position
+
 ## 0.1.14
 
 ### Patch Changes

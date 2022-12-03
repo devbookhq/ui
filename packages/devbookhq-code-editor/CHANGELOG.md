@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.15
+
+### Patch Changes
+
+- Disable active line highlight in readonly editor
+
 ## 0.1.14
 
 ### Patch Changes
