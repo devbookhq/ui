@@ -110,7 +110,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           languageExtensions,
           editabilityExtensions,
           state,
-        } = createEditorState(content, handleRun)
+        } = createEditorState(content, isReadOnly, handleRun)
 
         const view = new EditorView({
           state,
@@ -134,7 +134,12 @@ const CodeEditor = forwardRef<Handler, Props>(
           setEditor(undefined)
         }
       },
-      [autofocus, content, handleRun],
+      [
+        autofocus,
+        content,
+        handleRun,
+        isReadOnly,
+      ],
     )
 
     useEffect(

@@ -29,7 +29,7 @@ const disableSpellchecking = {
   spellcheck: 'false',
 }
 
-function createEditorState(content: string, onRun?: () => void) {
+function createEditorState(content: string, isReadOnly?: boolean, onRun?: () => void) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
@@ -45,7 +45,7 @@ function createEditorState(content: string, onRun?: () => void) {
       }),
       lineNumbers(),
       bracketMatching(),
-      activeLineHighlighter(),
+      ...isReadOnly ? [activeLineHighlighter()] : [],
       highlightSpecialChars(),
       history(),
       EditorState.tabSize.of(2),
