@@ -1,6 +1,6 @@
 import { Diagnostic as CMDiagnostic, forEachDiagnostic } from '@codemirror/lint'
-import { Compartment, EditorState } from '@codemirror/state'
-import { EditorView } from '@codemirror/view'
+import { Compartment, EditorState, Prec } from '@codemirror/state'
+import { EditorView, keymap } from '@codemirror/view'
 import {
   forwardRef,
   useEffect,
@@ -14,6 +14,7 @@ import { createExtension } from '../../hooks/useLanguageServer/codeMirror'
 import { LanguageSetup, getLanguageSetup } from '../../hooks/useLanguageServer/setup'
 import { LSClients } from '../../hooks/useLanguageServer/useLanguageServerClients'
 import { getFileURI } from '../../hooks/useLanguageServer/utils'
+import { activeLineHighlighter } from './activeLineHighlighter'
 import createEditorState from './createEditorState'
 
 export interface Props {
@@ -78,6 +79,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       editabilityExtensions: Compartment
       languageServiceExtensions: Compartment
       languageExtensions: Compartment
+      keymapExtensions: Compartment
       contentHandlingExtensions: Compartment
     }>()
 
@@ -109,8 +111,9 @@ const CodeEditor = forwardRef<Handler, Props>(
           contentHandlingExtensions,
           languageExtensions,
           editabilityExtensions,
+          keymapExtensions,
           state,
-        } = createEditorState(content, isReadOnly, handleRun)
+        } = createEditorState(content)
 
         const view = new EditorView({
           state,
@@ -119,6 +122,7 @@ const CodeEditor = forwardRef<Handler, Props>(
 
         setEditor({
           view,
+          keymapExtensions,
           languageServiceExtensions,
           contentHandlingExtensions,
           languageExtensions,
@@ -137,9 +141,34 @@ const CodeEditor = forwardRef<Handler, Props>(
       [
         autofocus,
         content,
-        handleRun,
-        isReadOnly,
       ],
+    )
+
+    useEffect(
+      function configureKeymapExtensions() {
+        if (!editor) return
+        if (!handleRun) return
+
+        editor.view.dispatch({
+          effects: editor.keymapExtensions.reconfigure(
+            Prec.highest(keymap.of([
+              {
+                key: 'Mod-Enter',
+                run: () => {
+                  handleRun?.()
+                  return !!handleRun
+                },
+              },
+            ]))
+          ),
+        })
+        return () => {
+          editor.view.dispatch({
+            effects: editor.keymapExtensions.reconfigure([]),
+          })
+        }
+      },
+      [editor, handleRun],
     )
 
     useEffect(
@@ -168,6 +197,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         const extension = [
           EditorState.readOnly.of(isReadOnly),
           EditorView.editable.of(!isReadOnly),
+          ...isReadOnly ? [] : [activeLineHighlighter()],
         ]
 
         editor.view.dispatch({

@@ -22,18 +22,18 @@ import {
 } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
 
-import { activeLineHighlighter } from './activeLineHighlighter'
-
 const disableSpellchecking = {
   'data-gramm': 'false',
   spellcheck: 'false',
 }
 
-function createEditorState(content: string, isReadOnly?: boolean, onRun?: () => void) {
+function createEditorState(content: string) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
   const editabilityExtensions = new Compartment()
+  const keymapExtensions = new Compartment()
+
   const state = EditorState.create({
     doc: content,
     extensions: [
@@ -45,7 +45,6 @@ function createEditorState(content: string, isReadOnly?: boolean, onRun?: () => 
       }),
       lineNumbers(),
       bracketMatching(),
-      ...isReadOnly ? [] : [activeLineHighlighter()],
       highlightSpecialChars(),
       history(),
       EditorState.tabSize.of(2),
@@ -53,14 +52,8 @@ function createEditorState(content: string, isReadOnly?: boolean, onRun?: () => 
       dropCursor(),
       closeBrackets(),
       indentOnInput(),
+      keymapExtensions.of([]),
       keymap.of([
-        {
-          key: 'Mod-Enter',
-          run: () => {
-            onRun?.()
-            return !!onRun
-          },
-        },
         ...defaultKeymap,
         ...closeBracketsKeymap,
         ...historyKeymap,
@@ -82,6 +75,7 @@ function createEditorState(content: string, isReadOnly?: boolean, onRun?: () => 
   return {
     state,
     languageExtensions,
+    keymapExtensions,
     languageServiceExtensions,
     contentHandlingExtensions,
     editabilityExtensions,

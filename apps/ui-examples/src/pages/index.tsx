@@ -2,7 +2,7 @@ import { LanguageSetup, CodeEditor, useExternalLanguageServer, useLanguageServer
 import { IRawGrammar } from '@devbookhq/codemirror-textmate'
 import { useSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
 
@@ -87,6 +87,11 @@ function Index() {
     rootdir,
   })
 
+
+  const handleRun = useCallback(() => {
+    console.log('run', session.session?.getHostname())
+  }, [session.session])
+
   return (
     <div className="bg-yellow-200">
       <div className="cursor-pointer bg-gray-50" onClick={session.refresh}>{session.state}</div>
@@ -103,7 +108,7 @@ function Index() {
         filename="/code/index.ts"
         languageClients={languageClients}
         supportedLanguages={supportedLanguages}
-        isReadOnly
+        handleRun={handleRun}
       />
       <CodeEditor
         content={prisma}
