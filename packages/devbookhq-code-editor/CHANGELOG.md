@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.17
+
+### Patch Changes
+
+- Prevent reseting editor state on prop change
+
 ## 0.1.16
 
 ### Patch Changes
