@@ -1,5 +1,11 @@
 # @devbookhq/react
 
+## 2.0.4
+
+### Patch Changes
+
+- Add opts to useSession hook
+
 ## 2.0.3
 
 ### Patch Changes
