@@ -69,10 +69,10 @@ export function createExtension(options: {
 
         return await plugin.requestHoverTooltip(view, positon)
       }, {
-        hoverTime: 0,
+        hoverTime: 35,
       }),
       autocompletion({
-        interactionDelay: 0,
+        interactionDelay: 20,
         activateOnTyping: true,
         maxRenderedOptions: 40,
         closeOnBlur: false,
