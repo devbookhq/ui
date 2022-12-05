@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.18
+
+### Patch Changes
+
+- Fix delays
+
 ## 0.1.17
 
 ### Patch Changes

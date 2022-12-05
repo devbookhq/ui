@@ -5,8 +5,6 @@ import { LanguageServerProcess } from './languageServerProcess'
 import { LanguageSetup } from './setup'
 import useMaybeEmptyPort from './useMaybeEmptyPort'
 
-
-
 function useLanguageServerProcess({
   supportedLanguages,
   session,

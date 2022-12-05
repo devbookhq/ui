@@ -17,6 +17,7 @@ importers:
   apps/ui-examples:
     specifiers:
       '@codemirror/lang-javascript': ^6.1.1
+      '@codemirror/lang-sql': ^6.3.3
       '@devbookhq/code-editor': workspace:*
       '@devbookhq/codemirror-textmate': workspace:*
       '@devbookhq/react': workspace:*
@@ -36,6 +37,7 @@ importers:
       typescript: ^4.9.3
     dependencies:
       '@codemirror/lang-javascript': 6.1.1
+      '@codemirror/lang-sql': 6.3.3_ogmbanzs6lakjjdipfkdcqjyle
       '@devbookhq/code-editor': link:../../packages/devbookhq-code-editor
       '@devbookhq/codemirror-textmate': link:../../packages/devbookhq-codemirror-textmate
       '@devbookhq/react': link:../../packages/devbookhq-react
@@ -514,6 +516,19 @@ packages:
       '@codemirror/view': 6.5.1
       '@lezer/common': 1.0.2
       '@lezer/javascript': 1.2.0
+    dev: false
+
+  /@codemirror/lang-sql/6.3.3_ogmbanzs6lakjjdipfkdcqjyle:
+    resolution: {integrity: sha512-VNsHju8500fkiDyDU8jZyGQ8M0iXU0SmfeCoCeAYkACcEFlX63BOT8311pICXyw43VYRbS23w54RgSEQmixGjQ==}
+    dependencies:
+      '@codemirror/autocomplete': 6.3.4_jvia4rcxqiacrvood3734bhyuy
+      '@codemirror/language': 6.3.1
+      '@codemirror/state': 6.1.4
+      '@lezer/highlight': 1.1.3
+      '@lezer/lr': 1.2.5
+    transitivePeerDependencies:
+      - '@codemirror/view'
+      - '@lezer/common'
     dev: false
 
   /@codemirror/language/6.3.1:

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.1.1",
+    "@codemirror/lang-sql": "^6.3.3",
     "@devbookhq/code-editor": "workspace:*",
     "@devbookhq/codemirror-textmate": "workspace:*",
     "@devbookhq/react": "workspace:*",

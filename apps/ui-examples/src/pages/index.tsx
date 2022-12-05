@@ -3,6 +3,7 @@ import { IRawGrammar } from '@devbookhq/codemirror-textmate'
 import { useSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
 import React, { useCallback } from 'react'
+import { sql as sqlLanguage } from '@codemirror/lang-sql'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
 
@@ -34,6 +35,11 @@ export const supportedLanguages: LanguageSetup[] = [
   //   languageID: 'prisma',
   //   // defaultServerCapabilities: prismaInitializeRequest.result.capabilities as ServerCapabilities,
   // },
+  {
+    fileExtensions: ['.sql'],
+    languageID: 'sql',
+    languageExtensions: sqlLanguage(),
+  },
 ]
 
 // export function useSupportedLangaugesWithTextMate() {
@@ -105,12 +111,13 @@ function Index() {
       </div>
       <CodeEditor
         content={ts}
-        filename="/code/index.ts"
+        filename="/code/index.sql"
         languageClients={languageClients}
         supportedLanguages={supportedLanguages}
         handleRun={handleRun}
       />
       <CodeEditor
+        className='h-[500px]'
         content={prisma}
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
