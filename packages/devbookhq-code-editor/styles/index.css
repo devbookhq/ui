@@ -8,7 +8,7 @@
 @tailwind utilities;
 
 @layer components {
-  .custom-scrollbar {
+  .autocomplete-scrollbar {
     &::-webkit-scrollbar {
       width: 5px;
       height: 5px;

@@ -38,15 +38,13 @@
   }
 
   .cm-scroller::-webkit-scrollbar {
-    @apply h-[8px] w-[8px];
+    width: 6px;
   }
 
-  .cm-scroller::-webkit-scrollbar-corner {
-    @apply bg-transparent;
-  }
-
-  .cm-scroller::-webkit-scrollbar-thumb {
-    /* @apply bg-black-700; */
+  .cm-scroller::-webkit-scrollbar-thumb
+  {
+    border-radius: 10px;
+    background-color: #C0C0C0;
   }
 
   .cm-gutters {
@@ -63,6 +61,9 @@
 
     .cm-gutterElement {
       position: relative;
+      .cm-activeLineGutter {
+        color: #2D3748;
+      }
     }
   }
 
@@ -85,6 +86,7 @@
 
   .cm-line.cm-activeLine {
     @apply bg-indigo-100;
+    @apply mr-1;
   }
 
   .cm-foldPlaceholder {
@@ -264,10 +266,10 @@
     @apply bg-gray-200 text-gray-800;
     @apply drop-shadow-lg;
     a {
-      @apply text-green-600; 
+      @apply text-green-600;
     }
   }
-    
+
   /* Signature help */
   .documentation.cm-tooltip {
     @apply whitespace-pre-wrap;
@@ -278,10 +280,10 @@
     @apply bg-gray-200 text-gray-800;
     @apply drop-shadow-lg;
     a {
-      @apply text-green-600; 
+      @apply text-green-600;
     }
   }
-    
+
   .cm-tooltip {
     @apply rounded;
   }
@@ -293,7 +295,7 @@
     @apply text-xs space-y-0.5;
     @apply bg-gray-100 text-gray-800;
     @apply drop-shadow-lg;
-    
+
     .cm-completionInfo {
       @apply whitespace-pre-wrap absolute w-max;
       @apply z-50;
@@ -308,7 +310,7 @@
 
     ul[role=listbox] {
       @apply overflow-hidden;
-      @apply custom-scrollbar;
+      @apply autocomplete-scrollbar;
 
       li[role=option] {
         @apply p-1;
@@ -334,7 +336,7 @@
       @apply text-xs flex justify-end flex-1 text-gray-800/50 not-italic;
     }
   }
-  
+
   /* ////////////////// */
   /* PRISMA CSS */
   /* ////////////////// */
