@@ -39,6 +39,7 @@
 
   .cm-scroller::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
 
   .cm-scroller::-webkit-scrollbar-thumb
@@ -61,15 +62,20 @@
 
     .cm-gutterElement {
       position: relative;
-      .cm-activeLineGutter {
-        color: #2D3748;
-      }
     }
   }
 
   .cm-gutter.cm-lineNumbers {
     @apply text-right;
     @apply text-[#CBD5E1];
+
+    .cm-gutterElement {
+      color: #A0A2A5;
+    }
+
+    .cm-gutterElement.cm-activeLineGutter {
+      color: #2D3748;
+    }
   }
 
   .cm-activeLineGutter {
