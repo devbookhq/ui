@@ -1,10 +1,22 @@
 # @devbookhq/code-editor
 
-## 0.1.20
+## 0.1.22
 
 ### Patch Changes
 
 - Update deps
+
+## 0.1.21
+
+### Patch Changes
+
+- 486669b: Update colors for line numbers
+
+## 0.1.20
+
+### Patch Changes
+
+- Update CSS
 
 ## 0.1.19
 
