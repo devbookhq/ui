@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.16
+
+### Patch Changes
+
+- Change default renderer to canvas until xterm 5.1 release
+
 ## 0.1.15
 
 ### Patch Changes

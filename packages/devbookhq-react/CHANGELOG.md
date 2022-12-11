@@ -1,5 +1,11 @@
 # @devbookhq/react
 
+## 2.0.5
+
+### Patch Changes
+
+- Update deps
+
 ## 2.0.4
 
 ### Patch Changes

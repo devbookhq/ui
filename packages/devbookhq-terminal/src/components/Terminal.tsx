@@ -173,15 +173,19 @@ const Terminal = forwardRef<Handler, Props>(({
 
       if (autofocus) term.focus()
 
+      // // TODO: Switch to WebGL rendering when xterm@5.1.0 and xterm-addon-webgl@0.14.0 is released, fixing Safari and other bugs.
+      // // TODO: Use `xterm-addon-canvas` only as a fallback rendering when WebGL support is not available.
+      // const { WebglAddon } = await import('xterm-addon-webgl')
+      // const webGLAddon = new WebglAddon()
+      // term.loadAddon(webGLAddon)
+      // webGLAddon.onContextLoss(e => {
+      //   // TODO: Improve WebGL context loss handling
+      //   webGLAddon.dispose()
+      // })
 
-      // TODO: Add fallback to `xterm-addon-canvas` rendering when WebGL support is not available.
-      const { WebglAddon } = await import('xterm-addon-webgl')
-      const webGLAddon = new WebglAddon()
-      term.loadAddon(webGLAddon)
-      webGLAddon.onContextLoss(e => {
-        // TODO: Improve WebGL context loss handling
-        webGLAddon.dispose()
-      })
+      const { CanvasAddon } = await import('xterm-addon-canvas')
+      const canvasAddon = new CanvasAddon()
+      term.loadAddon(canvasAddon)
 
       fitAddon.fit()
 

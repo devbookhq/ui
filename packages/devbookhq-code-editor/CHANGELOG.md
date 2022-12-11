@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.20
+
+### Patch Changes
+
+- Update deps
+
 ## 0.1.19
 
 ### Patch Changes
