@@ -1,6 +1,8 @@
+import { syntaxHighlighting } from '@codemirror/language'
 import { Diagnostic as CMDiagnostic, forEachDiagnostic } from '@codemirror/lint'
-import { Compartment, EditorState, Prec } from '@codemirror/state'
+import { Compartment, EditorState, Prec, Extension } from '@codemirror/state'
 import { EditorView, keymap } from '@codemirror/view'
+import { classHighlighter } from '@lezer/highlight'
 import {
   forwardRef,
   useEffect,
@@ -19,6 +21,7 @@ import createEditorState from './createEditorState'
 
 export interface Props {
   content?: string
+  theme?: Extension
   isReadOnly?: boolean
   onContentChange?: (content: string) => void
   handleRun?: () => void
@@ -68,6 +71,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       autofocus,
       onDiagnosticsChange,
       filename,
+      theme = syntaxHighlighting(classHighlighter),
       languageClients,
       openFileInLanguageServer = true,
     },
@@ -80,6 +84,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       languageServiceExtensions: Compartment
       languageExtensions: Compartment
       keymapExtensions: Compartment
+      themeExtensions: Compartment
       contentHandlingExtensions: Compartment
     }>()
 
@@ -110,6 +115,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           languageServiceExtensions,
           contentHandlingExtensions,
           languageExtensions,
+          themeExtensions,
           editabilityExtensions,
           keymapExtensions,
           state,
@@ -122,6 +128,7 @@ const CodeEditor = forwardRef<Handler, Props>(
 
         setEditor({
           view,
+          themeExtensions,
           keymapExtensions,
           languageServiceExtensions,
           contentHandlingExtensions,
@@ -188,6 +195,22 @@ const CodeEditor = forwardRef<Handler, Props>(
         }
       },
       [editor, languageSetup],
+    )
+
+    useEffect(
+      function configureThemeExtensions() {
+        if (!editor) return
+
+        editor.view.dispatch({
+          effects: editor.themeExtensions.reconfigure(theme),
+        })
+        return () => {
+          editor.view.dispatch({
+            effects: editor.themeExtensions.reconfigure([]),
+          })
+        }
+      },
+      [editor, theme],
     )
 
     useEffect(

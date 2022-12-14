@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.23
+
+### Patch Changes
+
+- Allow custom themes
+
 ## 0.1.22
 
 ### Patch Changes

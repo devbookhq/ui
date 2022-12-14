@@ -1,8 +1,8 @@
 import { LanguageSetup, CodeEditor, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities } from '@devbookhq/code-editor'
-import { IRawGrammar } from '@devbookhq/codemirror-textmate'
+import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { useSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { sql as sqlLanguage } from '@codemirror/lang-sql'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
@@ -12,6 +12,7 @@ import { typescriptLanguage } from '@codemirror/lang-javascript'
 
 // import prismaInitializeRequest from '../defaultCapabilities/prisma.json'
 import typescriptInitializeRequest from '../defaultCapabilities/typescript.json'
+import { oneDark } from '@codemirror/theme-one-dark'
 
 const textMateGrammars: IRawGrammar[] = [prismaTextMate as unknown as IRawGrammar]
 
@@ -28,13 +29,13 @@ export const supportedLanguages: LanguageSetup[] = [
     languageExtensions: typescriptLanguage,
     defaultServerCapabilities: typescriptInitializeRequest.result.capabilities as ServerCapabilities,
   },
-  // {
-  //   // Necessary packages were installed by `npm i -g @prisma/language-server`
-  //   languageServerCommand: 'prisma-language-server',
-  //   fileExtensions: ['.prisma'],
-  //   languageID: 'prisma',
-  //   // defaultServerCapabilities: prismaInitializeRequest.result.capabilities as ServerCapabilities,
-  // },
+  {
+    // Necessary packages were installed by `npm i -g @prisma/language-server`
+    languageServerCommand: 'prisma-language-server',
+    fileExtensions: ['.prisma'],
+    languageID: 'prisma',
+    // defaultServerCapabilities: prismaInitializeRequest.result.capabilities as ServerCapabilities,
+  },
   {
     fileExtensions: ['.sql'],
     languageID: 'sql',
@@ -42,28 +43,28 @@ export const supportedLanguages: LanguageSetup[] = [
   },
 ]
 
-// export function useSupportedLangaugesWithTextMate() {
-//   const textMateLanguages = useTextMateLanguages({ textMateGrammars })
+export function useSupportedLangaugesWithTextMate() {
+  const textMateLanguages = useTextMateLanguages({ textMateGrammars })
 
-//   const languages = useMemo(() => {
-//     if (!textMateLanguages) return supportedLanguages
+  const languages = useMemo(() => {
+    if (!textMateLanguages) return supportedLanguages
 
-//     return supportedLanguages.map(s => {
-//       if (s.languageExtensions) return s
+    return supportedLanguages.map(s => {
+      if (s.languageExtensions) return s
 
-//       const languageExtensions = textMateLanguages[`source.${s.languageID}`]
-//       if (!languageExtensions) return s
+      const languageExtensions = textMateLanguages[`source.${s.languageID}`]
+      if (!languageExtensions) return s
 
 
-//       return {
-//         ...s,
-//         languageExtensions,
-//       }
-//     })
-//   }, [textMateLanguages])
+      return {
+        ...s,
+        languageExtensions,
+      }
+    })
+  }, [textMateLanguages])
 
-//   return languages
-// }
+  return languages
+}
 
 function Index() {
   const session = useSession({
@@ -73,7 +74,7 @@ function Index() {
     // apiKey: '',
   })
 
-  // const languages = useSupportedLangaugesWithTextMate()
+  const languages = useSupportedLangaugesWithTextMate()
 
   // const languageClients = useLanguageServer({
   //   supportedLanguages,
@@ -99,7 +100,7 @@ function Index() {
   }, [session.session])
 
   return (
-    <div className="bg-yellow-200">
+    <div className="">
       <div className="cursor-pointer bg-gray-50" onClick={session.refresh}>{session.state}</div>
       <div className="flex h-[300px]">
         <Terminal
@@ -113,15 +114,16 @@ function Index() {
         content={ts}
         filename="/code/index.sql"
         languageClients={languageClients}
-        supportedLanguages={supportedLanguages}
+        supportedLanguages={languages}
         handleRun={handleRun}
       />
       <CodeEditor
+        theme={oneDark}
         className='h-[500px]'
         content={prisma}
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
-        supportedLanguages={supportedLanguages}
+        supportedLanguages={languages}
       />
     </div>
   )

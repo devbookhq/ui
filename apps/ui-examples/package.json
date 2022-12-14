@@ -12,6 +12,7 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.1.1",
     "@codemirror/lang-sql": "^6.3.3",
+    "@codemirror/theme-one-dark": "^6.1.0",
     "@devbookhq/code-editor": "workspace:*",
     "@devbookhq/codemirror-textmate": "workspace:*",
     "@devbookhq/react": "workspace:*",

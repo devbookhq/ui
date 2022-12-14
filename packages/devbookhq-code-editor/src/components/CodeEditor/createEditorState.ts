@@ -9,7 +9,6 @@ import {
   bracketMatching,
   foldKeymap,
   indentOnInput,
-  syntaxHighlighting,
 } from '@codemirror/language'
 import { lintGutter } from '@codemirror/lint'
 import { Compartment, EditorState } from '@codemirror/state'
@@ -20,7 +19,6 @@ import {
   keymap,
   lineNumbers,
 } from '@codemirror/view'
-import { classHighlighter } from '@lezer/highlight'
 
 const disableSpellchecking = {
   'data-gramm': 'false',
@@ -33,6 +31,7 @@ function createEditorState(content: string) {
   const contentHandlingExtensions = new Compartment()
   const editabilityExtensions = new Compartment()
   const keymapExtensions = new Compartment()
+  const themeExtensions = new Compartment()
 
   const state = EditorState.create({
     doc: content,
@@ -65,10 +64,10 @@ function createEditorState(content: string) {
           run: () => true,
         },
       ]),
+      themeExtensions.of([]),
       languageServiceExtensions.of([]),
       contentHandlingExtensions.of([]),
       languageExtensions.of([]),
-      syntaxHighlighting(classHighlighter),
     ],
   })
 
@@ -76,6 +75,7 @@ function createEditorState(content: string) {
     state,
     languageExtensions,
     keymapExtensions,
+    themeExtensions,
     languageServiceExtensions,
     contentHandlingExtensions,
     editabilityExtensions,
