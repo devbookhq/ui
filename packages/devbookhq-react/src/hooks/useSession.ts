@@ -158,12 +158,11 @@ export function useSession({
       await sessionState.open
       return { session: sessionState.session }
     }
-  },
-    [
-      sessionState,
-      initSession,
-      reset,
-    ])
+  }, [
+    sessionState,
+    initSession,
+    reset,
+  ])
 
   useEffect(function startSession() {
     const result = initSession()
@@ -171,8 +170,7 @@ export function useSession({
     return () => {
       result.then(r => r?.close?.())
     }
-  },
-    [initSession])
+  }, [initSession])
 
 
   return {
