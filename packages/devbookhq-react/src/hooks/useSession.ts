@@ -22,6 +22,9 @@ export type CodeSnippetState = CodeSnippetExtendedState | CodeSnippetExecState
 export interface Opts extends Omit<SessionOpts, 'onClose' | 'onReconnect' | 'onDisconnect' | 'id'> {
   inactivityTimeout?: number
   codeSnippetID?: string
+
+  onUserIdle?: () => void
+  onUserActive?: () => void
 }
 
 export function useSession({
@@ -43,6 +46,8 @@ export function useSession({
   inactivityTimeout = 15 * 60 * 1000,
   apiKey,
   editEnabled,
+  onUserIdle,
+  onUserActive,
   __debug_devEnv,
   __debug_hostname,
   __debug_port,
@@ -132,12 +137,13 @@ export function useSession({
 
       return { state: 'closed' }
     })
-  },
-    [inactivityTimeout])
+    onUserIdle?.()
+  }, [inactivityTimeout, onUserIdle])
 
   const { reset } = useIdleTimer({
     timeout: inactivityTimeout,
     onIdle,
+    onActive: onUserActive,
   })
 
   /**

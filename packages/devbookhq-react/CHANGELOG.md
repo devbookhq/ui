@@ -1,5 +1,11 @@
 # @devbookhq/react
 
+## 2.0.6
+
+### Patch Changes
+
+- Add props when user becomes idle or active
+
 ## 2.0.5
 
 ### Patch Changes
