@@ -101,8 +101,6 @@ function useTerminalProcess({
     terminalProcess?.disconnect()
 
     terminalProcess?.kill().catch(err => {
-
-      
       setTerminalProcess(t => t === terminalProcess ? undefined : t)
     })
 

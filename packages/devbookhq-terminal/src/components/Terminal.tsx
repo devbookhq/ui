@@ -10,7 +10,7 @@ import { useResizeDetector } from 'react-resize-detector'
 import type { Terminal as XTermTerminal } from 'xterm'
 import type { FitAddon } from 'xterm-addon-fit'
 
-import useTerminalProcess from '../hooks/useTerminalProcess'
+import useTerminalProcess, { TerminalProcess } from '../hooks/useTerminalProcess'
 import useTerminalSession from '../hooks/useTerminalSession'
 import Spinner from './Spinner'
 import Text from './Text'
@@ -18,7 +18,7 @@ import Text from './Text'
 export interface Handler {
   focus: () => void
   resize: () => void
-  runCmd: (cmd: string) => Promise<void>
+  runCmd: (cmd: string) => Promise<TerminalProcess | undefined>
   stopCmd: () => Promise<void>
   /**
    * Use ANSI escape codes with this function to manipulate the terminal.
@@ -98,11 +98,13 @@ const Terminal = forwardRef<Handler, Props>(({
         terminalSession?.session.sendData('\n')
         onRunningCmdChange?.(CodeSnippetExecState.Stopped)
       })
+      return termProcess
     } catch (err) {
       const message = err instanceof Error ? err.message : JSON.stringify(err)
       setErrMessage(message)
       terminalSession?.toggleIO(true)
       onRunningCmdChange?.(CodeSnippetExecState.Stopped)
+      throw err
     }
   }, [
     createTerminalProcess,
