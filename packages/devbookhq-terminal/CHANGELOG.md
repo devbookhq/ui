@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.17
+
+### Patch Changes
+
+- Improve terminal runCmd method
+
 ## 0.1.16
 
 ### Patch Changes
