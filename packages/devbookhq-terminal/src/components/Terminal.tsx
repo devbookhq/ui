@@ -32,6 +32,7 @@ export interface Handler {
 }
 
 export interface Props {
+  onLine?: (line: string) => void
   autofocus?: boolean
   onRunningCmdChange?: (state: CodeSnippetExecState) => void
   isHidden?: boolean
@@ -52,6 +53,7 @@ const Terminal = forwardRef<Handler, Props>(({
   canStartTerminalSession,
   isReadOnly,
   isPersistent,
+  onLine,
   placeholder,
 }, ref) => {
   const [errMessage, setErrMessage] = useState('')
@@ -210,6 +212,35 @@ const Terminal = forwardRef<Handler, Props>(({
     placeholder,
     isPersistent,
   ])
+
+  useEffect(function handleLine() {
+    if (!onLine) return
+    if (!terminal) return
+
+    let hasUserInput = false
+
+    const onDataDisposer = terminal.terminal.onData((data) => {
+      hasUserInput = true
+    })
+
+    const onLineFeedDisposer = terminal.terminal.onLineFeed(() => {
+      if (hasUserInput) {
+        hasUserInput = false
+
+        // TODO: We want to add handling of multiline commands
+        const line = terminal.terminal.buffer.active.getLine(terminal.terminal.buffer.active.cursorY - 1)?.translateToString(true)
+
+        if (line && line.length > 0) {
+          onLine(line)
+        }
+      }
+    })
+
+    return () => {
+      onLineFeedDisposer.dispose()
+      onDataDisposer.dispose()
+    }
+  }, [onLine, terminal])
 
   const write = useCallback(async (data: string | Uint8Array) => {
     return new Promise<void>((res, rej) => {

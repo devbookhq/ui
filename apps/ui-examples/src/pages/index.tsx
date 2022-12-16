@@ -68,7 +68,7 @@ export function useSupportedLangaugesWithTextMate() {
 
 function Index() {
   const session = useSession({
-    codeSnippetID: 'M3gFVIbpd2tU',
+    codeSnippetID: 'acprvBflDsD6',
     inactivityTimeout: 0,
     // editEnabled: true,
     // apiKey: '',
@@ -99,6 +99,10 @@ function Index() {
     console.log('run', session.session?.getHostname())
   }, [session.session])
 
+  const handleLine = useCallback((line: string) => {
+    console.log({ line })
+  }, [])
+
   return (
     <div className="">
       <div className="cursor-pointer bg-gray-50" onClick={session.refresh}>{session.state}</div>
@@ -107,6 +111,7 @@ function Index() {
           canStartTerminalSession={true}
           session={session.session}
           placeholder="place"
+          onLine={handleLine}
           isPersistent
         />
       </div>
