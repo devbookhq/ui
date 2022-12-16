@@ -1,8 +1,8 @@
 import { Completion, autocompletion } from '@codemirror/autocomplete'
 import { Diagnostic } from '@codemirror/lint'
 import { Extension, Prec } from '@codemirror/state'
-import { ViewPlugin, closeHoverTooltips, hoverTooltip, keymap } from '@codemirror/view'
-import { CompletionTriggerKind } from 'vscode-languageserver-protocol'
+import { ViewPlugin, closeHoverTooltips, hoverTooltip, keymap, Tooltip } from '@codemirror/view'
+import { CompletionTriggerKind, Hover } from 'vscode-languageserver-protocol'
 
 import { createIconImages } from '../icons'
 import { LanguageServerClient } from '../languageServerClient'
@@ -20,6 +20,7 @@ export function createExtension(options: {
   client: LanguageServerClient
   openFile: boolean
   onDiagnosticsChange?: (diagnostics: Diagnostic[]) => void
+  onHoverView?: (hover: Hover) => void
 }): { extension: Extension, dispose: () => void } {
   let plugin: LanguageServerPlugin | null = null
 
@@ -67,7 +68,13 @@ export function createExtension(options: {
 
         const positon = offsetToPos(view.state.doc, pos)
 
-        return await plugin.requestHoverTooltip(view, positon)
+        const requested: { result: Hover, tooltip: Tooltip } | null = await plugin.requestHoverTooltip(view, positon)
+
+        if (requested?.result) {
+          options.onHoverView?.(requested.result)
+        }
+
+        return requested?.tooltip || null
       }, {
         hoverTime: 35,
       }),

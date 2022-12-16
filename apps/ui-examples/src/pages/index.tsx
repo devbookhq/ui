@@ -133,6 +133,10 @@ function Index() {
     console.log({ content })
   }, [])
 
+  const handleHover = useCallback((hover: any) => {
+    console.log({ hover })
+  }, [])
+
   return (
     <div className="">
       <div className="cursor-pointer bg-gray-50" onClick={session.refresh}>{session.state}</div>
@@ -151,7 +155,8 @@ function Index() {
         ref={editorRef}
         content={ts}
         onCopy={handleCopy}
-        filename="/code/index.sql"
+        onHoverView={handleHover}
+        filename="/code/index.js"
         languageClients={languageClients}
         supportedLanguages={languages}
         handleRun={handleRun}

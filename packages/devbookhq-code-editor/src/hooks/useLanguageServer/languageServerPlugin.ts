@@ -20,6 +20,7 @@ import {
   PublishDiagnosticsParams,
   SignatureHelp,
   SignatureHelpTriggerKind,
+  Hover,
 } from 'vscode-languageserver-protocol'
 import { getLast, notEmpty } from '../../utils'
 
@@ -187,7 +188,7 @@ export class LanguageServerPlugin implements PluginValue {
   async requestHoverTooltip(
     { state: { doc } }: EditorView,
     { line, character }: Position,
-  ): Promise<Tooltip | null> {
+  ): Promise<{ tooltip: Tooltip, result: Hover } | null> {
     if (!this.client.capabilities.hoverProvider) return null
 
     const result = await this.client.lsp.getHoverInfo({
@@ -222,10 +223,13 @@ export class LanguageServerPlugin implements PluginValue {
     if (pos === null) return null
 
     return {
-      pos,
-      end,
-      create: () => ({ dom: el }),
-      above: true,
+      result,
+      tooltip: {
+        pos,
+        end,
+        create: () => ({ dom: el }),
+        above: true,
+      }
     }
   }
 

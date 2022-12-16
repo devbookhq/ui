@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { Hover } from 'vscode-languageserver-protocol'
 
 import { createExtension } from '../../hooks/useLanguageServer/codeMirror'
 import { LanguageSetup, getLanguageSetup } from '../../hooks/useLanguageServer/setup'
@@ -26,6 +27,7 @@ export interface Props {
   onContentChange?: (content: string) => void
   handleRun?: () => void
   onDiagnosticsChange?: (diagnostics: ExtendedCMDiagnostic[]) => void
+  onHoverView?: (hover: Hover) => void
   supportedLanguages: LanguageSetup[]
   height?: string
   className?: string
@@ -71,6 +73,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       onCopy,
       className = '',
       handleRun,
+      onHoverView,
       autofocus,
       onDiagnosticsChange,
       filename,
@@ -288,6 +291,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           documentURI: getFileURI(filename),
           openFile: openFileInLanguageServer,
           onDiagnosticsChange: onDiagnosticsChange ? (ds) => onDiagnosticsChange(ds.map(d => ({ ...d, filename }))) : undefined,
+          onHoverView,
         })
 
         editor.view.dispatch({
@@ -301,7 +305,14 @@ const CodeEditor = forwardRef<Handler, Props>(
           dispose()
         }
       },
-      [editor, languageClient, filename, openFileInLanguageServer, onDiagnosticsChange],
+      [
+        editor,
+        languageClient,
+        filename,
+        openFileInLanguageServer,
+        onDiagnosticsChange,
+        onHoverView,
+      ],
     )
 
     return (

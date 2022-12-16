@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.24
+
+### Patch Changes
+
+- Add handlers for selection and LS events
+
 ## 0.1.23
 
 ### Patch Changes

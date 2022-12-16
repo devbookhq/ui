@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.18
+
+### Patch Changes
+
+- Add handlers for selection and newlines
+
 ## 0.1.17
 
 ### Patch Changes
