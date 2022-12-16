@@ -1,8 +1,8 @@
-import { LanguageSetup, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities } from '@devbookhq/code-editor'
+import { LanguageSetup, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities, CodeEditor, CodeEditorHandler } from '@devbookhq/code-editor'
 import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { useSession } from '@devbookhq/react'
-import { Terminal } from '@devbookhq/terminal'
-import React, { useCallback, useMemo } from 'react'
+import { Terminal, TerminalHandler } from '@devbookhq/terminal'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { sql as sqlLanguage } from '@codemirror/lang-sql'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
@@ -11,6 +11,8 @@ import { typescriptLanguage } from '@codemirror/lang-javascript'
 
 // import prismaInitializeRequest from '../defaultCapabilities/prisma.json'
 import typescriptInitializeRequest from '../defaultCapabilities/typescript.json'
+import { oneDark } from '@codemirror/theme-one-dark'
+import { ts, prisma } from '../grammars/examples'
 
 const textMateGrammars: IRawGrammar[] = [prismaTextMate as unknown as IRawGrammar]
 
@@ -72,6 +74,9 @@ function Index() {
     // apiKey: '',
   })
 
+  const editorRef = useRef<CodeEditorHandler>(null)
+  const terminalRef = useRef<TerminalHandler>(null)
+
   const languages = useSupportedLangaugesWithTextMate()
 
   // const languageClients = useLanguageServer({
@@ -92,6 +97,29 @@ function Index() {
     rootdir,
   })
 
+  // useEffect(() => {
+  //   if (!editorRef.current) return
+
+  //   const clear = setInterval(() => {
+  //     console.log(editorRef.current?.getSelection())
+  //   }, 2000)
+
+  //   return () => {
+  //     clearInterval(clear)
+  //   }
+  // }, [])
+
+  useEffect(() => {
+    if (!terminalRef.current) return
+
+    const clear = setInterval(() => {
+      console.log(terminalRef.current?.getSelection())
+    }, 2000)
+
+    return () => {
+      clearInterval(clear)
+    }
+  }, [])
 
   const handleRun = useCallback(() => {
     console.log('run', session.session?.getHostname())
@@ -110,6 +138,7 @@ function Index() {
       <div className="cursor-pointer bg-gray-50" onClick={session.refresh}>{session.state}</div>
       <div className="flex h-[300px]">
         <Terminal
+          ref={terminalRef}
           canStartTerminalSession={true}
           session={session.session}
           placeholder="place"
@@ -118,8 +147,10 @@ function Index() {
           isPersistent
         />
       </div>
-      {/* <CodeEditor
+      <CodeEditor
+        ref={editorRef}
         content={ts}
+        onCopy={handleCopy}
         filename="/code/index.sql"
         languageClients={languageClients}
         supportedLanguages={languages}
@@ -132,7 +163,7 @@ function Index() {
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
         supportedLanguages={languages}
-      /> */}
+      />
     </div>
   )
 }

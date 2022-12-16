@@ -47,6 +47,7 @@ export interface Props {
    * If `false` the file must have been opened before.
    */
   openFileInLanguageServer?: boolean
+  onCopy?: (content: string) => void
 }
 
 export interface ExtendedCMDiagnostic extends CMDiagnostic {
@@ -55,6 +56,7 @@ export interface ExtendedCMDiagnostic extends CMDiagnostic {
 
 export interface Handler {
   focus: () => void
+  getSelection: () => string | undefined
   getDiagnostics: () => ExtendedCMDiagnostic[] | undefined
 }
 
@@ -66,6 +68,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       isReadOnly = false,
       supportedLanguages,
       height,
+      onCopy,
       className = '',
       handleRun,
       autofocus,
@@ -104,7 +107,13 @@ const CodeEditor = forwardRef<Handler, Props>(
         }))
 
         return diagnostics
-      }
+      },
+      getSelection: () => {
+        const state = editor?.view.state
+        if (!state) return
+        if (state.selection.main.empty) return
+        return state.sliceDoc(editor.view.state.selection.main.from, editor.view.state.selection.main.to)
+      },
     }), [editor, filename])
 
     useLayoutEffect(
@@ -154,18 +163,31 @@ const CodeEditor = forwardRef<Handler, Props>(
     useEffect(
       function configureKeymapExtensions() {
         if (!editor) return
-        if (!handleRun) return
+        if (!handleRun && !onCopy) return
 
         editor.view.dispatch({
           effects: editor.keymapExtensions.reconfigure(
             Prec.highest(keymap.of([
-              {
+              handleRun ? {
                 key: 'Mod-Enter',
                 run: () => {
-                  handleRun?.()
+                  handleRun()
                   return !!handleRun
                 },
-              },
+              } : {},
+              onCopy ? {
+                key: 'Mod-c',
+                run: (view) => {
+                  const state = view.state
+                  if (!state) return false
+                  if (state.selection.main.empty) return false
+                  const content = state.sliceDoc(editor.view.state.selection.main.from, editor.view.state.selection.main.to)
+                  if (content.length > 0) {
+                    onCopy(content)
+                  }
+                  return false
+                },
+              } : {},
             ]))
           ),
         })
@@ -175,7 +197,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           })
         }
       },
-      [editor, handleRun],
+      [editor, handleRun, onCopy],
     )
 
     useEffect(
