@@ -29,10 +29,12 @@ export interface Handler {
    */
   write: (content: string) => Promise<void>
   clear: () => void
+  getSelection: () => string | undefined
 }
 
 export interface Props {
   onLine?: (line: string) => void
+  onCopy?: (selection: string) => void
   autofocus?: boolean
   onRunningCmdChange?: (state: CodeSnippetExecState) => void
   isHidden?: boolean
@@ -55,6 +57,7 @@ const Terminal = forwardRef<Handler, Props>(({
   isPersistent,
   onLine,
   placeholder,
+  onCopy,
 }, ref) => {
   const [errMessage, setErrMessage] = useState('')
   const [terminal, setTerminal] = useState<{ terminal: XTermTerminal, fitAddon: FitAddon }>()
@@ -213,6 +216,26 @@ const Terminal = forwardRef<Handler, Props>(({
     isPersistent,
   ])
 
+  useEffect(function handleCopy() {
+    if (!onCopy) return
+    if (!terminal) return
+
+    terminal.terminal.attachCustomKeyEventHandler((e) => {
+      if (!e.composed) return true
+      if (e.type !== 'keydown') return true
+      const copyShortcut = e.code === 'KeyC' && e.ctrlKey && e.shiftKey
+      const macCopyShortcut = e.code === 'KeyC' && e.metaKey
+
+      if (copyShortcut || macCopyShortcut) {
+        const selection = terminal.terminal.getSelection()
+        if (selection.length > 0) {
+          onCopy(selection)
+        }
+      }
+      return true
+    })
+  }, [onCopy, terminal])
+
   useEffect(function handleLine() {
     if (!onLine) return
     if (!terminal) return
@@ -256,6 +279,8 @@ const Terminal = forwardRef<Handler, Props>(({
     terminal?.terminal.clear()
   }, [terminal?.terminal])
 
+  const getSelection = useCallback(() => terminal?.terminal.getSelection(), [terminal?.terminal])
+
   useImperativeHandle(
     ref,
     () => ({
@@ -265,9 +290,11 @@ const Terminal = forwardRef<Handler, Props>(({
       resize: onResize,
       write,
       clear,
+      getSelection,
     }),
     [
       write,
+      getSelection,
       focus,
       clear,
       runCmd,

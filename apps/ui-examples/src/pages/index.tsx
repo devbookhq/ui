@@ -1,4 +1,4 @@
-import { LanguageSetup, CodeEditor, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities } from '@devbookhq/code-editor'
+import { LanguageSetup, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities } from '@devbookhq/code-editor'
 import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { useSession } from '@devbookhq/react'
 import { Terminal } from '@devbookhq/terminal'
@@ -7,12 +7,10 @@ import { sql as sqlLanguage } from '@codemirror/lang-sql'
 
 import prismaTextMate from '../grammars/prisma.tmLanguage.json'
 
-import { prisma, ts } from '../grammars/examples'
 import { typescriptLanguage } from '@codemirror/lang-javascript'
 
 // import prismaInitializeRequest from '../defaultCapabilities/prisma.json'
 import typescriptInitializeRequest from '../defaultCapabilities/typescript.json'
-import { oneDark } from '@codemirror/theme-one-dark'
 
 const textMateGrammars: IRawGrammar[] = [prismaTextMate as unknown as IRawGrammar]
 
@@ -103,6 +101,10 @@ function Index() {
     console.log({ line })
   }, [])
 
+  const handleCopy = useCallback((content: string) => {
+    console.log({ content })
+  }, [])
+
   return (
     <div className="">
       <div className="cursor-pointer bg-gray-50" onClick={session.refresh}>{session.state}</div>
@@ -112,10 +114,11 @@ function Index() {
           session={session.session}
           placeholder="place"
           onLine={handleLine}
+          onCopy={handleCopy}
           isPersistent
         />
       </div>
-      <CodeEditor
+      {/* <CodeEditor
         content={ts}
         filename="/code/index.sql"
         languageClients={languageClients}
@@ -129,7 +132,7 @@ function Index() {
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
         supportedLanguages={languages}
-      />
+      /> */}
     </div>
   )
 }
