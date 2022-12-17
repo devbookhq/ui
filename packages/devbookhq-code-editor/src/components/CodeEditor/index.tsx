@@ -16,7 +16,7 @@ import { Hover } from 'vscode-languageserver-protocol'
 import { createExtension } from '../../hooks/useLanguageServer/codeMirror'
 import { LanguageSetup, getLanguageSetup } from '../../hooks/useLanguageServer/setup'
 import { LSClients } from '../../hooks/useLanguageServer/useLanguageServerClients'
-import { getFileURI } from '../../hooks/useLanguageServer/utils'
+import { getFileURI, offsetToPos } from '../../hooks/useLanguageServer/utils'
 import { activeLineHighlighter } from './activeLineHighlighter'
 import createEditorState from './createEditorState'
 
@@ -49,7 +49,7 @@ export interface Props {
    * If `false` the file must have been opened before.
    */
   openFileInLanguageServer?: boolean
-  onCopy?: (content: string) => void
+  onCopy?: (selection: string, startLine: number) => void
 }
 
 export interface ExtendedCMDiagnostic extends CMDiagnostic {
@@ -184,9 +184,10 @@ const CodeEditor = forwardRef<Handler, Props>(
                   const state = view.state
                   if (!state) return false
                   if (state.selection.main.empty) return false
-                  const content = state.sliceDoc(editor.view.state.selection.main.from, editor.view.state.selection.main.to)
-                  if (content.length > 0) {
-                    onCopy(content)
+                  const selection = state.sliceDoc(editor.view.state.selection.main.from, editor.view.state.selection.main.to)
+                  if (selection.length > 0) {
+                    const startLine = offsetToPos(state.doc, editor.view.state.selection.main.from).line
+                    onCopy(selection, startLine)
                   }
                   return false
                 },

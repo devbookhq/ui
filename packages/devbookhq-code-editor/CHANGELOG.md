@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.25
+
+### Patch Changes
+
+- Improve naming; Add lines parameter
+
 ## 0.1.24
 
 ### Patch Changes
