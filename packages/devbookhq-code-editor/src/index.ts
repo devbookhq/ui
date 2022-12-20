@@ -5,6 +5,7 @@ export { default as useLanguageServerClients } from './hooks/useLanguageServer/u
 export { default as useLanguageServerProcess } from './hooks/useLanguageServer/useLanguageServerProcess'
 export { default as CodeEditor } from './components/CodeEditor'
 export { default as useLanguageServer } from './hooks/useLanguageServer'
+export { default as useLSWatch } from './hooks/useLSWatch'
 export { getFileURI, getRootURI } from './hooks/useLanguageServer/utils'
 export { getLanguageSetup } from './hooks/useLanguageServer/setup'
 export { LanguageServerClient } from './hooks/useLanguageServer/languageServerClient'

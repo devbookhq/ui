@@ -1,4 +1,4 @@
-import { LanguageSetup, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities, CodeEditor, CodeEditorHandler } from '@devbookhq/code-editor'
+import { LanguageSetup, useExternalLanguageServer, useLanguageServerClients, ServerCapabilities, CodeEditor, CodeEditorHandler, useLSWatch } from '@devbookhq/code-editor'
 import { IRawGrammar, useTextMateLanguages } from '@devbookhq/codemirror-textmate'
 import { useSession } from '@devbookhq/react'
 import { Terminal, TerminalHandler } from '@devbookhq/terminal'
@@ -68,9 +68,10 @@ export function useSupportedLangaugesWithTextMate() {
 
 function Index() {
   const session = useSession({
-    codeSnippetID: 'BCqZ0TyWWumF',
+    codeSnippetID: 'spZC9ISdwrRS',
     inactivityTimeout: 0,
-    editEnabled: true,
+    // __stress: 50,
+    // debug: true,
   })
 
   const editorRef = useRef<CodeEditorHandler>(null)
@@ -89,13 +90,22 @@ function Index() {
     supportedLanguages,
     session: session.session,
     port: 5523,
-    // bootstrap: false,
+    // bootstrap: true,
+    // debug: true,
   })
 
   const languageClients = useLanguageServerClients({
     server,
     rootdir,
   })
+
+  useLSWatch({
+    filepath: '/code/node_modules/.prisma/client/index.d.ts',
+    languageID: 'typescript',
+    clients: languageClients,
+    session: session.session,
+  })
+
 
   // useEffect(() => {
   //   if (!editorRef.current) return
@@ -156,7 +166,7 @@ function Index() {
         content={ts}
         onCopy={handleCopy}
         onHoverView={handleHover}
-        filename="/code/index.js"
+        filename="/code/index-c.js"
         languageClients={languageClients}
         supportedLanguages={languages}
         handleRun={handleRun}

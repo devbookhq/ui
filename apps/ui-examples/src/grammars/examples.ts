@@ -7,50 +7,10 @@ export const prisma =
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  authorId  Int
-  author    User     @relation(fields: [authorId], references: [id])
-}
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  userId Int     @unique
-  user   User    @relation(fields: [userId], references: [id])
-}
-
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
 }`
 
 export const ts =
   `import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
-
-const alice = await prisma.user.upsert({
-  update: {
-        age: 34,
-  },
-  where: {
-    email: 'alice@prisma.io',
-  },
-  create: {
-    name: 'Alice',
-    email: 'alice@prisma.io',
-    country: 'England',
-    age: 43,
-  },
-})`
+  const prisma = new PrismaClient()
+  `

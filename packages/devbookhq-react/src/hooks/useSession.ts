@@ -25,6 +25,7 @@ export interface Opts extends Omit<SessionOpts, 'onClose' | 'onReconnect' | 'onD
 
   onUserIdle?: () => void
   onUserActive?: () => void
+  __stress?: number,
 }
 
 export function useSession({
@@ -51,6 +52,7 @@ export function useSession({
   __debug_devEnv,
   __debug_hostname,
   __debug_port,
+  __stress,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
@@ -58,8 +60,45 @@ export function useSession({
     id?: string,
     open?: Promise<void>
   }>({ state: codeSnippetID ? 'opening' : 'closed' })
+
+  const [stress, setStress] = useState<Session[]>([])
+
   const initSession = useCallback(async () => {
     if (!codeSnippetID) return
+
+    if (__stress) {
+      const tests = new Array(__stress).fill(undefined)
+
+      console.log(tests)
+
+      const sessions: Session[] = []
+
+      for (const _ of tests) {
+        const s = new Session({
+          id: codeSnippetID,
+          debug,
+        })
+
+        s.open()
+
+        sessions.push(s)
+      }
+
+      // const stressSessions = await Promise.all(tests.map(async (_, i) => {
+      //   const s = new Session({
+      //     id: codeSnippetID,
+      //     debug,
+      //   })
+
+      //   console.log('opening stress test session', i)
+      //   await s.open()
+
+      //   return s
+      // }))
+
+      setStress(sessions)
+    }
+
 
     const newSession = new Session({
       id: codeSnippetID,
@@ -123,6 +162,7 @@ export function useSession({
     __debug_devEnv,
     __debug_hostname,
     __debug_port,
+    __stress,
   ])
 
   const onIdle = useCallback(() => {
