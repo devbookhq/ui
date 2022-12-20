@@ -70,8 +70,9 @@ function Index() {
   const session = useSession({
     codeSnippetID: 'spZC9ISdwrRS',
     inactivityTimeout: 0,
-    // __stress: 50,
+    __stress: 120,
     // debug: true,
+    retry: true,
   })
 
   const editorRef = useRef<CodeEditorHandler>(null)
