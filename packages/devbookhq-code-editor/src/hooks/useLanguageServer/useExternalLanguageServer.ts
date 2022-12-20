@@ -9,11 +9,13 @@ function useExternalLanguageServer({
   session,
   debug,
   port,
+  bootstrap,
 }: {
   port: number,
   supportedLanguages: LanguageSetup[]
   session?: Session
   debug?: boolean
+  bootstrap?: boolean
 }) {
   const [server, setServer] = useState<LanguageServer>()
 
@@ -25,14 +27,14 @@ function useExternalLanguageServer({
       const websocketURL = `wss://${url}`
 
       const externalServer: LanguageServer = {
-        languages: supportedLanguages.filter(l => l.defaultServerCapabilities).map(l => l.languageID),
+        languages: (bootstrap ? supportedLanguages.filter(l => !!l.languageServerCommand) : supportedLanguages.filter(l => l.defaultServerCapabilities)).map(l => l.languageID),
         async getConnectionString(languageID) {
           const opts = supportedLanguages.find(l => l.languageID === languageID)
           if (!opts) return
           return encodeURI(`${websocketURL}?name=${opts.languageServerCommand}`)
         },
         getDefaultCapabilities(languageID: string) {
-          return supportedLanguages.find(l => l.languageID === languageID)?.defaultServerCapabilities
+          return !bootstrap ? supportedLanguages.find(l => l.languageID === languageID)?.defaultServerCapabilities : undefined
         },
       }
 
@@ -42,6 +44,7 @@ function useExternalLanguageServer({
       session,
       debug,
       supportedLanguages,
+      bootstrap,
       port,
     ],
   )

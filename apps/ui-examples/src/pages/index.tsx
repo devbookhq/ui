@@ -68,10 +68,9 @@ export function useSupportedLangaugesWithTextMate() {
 
 function Index() {
   const session = useSession({
-    codeSnippetID: 'acprvBflDsD6',
+    codeSnippetID: 'BCqZ0TyWWumF',
     inactivityTimeout: 0,
-    // editEnabled: true,
-    // apiKey: '',
+    editEnabled: true,
   })
 
   const editorRef = useRef<CodeEditorHandler>(null)
@@ -90,6 +89,7 @@ function Index() {
     supportedLanguages,
     session: session.session,
     port: 5523,
+    // bootstrap: false,
   })
 
   const languageClients = useLanguageServerClients({
