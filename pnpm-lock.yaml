@@ -67,7 +67,7 @@ importers:
       '@codemirror/lint': ^6.1.0
       '@codemirror/state': ^6.1.4
       '@codemirror/view': ^6.6.0
-      '@devbookhq/sdk': 2.6.55
+      '@devbookhq/sdk': 2.6.56
       '@devbookhq/tsconfig': workspace:*
       '@lezer/highlight': ^1.1.3
       '@types/diff': ^5.0.2
@@ -105,7 +105,7 @@ importers:
       '@codemirror/lint': 6.1.0
       '@codemirror/state': 6.1.4
       '@codemirror/view': 6.6.0
-      '@devbookhq/sdk': 2.6.55
+      '@devbookhq/sdk': 2.6.56
       '@lezer/highlight': 1.1.3
       '@vscode/codicons': 0.0.32
       diff: 5.1.0
@@ -165,7 +165,7 @@ importers:
 
   packages/devbookhq-react:
     specifiers:
-      '@devbookhq/sdk': 2.6.55
+      '@devbookhq/sdk': 2.6.56
       '@devbookhq/tsconfig': workspace:*
       '@types/react': ^18.0.25
       eslint-config-devbookhq: workspace:*
@@ -174,7 +174,7 @@ importers:
       tsup: ^6.5.0
       typescript: ^4.9.3
     dependencies:
-      '@devbookhq/sdk': 2.6.55
+      '@devbookhq/sdk': 2.6.56
       react: 18.2.0
       react-idle-timer: 5.4.2_biqbaboplfbrettd7655fr4n2y
     devDependencies:
@@ -186,7 +186,7 @@ importers:
 
   packages/devbookhq-terminal:
     specifiers:
-      '@devbookhq/sdk': 2.6.55
+      '@devbookhq/sdk': 2.6.56
       '@devbookhq/tsconfig': workspace:*
       '@types/react': ^18.0.25
       autoprefixer: ^10.4.12
@@ -205,7 +205,7 @@ importers:
       xterm-addon-fit: ^0.6.0
       xterm-addon-web-links: ^0.7.0
     dependencies:
-      '@devbookhq/sdk': 2.6.55
+      '@devbookhq/sdk': 2.6.56
       classnames: 2.3.2
       react: 18.2.0
       react-resize-detector: 7.1.2_biqbaboplfbrettd7655fr4n2y
@@ -611,8 +611,8 @@ packages:
       w3c-keyname: 2.2.6
     dev: false
 
-  /@devbookhq/sdk/2.6.55:
-    resolution: {integrity: sha512-v7U4TkOfhW7Ctm40HChxaj9C4a3Cvj4NszxtD6qFzdNx5prZsn0cBnD8Rhbrtp64Hb35vTj2fh33RUlAmMU+hg==}
+  /@devbookhq/sdk/2.6.56:
+    resolution: {integrity: sha512-jRVdSfdfd2knpqAm4+T1Hy5DwkcwMYiKtUdudEJV4zHYl+g4Q+9F8rsL2DCt+p0zzLvJJ3Vc+n744x8CO2Q/GA==}
     dependencies:
       cross-fetch: 3.1.5
       normalize-path: 3.0.0

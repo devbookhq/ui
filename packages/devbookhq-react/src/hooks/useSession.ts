@@ -26,7 +26,6 @@ export interface Opts extends Omit<SessionOpts, 'onClose' | 'onReconnect' | 'onD
   onUserIdle?: () => void
   onUserActive?: () => void
   __stress?: number
-  retry?: boolean
 }
 
 export function useSession({
@@ -54,7 +53,6 @@ export function useSession({
   __debug_hostname,
   __debug_port,
   __stress,
-  retry,
 }: Opts) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
@@ -77,7 +75,6 @@ export function useSession({
         const s = new Session({
           id: codeSnippetID,
           debug,
-          retry,
         })
 
         s.open().then(() => {
@@ -110,7 +107,6 @@ export function useSession({
       __debug_devEnv,
       __debug_hostname,
       __debug_port,
-      retry,
       onDisconnect() {
         setSessionState(s => s.session === newSession ? {
           ...s,
@@ -167,7 +163,6 @@ export function useSession({
     __debug_hostname,
     __debug_port,
     __stress,
-    retry,
   ])
 
   const onIdle = useCallback(() => {
