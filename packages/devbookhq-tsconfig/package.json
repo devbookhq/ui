@@ -1,0 +1,12 @@
+{
+  "name": "@devbookhq/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
+}
