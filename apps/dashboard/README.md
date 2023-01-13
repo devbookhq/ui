@@ -1,4 +1,4 @@
-# Devbook Builder
+# Devbook Dashboard
 
 ## Setup
 
