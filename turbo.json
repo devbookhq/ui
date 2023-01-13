@@ -8,14 +8,6 @@
       ],
       "dependsOn": [
         "^build"
-      ]
-    },
-    "dashboard#build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".next/**"
       ],
       "env": [
         "NEXT_PUBLIC_SUPABASE_URL",
@@ -37,9 +29,5 @@
     "clean": {
       "cache": false
     }
-  },
-  "globalDependencies": [
-    ".env",
-    ".env.local"
-  ]
+  }
 }
