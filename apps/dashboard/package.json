@@ -1,13 +1,8 @@
 {
-  "name": "dashboard",
   "version": "0.1.0",
-  "homepage": "https://usedevbook.com",
+  "name": "dashboard",
+  "private": true,
   "license": "SEE LICENSE IN LICENSE",
-  "author": {
-    "name": "FoundryLabs, Inc.",
-    "email": "hello@usedevbook.com",
-    "url": "https://usedevbook.com"
-  },
   "bugs": "https://github.com/DevbookHQ/ui/issues",
   "repository": {
     "type": "git",
@@ -18,6 +13,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next",
     "lint:fix": "next lint --fix",
     "disable-telemetry": "npx next telemetry disable",
     "build:analyze": "ANALYZE=true yarn build",
