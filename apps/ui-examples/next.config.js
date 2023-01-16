@@ -1,7 +1,7 @@
 const config = {
   reactStrictMode: false,
+  transpilePackages: ["@devbookhq/code-editor"],
   experimental: {
-    transpilePackages: ["@devbookhq/code-editor"],
     esmExternals: 'loose',
   },
 };

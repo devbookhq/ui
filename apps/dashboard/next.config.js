@@ -1,12 +1,13 @@
 const exportWrapper = process.env.ANALYZE
   ? require('@next/bundle-analyzer')({
-      enabled: process.env.ANALYZE === 'true',
-    })
+    enabled: process.env.ANALYZE === 'true',
+  })
   : e => e
 
 module.exports = exportWrapper({
   reactStrictMode: true,
   swcMinify: true,
+  transpilePackages: ["@devbookhq/code-editor", "@devbookhq/terminal"],
   images: {
     remotePatterns: [
       {
@@ -23,9 +24,17 @@ module.exports = exportWrapper({
     }),
   },
   experimental: {
-    newNextLinkBehavior: true,
+    esmExternals: 'loose',
   },
-  env: {},
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/apps',
+        permanent: false,
+      },
+    ]
+  },
   webpack: config => ({
     ...config,
     experiments: {

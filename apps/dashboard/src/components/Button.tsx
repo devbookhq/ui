@@ -9,6 +9,11 @@ export enum Variant {
   Uncolored,
 }
 
+export enum IconPosition {
+  Left,
+  Right,
+}
+
 export interface Props {
   className?: string
   text?: string
@@ -17,6 +22,7 @@ export interface Props {
   onClick?: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => any
   isDisabled?: boolean
   type?: 'submit'
+  iconPosition?: IconPosition
 }
 
 function Button({
@@ -27,6 +33,7 @@ function Button({
   onClick,
   type,
   isDisabled,
+  iconPosition = IconPosition.Left,
 }: Props) {
   return (
     <button
@@ -52,17 +59,19 @@ function Button({
       )}
       onClick={!isDisabled ? onClick : undefined}
     >
-      {icon}
+      {iconPosition === IconPosition.Left && icon}
       {text && (
         <Text
           size={Text.size.S3}
           text={text}
         />
       )}
+      {iconPosition === IconPosition.Right && icon}
     </button>
   )
 }
 
 Button.variant = Variant
+Button.iconPosition = IconPosition
 
 export default Button

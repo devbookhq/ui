@@ -1,4 +1,4 @@
-import { useProvidedSession } from '@devbookhq/react'
+import { useSharedSession } from '@devbookhq/react'
 import { observer } from 'mobx-react-lite'
 import { PropsWithChildren, createContext, useEffect } from 'react'
 
@@ -13,7 +13,7 @@ export interface Props {}
 
 function ResourceProvider({ children }: PropsWithChildren<Props>) {
   const { resources } = useRootStore()
-  const { session } = useProvidedSession()
+  const { session } = useSharedSession()
 
   useEffect(
     function getCockroachDB() {

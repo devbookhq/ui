@@ -26,7 +26,7 @@ function DeployButton({ app }: Props) {
   const [wasSuccessfullyDeployed, setWasSuccessfullyDeployed] = useState(false)
   const [isDeployed, setIsDeployed] = useState(false)
 
-  const isEdit = router.pathname === '/[slug]/edit'
+  const isEdit = router.pathname === '/apps/[slug]/edit'
 
   const { getEditorState } = useEditorControls()
 
@@ -111,7 +111,7 @@ function DeployButton({ app }: Props) {
               rel="noopener noreferrer"
               target="_blank"
               href={{
-                pathname: '/[slug]',
+                pathname: '/apps/[slug]',
                 query: {
                   slug: getSlug(app.id, app.title),
                 },

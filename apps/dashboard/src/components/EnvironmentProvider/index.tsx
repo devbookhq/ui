@@ -1,4 +1,4 @@
-import { SessionProvider } from '@devbookhq/react'
+import { SharedSessionProvider } from '@devbookhq/react'
 import { observer } from 'mobx-react-lite'
 import { PropsWithChildren, createContext } from 'react'
 
@@ -12,14 +12,14 @@ function EnvironmentProvider({ children }: PropsWithChildren) {
 
   return (
     <EnvironmentContext.Provider value={null}>
-      <SessionProvider
+      <SharedSessionProvider
         opts={{
           codeSnippetID: resources.environmentID,
           inactivityTimeout: 0,
         }}
       >
         <ResourceProvider>{children}</ResourceProvider>
-      </SessionProvider>
+      </SharedSessionProvider>
     </EnvironmentContext.Provider>
   )
 }

@@ -20,4 +20,12 @@ export interface App {
   deployed_state?: RootState | null
 }
 
+export interface Env {
+  id: string
+  title: string
+  creator_id: string
+  created_at: number
+  template: string
+}
+
 export type AppTemplate = Omit<App, 'created_at'>

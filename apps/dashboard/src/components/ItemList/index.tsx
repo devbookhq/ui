@@ -1,20 +1,19 @@
 import React, { useMemo } from 'react'
 
-import { App } from 'queries/types'
-
-import AppItem from './AppItem'
+import Item, { ItemSetup } from './Item'
 
 export interface Props {
-  apps: Pick<App, 'id' | 'title' | 'created_at'>[]
+  items: ItemSetup[]
+  deleteItem?: (id: string) => Promise<void>
 }
 
-function AppList({ apps }: Props) {
+function AppList({ items, deleteItem }: Props) {
   const sorted = useMemo(
     () =>
-      apps.sort(
+      items.sort(
         (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
       ),
-    [apps],
+    [items],
   )
 
   return (
@@ -30,12 +29,12 @@ function AppList({ apps }: Props) {
       pr-4
     "
     >
-      {sorted.map(app => (
+      {sorted.map(i => (
         <div
           className="flex flex-col space-y-2 px-1 pt-1"
-          key={app.id}
+          key={i.id}
         >
-          <AppItem app={app} />
+          <Item item={i} deleteItem={deleteItem ? () => deleteItem(i.id) : undefined} />
           <div className="border-b border-slate-200" />
         </div>
       ))}

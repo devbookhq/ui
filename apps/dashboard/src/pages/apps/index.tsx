@@ -1,11 +1,11 @@
 import { supabaseClient, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
-import { Plus } from 'lucide-react'
+import { Plus, Layout } from 'lucide-react'
 import { getSnapshot } from 'mobx-state-tree'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import AppList from 'components/AppList'
+import ItemList from 'components/ItemList'
 import Button from 'components/Button'
 import Feedback from 'components/Feedback'
 import NewAppModal from 'components/NewAppModal'
@@ -14,7 +14,7 @@ import Text from 'components/typography/Text'
 
 import useApps from 'hooks/useApps'
 
-import { createApp } from 'queries'
+import { createApp, deleteApp } from 'queries'
 
 import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
@@ -33,7 +33,7 @@ export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
 })
 
-function Dashboard() {
+function Apps() {
   const router = useRouter()
   const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
   const [isModalOpened, setIsModalOpened] = useState(false)
@@ -62,7 +62,7 @@ function Dashboard() {
       })
       const slug = getSlug(id, title)
       router.push({
-        pathname: '/[slug]/edit',
+        pathname: '/apps/[slug]/edit',
         query: {
           slug,
         },
@@ -108,10 +108,13 @@ function Dashboard() {
     "
       >
         <div className="flex items-start justify-start">
-          <Text
-            size={Text.size.S1}
-            text="Apps"
-          />
+          <div className="items-center flex space-x-2">
+            <Layout size="30px" />
+            <Text
+              size={Text.size.S1}
+              text="Apps"
+            />
+          </div>
         </div>
 
         <div
@@ -162,7 +165,15 @@ function Dashboard() {
 
           {!isLoading && apps.length > 0 && (
             <div className="flex flex-1 justify-center overflow-hidden">
-              <AppList apps={apps} />
+              <ItemList
+                items={apps.map(i => ({
+                  ...i,
+                  path: '/apps/[slug]/edit',
+                  type: 'App',
+                  icon: <Layout size="22px" />,
+                }))}
+                deleteItem={(id: string) => deleteApp(supabaseClient, id)}
+              />
             </div>
           )}
 
@@ -203,4 +214,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default Apps

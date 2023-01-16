@@ -1,26 +1,9 @@
-import { Terminal as T, useProvidedSession } from '@devbookhq/react'
-import { CodeSnippetExecState } from '@devbookhq/sdk'
+import { CodeSnippetExtendedState, CodeSnippetState, useSharedSession } from '@devbookhq/react'
+import { Terminal as T, TerminalHandler } from '@devbookhq/terminal'
 import { TerminalSquare } from 'lucide-react'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import ExecutionButton from './ExecutionButton'
-
-export type SessionState = 'closed' | 'opening' | 'open'
-
-export enum CodeSnippetExtendedState {
-  Failed = 'Failed',
-  Loading = 'Loading',
-}
-
-export type CodeSnippetState = CodeSnippetExtendedState | CodeSnippetExecState
-
-interface Handler {
-  handleInput: (input: string) => void
-  focus: () => void
-  resize: () => void
-  runCmd: (cmd: string) => Promise<void>
-  stopCmd: () => void
-}
 
 export function Icon() {
   return <TerminalSquare size="20px" />
@@ -31,24 +14,11 @@ export interface Props {
 }
 
 function Terminal({ cmd }: Props) {
-  const ref = useRef<Handler>(null)
+  const ref = useRef<TerminalHandler>(null)
 
-  const { state: sessionState } = useProvidedSession()
+  const { session } = useSharedSession()
 
-  const [cmdState, setCmdState] = useState<CodeSnippetExecState>(
-    CodeSnippetExecState.Stopped,
-  )
-
-  const executionState = useMemo<CodeSnippetState>(() => {
-    switch (sessionState) {
-      case 'closed':
-        return CodeSnippetExecState.Stopped
-      case 'opening':
-        return CodeSnippetExtendedState.Loading
-      case 'open':
-        return cmdState
-    }
-  }, [cmdState, sessionState])
+  const [cmdState, setCmdState] = useState<CodeSnippetState>(CodeSnippetExtendedState.Loading)
 
   const runCmd = useCallback(() => {
     if (!ref.current) return
@@ -68,7 +38,7 @@ function Terminal({ cmd }: Props) {
           <ExecutionButton
             onStopClick={stopCmd}
             onRunClick={runCmd}
-            state={executionState}
+            state={cmdState}
           />
         </div>
       )}
@@ -84,8 +54,10 @@ function Terminal({ cmd }: Props) {
   "
       >
         <T
+          session={session}
           ref={ref}
-          onRunningCmdChange={setCmdState}
+          onRunningCmdChange={s => setCmdState(s)}
+          canStartTerminalSession
         />
       </div>
     </div>

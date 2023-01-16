@@ -9,15 +9,15 @@ export interface Props {
 
 function EditorPreviewSwitch({ className }: Props) {
   const router = useRouter()
-  const isPreview = router.pathname === '/[slug]/preview'
-  const isEdit = router.pathname === '/[slug]/edit'
+  const isPreview = router.pathname === '/apps/[slug]/preview'
+  const isEdit = router.pathname === '/apps/[slug]/edit'
 
   return (
     <>
       {isPreview && (
         <Link
           href={{
-            pathname: '/[slug]/edit',
+            pathname: '/apps/[slug]/edit',
             query: {
               slug: router.query.slug,
             },
@@ -32,7 +32,7 @@ function EditorPreviewSwitch({ className }: Props) {
       {isEdit && (
         <Link
           href={{
-            pathname: '/[slug]/preview',
+            pathname: '/apps/[slug]/preview',
             query: {
               slug: router.query.slug,
             },

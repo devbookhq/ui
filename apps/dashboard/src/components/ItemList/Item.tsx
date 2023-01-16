@@ -1,20 +1,25 @@
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import clsx from 'clsx'
-import { Layout } from 'lucide-react'
 import Link from 'next/link'
 import { MouseEvent, useEffect, useMemo, useState } from 'react'
 
 import SpinnerIcon from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
 
-import { deleteApp } from 'queries'
-import { App } from 'queries/types'
-
 import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
 
+export interface ItemSetup {
+  id: string
+  title: string
+  created_at: number
+  icon?: React.ReactNode
+  path: string
+  type: string
+}
+
 export interface Props {
-  app: Pick<App, 'id' | 'title' | 'created_at'>
+  item: ItemSetup
+  deleteItem?: () => Promise<void>
 }
 
 function useDate(timestamp: number) {
@@ -24,7 +29,7 @@ function useDate(timestamp: number) {
   }, [timestamp])
 }
 
-function AppItem({ app }: Props) {
+function Item({ item, deleteItem }: Props) {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -40,22 +45,24 @@ function AppItem({ app }: Props) {
     [confirmDelete],
   )
 
-  const created = useDate(app.created_at)
+  const created = useDate(item.created_at)
 
-  async function handleDeleteApp(
+  async function handleDelete(
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) {
+    if (!deleteItem) return
+
     e.stopPropagation()
     e.preventDefault()
 
     if (confirmDelete && !isDeleting) {
       setIsDeleting(true)
       try {
-        await deleteApp(supabaseClient, app.id)
+        await deleteItem()
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
         console.error(msg)
-        showErrorNotif(`Error deleting app: ${msg}`)
+        showErrorNotif(`Error deleting item: ${msg}`)
       } finally {
         setIsDeleting(false)
       }
@@ -68,26 +75,26 @@ function AppItem({ app }: Props) {
     <Link
       className="group flex items-center justify-between space-x-4 rounded px-4 py-1"
       href={{
-        pathname: '/[slug]/edit',
+        pathname: item.path,
         query: {
-          slug: getSlug(app.id, app.title),
+          slug: getSlug(item.id, item.title),
         },
       }}
     >
       <div className="flex items-center space-x-4 truncate">
         <div className="m-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-300 transition-all group-hover:border-transparent group-hover:bg-amber-50 group-hover:text-amber-800">
-          <Layout size="22px" />
+          {item.icon}
         </div>
         <div className="flex flex-col">
           <Text
             className="text-slate-600 transition-all group-hover:text-amber-800"
             size={Text.size.S2}
-            text={app.title}
+            text={item.title}
           />
           <div className="flex space-x-1 text-slate-300 transition-all group-hover:text-slate-400">
             <Text
               size={Text.size.S3}
-              text="App"
+              text={item.type}
             />
             <Text
               size={Text.size.S3}
@@ -107,7 +114,7 @@ function AppItem({ app }: Props) {
             'border-amber-800 hover:bg-amber-800/10': confirmDelete,
           },
         )}
-        onClick={handleDeleteApp}
+        onClick={handleDelete}
       >
         {isDeleting && (
           <Text
@@ -132,4 +139,4 @@ function AppItem({ app }: Props) {
   )
 }
 
-export default AppItem
+export default Item

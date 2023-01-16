@@ -1,12 +1,10 @@
-import { CodeSnippetExecState } from '@devbookhq/sdk'
+import { CodeSnippetExtendedState, CodeSnippetState, CodeSnippetExecState } from '@devbookhq/react'
 import clsx from 'clsx'
 import { Play, Square } from 'lucide-react'
 import { ReactNode, useEffect, useState } from 'react'
 
 import Button from 'components/Button'
 import SpinnerIcon from 'components/icons/Spinner'
-
-import { CodeSnippetExtendedState, CodeSnippetState } from './Terminal'
 
 export interface Props {
   state: CodeSnippetState

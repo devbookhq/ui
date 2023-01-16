@@ -1,13 +1,14 @@
-import { CodeEditor, useLanguageServer, useProvidedSession } from '@devbookhq/react'
+import { useSharedSession } from '@devbookhq/react'
+import { CodeEditor } from '@devbookhq/code-editor'
 import clsx from 'clsx'
 import { File } from 'lucide-react'
 import { Code } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { ComponentProps } from 'react'
 
 import Text from 'components/typography/Text'
 
 import { showErrorNotif } from 'utils/notification'
+import { supportedLanguages } from './languages'
 
 export function Icon() {
   return <Code size="20px" />
@@ -17,7 +18,6 @@ export interface Props {
   files?: {
     name: string
     content: string
-    language: ComponentProps<typeof CodeEditor>['language']
   }[]
   isEditable?: boolean
   isInEditor?: boolean
@@ -27,24 +27,7 @@ function Editor({ files: initialFiles = [], isEditable = true, isInEditor }: Pro
   const [files, setFiles] = useState(initialFiles)
   const [selectedFileIdx, setSelectedFileIdx] = useState(0)
 
-  const { session } = useProvidedSession()
-
-  const [startLS, setStartLS] = useState(false)
-
-  const { server: languageServer, error: languageServerError } = useLanguageServer({
-    session: startLS ? session : undefined,
-    language: 'Nodejs',
-    debug: true,
-  })
-
-  useEffect(function delayedLSStart() {}, [session?.filesystem])
-
-  useEffect(
-    function logError() {
-      console.error(languageServerError)
-    },
-    [languageServerError],
-  )
+  const { session } = useSharedSession()
 
   const handleContentChange = useCallback(
     (content: string) => {
@@ -99,6 +82,7 @@ function Editor({ files: initialFiles = [], isEditable = true, isInEditor }: Pro
     [selectedFileIdx, selectedFile],
   )
 
+  console.log(selectedFile?.name)
   return (
     <div
       className={clsx(
@@ -154,8 +138,8 @@ function Editor({ files: initialFiles = [], isEditable = true, isInEditor }: Pro
       "
       >
         <CodeEditor
-          languageServer={languageServer}
-          language={selectedFile?.language}
+          filename={selectedFile?.name || 'script.sh'}
+          supportedLanguages={supportedLanguages}
           content={fileInitContent}
           isReadOnly={!isEditable}
           onContentChange={handleContentChange}

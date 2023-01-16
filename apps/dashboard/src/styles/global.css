@@ -1,7 +1,8 @@
 @import 'react-toastify/dist/ReactToastify.css';
+@import '@devbookhq/terminal/dist/index.css';
+@import '@devbookhq/code-editor/dist/index.css';
 /* @import 'react-resizable/css/styles.css'; */
 
-@import './codemirror.css';
 @import './resize.css';
 
 @tailwind base;
@@ -12,7 +13,7 @@
   /* Override react-toastify vars */
   :root {
     --toastify-color-dark: #313034;
-    color-scheme: light dark;
+    color-scheme: light;
   }
 
   *,
