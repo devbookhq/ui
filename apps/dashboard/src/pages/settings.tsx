@@ -7,7 +7,7 @@ import Button from 'components/Button'
 import Spinner from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
 import useAPIKey from 'hooks/useAPIKey'
-import useExpiringState from 'hooks/useExpiringToggle'
+import useExpiringState from 'hooks/useExpiringState'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',

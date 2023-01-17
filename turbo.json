@@ -8,10 +8,22 @@
       ],
       "dependsOn": [
         "^build"
+      ]
+    },
+    "build#dashboard": {
+      "outputs": [
+        "dist/**",
+        ".next/**"
+      ],
+      "dependsOn": [
+        "^build"
       ],
       "env": [
         "NEXT_PUBLIC_SUPABASE_URL",
-        "SUPABASE_SERVICE_ROLE_KEY"
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SLACK_CLIENT_SECRET",
+        "SLACK_CLIENT_ID",
+        "SLACK_SIGNING_SECRET"
       ]
     },
     "test": {

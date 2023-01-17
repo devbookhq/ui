@@ -17,8 +17,7 @@ function useExpiringState<T>({
   }, timeout, {
     leading: false,
     trailing: true,
-  })
-    , [timeout, defaultValue])
+  }), [timeout, defaultValue])
 
   const set = useCallback((newValue: T) => {
     setValue(newValue)
