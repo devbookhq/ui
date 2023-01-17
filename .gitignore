@@ -13,3 +13,5 @@ public/dist
 .turbo
 lsp-ws-proxy
 .vercel
+# Vale styles
+styles

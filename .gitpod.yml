@@ -2,6 +2,9 @@ tasks:
   - name: Setup
     init: pnpm install --frozen-lockfile
 
+  - name: Init Styles
+    init: vale sync
+
 github:
   prebuilds:
     branches: true
@@ -13,6 +16,7 @@ vscode:
   extensions:
     - bradlc.vscode-tailwindcss
     - dbaeumer.vscode-eslint
+    - errata-ai.vale-server
 
 ports:
   # This port for the Nextjs app needs to be public, otherwise the Supabase Realtime functionality is not working because it is using WS.
