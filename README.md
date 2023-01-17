@@ -13,6 +13,8 @@ Run `pnpm install <deps>` in any subdirectory to install the dependencies there.
 
 Run `pnpm install <deps> --filter <package-name-or-regex>` to install dependencies in specified packages.
 
+> https://turbo.build/repo/docs/core-concepts/monorepos/filtering
+
 ### Developing
 Run `pnpm dev` to start watching and compiling all changes in this monorepo.
 
