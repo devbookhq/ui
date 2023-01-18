@@ -1,5 +1,5 @@
 import { App, LogLevel } from '@slack/bolt'
-import { FileStateStore, InstallationStore } from '@slack/oauth'
+import { ClearStateStore, InstallationStore } from '@slack/oauth'
 import { AppRunner } from '@seratch_/bolt-http-runner'
 import { deleteInstallation, getInstallation, listAppFeedback, setInstallation, supabaseAdmin } from 'queries/supabaseAdmin'
 
@@ -56,7 +56,7 @@ export const appRunner = new AppRunner({
   scopes: ['incoming-webhook', 'commands'],
   installationStore,
   installerOptions: {
-    stateStore: new FileStateStore({}),
+    stateStore: new ClearStateStore(process.env.SLACK_CLIENT_ID || 'dbk'),
     directInstall: true,
     callbackOptions: {
       beforeInstallation: async (opt, req, res) => {
@@ -124,7 +124,6 @@ app.command('/devbook', async ({ ack, context }) => {
 
     return prev
   }, {})
-
 
   const text = Object
     .entries(data)
