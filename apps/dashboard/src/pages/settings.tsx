@@ -95,7 +95,7 @@ function Settings() {
           />
 
           <ButtonLink
-            href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook&amp;user_scope=&amp;redirect_uri=https%3A%2F%2F3000-devbookhq-ui-bdurd1rl9pv.ws-eu82.gitpod.io%2Fslack%2Fredirect&amp;client_id=625989678439.4574374749984"
+            href="/api/slack/install"
             text="Add to Slack"
             icon={
               <svg

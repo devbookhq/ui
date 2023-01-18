@@ -23,6 +23,7 @@
         "SUPABASE_SERVICE_ROLE_KEY",
         "SLACK_CLIENT_SECRET",
         "SLACK_CLIENT_ID",
+        "NODE_ENV",
         "SLACK_SIGNING_SECRET"
       ]
     },

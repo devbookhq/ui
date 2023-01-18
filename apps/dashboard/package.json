@@ -44,6 +44,7 @@
     "@seratch_/bolt-http-runner": "^1.0.3",
     "@slack/bolt": "^3.12.2",
     "@slack/oauth": "^2.6.0",
+    "@slack/webhook": "^6.1.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.4.0",
     "clsx": "^1.2.1",

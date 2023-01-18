@@ -10,6 +10,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  console.log('<<<<<< WEBHOOK >>>>>>', req.body)
   await appRunner.handleCallback(req, res)
 }

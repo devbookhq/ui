@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient as SupabaseAdmin } from '@supabase/supabase-js'
 import { Installation } from '@slack/oauth'
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
@@ -14,43 +14,70 @@ export interface AppFeedback {
   properties: {
     userId?: string
     anonymousId?: string
+    rating?: 'up' | 'down'
+    guide?: string
   }
+}
+
+interface InstallationDBEntry {
+  id: string
+  created_at?: Date
+  devbook_app_id?: string
+  installation_data: Installation
 }
 
 const appsFeedbackTable = 'apps_feedback'
 const slackInstallationsTable = 'slack_installations'
 
 export async function saveAppFeedback(
-  client: SupabaseClient,
+  admin: SupabaseAdmin,
   feedback: AppFeedback,
 ) {
-  const { error } = await client
+  const { error } = await admin
     .from(appsFeedbackTable)
     .insert(feedback)
 
   if (error) throw error
 }
 
+export async function listAppFeedback(
+  admin: SupabaseAdmin,
+  appID: string
+) {
+  const { error, data } = await admin
+    .from(appsFeedbackTable)
+    .select<'*', AppFeedback>('*')
+    .eq('appId', appID)
+
+  if (error) throw error
+  return data
+}
+
 export async function setInstallation(
-  client: SupabaseClient,
+  admin: SupabaseAdmin,
   installationID: string,
+  devbookAppID: string | undefined,
   installation: Installation,
 ) {
-  const { error } = await client
+  const { error } = await admin
     .from(slackInstallationsTable)
-    .insert(installation)
+    .upsert<InstallationDBEntry>({
+      id: installationID,
+      devbook_app_id: devbookAppID,
+      installation_data: installation,
+    })
 
   if (error) throw error
 }
 
 export async function getInstallation(
-  client: SupabaseClient,
+  admin: SupabaseAdmin,
   installationID: string,
-): Promise<Installation> {
-  const { error, data } = await client
+) {
+  const { error, data } = await admin
     .from(slackInstallationsTable)
-    .select('*')
-    .eq('installation_id', installationID)
+    .select<'*', InstallationDBEntry>('*')
+    .eq('id', installationID)
     .limit(1)
     .single()
 
@@ -58,14 +85,27 @@ export async function getInstallation(
   return data
 }
 
+export async function getInstallationsByAppID(
+  admin: SupabaseAdmin,
+  devbookAppID: string,
+) {
+  const { error, data } = await admin
+    .from(slackInstallationsTable)
+    .select<'*', InstallationDBEntry>('*')
+    .eq('devbook_app_id', devbookAppID)
+
+  if (error) throw error
+  return data
+}
+
 export async function deleteInstallation(
-  client: SupabaseClient,
+  admin: SupabaseAdmin,
   installationID: string,
 ) {
-  const { error } = await client
+  const { error } = await admin
     .from(slackInstallationsTable)
     .delete()
-    .eq('installation_id', installationID)
+    .eq('id', installationID)
 
   if (error) throw error
 }
