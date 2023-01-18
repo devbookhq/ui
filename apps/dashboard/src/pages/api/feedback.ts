@@ -29,7 +29,7 @@ async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
           'type': 'header',
           'text': {
             'type': 'plain_text',
-            'text': 'New Feedback',
+            'text': feedback.feedback ? 'New Guide Feedback' : 'New Guide Rating',
             'emoji': true
           }
         },
@@ -38,28 +38,41 @@ async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
           'fields': [
             {
               'type': 'mrkdwn',
-              'text': `*Guide*\n${getGuideName(feedback.properties.guide || '')
-                }`
+              'text': `*Guide*\n<https://playground.prisma.io${feedback.properties.guide}|${getGuideName(feedback.properties.guide || '')}>`
             },
             {
               'type': 'mrkdwn',
-              'text': `*Rating*\n${feedback.properties.rating}`
+              'text': `*Rating*\n${feedback.properties.rating === 'up' ? ':+1:' : ':-1:'}`
             }
           ]
         }
       ]
 
       if (feedback.feedback) {
-        blocks.push({
+        blocks.push(
+          {
+            'type': 'section',
+            'fields': [
+              {
+                'type': 'mrkdwn',
+                'text': `*User Feedback*\n${feedback.feedback}`
+              },
+            ]
+          },
+        )
+      }
+
+      blocks.push(
+        {
           'type': 'section',
           'fields': [
             {
               'type': 'mrkdwn',
-              'text': `*Message*\n${feedback.feedback}`
+              'text': `*User ID*\n\`${feedback.properties.userId || feedback.properties.anonymousId}\``
             }
           ]
-        })
-      }
+        }
+      )
 
       await webhook.send({ blocks })
     }))
