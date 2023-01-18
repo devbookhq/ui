@@ -12,6 +12,28 @@ import {
 import { getGuideName } from 'utils/analytics'
 
 
+function getRatingEmoji(feedback: AppFeedback, label?: boolean) {
+  if (feedback.properties.rating === 'down') {
+    return (label ? 'Downvote ' : '') + ':-1:'
+  }
+  if (feedback.properties.rating === 'up') {
+    return (label ? 'Upvote ' : '') + ':+1:'
+  }
+}
+
+function getTitle(feedback: AppFeedback) {
+  if (feedback.feedback) {
+    return 'User left message for guide'
+  }
+  if (feedback.properties.rating === 'down') {
+    return 'Negative rating for guide'
+  }
+  if (feedback.properties.rating === 'up') {
+    return 'Positive rating for guide'
+  }
+  return ''
+}
+
 async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
   const feedback = JSON.parse(req.body) as AppFeedback
   try {
@@ -23,28 +45,27 @@ async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
       if (!url) return
 
       const webhook = new IncomingWebhook(url)
-
       const blocks: (Block | KnownBlock)[] = [
         {
           'type': 'header',
           'text': {
             'type': 'plain_text',
-            'text': feedback.feedback ? 'New Guide Feedback' : 'New Guide Rating',
-            'emoji': true
+            'text': getTitle(feedback),
           }
         },
         {
-          'type': 'section',
-          'fields': [
+          type: 'section',
+          fields: [
             {
               'type': 'mrkdwn',
               'text': `*Guide*\n<https://playground.prisma.io${feedback.properties.guide}|${getGuideName(feedback.properties.guide || '')}>`
             },
             {
-              'type': 'mrkdwn',
-              'text': `*Rating*\n${feedback.properties.rating === 'up' ? ':+1:' : ':-1:'}`
+              // Without this the Slack is still displaying the message correctly, but it also displays incorrect notification about not being able to display content.
+              text: ' ',
+              type: 'plain_text',
             }
-          ]
+          ],
         }
       ]
 
@@ -52,27 +73,49 @@ async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
         blocks.push(
           {
             'type': 'section',
-            'fields': [
+            'text': {
+              'text': `*Message left by user*\n\`\`\`${feedback.feedback.replaceAll('`', '\\`')}\`\`\``,
+              'type': 'mrkdwn',
+            }
+          },
+          {
+            'type': 'context',
+            'elements': [
               {
                 'type': 'mrkdwn',
-                'text': `*User Feedback*\n${feedback.feedback}`
+                'text': `Made by user with ID \`${feedback.properties.userId || feedback.properties.anonymousId}\``
+              },
+              {
+                'type': 'mrkdwn',
+                'text': `This user previously ${feedback.properties.rating === 'down' ? '*downvoted* :-1:' : '*upvoted* :+1:'
+                  } the guide`,
+              },
+            ]
+          },
+          {
+            'type': 'divider'
+          },
+        )
+      } else {
+        blocks.push(
+          {
+            'type': 'section',
+            'text': {
+              'type': 'mrkdwn',
+              'text': `*Rating left by user* \n${getRatingEmoji(feedback, true)}`
+            },
+          },
+          {
+            'type': 'context',
+            'elements': [
+              {
+                'type': 'mrkdwn',
+                'text': `Made by user with ID \`${feedback.properties.userId || feedback.properties.anonymousId}\``
               },
             ]
           },
         )
       }
-
-      blocks.push(
-        {
-          'type': 'section',
-          'fields': [
-            {
-              'type': 'mrkdwn',
-              'text': `*User ID*\n\`${feedback.properties.userId || feedback.properties.anonymousId}\``
-            }
-          ]
-        }
-      )
 
       await webhook.send({ blocks })
     }))
