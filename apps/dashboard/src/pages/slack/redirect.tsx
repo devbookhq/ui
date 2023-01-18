@@ -2,7 +2,7 @@ import Spinner from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
 import { GetServerSideProps } from 'next'
 
-const appId = 'prisma-hub'
+const appId = 'test'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
