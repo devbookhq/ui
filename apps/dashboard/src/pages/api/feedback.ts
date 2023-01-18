@@ -42,7 +42,7 @@ async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
             },
             {
               'type': 'mrkdwn',
-              'text': `* Rating *\n${feedback.properties.rating}`
+              'text': `*Rating*\n${feedback.properties.rating}`
             }
           ]
         }
