@@ -102,6 +102,12 @@
   }
 
   /* Token styling */
+
+  /* Change the default text color in the CM (this affect for example the Bash "strings") */
+  .cm-line {
+    @apply text-[#0F766E];
+  }
+
   /* regexp, escape, and special(string) are mapped to "tok-string2" */
   .tok-string2 {
     @apply text-[#56b6c2];
