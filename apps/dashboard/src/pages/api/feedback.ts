@@ -23,7 +23,6 @@ async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
 
       const webhook = new IncomingWebhook(url)
 
-
       const blocks: (Block | KnownBlock)[] = [
         {
           'type': 'header',
