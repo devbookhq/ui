@@ -9,7 +9,8 @@ import {
   saveAppFeedback,
   getInstallationsByAppID,
 } from 'queries/supabaseAdmin'
-import { getGuideName } from './slack/_app'
+import { getGuideName } from 'utils/analytics'
+
 
 async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
   const feedback = JSON.parse(req.body) as AppFeedback
