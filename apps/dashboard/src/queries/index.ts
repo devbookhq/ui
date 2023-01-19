@@ -64,7 +64,7 @@ export async function upsertUserFeedback(
   userID: string,
   feedback: string,
 ) {
-  const { body, error } = await client.from<UserFeedback>(userFeedbackTable).upsert({
+  const { body, error } = await client.from<UserFeedback>(userFeedbackTable).insert({
     user_id: userID,
     feedback,
   })

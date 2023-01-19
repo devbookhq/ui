@@ -3,8 +3,6 @@ import {
   withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
 
-import AppEditor from 'components/AppEditor'
-
 import { getApp } from 'queries'
 import { App } from 'queries/types'
 
@@ -58,8 +56,18 @@ interface Props {
   app: App
 }
 
-function Edit({ app }: Props) {
-  return <AppEditor app={app} />
+function App({ app }: Props) {
+
+  return (
+    <div className="flex flex-1">
+      <ResourcesSidebar />
+      <Board />
+    </div>
+  )
+
+
+
+
 }
 
-export default Edit
+export default App
