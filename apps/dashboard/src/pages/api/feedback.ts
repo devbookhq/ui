@@ -34,91 +34,103 @@ function getTitle(feedback: AppFeedback) {
   return ''
 }
 
+
+function createFeedbackMessage(feedback: AppFeedback) {
+  const blocks: (Block | KnownBlock)[] = [
+    {
+      'type': 'header',
+      'text': {
+        'type': 'plain_text',
+        'text': getTitle(feedback),
+      }
+    },
+    {
+      type: 'section',
+      fields: [
+        {
+          'type': 'mrkdwn',
+          'text': `*Guide*\n<https://playground.prisma.io${feedback.properties.guide}|${getGuideName(feedback.properties.guide || '')}>`
+        },
+        {
+          // Without this the Slack is still displaying the message correctly, but it also displays incorrect notification about not being able to display content.
+          text: ' ',
+          type: 'plain_text',
+        }
+      ],
+    }
+  ]
+
+  if (feedback.feedback) {
+    blocks.push(
+      {
+        'type': 'section',
+        'text': {
+          'text': `*Message left by user*\n\`\`\`${feedback.feedback.replaceAll('`', '\\`')}\`\`\``,
+          'type': 'mrkdwn',
+        }
+      },
+      {
+        'type': 'context',
+        'elements': [
+          {
+            'type': 'mrkdwn',
+            'text': `Made by user with ID \`${feedback.properties.userId || feedback.properties.anonymousId}\``
+          },
+          {
+            'type': 'mrkdwn',
+            'text': `This user previously ${feedback.properties.rating === 'down' ? '*downvoted* :-1:' : '*upvoted* :+1:'
+              } the guide`,
+          },
+        ]
+      },
+      {
+        'type': 'divider'
+      },
+    )
+  } else {
+    blocks.push(
+      {
+        'type': 'section',
+        'text': {
+          'type': 'mrkdwn',
+          'text': `*Rating left by user* \n${getRatingEmoji(feedback, true)}`
+        },
+      },
+      {
+        'type': 'context',
+        'elements': [
+          {
+            'type': 'mrkdwn',
+            'text': `Made by user with ID \`${feedback.properties.userId || feedback.properties.anonymousId}\``
+          },
+        ]
+      },
+    )
+  }
+
+  return { blocks }
+}
+
 async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
   const feedback = JSON.parse(req.body) as AppFeedback
   try {
     await saveAppFeedback(supabaseAdmin, feedback)
     const installations = await getInstallationsByAppID(supabaseAdmin, feedback.appId)
 
-    await Promise.all(installations.map(async i => {
-      const url = i.installation_data.incomingWebhook?.url
-      if (!url) return
+    if (installations.length > 0) {
+      const message = createFeedbackMessage(feedback)
+      await Promise.all(installations.map(async i => {
+        const url = i.installation_data.incomingWebhook?.url
+        if (!url) return
+        const webhook = new IncomingWebhook(url)
 
-      const webhook = new IncomingWebhook(url)
-      const blocks: (Block | KnownBlock)[] = [
-        {
-          'type': 'header',
-          'text': {
-            'type': 'plain_text',
-            'text': getTitle(feedback),
-          }
-        },
-        {
-          type: 'section',
-          fields: [
-            {
-              'type': 'mrkdwn',
-              'text': `*Guide*\n<https://playground.prisma.io${feedback.properties.guide}|${getGuideName(feedback.properties.guide || '')}>`
-            },
-            {
-              // Without this the Slack is still displaying the message correctly, but it also displays incorrect notification about not being able to display content.
-              text: ' ',
-              type: 'plain_text',
-            }
-          ],
+        try {
+          await webhook.send(message)
+        } catch (err) {
+          console.error(`Cannot send message from Devbook app "${feedback.appId}" to Slack installation "${i.id}":`, err)
         }
-      ]
-
-      if (feedback.feedback) {
-        blocks.push(
-          {
-            'type': 'section',
-            'text': {
-              'text': `*Message left by user*\n\`\`\`${feedback.feedback.replaceAll('`', '\\`')}\`\`\``,
-              'type': 'mrkdwn',
-            }
-          },
-          {
-            'type': 'context',
-            'elements': [
-              {
-                'type': 'mrkdwn',
-                'text': `Made by user with ID \`${feedback.properties.userId || feedback.properties.anonymousId}\``
-              },
-              {
-                'type': 'mrkdwn',
-                'text': `This user previously ${feedback.properties.rating === 'down' ? '*downvoted* :-1:' : '*upvoted* :+1:'
-                  } the guide`,
-              },
-            ]
-          },
-          {
-            'type': 'divider'
-          },
-        )
-      } else {
-        blocks.push(
-          {
-            'type': 'section',
-            'text': {
-              'type': 'mrkdwn',
-              'text': `*Rating left by user* \n${getRatingEmoji(feedback, true)}`
-            },
-          },
-          {
-            'type': 'context',
-            'elements': [
-              {
-                'type': 'mrkdwn',
-                'text': `Made by user with ID \`${feedback.properties.userId || feedback.properties.anonymousId}\``
-              },
-            ]
-          },
-        )
-      }
-
-      await webhook.send({ blocks })
-    }))
+      }))
+    }
 
     res.status(200).send('')
   } catch (err: any) {
