@@ -36,7 +36,7 @@ const InputEl = forwardRef<HTMLInputElement, Props>(
           'border-slate-200',
           'bg-white',
           'outline-none',
-          'focus:border-amber-400',
+          'focus:border-green-400',
           'text-xs',
           'placeholder:text-slate-300',
           className,

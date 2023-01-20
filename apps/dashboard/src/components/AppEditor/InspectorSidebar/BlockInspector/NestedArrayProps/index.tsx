@@ -35,7 +35,7 @@ function NestedArrayProps({
           className="text-slate-400"
         />
         <div
-          className="cursor-pointer text-slate-300 hover:text-amber-400"
+          className="cursor-pointer text-slate-300 hover:text-green-400"
           onClick={addItem}
         >
           <PlusCircle size="16px" />

@@ -61,13 +61,13 @@ function AuthForm({ authType }: Props) {
     const { error } =
       authType === AuthFormType.SignUp
         ? await supabaseClient.auth.signUp({
-            email,
-            password,
-          })
+          email,
+          password,
+        })
         : await supabaseClient.auth.signIn({
-            email,
-            password,
-          })
+          email,
+          password,
+        })
 
     if (error) {
       emailRef.current?.focus()
@@ -144,7 +144,7 @@ function AuthForm({ authType }: Props) {
                   'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-amber-400',
+                'focus:border-green-400',
                 'text-sm',
                 'placeholder:text-slate-300',
               )}
@@ -174,7 +174,7 @@ function AuthForm({ authType }: Props) {
                   'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-amber-400',
+                'focus:border-green-400',
                 'text-sm',
                 'placeholder:text-slate-300',
               )}
@@ -184,7 +184,7 @@ function AuthForm({ authType }: Props) {
           <div className="flex flex-col space-y-4">
             <Button
               className="self-center whitespace-nowrap"
-              icon={isLoading ? <SpinnerIcon className="text-amber-800" /> : null}
+              icon={isLoading ? <SpinnerIcon className="text-green-800" /> : null}
               isDisabled={isLoading}
               text={isLoading ? buttonLoadingLabel : buttonLabel}
               type="submit"

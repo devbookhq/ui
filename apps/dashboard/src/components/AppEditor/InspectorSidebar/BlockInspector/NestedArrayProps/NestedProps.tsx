@@ -27,7 +27,7 @@ function NestedProps({ setProps, setupProps, blockProps, deleteItem, label }: Pr
           size={Text.size.S3}
         ></Text>
         <div
-          className="cursor-pointer text-slate-300 hover:text-amber-800"
+          className="cursor-pointer text-slate-300 hover:text-green-800"
           onClick={deleteItem}
         >
           <Trash2 size="14px" />

@@ -15,7 +15,7 @@ function Feedback() {
       />
       <div onClick={() => setIsFeedbackVisible(true)}>
         <Text
-          className="cursor-pointer whitespace-nowrap text-slate-400 transition-all hover:text-amber-800"
+          className="cursor-pointer whitespace-nowrap text-slate-400 transition-all hover:text-green-800"
           size={Text.size.S2}
           text="Feedback"
         />

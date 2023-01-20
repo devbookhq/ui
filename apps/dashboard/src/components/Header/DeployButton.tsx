@@ -89,7 +89,7 @@ function DeployButton({ app }: Props) {
   } else if (wasSuccessfullyDeployed) {
     icon = (
       <Check
-        className="text-amber-800"
+        className="text-green-800"
         size="16px"
       />
     )
@@ -122,7 +122,7 @@ function DeployButton({ app }: Props) {
                 variant={Button.variant.Full}
                 icon={
                   <ExternalLink
-                    className="text-amber-800"
+                    className="text-green-800"
                     size="16px"
                   />
                 }

@@ -344,14 +344,14 @@ export function getUIComponents({ componentsSetup }: EditorSetup) {
         text-slate-400
         transition-all
         group-hover:border-transparent
-        group-hover:bg-amber-50
-        group-hover:text-amber-800
+        group-hover:bg-green-50
+        group-hover:text-green-800
         "
         >
           <C.Icon />
         </div>
         <Text
-          className="text-slate-400 transition-all group-hover:text-amber-800"
+          className="text-slate-400 transition-all group-hover:text-green-800"
           size={Text.size.S3}
           text={C.label}
         />

@@ -2,6 +2,7 @@ import {
   supabaseServerClient,
   withPageAuth,
 } from '@supabase/supabase-auth-helpers/nextjs'
+import Analytics from 'components/Analytics'
 
 import { getApp } from 'queries'
 import { App } from 'queries/types'
@@ -57,17 +58,9 @@ interface Props {
 }
 
 function App({ app }: Props) {
-
   return (
-    <div className="flex flex-1">
-      <ResourcesSidebar />
-      <Board />
-    </div>
+    <Analytics app={app} />
   )
-
-
-
-
 }
 
 export default App

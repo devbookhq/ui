@@ -39,7 +39,7 @@ function TitleLink({
         className={clsx(
           'whitespace-nowrap',
           'transition-all',
-          active ? 'text-amber-800' : 'text-slate-400 hover:text-amber-800',
+          active ? 'text-green-800' : 'text-slate-400 hover:text-green-800',
           className,
         )}
       />

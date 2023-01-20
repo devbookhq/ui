@@ -18,7 +18,7 @@ function PagesTab() {
           className="text-slate-400"
         />
         <div
-          className="cursor-pointer text-slate-300 hover:text-amber-400"
+          className="cursor-pointer text-slate-300 hover:text-green-400"
           onClick={createPage}
         >
           <PlusCircle size="16px" />
@@ -30,7 +30,7 @@ function PagesTab() {
           className={clsx(
             'group flex flex-1 cursor-pointer flex-col space-y-2 rounded border px-2 py-3',
             {
-              'border-amber-400': selectedPage === i,
+              'border-green-400': selectedPage === i,
               'border-slate-100 hover:border-slate-200': selectedPage !== i,
             },
           )}
@@ -47,7 +47,7 @@ function PagesTab() {
             ></Text>
             {i !== 0 && (
               <div
-                className="cursor-pointer text-slate-300 hover:text-amber-800"
+                className="cursor-pointer text-slate-300 hover:text-green-800"
                 onClick={e => {
                   e.stopPropagation()
                   deletePage(i)

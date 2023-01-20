@@ -50,9 +50,9 @@ function Button({
         'px-3',
         {
           'cursor-not-allowed opacity-70': isDisabled,
-          'border-amber-200 bg-amber-200 stroke-amber-800 text-amber-800 hover:border-amber-300 hover:bg-amber-300':
+          'border-green-200 bg-green-200 stroke-green-800 text-green-800 hover:border-green-300 hover:bg-green-300':
             variant === Variant.Full,
-          'border-slate-200 bg-white hover:border-amber-800 hover:text-amber-800':
+          'border-slate-200 bg-white hover:border-green-800 hover:text-green-800':
             variant === Variant.Outline,
         },
         className,

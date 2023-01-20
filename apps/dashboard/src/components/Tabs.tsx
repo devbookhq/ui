@@ -33,11 +33,11 @@ function Tabs({ tabs, defaultValue }: Props) {
             defaultChecked
           >
             <Text
-              className="text-slate-300 transition-all group-hover:text-amber-800 group-radix-state-active:text-amber-800"
+              className="text-slate-300 transition-all group-hover:text-green-800 group-radix-state-active:text-green-800"
               size={Text.size.S3}
               text={t.label}
             />
-            <div className="absolute bottom-0 -mb-px w-full rounded-t border-b-2 border-transparent transition-all group-radix-state-active:border-amber-400"></div>
+            <div className="absolute bottom-0 -mb-px w-full rounded-t border-b-2 border-transparent transition-all group-radix-state-active:border-green-400"></div>
           </RadixTabs.Trigger>
         ))}
       </RadixTabs.List>

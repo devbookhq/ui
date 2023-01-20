@@ -1,5 +1,6 @@
 
 import { App } from 'queries/types'
+import Board from './Board'
 import AnalyticsSidebar from './Sidebar'
 
 
@@ -11,7 +12,7 @@ function Analytics({ app }: Props) {
   return (
     <div className="flex flex-1">
       <AnalyticsSidebar />
-      <Board />
+      <Board app={app}></Board>
     </div>
   )
 }

@@ -168,7 +168,7 @@ function Apps() {
               <ItemList
                 items={apps.map(i => ({
                   ...i,
-                  path: '/apps/[slug]/edit',
+                  path: '/apps/[slug]',
                   type: 'App',
                   icon: <Layout size="22px" />,
                 }))}

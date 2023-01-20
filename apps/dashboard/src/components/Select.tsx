@@ -23,11 +23,11 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
       defaultValue={selectedItemLabel}
       onValueChange={handleSelect}
     >
-      <RadixSelect.Trigger className="group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-all hover:border-amber-800 hover:text-amber-800">
+      <RadixSelect.Trigger className="group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-all hover:border-green-800 hover:text-green-800">
         <RadixSelect.Value />
         <RadixSelect.Icon>
           <ChevronDown
-            className="text-slate-200 transition-all group-hover:text-amber-800"
+            className="text-slate-200 transition-all group-hover:text-green-800"
             size="16px"
           />
         </RadixSelect.Icon>
@@ -39,7 +39,7 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
           <RadixSelect.Viewport className="space-y-0.5">
             {items.map(i => (
               <RadixSelect.Item
-                className="group flex cursor-pointer justify-between space-x-1 rounded px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-amber-50 hover:text-amber-800"
+                className="group flex cursor-pointer justify-between space-x-1 rounded px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-green-50 hover:text-green-800"
                 key={i.label}
                 value={i.label}
               >

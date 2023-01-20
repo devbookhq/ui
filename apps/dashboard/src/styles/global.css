@@ -24,7 +24,7 @@
 
   ::selection {
     @apply text-slate-600;
-    @apply bg-amber-200/70;
+    @apply bg-green-200/70;
   }
 
   html,
@@ -43,11 +43,11 @@
   }
 
   button {
-    @apply focus:outline-amber-400;
+    @apply focus:outline-green-400;
   }
 
   a {
-    @apply focus:outline-amber-400;
+    @apply focus:outline-green-400;
   }
 
   .scroller {
@@ -78,10 +78,10 @@
 }
 
 @layer components {
-  .bg-amber-gradient {
+  .bg-green-gradient {
     @apply bg-gradient-to-b;
-    @apply from-amber-100;
-    @apply to-amber-200;
+    @apply from-green-100;
+    @apply to-green-200;
   }
 
   .cs-output {

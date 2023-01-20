@@ -16,7 +16,7 @@ function Cockroach() {
       className={clsx(
         'flex flex-1 flex-col space-y-2 rounded border py-2 transition-all',
         {
-          'border-amber-300 shadow-sm': resources.cockroachDB?.enabled,
+          'border-green-300 shadow-sm': resources.cockroachDB?.enabled,
           'border-slate-100 hover:border-slate-200': !resources.cockroachDB?.enabled,
         },
       )}

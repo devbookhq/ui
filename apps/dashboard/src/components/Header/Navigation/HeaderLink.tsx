@@ -24,7 +24,7 @@ function HeaderLink({ active, title, href }: Props) {
       <div
         className={clsx('absolute bottom-0 -mb-px w-full border-b-2', {
           'border-transparent': !active,
-          'rounded-t border-amber-400': active,
+          'rounded-t border-green-400': active,
         })}
       ></div>
     </div>
