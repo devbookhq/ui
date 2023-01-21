@@ -5,10 +5,10 @@ import { KnownBlock, Block } from '@slack/bolt'
 import { allowCors } from 'utils/api'
 import {
   supabaseAdmin,
-  AppFeedback,
   saveAppFeedback,
   getInstallationsByAppID,
 } from 'queries/supabaseAdmin'
+import { AppFeedback } from "queries/AppFeedback"
 import { getGuideName } from 'utils/analytics'
 
 

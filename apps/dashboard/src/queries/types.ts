@@ -28,4 +28,15 @@ export interface Env {
   template: string
 }
 
+export interface AppFeedback {
+  appId: string;
+  feedback?: string;
+  properties: {
+    userId?: string;
+    anonymousId?: string;
+    rating?: 'up' | 'down';
+    guide?: string;
+  };
+}
+
 export type AppTemplate = Omit<App, 'created_at'>

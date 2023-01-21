@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient as SupabaseAdmin } from '@supabase/supabase-js'
 import { Installation } from '@slack/oauth'
+import { AppFeedback } from './types'
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
@@ -8,17 +9,6 @@ export const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || '',
 )
 
-export interface AppFeedback {
-  appId: string
-  feedback?: string
-  properties: {
-    userId?: string
-    anonymousId?: string
-    rating?: 'up' | 'down'
-    guide?: string
-  }
-}
-
 interface InstallationDBEntry {
   id: string
   created_at?: Date
@@ -26,8 +16,8 @@ interface InstallationDBEntry {
   installation_data: Installation
 }
 
-const appsFeedbackTable = 'apps_feedback'
-const slackInstallationsTable = 'slack_installations'
+export const appsFeedbackTable = 'apps_feedback'
+export const slackInstallationsTable = 'slack_installations'
 
 export async function saveAppFeedback(
   admin: SupabaseAdmin,
@@ -38,19 +28,6 @@ export async function saveAppFeedback(
     .insert(feedback)
 
   if (error) throw error
-}
-
-export async function listAppFeedback(
-  admin: SupabaseAdmin,
-  appID: string
-) {
-  const { error, data } = await admin
-    .from(appsFeedbackTable)
-    .select<'*', AppFeedback>('*')
-    .eq('appId', appID)
-
-  if (error) throw error
-  return data
 }
 
 export async function setInstallation(

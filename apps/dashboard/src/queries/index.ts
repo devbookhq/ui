@@ -1,6 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
+import { appsFeedbackTable } from './supabaseAdmin'
 
-import { App, AppTemplate, UserFeedback, Env } from './types'
+import { App, AppTemplate, UserFeedback, Env, AppFeedback } from './types'
 
 const appsTable = 'apps'
 const userFeedbackTable = 'user_feedback'
@@ -71,4 +72,17 @@ export async function upsertUserFeedback(
 
   if (error) throw error
   return body[0]
+}
+
+export async function listAppFeedback(
+  client: SupabaseClient,
+  appID: string
+) {
+  const { error, data } = await client
+    .from<AppFeedback>(appsFeedbackTable)
+    .select('*')
+    .eq('appId', appID)
+
+  if (error) throw error
+  return data
 }
