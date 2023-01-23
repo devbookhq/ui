@@ -75,11 +75,14 @@ function Message({ message }: Props) {
           className="text-slate-400"
         />
       </div>
-      {'text' in message && message.text &&
-        <div className="flex space-x-4 flex-1 items-center">
+      <div className="flex space-x-4 flex-1 items-center">
+        {('text' in message && message.text)
+          ?
           <Text text={'"' + message.text + '"'} className="italic max-w-prose" />
-        </div>
-      }
+          :
+          <Text text="No message left" className="max-w-prose text-slate-400" size={Text.size.S3} />
+        }
+      </div>
     </div>
   )
 }
