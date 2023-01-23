@@ -23,8 +23,10 @@ function useAppFeedback(devbookAppID?: string) {
           switch (p.eventType) {
             // We don't subscribe to the UPDATE event because we don't want to receive changes when the apps are edited
             case 'INSERT':
+              console.log('insert')
               if (p.errors) {
                 const err = p.errors.join('\n')
+                console.error(err)
                 setError(err)
               }
               if (p.new)

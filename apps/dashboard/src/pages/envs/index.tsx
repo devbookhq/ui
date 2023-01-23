@@ -85,7 +85,7 @@ function Envs() {
                   ...e,
                   path: '/envs/[slug]/edit',
                   type: 'Env',
-                  icon: <Box size="22px" stroke-width="1.5" />,
+                  icon: <Box size="22px" strokeWidth="1.5" />,
                 }))}
               />
             </div>

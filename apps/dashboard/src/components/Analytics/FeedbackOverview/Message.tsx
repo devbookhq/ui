@@ -41,12 +41,12 @@ function Message({ message }: Props) {
             ? <ThumbsUp
               className="text-green-500 mr-1.5 -mt-0.5"
               size="18px"
-              stroke-width="1.5"
+              strokeWidth="1.5"
             />
             : <ThumbsDown
               className="text-red-500 mr-1.5 -mb-0.5"
               size="18px"
-              stroke-width="1.5"
+              strokeWidth="1.5"
             />
           }
           {/* <Text text="User left feedback in the" size={Text.size.S3}></Text> */}

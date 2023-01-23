@@ -109,7 +109,7 @@ function Projects() {
       >
         <div className="flex items-start justify-start">
           <div className="items-center flex space-x-2">
-            <LayoutGrid size="30px" stroke-width="1.5" />
+            <LayoutGrid size="30px" strokeWidth="1.5" />
             <Text
               size={Text.size.S1}
               text="Projects"
@@ -170,7 +170,7 @@ function Projects() {
                   ...i,
                   path: '/projects/[slug]',
                   type: 'Project',
-                  icon: <LayoutGrid size="22px" stroke-width="1.7" />,
+                  icon: <LayoutGrid size="22px" strokeWidth="1.7" />,
                 }))}
                 deleteItem={(id: string) => deleteApp(supabaseClient, id)}
               />
