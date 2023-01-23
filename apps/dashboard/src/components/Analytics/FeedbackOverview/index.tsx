@@ -49,28 +49,28 @@ function FeedbackOverview({ app }: Props) {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="py-4 px-6 flex justify-between flex-col space-y-4 bg-white border-b">
+      <div className="pt-4 pb-3 px-6 flex justify-between flex-col space-y-4 border-b">
         <Text text={app.title} size={Text.size.S1} />
         <div className="flex space-x-4">
           <div className="relative">
             <Text
               className="transition-all text-green-800"
               size={Text.size.S2}
-              text="User messages"
+              text="User Feedback"
             />
-            <div className="absolute bottom-0 -mb-px w-full rounded-t border-b-2 transition-all border-green-400"></div>
+            <div className="absolute bottom-0 -mb-3 w-full rounded-t border-b-2 transition-all border-green-400"></div>
           </div>
-          <div className="relative">
+          {/* <div className="relative">
             <Text
               className="text-slate-300 transition-all group-hover:text-green-800 group-radix-state-active:text-green-800"
               size={Text.size.S2}
               text="Ratings"
             />
             <div className="border-transparent absolute bottom-0 -mb-px w-full rounded-t border-b-2 transition-all"></div>
-          </div>
+          </div> */}
         </div>
       </div>
-      <div className="flex flex-1 overflow-hidden justify-center bg-white mt-0.5 px-4">
+      <div className="flex flex-1 overflow-hidden justify-center mt-0.5 px-4">
         {!isLoading && !error && <FeedbackFeed feed={feedData} />}
         {/* {!isLoading && !error && <FeedbackTable guides={filteredGuides} />} */}
         {isLoading && <Spinner />}

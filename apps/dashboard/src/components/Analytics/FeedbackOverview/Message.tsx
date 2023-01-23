@@ -10,7 +10,7 @@ export interface Props {
 
 function Message({ message }: Props) {
   return (
-    <div className="space-y-4 flex flex-1 flex-col justify-between mx-2 rounded bg-white shadow shadow-green-200 p-4">
+    <div className="space-y-4 flex flex-1 flex-col justify-between mx-2 rounded-lg border bg-white p-4">
       <div className="flex justify-between flex-1">
         <div className="flex space-x-1 text-slate-500 items-center flex-1">
           {/* <MessageSquare size="18px" className="text-slate-600/40 mr-2" /> */}
@@ -26,7 +26,7 @@ function Message({ message }: Props) {
               stroke-width="1.5"
             />
           }
-          <Text text="User left a message in the" size={Text.size.S3}></Text>
+          <Text text="User left feedback in the" size={Text.size.S3}></Text>
           <Link
             href={message.guide.link || ''}
             className="hover:text-green-700 flex group text-green-600"

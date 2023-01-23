@@ -14,16 +14,16 @@ function FeedbackFeed({ feed }: Props) {
 
   return (
     <div className="flex flex-col scroller flex-1 overflow-auto space-y-4 max-w-[800px] pb-20 pt-4 px-4">
-      <FeedDivider text="Today" />
+      <FeedDivider text={`Today (${todayFeedback.length})`} />
       {todayFeedback.map((f, i, a) => (
         <Message message={f} key={f.timestamp.toString()} />
       ))}
       {todayFeedback.length == 0 && <Text text="No messages yet" className="text-slate-400 self-center py-2" />}
-      {yesterdayFeedback.length > 0 && <FeedDivider text="Yesterday" />}
+      {yesterdayFeedback.length > 0 && <FeedDivider text={`Yesterday (${yesterdayFeedback.length})`} />}
       {yesterdayFeedback.map((f, i, a) => (
         <Message message={f} key={f.timestamp.toString()} />
       ))}
-      {olderFeedback.length > 0 && <FeedDivider text={'Older'} />}
+      {olderFeedback.length > 0 && <FeedDivider text={`Older (${olderFeedback.length})`} />}
       {olderFeedback.map((f, i, a) => (
         <Message message={f} key={f.timestamp.toString()} />
       ))}

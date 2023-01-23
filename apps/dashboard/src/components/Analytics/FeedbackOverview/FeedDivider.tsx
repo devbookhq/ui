@@ -8,9 +8,12 @@ export interface Props {
 function FeedDivider({ text }: Props) {
   return (
     <div className="flex items-center mx-2 justify-center">
-      <div className="border-b flex-1" />
-      <Text text={text || ''} className={clsx('text-slate-500', { 'px-2': !!text, })} />
-      <div className="border-b flex-1" />
+      <Text
+        text={text || ''}
+        size={Text.size.S2}
+
+        className={clsx('text-slate-500', { 'px-2': !!text, })}
+      />
     </div>
   )
 }

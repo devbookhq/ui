@@ -18,7 +18,7 @@ function UserPortrait({ onClick, username = '?' }: Props) {
       style={{ borderColor: backgroundColor }}
       className={clsx(
         'flex items-center justify-center relative rounded-full border group',
-        'h-8 w-8 text-base',
+        'h-6 w-6 text-sm',
         { 'cursor-pointer': !!onClick },
       )}
       onClick={onClick}
