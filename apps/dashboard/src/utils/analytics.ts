@@ -1,11 +1,19 @@
 import { AppFeedback, Rating } from 'queries/types'
 
 export interface UserMessage {
-  userID: string,
+  userID: string
   text: string
   rating: Rating
   timestamp: Date
 }
+
+export interface UserRating {
+  rating: Rating
+  timestamp: Date
+  userID: string
+}
+
+export type UserFeedback = UserMessage | UserRating
 
 export interface GuideFeedback {
   id: string
@@ -16,7 +24,9 @@ export interface GuideFeedback {
   title: string
   link?: string
   // Ordered in descending order
-  ratings: { rating: Rating, timestamp: Date }[]
+  feed: UserFeedback[]
+  // Ordered in descending order
+  ratings: UserRating[]
   // Ordered in descending order
   userMessages: UserMessage[]
 }
@@ -51,6 +61,7 @@ export function formatGuidesFeedback(feedback: Required<AppFeedback>[]) {
         positivePercentage: 0,
         negativePercentage: 0,
         ratings: [],
+        feed: [],
         id: curr.properties.guide!,
         title: getGuideName(curr.properties.guide),
       }
@@ -69,12 +80,14 @@ export function formatGuidesFeedback(feedback: Required<AppFeedback>[]) {
       guide.ratings.push({
         rating: curr.properties.rating,
         timestamp: new Date(curr.created_at),
+        userID: curr.properties.userId || curr.properties.anonymousId!,
       })
     } else if (curr.properties.rating === Rating.Downvote) {
       guide.downvotes += 1
       guide.ratings.push({
         rating: curr.properties.rating,
         timestamp: new Date(curr.created_at),
+        userID: curr.properties.userId || curr.properties.anonymousId!,
       })
     }
     return prev
@@ -93,6 +106,27 @@ export function formatGuidesFeedback(feedback: Required<AppFeedback>[]) {
 
     g.ratings.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
     g.userMessages.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+
+    g.feed = [
+      ...g.ratings,
+      ...g.userMessages,
+    ]
+    g.feed.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+
+    // Filter our the duplicate upvotes from guides
+
+    for (let i = g.feed.length - 1; i >= 0; i--) {
+      const e = g.feed[i]
+
+      if ('text' in e) {
+        for (let j = i; j >= 0; j++) {
+          if (g.feed[j].userID === e.userID && !('text' in g.feed[j])) {
+            g.feed.splice(j, 1)
+            break
+          }
+        }
+      }
+    }
   })
 
   return Object.values(guides)

@@ -38,7 +38,6 @@ importers:
       '@slack/webhook': ^6.1.0
       '@supabase/supabase-auth-helpers': ^1.4.2
       '@supabase/supabase-js': ^2.4.0
-      '@tanstack/react-table': ^8.7.6
       '@types/lodash.debounce': ^4.0.7
       '@types/node': ^18.11.5
       '@types/randomcolor': ^0.5.6
@@ -54,7 +53,6 @@ importers:
       eslint-config-next: ^13.1.2
       eslint-plugin-tailwindcss: ^3.6.2
       eslint-plugin-unused-imports: ^2.0.0
-      fuse.js: ^6.6.2
       immer: ^9.0.16
       lodash.debounce: ^4.0.8
       lucide-react: ^0.94.0
@@ -99,10 +97,8 @@ importers:
       '@slack/webhook': 6.1.0
       '@supabase/supabase-auth-helpers': 1.4.2
       '@supabase/supabase-js': 2.4.0
-      '@tanstack/react-table': 8.7.6_biqbaboplfbrettd7655fr4n2y
       clsx: 1.2.1
       docker-names: 1.2.1
-      fuse.js: 6.6.2
       immer: 9.0.17
       lodash.debounce: 4.0.8
       lucide-react: 0.94.0_sh5qlbywuemxd2y3xkrw2y2kr4
@@ -1784,23 +1780,6 @@ packages:
     resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
     dependencies:
       tslib: 2.4.1
-    dev: false
-
-  /@tanstack/react-table/8.7.6_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-/QijmMFeP7wDLBnr0MQ/5MlbXePbIL/1nOtkxBC9zvmBu4gDKJEDBqipUyM7Wc/iBpSd0IFyqBlvZvTPD9FYDA==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      react: '>=16'
-      react-dom: '>=16'
-    dependencies:
-      '@tanstack/table-core': 8.7.6
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-    dev: false
-
-  /@tanstack/table-core/8.7.6:
-    resolution: {integrity: sha512-sqiNTMzB6cpyL8DFH6/VqW48SwiflLqxQqYpo2wNock7rdVGvlm0BLNI8vZUJbr1+fmmWmHwBvi5OMgZw8n1DA==}
-    engines: {node: '>=12'}
     dev: false
 
   /@trysound/sax/0.2.0:
@@ -4375,11 +4354,6 @@ packages:
 
   /functions-have-names/1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
-
-  /fuse.js/6.6.2:
-    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
-    engines: {node: '>=10'}
-    dev: false
 
   /get-caller-file/2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}

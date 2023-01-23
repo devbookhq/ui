@@ -2,10 +2,10 @@ import Text from 'components/typography/Text'
 import { ThumbsDown, ThumbsUp, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { Rating } from 'queries/types'
-import { FeedMessage } from '.'
+import { FeedEntry } from '.'
 
 export interface Props {
-  message: FeedMessage
+  message: FeedEntry
 }
 
 function Message({ message }: Props) {
@@ -74,10 +74,13 @@ function Message({ message }: Props) {
           size={Text.size.S3}
           className="text-slate-400"
         />
+        {message.userID}
       </div>
-      <div className="flex space-x-4 flex-1 items-center">
-        <Text text={'"' + message.text + '"'} className="italic max-w-prose" />
-      </div>
+      {'text' in message && message.text &&
+        <div className="flex space-x-4 flex-1 items-center">
+          <Text text={'"' + message.text + '"'} className="italic max-w-prose" />
+        </div>
+      }
     </div>
   )
 }

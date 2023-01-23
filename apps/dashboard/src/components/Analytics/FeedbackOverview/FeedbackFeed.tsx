@@ -1,10 +1,10 @@
 import Text from 'components/typography/Text'
-import { FeedMessage } from '.'
+import { FeedEntry } from '.'
 import Message from './Message'
 import FeedDivider from './FeedDivider'
 
 export interface Props {
-  feed: FeedMessage[]
+  feed: FeedEntry[]
 }
 
 function FeedbackFeed({ feed }: Props) {

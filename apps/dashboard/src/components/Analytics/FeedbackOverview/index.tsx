@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import useAppFeedback from 'hooks/useAppFeedback'
-import { formatGuidesFeedback, GuideFeedback, UserMessage } from 'utils/analytics'
+import { formatGuidesFeedback, GuideFeedback, UserRating, UserMessage } from 'utils/analytics'
 import { App as FeedbackOverview } from 'queries/types'
 import Text from 'components/typography/Text'
 import Spinner from 'components/icons/Spinner'
@@ -19,11 +19,19 @@ export interface FeedMessage extends UserMessage {
   isFromToday: boolean
 }
 
-function formatFeedData(feedback: GuideFeedback[]): FeedMessage[] {
+export interface FeedRating extends UserRating {
+  guide: GuideFeedback
+  isFromYesterday: boolean
+  isFromToday: boolean
+}
+
+export type FeedEntry = FeedMessage | FeedRating
+
+function formatFeedData(feedback: GuideFeedback[]): FeedEntry[] {
   const timeNow = new Date().getTime()
 
   const feed = feedback.flatMap(g => {
-    const messages = g.userMessages.map(m => {
+    const messages = g.feed.map(m => {
       const isFromToday = (timeNow - m.timestamp.getTime()) / hourInMs < 24
       const isFromYesterday = !isFromToday && (timeNow - m.timestamp.getTime()) / hourInMs < 48
       return {
