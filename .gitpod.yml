@@ -5,10 +5,6 @@ tasks:
   - name: Init Styles
     init: vale sync
 
-github:
-  prebuilds:
-    branches: true
-
 image:
   file: .gitpod.Dockerfile
 
