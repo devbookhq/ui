@@ -127,15 +127,15 @@ function Item({ item, deleteItem }: Props) {
         className={clsx(
           'flex items-center justify-center rounded border border-transparent px-3 py-1.5',
           {
-            'border-amber-800 hover:bg-amber-800/10': confirmDelete,
+            'border-red-600 hover:bg-red-600/10': confirmDelete,
           },
         )}
         onClick={handleDelete}
       >
         {isDeleting && (
           <Text
-            className="whitespace-nowrap text-amber-800"
-            icon={<SpinnerIcon className="text-amber-800" />}
+            className="whitespace-nowrap text-red-600"
+            icon={<SpinnerIcon className="text-red-600" />}
             size={Text.size.S3}
             text="Deleting..."
           />
@@ -144,8 +144,8 @@ function Item({ item, deleteItem }: Props) {
           <Text
             size={Text.size.S3}
             text={confirmDelete ? 'Confirm delete' : 'Delete'}
-            className={clsx('whitespace-nowrap hover:text-amber-800', {
-              'text-amber-800': confirmDelete,
+            className={clsx('whitespace-nowrap hover:text-red-600', {
+              'text-red-600': confirmDelete,
               'text-slate-300': !confirmDelete,
             })}
           />
