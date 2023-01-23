@@ -1,7 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { appsFeedbackTable } from './supabaseAdmin'
 
-import { App, AppTemplate, UserFeedback, Env, AppFeedback } from './types'
+import { App, AppTemplate, UserFeedback, Env, AppFeedback, appsFeedbackTable } from './types'
 
 const appsTable = 'apps'
 const userFeedbackTable = 'user_feedback'
@@ -49,7 +48,7 @@ export async function updateApp(
   client: SupabaseClient,
   app: Pick<App, 'id'> & Partial<Pick<App, 'state' | 'deployed_state'>>,
 ) {
-  const { error, body } = await client.from<App>(appsTable).update(app).eq('id', app.id)
+  const { error } = await client.from<App>(appsTable).update(app).eq('id', app.id)
 
   if (error) throw error
 }
@@ -60,7 +59,7 @@ export async function deleteApp(client: SupabaseClient, id: string) {
   if (error) throw error
 }
 
-export async function upsertUserFeedback(
+export async function insertUserFeedback(
   client: SupabaseClient,
   userID: string,
   feedback: string,
@@ -79,7 +78,7 @@ export async function listAppFeedback(
   appID: string
 ) {
   const { error, data } = await client
-    .from<AppFeedback>(appsFeedbackTable)
+    .from<Required<AppFeedback>>(appsFeedbackTable)
     .select('*')
     .eq('appId', appID)
 

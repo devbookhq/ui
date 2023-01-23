@@ -1,8 +1,5 @@
-
 import { App } from 'queries/types'
-import Board from './Board'
-import AnalyticsSidebar from './Sidebar'
-
+import FeedbackOverview from './FeedbackOverview'
 
 export interface Props {
   app: App
@@ -10,10 +7,7 @@ export interface Props {
 
 function Analytics({ app }: Props) {
   return (
-    <div className="flex flex-1">
-      <AnalyticsSidebar />
-      <Board app={app}></Board>
-    </div>
+    <FeedbackOverview app={app} />
   )
 }
 

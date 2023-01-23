@@ -7,7 +7,7 @@ import Modal from 'components/Modal'
 import Textarea from 'components/Textarea'
 import SpinnerIcon from 'components/icons/Spinner'
 
-import { upsertUserFeedback } from 'queries'
+import { insertUserFeedback } from 'queries'
 
 export interface Props {
   isOpen: boolean
@@ -29,7 +29,7 @@ function FeedbackModal({ isOpen, onClose }: Props) {
 
     setIsSavingFeedback(true)
 
-    await upsertUserFeedback(supabaseClient, user.id, feedback)
+    await insertUserFeedback(supabaseClient, user.id, feedback)
 
     setIsSavingFeedback(false)
     onClose()

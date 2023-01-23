@@ -4,21 +4,21 @@ import {
 } from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { listAppFeedback } from 'queries'
-import { AppFeedback } from 'queries/types'
+import { AppFeedback, appsFeedbackTable } from 'queries/types'
 
-function useAppFeedback(appId?: string) {
-  const [feedback, setFeedback] = useState<AppFeedback[]>([])
-  const [error, setError] = useState('')
+function useAppFeedback(devbookAppID?: string) {
+  const [feedback, setFeedback] = useState<Required<AppFeedback>[]>([])
+  const [error, setError] = useState('err')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(
     function fetchAppFeedback() {
-      if (!appId) return
+      if (!devbookAppID) return
       setError('')
       setIsLoading(true)
 
       const sub = supabaseClient
-        .from<AppFeedback>(`apps_feedback:id=${appId}`)
+        .from<Required<AppFeedback>>(`${appsFeedbackTable}:appId=${devbookAppID}`)
         .on('*', p => {
           switch (p.eventType) {
             // We don't subscribe to the UPDATE event because we don't want to receive changes when the apps are edited
@@ -37,7 +37,7 @@ function useAppFeedback(appId?: string) {
         })
         .subscribe()
 
-      listAppFeedback(supabaseClient, appId)
+      listAppFeedback(supabaseClient, devbookAppID)
         .then(a => setFeedback(a))
         .catch((e: Error) => {
           setError(e.message)
@@ -50,7 +50,7 @@ function useAppFeedback(appId?: string) {
         sub.unsubscribe()
       }
     },
-    [appId],
+    [devbookAppID],
   )
 
   return {

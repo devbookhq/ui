@@ -15,15 +15,18 @@ function UserPortrait({ onClick, username = '?' }: Props) {
 
   return (
     <div
-      style={{ backgroundColor }}
+      style={{ borderColor: backgroundColor }}
       className={clsx(
-        'flex items-center justify-center rounded-full',
-        { 'cursor-pointer': !!onClick },
+        'flex items-center justify-center relative rounded-full border group',
         'h-8 w-8 text-base',
+        { 'cursor-pointer': !!onClick },
       )}
       onClick={onClick}
     >
-      <div className="relative select-none text-slate-50">
+      <div className="invisible transition-all group-hover:visible opacity-5 absolute w-full h-full rounded-full" style={{ backgroundColor }} />
+      <div className="relative select-none" style={{
+        color: backgroundColor,
+      }}>
         {username[0].toUpperCase()}
       </div>
     </div>

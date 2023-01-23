@@ -1,12 +1,24 @@
-import { AppFeedback } from 'queries/types'
+import { AppFeedback, Rating } from 'queries/types'
 
-interface GuideFeedback {
+export interface UserMessage {
+  userID: string,
+  text: string
+  rating: Rating
+  timestamp: Date
+}
+
+export interface GuideFeedback {
+  id: string
   upvotes: number
   downvotes: number
   positivePercentage: number
   negativePercentage: number
   title: string
-  feedback: { userID?: string, text: string, rating?: 'up' | 'down' }[]
+  link?: string
+  // Ordered in descending order
+  ratings: { rating: Rating, timestamp: Date }[]
+  // Ordered in descending order
+  userMessages: UserMessage[]
 }
 
 export function capitalizeFirstLetter(value: string) {
@@ -14,37 +26,56 @@ export function capitalizeFirstLetter(value: string) {
 }
 
 export function getGuideName(guideID: string) {
-  return guideID.split('/')[2].split('_').map(capitalizeFirstLetter).join(' ')
+  return guideID.split('/')[2].split(/[_-]+/).map(capitalizeFirstLetter).join(' ')
 }
 
-export function formatGuidesFeedback(feedback: AppFeedback[]) {
+interface Hostnames {
+  [appId: string]: string
+}
+
+const hostnames: Hostnames = {
+  'prisma-hub': 'playground.prisma.io',
+}
+
+export function formatGuidesFeedback(feedback: Required<AppFeedback>[]) {
   const guides = feedback.reduce<{ [guideID: string]: GuideFeedback }>((prev, curr) => {
     if (!curr.properties.guide) return prev
     let guide = prev[curr.properties.guide]
     if (!guide) {
       guide = {
+        link: (hostnames[curr.appId] && curr.properties.guide) ? `https://${hostnames[curr.appId]}${curr.properties.guide}` : undefined,
         upvotes: 0,
         downvotes: 0,
-        feedback: [],
+        userMessages: [],
         positivePercentage: 0,
         negativePercentage: 0,
+        ratings: [],
+        id: curr.properties.guide!,
         title: getGuideName(curr.properties.guide),
       }
       prev[curr.properties.guide] = guide
     }
 
     if (curr.feedback) {
-      guide.feedback.push({
-        rating: curr.properties.rating,
+      guide.userMessages.push({
         text: curr.feedback,
-        userID: curr.properties.userId || curr.properties.anonymousId,
+        timestamp: new Date(curr.created_at),
+        rating: curr.properties.rating!,
+        userID: curr.properties.userId || curr.properties.anonymousId!,
       })
-    } else if (curr.properties.rating === 'up') {
+    } else if (curr.properties.rating === Rating.Upvote) {
       guide.upvotes += 1
-    } else if (curr.properties.rating === 'down') {
+      guide.ratings.push({
+        rating: curr.properties.rating,
+        timestamp: new Date(curr.created_at),
+      })
+    } else if (curr.properties.rating === Rating.Downvote) {
       guide.downvotes += 1
+      guide.ratings.push({
+        rating: curr.properties.rating,
+        timestamp: new Date(curr.created_at),
+      })
     }
-
     return prev
   }, {})
 
@@ -58,27 +89,10 @@ export function formatGuidesFeedback(feedback: AppFeedback[]) {
       g.positivePercentage = g.upvotes / (g.upvotes + g.downvotes)
       g.negativePercentage = 100 - g.positivePercentage
     }
+
+    g.ratings.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+    g.userMessages.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
   })
 
-  return guides
+  return Object.values(guides)
 }
-
-// const text = Object
-//   .entries(data)
-//   .map<[string, GuideFeedback]>(([guideID, guideData]) => {
-//     guideData.feedback = guideData.feedback.filter(f => f.text.trim().length > 0)
-//     return [guideID, guideData]
-//   })
-//   .filter(([, guideData]) => guideData.downvotes !== 0 || guideData.upvotes !== 0 || guideData.feedback.length > 0)
-//   .sort(([, g1], [, g2]) => {
-//     return (g1.downvotes + g1.upvotes + g1.feedback.length) - (g2.downvotes + g2.upvotes + g2.feedback.length)
-//   })
-//   .map(([guideID, guideData]) => {
-//     const upvotes = guideData.upvotes > 0 ? `${guideData.upvotes} :thumbsup:` : ''
-//     const downvotes = guideData.downvotes > 0 ? `${guideData.downvotes} :thumbsdown:` : ''
-//     const header = `*${getGuideName(guideID)}* ${upvotes} ${downvotes}`
-
-//     const userFeedback = guideData.feedback.map(f => `${f.rating === 'down' ? ':thumbsdown:' : ':thumbsup:'}\n${f.text.trim()}`).join('\n\n')
-//     return `### ${header + '\n' + userFeedback}`
-
-//   }).join('\n\n')

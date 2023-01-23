@@ -8,6 +8,7 @@ import { App } from 'queries/types'
 
 import { useEditorControls } from '../EditorControlsProvider'
 import HeaderLink from './HeaderLink'
+import { getSlug } from 'utils/app'
 
 export interface Props {
   app?: App
@@ -19,7 +20,7 @@ function Navigation({ app }: Props) {
   const { instance } = useEditorControls()
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex items-center space-x-2">
       {!app &&
         <>
           <HeaderLink
@@ -28,27 +29,37 @@ function Navigation({ app }: Props) {
             title="Envs"
           />
           <HeaderLink
-            active={router.pathname === '/apps'}
-            href="/apps"
-            title="Apps"
+            active={router.pathname === '/projects'}
+            href="/projects"
+            title="Projects"
           />
         </>
       }
       {app && (
         <>
           <HeaderLink
-            active={router.pathname === '/apps'}
-            href="/"
-            title="Apps"
+            active={router.pathname === '/envs'}
+            href="/envs"
+            title="Envs"
+          />
+          <HeaderLink
+            active={router.pathname === '/projects'}
+            href="/projects"
+            title="Projects"
           />
           <ChevronRight
             className="items-center text-slate-200"
             size="16px"
           />
-          <Text
-            className="whitespace-nowrap"
-            size={Text.size.S3}
-            text={app.title}
+          <HeaderLink
+            active={router.pathname === '/projects/[slug]'}
+            href={{
+              pathname: '/projects/[slug]',
+              query: {
+                slug: getSlug(app.id, app.title)
+              }
+            }}
+            title={app.title}
           />
         </>
       )}

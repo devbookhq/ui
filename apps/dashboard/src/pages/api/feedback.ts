@@ -8,9 +8,10 @@ import {
   saveAppFeedback,
   getInstallationsByAppID,
 } from 'queries/supabaseAdmin'
-import { AppFeedback } from "queries/AppFeedback"
+import {
+  AppFeedback,
+} from 'queries/types'
 import { getGuideName } from 'utils/analytics'
-
 
 function getRatingEmoji(feedback: AppFeedback, label?: boolean) {
   if (feedback.properties.rating === 'down') {

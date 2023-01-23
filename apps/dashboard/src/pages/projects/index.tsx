@@ -1,6 +1,6 @@
 import { supabaseClient, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
-import { Plus, Layout } from 'lucide-react'
+import { Plus, Folder, Folders } from 'lucide-react'
 import { getSnapshot } from 'mobx-state-tree'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -33,7 +33,7 @@ export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
 })
 
-function Apps() {
+function Projects() {
   const router = useRouter()
   const [isLoadingNewSnippet, setIsLoadingNewSnippet] = useState(false)
   const [isModalOpened, setIsModalOpened] = useState(false)
@@ -62,14 +62,14 @@ function Apps() {
       })
       const slug = getSlug(id, title)
       router.push({
-        pathname: '/apps/[slug]/edit',
+        pathname: '/projects/[slug]',
         query: {
           slug,
         },
       })
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
-      showErrorNotif(`Error creating app: ${msg}`)
+      showErrorNotif(`Error creating project: ${msg}`)
       setIsLoadingNewSnippet(false)
       closeModal()
     }
@@ -109,10 +109,10 @@ function Apps() {
       >
         <div className="flex items-start justify-start">
           <div className="items-center flex space-x-2">
-            <Layout size="30px" />
+            <Folders size="30px" stroke-width="1.5" />
             <Text
               size={Text.size.S1}
-              text="Apps"
+              text="Projects"
             />
           </div>
         </div>
@@ -142,7 +142,7 @@ function Apps() {
                 <Button
                   icon={isLoadingNewSnippet ? <SpinnerIcon /> : <Plus size="16px" />}
                   isDisabled={isLoadingNewSnippet}
-                  text="New app"
+                  text="New Project"
                   variant={Button.variant.Full}
                   onClick={openModal}
                 />
@@ -168,9 +168,9 @@ function Apps() {
               <ItemList
                 items={apps.map(i => ({
                   ...i,
-                  path: '/apps/[slug]',
-                  type: 'App',
-                  icon: <Layout size="22px" />,
+                  path: '/projects/[slug]',
+                  type: 'Project',
+                  icon: <Folder size="22px" stroke-width="1.7" />,
                 }))}
                 deleteItem={(id: string) => deleteApp(supabaseClient, id)}
               />
@@ -202,7 +202,7 @@ function Apps() {
               <Button
                 icon={isLoadingNewSnippet ? <SpinnerIcon /> : null}
                 isDisabled={isLoadingNewSnippet}
-                text="New app"
+                text="New Project"
                 variant={Button.variant.Full}
                 onClick={openModal}
               />
@@ -214,4 +214,4 @@ function Apps() {
   )
 }
 
-export default Apps
+export default Projects

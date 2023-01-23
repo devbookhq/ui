@@ -9,7 +9,7 @@ import ItemList from 'components/ItemList'
 import { showErrorNotif } from 'utils/notification'
 
 import useEnvs from 'hooks/useEnvs'
-import { Box } from 'lucide-react'
+import { Box, Boxes } from 'lucide-react'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -47,7 +47,7 @@ function Envs() {
       >
         <div className="flex items-start justify-start">
           <div className="items-center flex space-x-2">
-            <Box size="30px" />
+            <Boxes size="32px" strokeWidth="1.1" />
             <Text
               size={Text.size.S1}
               text="Envs"
@@ -85,7 +85,7 @@ function Envs() {
                   ...e,
                   path: '/envs/[slug]/edit',
                   type: 'Env',
-                  icon: <Box size="22px" />,
+                  icon: <Box size="22px" stroke-width="1.5" />,
                 }))}
               />
             </div>

@@ -8,4 +8,4 @@ RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
 
 RUN npm i depcheck npm-check-updates -g
 
-RUN snap install --edge vale
+RUN brew install vale

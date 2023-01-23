@@ -22,10 +22,8 @@ interface Props {
 export default function Layout({ children, meta: pageMeta, app }: Props) {
   const router = useRouter()
   const isEnvsDashboard = router.pathname === '/envs'
-  const isAppsDashboard = router.pathname === '/apps'
-  const isAppDeployed = router.pathname === '/apps/[slug]'
-  const isAppPreview = router.pathname === '/apps/[slug]/preview'
-  const isAppEditor = router.pathname === '/apps/[slug]/edit'
+  const isProjectsDashboard = router.pathname === '/projects'
+  const isProjectOpen = router.pathname === '/projects/[slug]'
   const isSettings = router.pathname === '/settings'
   const isSignIn = router.pathname === '/signin' && router.query.signup !== 'true'
   const isSignUp = router.pathname === '/signin' && router.query.signup === 'true'
@@ -37,14 +35,10 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
     ...pageMeta,
   }
 
-  if (app && isAppDeployed) {
-    meta.title = app.title
-  } else if (app && isAppPreview) {
-    meta.title = `${app.title} - App Preview | Devbook`
-  } else if (app && isAppEditor) {
-    meta.title = `${app.title} - App Editor | Devbook`
-  } else if (isAppsDashboard) {
-    meta.title = 'Apps | Devbook'
+  if (isProjectsDashboard) {
+    meta.title = 'Projects | Devbook'
+  } else if (app && isProjectOpen) {
+    meta.title = `${app.title} - Project | Devbook`
   } else if (isEnvsDashboard) {
     meta.title = 'Envs | Devbook'
   } else if (isSignIn) {
@@ -127,7 +121,7 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
       "
       >
         <EditorControlsProvider>
-          {!isAppPreview && !isSignIn && !isAppDeployed && !isSignUp && <Header app={app} />}
+          {!isSignIn && !isSignUp && <Header app={app} />}
           <div
             className="
           flex

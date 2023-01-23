@@ -30,7 +30,7 @@ module.exports = exportWrapper({
     return [
       {
         source: '/',
-        destination: '/apps',
+        destination: '/projects',
         permanent: false,
       },
     ]
