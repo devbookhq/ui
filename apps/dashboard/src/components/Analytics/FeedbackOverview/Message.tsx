@@ -74,7 +74,6 @@ function Message({ message }: Props) {
           size={Text.size.S3}
           className="text-slate-400"
         />
-        {message.userID}
       </div>
       {'text' in message && message.text &&
         <div className="flex space-x-4 flex-1 items-center">
