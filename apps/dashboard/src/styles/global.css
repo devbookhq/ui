@@ -1,9 +1,4 @@
 @import 'react-toastify/dist/ReactToastify.css';
-@import '@devbookhq/terminal/dist/index.css';
-@import '@devbookhq/code-editor/dist/index.css';
-/* @import 'react-resizable/css/styles.css'; */
-
-@import './resize.css';
 
 @tailwind base;
 @tailwind components;

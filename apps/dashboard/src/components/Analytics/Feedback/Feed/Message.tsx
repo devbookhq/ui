@@ -1,8 +1,9 @@
-import Text from 'components/typography/Text'
 import { ThumbsDown, ThumbsUp, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
+
+import Text from 'components/typography/Text'
 import { Rating } from 'queries/types'
-import { FeedEntry } from '.'
+import { FeedEntry } from 'utils/analytics'
 
 export interface Props {
   message: FeedEntry

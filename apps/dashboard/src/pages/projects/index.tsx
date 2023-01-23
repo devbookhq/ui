@@ -1,7 +1,6 @@
 import { supabaseClient, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { Plus, LayoutGrid } from 'lucide-react'
-import { getSnapshot } from 'mobx-state-tree'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -18,16 +17,6 @@ import { createApp, deleteApp } from 'queries'
 
 import { getSlug } from 'utils/app'
 import { showErrorNotif } from 'utils/notification'
-
-import { root } from 'core/EditorProvider/models/RootStoreProvider'
-
-const newAppDefaultState = getSnapshot(
-  root.create({
-    resources: {
-      environmentID: 'rrvG0aInT6Db',
-    },
-  }),
-)
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -58,7 +47,6 @@ function Projects() {
         title,
         id,
         creator_id: user.id,
-        state: newAppDefaultState,
       })
       const slug = getSlug(id, title)
       router.push({

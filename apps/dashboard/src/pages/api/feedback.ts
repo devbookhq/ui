@@ -11,7 +11,7 @@ import {
 import {
   AppFeedback,
 } from 'queries/types'
-import { getGuideName } from 'utils/analytics'
+import { getGuideName } from 'utils/analytics/feedback'
 
 function getRatingEmoji(feedback: AppFeedback, label?: boolean) {
   if (feedback.properties.rating === 'down') {

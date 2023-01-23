@@ -7,7 +7,7 @@ const exportWrapper = process.env.ANALYZE
 module.exports = exportWrapper({
   reactStrictMode: true,
   swcMinify: true,
-  transpilePackages: ["@devbookhq/code-editor", "@devbookhq/terminal"],
+  transpilePackages: [],
   images: {
     remotePatterns: [
       {

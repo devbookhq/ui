@@ -99,6 +99,7 @@ function AuthForm({ authType }: Props) {
       }}
     >
       <div
+        // eslint-disable-next-line tailwindcss/no-custom-classname
         className="
         flex
         w-120

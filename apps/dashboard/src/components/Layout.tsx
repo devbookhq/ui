@@ -5,7 +5,6 @@ import { ReactNode } from 'react'
 import { App } from 'queries/types'
 
 import Header from './Header'
-import EditorControlsProvider from './Header/EditorControlsProvider'
 
 export interface PageMeta {
   title: string
@@ -120,19 +119,17 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
         overflow-hidden
       "
       >
-        <EditorControlsProvider>
-          {!isSignIn && !isSignUp && <Header app={app} />}
-          <div
-            className="
+        {!isSignIn && !isSignUp && <Header app={app} />}
+        <div
+          className="
           flex
           flex-1
           flex-col
           overflow-hidden
         "
-          >
-            {children}
-          </div>
-        </EditorControlsProvider>
+        >
+          {children}
+        </div>
       </div>
     </>
   )

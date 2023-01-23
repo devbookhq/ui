@@ -1,5 +1,6 @@
 import Text from 'components/typography/Text'
-import { FeedEntry } from '.'
+import { FeedEntry } from 'utils/analytics'
+
 import Message from './Message'
 import FeedDivider from './FeedDivider'
 
@@ -27,16 +28,16 @@ function FeedbackFeed({ feed }: Props) {
       px-4
     ">
       <FeedDivider text={`Last day (${todayFeedback.length})`} />
-      {todayFeedback.map((f, i, a) => (
+      {todayFeedback.map(f => (
         <Message message={f} key={f.timestamp.toString()} />
       ))}
       {todayFeedback.length == 0 && <Text text="No messages yet" className="text-slate-400 self-center py-2" />}
       {yesterdayFeedback.length > 0 && <FeedDivider text={`Yesterday (${yesterdayFeedback.length})`} />}
-      {yesterdayFeedback.map((f, i, a) => (
+      {yesterdayFeedback.map(f => (
         <Message message={f} key={f.timestamp.toString()} />
       ))}
       {olderFeedback.length > 0 && <FeedDivider text={`Older (${olderFeedback.length})`} />}
-      {olderFeedback.map((f, i, a) => (
+      {olderFeedback.map(f => (
         <Message message={f} key={f.timestamp.toString()} />
       ))}
     </div>

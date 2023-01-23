@@ -1,19 +1,18 @@
 import { AppFeedback, Rating } from 'queries/types'
 
-export interface UserMessage {
+interface Feedback {
   userID: string
+  timestamp: Date
+}
+
+export interface UserMessage extends Feedback {
   text: string
   rating: Rating
-  timestamp: Date
 }
 
-export interface UserRating {
+export interface UserRating extends Feedback {
   rating: Rating
-  timestamp: Date
-  userID: string
 }
-
-export type UserFeedback = UserMessage | UserRating
 
 export interface GuideFeedback {
   id: string
@@ -24,11 +23,20 @@ export interface GuideFeedback {
   title: string
   link?: string
   // Ordered in descending order
-  feed: UserFeedback[]
+  feed: (UserMessage | UserRating)[]
   // Ordered in descending order
   ratings: UserRating[]
   // Ordered in descending order
   userMessages: UserMessage[]
+}
+
+interface Hostnames {
+  [appId: string]: string
+}
+
+
+const hostnames: Hostnames = {
+  'prisma-hub': 'playground.prisma.io',
 }
 
 export function capitalizeFirstLetter(value: string) {
@@ -39,15 +47,7 @@ export function getGuideName(guideID: string) {
   return guideID.split('/')[2].split(/[_-]+/).map(capitalizeFirstLetter).join(' ')
 }
 
-interface Hostnames {
-  [appId: string]: string
-}
-
-const hostnames: Hostnames = {
-  'prisma-hub': 'playground.prisma.io',
-}
-
-export function formatGuidesFeedback(feedback: Required<AppFeedback>[]) {
+export function aggregateGuidesFeedback(feedback: Required<AppFeedback>[]) {
   const guides = feedback.reduce<{ [guideID: string]: GuideFeedback }>((prev, curr) => {
     if (!curr.properties) return prev
     if (!curr.properties.guide) return prev
@@ -128,6 +128,5 @@ export function formatGuidesFeedback(feedback: Required<AppFeedback>[]) {
       }
     }
   })
-
   return Object.values(guides)
 }

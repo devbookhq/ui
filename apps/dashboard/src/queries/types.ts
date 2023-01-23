@@ -1,5 +1,3 @@
-import { RootState } from 'core/EditorProvider/models/RootStoreProvider'
-
 export const appsFeedbackTable = 'apps_feedback'
 export const slackInstallationsTable = 'slack_installations'
 
@@ -19,8 +17,6 @@ export interface App {
   title: string
   creator_id: string
   created_at: string
-  state: RootState
-  deployed_state?: RootState | null
   // Temporal ID for identifying analytics sources
   devbook_app_id?: string
 }

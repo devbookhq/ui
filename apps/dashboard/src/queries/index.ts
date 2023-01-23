@@ -44,15 +44,6 @@ export async function createApp(client: SupabaseClient, app: AppTemplate) {
   if (error) throw error
 }
 
-export async function updateApp(
-  client: SupabaseClient,
-  app: Pick<App, 'id'> & Partial<Pick<App, 'state' | 'deployed_state'>>,
-) {
-  const { error } = await client.from<App>(appsTable).update(app).eq('id', app.id)
-
-  if (error) throw error
-}
-
 export async function deleteApp(client: SupabaseClient, id: string) {
   const { error } = await client.from<App>(appsTable).delete().eq('id', id)
 

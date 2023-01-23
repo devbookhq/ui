@@ -1,5 +1,5 @@
 import { App } from 'queries/types'
-import FeedbackOverview from './FeedbackOverview'
+import Feedback from './Feedback'
 
 export interface Props {
   app: App
@@ -7,7 +7,7 @@ export interface Props {
 
 function Analytics({ app }: Props) {
   return (
-    <FeedbackOverview app={app} />
+    <Feedback app={app} />
   )
 }
 

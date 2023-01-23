@@ -2,7 +2,6 @@ import { useUser } from '@supabase/supabase-auth-helpers/react'
 import Link from 'next/link'
 
 import UserPortrait from 'components/UserPortrait'
-
 import { App } from 'queries/types'
 
 import Navigation from './Navigation'
