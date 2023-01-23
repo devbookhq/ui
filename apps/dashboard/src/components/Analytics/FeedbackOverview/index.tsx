@@ -58,7 +58,7 @@ function FeedbackOverview({ app }: Props) {
               size={Text.size.S2}
               text="User Feedback"
             />
-            <div className="absolute bottom-0 -mb-3 w-full rounded-t border-b-2 transition-all border-green-400"></div>
+            <div className="absolute bottom-0 mb-[-13px] w-full rounded-t border-b-2 transition-all border-green-400"></div>
           </div>
           {/* <div className="relative">
             <Text
