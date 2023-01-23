@@ -60,21 +60,11 @@ function FeedbackOverview({ app }: Props) {
             />
             <div className="absolute bottom-0 mb-[-13px] w-full rounded-t border-b-2 transition-all border-green-400"></div>
           </div>
-          {/* <div className="relative">
-            <Text
-              className="text-slate-300 transition-all group-hover:text-green-800 group-radix-state-active:text-green-800"
-              size={Text.size.S2}
-              text="Ratings"
-            />
-            <div className="border-transparent absolute bottom-0 -mb-px w-full rounded-t border-b-2 transition-all"></div>
-          </div> */}
         </div>
       </div>
       <div className="flex flex-1 overflow-hidden justify-center mt-0.5 px-4">
         {!isLoading && !error && <FeedbackFeed feed={feedData} />}
-        {/* {!isLoading && !error && <FeedbackTable guides={filteredGuides} />} */}
-        {isLoading && <Spinner />}
-        {error && <Text text={error} className="text-red-400" />}
+        {isLoading && <Spinner className="self-center" />}
       </div>
     </div>
   )

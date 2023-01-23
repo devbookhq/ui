@@ -11,7 +11,6 @@ function FeedDivider({ text }: Props) {
       <Text
         text={text || ''}
         size={Text.size.S2}
-
         className={clsx('text-slate-500', { 'px-2': !!text, })}
       />
     </div>
