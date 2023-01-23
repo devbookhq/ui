@@ -22,11 +22,6 @@
     @apply box-border;
   }
 
-  ::selection {
-    @apply text-slate-600;
-    @apply bg-green-200/70;
-  }
-
   html,
   body {
     @apply h-full;
