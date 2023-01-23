@@ -26,7 +26,7 @@ function FeedbackFeed({ feed }: Props) {
       pt-4
       px-4
     ">
-      <FeedDivider text={`Today (${todayFeedback.length})`} />
+      <FeedDivider text={`Last day (${todayFeedback.length})`} />
       {todayFeedback.map((f, i, a) => (
         <Message message={f} key={f.timestamp.toString()} />
       ))}
