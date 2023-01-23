@@ -13,7 +13,6 @@ function Message({ message }: Props) {
     <div className="
       space-y-4
       flex
-      flex-1
       flex-col
       justify-between
       mx-2

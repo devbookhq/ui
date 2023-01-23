@@ -39,6 +39,7 @@ const hostnames: Hostnames = {
 
 export function formatGuidesFeedback(feedback: Required<AppFeedback>[]) {
   const guides = feedback.reduce<{ [guideID: string]: GuideFeedback }>((prev, curr) => {
+    if (!curr.properties) return prev
     if (!curr.properties.guide) return prev
     let guide = prev[curr.properties.guide]
     if (!guide) {
