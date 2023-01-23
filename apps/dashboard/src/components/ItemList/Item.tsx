@@ -123,34 +123,36 @@ function Item({ item, deleteItem }: Props) {
           </div>
         </div>
       </div>
-      <button
-        className={clsx(
-          'flex items-center justify-center rounded border border-transparent px-3 py-1.5',
-          {
-            'border-red-600 hover:bg-red-600/10': confirmDelete,
-          },
-        )}
-        onClick={handleDelete}
-      >
-        {isDeleting && (
-          <Text
-            className="whitespace-nowrap text-red-600"
-            icon={<SpinnerIcon className="text-red-600" />}
-            size={Text.size.S3}
-            text="Deleting..."
-          />
-        )}
-        {!isDeleting && (
-          <Text
-            size={Text.size.S3}
-            text={confirmDelete ? 'Confirm delete' : 'Delete'}
-            className={clsx('whitespace-nowrap hover:text-red-600', {
-              'text-red-600': confirmDelete,
-              'text-slate-300': !confirmDelete,
-            })}
-          />
-        )}
-      </button>
+      {deleteItem &&
+        <button
+          className={clsx(
+            'flex items-center justify-center rounded border border-transparent px-3 py-1.5',
+            {
+              'border-red-600 hover:bg-red-600/10': confirmDelete,
+            },
+          )}
+          onClick={handleDelete}
+        >
+          {isDeleting && (
+            <Text
+              className="whitespace-nowrap text-red-600"
+              icon={<SpinnerIcon className="text-red-600" />}
+              size={Text.size.S3}
+              text="Deleting..."
+            />
+          )}
+          {!isDeleting && (
+            <Text
+              size={Text.size.S3}
+              text={confirmDelete ? 'Confirm delete' : 'Delete'}
+              className={clsx('whitespace-nowrap hover:text-red-600', {
+                'text-red-600': confirmDelete,
+                'text-slate-300': !confirmDelete,
+              })}
+            />
+          )}
+        </button>
+      }
     </Link>
   )
 }

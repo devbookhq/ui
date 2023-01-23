@@ -83,7 +83,7 @@ function Envs() {
               <ItemList
                 items={envs.map(e => ({
                   ...e,
-                  path: '/envs/[slug]/edit',
+                  path: '/envs/[slug]',
                   type: 'Env',
                   icon: <Box size="22px" strokeWidth="1.5" />,
                 }))}
