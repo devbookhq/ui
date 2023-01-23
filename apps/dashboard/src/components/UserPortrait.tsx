@@ -17,16 +17,14 @@ function UserPortrait({ onClick, username = '?' }: Props) {
     <div
       style={{ borderColor: backgroundColor }}
       className={clsx(
-        'flex items-center justify-center relative rounded-full border group',
+        'flex items-center justify-center relative rounded-full border',
         'h-6 w-6 text-sm',
         { 'cursor-pointer': !!onClick },
       )}
       onClick={onClick}
     >
-      <div className="invisible transition-all group-hover:visible opacity-5 absolute w-full h-full rounded-full" style={{ backgroundColor }} />
-      <div className="relative select-none" style={{
-        color: backgroundColor,
-      }}>
+      <div className="absolute w-full h-full rounded-full" style={{ backgroundColor }} />
+      <div className="relative select-none text-white">
         {username[0].toUpperCase()}
       </div>
     </div>
