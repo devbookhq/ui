@@ -81,7 +81,7 @@ function Settings() {
             />
           }
         </div>
-        <div
+        {/* <div
           className="
         flex
         flex-col
@@ -111,7 +111,7 @@ function Settings() {
               </svg>
             }
           />
-        </div>
+        </div> */}
         <div
           className="
         flex
