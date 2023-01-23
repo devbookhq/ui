@@ -13,7 +13,19 @@ function FeedbackFeed({ feed }: Props) {
   const olderFeedback = feed.filter(f => !f.isFromYesterday && !f.isFromToday)
 
   return (
-    <div className="flex flex-col scroller flex-1 overflow-auto space-y-4 max-w-[800px] pb-20 pt-4 px-4">
+    <div className="
+      flex
+      flex-col
+      scroller
+      flex-1
+      overflow-auto
+      space-y-4
+      max-w-[800px]
+      min-w-[300px]
+      pb-20
+      pt-4
+      px-4
+    ">
       <FeedDivider text={`Today (${todayFeedback.length})`} />
       {todayFeedback.map((f, i, a) => (
         <Message message={f} key={f.timestamp.toString()} />
