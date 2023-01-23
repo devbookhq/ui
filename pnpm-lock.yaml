@@ -27,6 +27,7 @@ importers:
       '@slack/webhook': ^6.1.0
       '@supabase/supabase-auth-helpers': ^1.4.2
       '@supabase/supabase-js': ^2.4.1
+      '@tanstack/react-table': ^8.7.6
       '@types/lodash.debounce': ^4.0.7
       '@types/node': ^18.11.18
       '@types/randomcolor': ^0.5.7
@@ -63,6 +64,7 @@ importers:
       '@slack/webhook': 6.1.0
       '@supabase/supabase-auth-helpers': 1.4.2
       '@supabase/supabase-js': 2.4.1
+      '@tanstack/react-table': 8.7.6_biqbaboplfbrettd7655fr4n2y
       clsx: 1.2.1
       docker-names: 1.2.1
       lodash.debounce: 4.0.8
@@ -1758,6 +1760,23 @@ packages:
     resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
     dependencies:
       tslib: 2.4.1
+    dev: false
+
+  /@tanstack/react-table/8.7.6_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-/QijmMFeP7wDLBnr0MQ/5MlbXePbIL/1nOtkxBC9zvmBu4gDKJEDBqipUyM7Wc/iBpSd0IFyqBlvZvTPD9FYDA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.7.6
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@tanstack/table-core/8.7.6:
+    resolution: {integrity: sha512-sqiNTMzB6cpyL8DFH6/VqW48SwiflLqxQqYpo2wNock7rdVGvlm0BLNI8vZUJbr1+fmmWmHwBvi5OMgZw8n1DA==}
+    engines: {node: '>=12'}
     dev: false
 
   /@trysound/sax/0.2.0:

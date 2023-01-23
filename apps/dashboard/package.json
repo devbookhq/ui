@@ -15,12 +15,9 @@
     "lint": "next lint",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next",
     "lint:fix": "next lint --fix",
-    "disable-telemetry": "npx next telemetry disable",
     "build:analyze": "ANALYZE=true yarn build",
     "check-types": "tsc --noEmit",
-    "dev:debug": "NODE_OPTIONS='--inspect' next dev",
-    "format": "prettier --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore ."
+    "dev:debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "resolutions": {
     "@supabase/gotrue-js": "1.22.14"
