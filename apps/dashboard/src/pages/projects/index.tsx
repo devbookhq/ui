@@ -1,6 +1,6 @@
 import { supabaseClient, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
-import { Plus, Folder, Folders } from 'lucide-react'
+import { Plus, LayoutGrid } from 'lucide-react'
 import { getSnapshot } from 'mobx-state-tree'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -109,7 +109,7 @@ function Projects() {
       >
         <div className="flex items-start justify-start">
           <div className="items-center flex space-x-2">
-            <Folders size="30px" stroke-width="1.5" />
+            <LayoutGrid size="30px" stroke-width="1.5" />
             <Text
               size={Text.size.S1}
               text="Projects"
@@ -170,7 +170,7 @@ function Projects() {
                   ...i,
                   path: '/projects/[slug]',
                   type: 'Project',
-                  icon: <Folder size="22px" stroke-width="1.7" />,
+                  icon: <LayoutGrid size="22px" stroke-width="1.7" />,
                 }))}
                 deleteItem={(id: string) => deleteApp(supabaseClient, id)}
               />
