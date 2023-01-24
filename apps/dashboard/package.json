@@ -33,6 +33,7 @@
     "@slack/webhook": "^6.1.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.4.1",
+    "@tanstack/react-table": "^8.7.6",
     "clsx": "^1.2.1",
     "docker-names": "^1.2.1",
     "lodash.debounce": "^4.0.8",
