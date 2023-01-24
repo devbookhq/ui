@@ -46,7 +46,7 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
                     'py-2 border-t': !i.value && idx === a.length - 1,
                     'py-2 border-b': !i.value && idx === 0,
                   },
-                  'group flex cursor-pointer justify-between space-x-1 px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-green-50 hover:text-green-800 outline-none border-slate-200'
+                  'group flex cursor-pointer relative hover:bg-green-50 justify-between space-x-1 px-3 py-1.5 text-xs text-slate-600 transition-all hover:text-green-800 outline-none border-slate-200'
                 )}
                 key={i.label}
                 value={i.label}

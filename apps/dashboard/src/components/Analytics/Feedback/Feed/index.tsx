@@ -31,7 +31,7 @@ function FeedbackFeed({ feed, guides }: Props) {
   const yesterdayFeedback = filteredFeedback.filter(f => f.isFromYesterday)
   const olderFeedback = filteredFeedback.filter(f => !f.isFromYesterday && !f.isFromToday)
 
-  const defaultGuide = feed.length > 0 ? feed[0].guide?.title : undefined
+  const defaultGuide = 'All'
   const queryGuideTitle = feed.find(f => f.guide?.id === queryFilter)?.guide?.title
 
   return (
@@ -40,7 +40,7 @@ function FeedbackFeed({ feed, guides }: Props) {
         <Select
           items={[{
             label: 'All',
-            value: undefined as any,
+            value: undefined,
           }, ...guides.map(g => ({
             value: g,
             label: g.title,
