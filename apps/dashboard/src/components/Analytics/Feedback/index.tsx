@@ -70,8 +70,7 @@ function Feedback({ app }: Props) {
           ))}
         </div>
       </div>
-
-      <div className="overflow-hidden justify-center flex flex-1 relative">
+      <div className="overflow-hidden justify-center flex relative flex-1">
         {isLoading && <Spinner className="m-auto" />}
         {!isLoading &&
           <>
