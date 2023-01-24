@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-import { App, AppTemplate, UserFeedback, Env, AppFeedback, appsFeedbackTable } from './types'
+import { App, UserFeedback, Env, AppFeedback, appsFeedbackTable } from './types'
 
 const appsTable = 'apps'
 const userFeedbackTable = 'user_feedback'
@@ -36,18 +36,6 @@ export async function getEnvs(client: SupabaseClient, userID: string) {
 
   if (error) throw error
   return data || []
-}
-
-export async function createApp(client: SupabaseClient, app: AppTemplate) {
-  const { error } = await client.from<App>(appsTable).insert(app)
-
-  if (error) throw error
-}
-
-export async function deleteApp(client: SupabaseClient, id: string) {
-  const { error } = await client.from<App>(appsTable).delete().eq('id', id)
-
-  if (error) throw error
 }
 
 export async function insertUserFeedback(

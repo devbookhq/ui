@@ -20,7 +20,7 @@
   html,
   body {
     @apply h-full;
-    @apply bg-white;
+    @apply bg-gray-100;
     @apply text-slate-700 antialiased;
 
     font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
@@ -41,45 +41,8 @@
   }
 
   .scroller {
-    scrollbar-color: #f3f4f6 transparent;
+    scrollbar-color: #cbd5e1 transparent;
     scrollbar-width: thin;
-  }
-
-  .custom-scrollbar {
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      /* @apply bg-black-650; */
-      &:hover {
-        /* @apply bg-black-600; */
-      }
-    }
-    &::-webkit-scrollbar-track {
-      border-radius: 10px;
-      background: transparent;
-    }
-  }
-
-
-
-}
-
-@layer components {
-  .bg-green-gradient {
-    @apply bg-gradient-to-b;
-    @apply from-green-100;
-    @apply to-green-200;
-  }
-
-  .cs-output {
-    @apply overflow-auto;
-    /* Firefox scrollbar styling */
-    scrollbar-color: #8f8f8f transparent;
-    scrollbar-width: thin;
-    height: 120px;
   }
 }
 
@@ -109,7 +72,7 @@ select:-webkit-autofill:focus {
 }
 
 .scroller::-webkit-scrollbar-thumb {
-  @apply bg-slate-100;
+  @apply bg-slate-300;
   @apply rounded;
 }
 

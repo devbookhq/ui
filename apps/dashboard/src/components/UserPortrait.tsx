@@ -15,7 +15,7 @@ function UserPortrait({ onClick, username = '?' }: Props) {
 
   return (
     <div
-      style={{ borderColor: backgroundColor }}
+      style={{ borderColor: backgroundColor, backgroundColor }}
       className={clsx(
         'flex items-center justify-center relative rounded-full border',
         'h-6 w-6 text-sm',
@@ -23,7 +23,7 @@ function UserPortrait({ onClick, username = '?' }: Props) {
       )}
       onClick={onClick}
     >
-      <div className="absolute w-full h-full rounded-full" style={{ backgroundColor }} />
+
       <div className="relative select-none text-white">
         {username[0].toUpperCase()}
       </div>

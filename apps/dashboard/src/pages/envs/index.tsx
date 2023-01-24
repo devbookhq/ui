@@ -61,7 +61,6 @@ function Envs() {
         flex-1
         flex-col
         items-stretch
-        space-y-4
         overflow-hidden
         "
         >
@@ -78,7 +77,7 @@ function Envs() {
             </div>
           )}
 
-          {!isLoading && envs.length > 0 && (
+          {!isLoading && (
             <div className="flex flex-1 justify-center overflow-hidden">
               <ItemList
                 items={envs.map(e => ({

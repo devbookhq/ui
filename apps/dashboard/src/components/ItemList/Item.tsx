@@ -92,10 +92,10 @@ function Item({ item, deleteItem }: Props) {
           justify-center
           rounded-lg border
           border-slate-200
-          group-hover:border-green-800/20
+          group-hover:border-green-800
           text-slate-300
           transition-all
-          group-hover:bg-green-50
+          group-hover:bg-green-400
           group-hover:text-green-800
           "
         >

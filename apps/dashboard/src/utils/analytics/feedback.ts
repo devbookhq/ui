@@ -1,4 +1,5 @@
 import { AppFeedback, Rating } from 'queries/types'
+import { FeedEntry } from './feed'
 
 interface Feedback {
   userID: string
@@ -18,26 +19,27 @@ export interface GuideFeedback {
   id: string
   upvotes: number
   downvotes: number
-  positivePercentage: number
-  negativePercentage: number
+  ratingPercentage: number
   title: string
   link?: string
   // Ordered in descending order
-  feed: (UserMessage | UserRating)[]
+  feed: FeedEntry[]
   // Ordered in descending order
   ratings: UserRating[]
   // Ordered in descending order
   userMessages: UserMessage[]
+  totalMessages: number
 }
 
 interface Hostnames {
   [appId: string]: string
 }
 
-
 const hostnames: Hostnames = {
   'prisma-hub': 'playground.prisma.io',
 }
+
+const hourInMs = 60 * 60 * 1000
 
 export function capitalizeFirstLetter(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1)
@@ -58,12 +60,12 @@ export function aggregateGuidesFeedback(feedback: Required<AppFeedback>[]) {
         upvotes: 0,
         downvotes: 0,
         userMessages: [],
-        positivePercentage: 0,
-        negativePercentage: 0,
+        ratingPercentage: 0,
         ratings: [],
         feed: [],
         id: curr.properties.guide!,
         title: getGuideName(curr.properties.guide),
+        totalMessages: 0,
       }
       prev[curr.properties.guide] = guide
     }
@@ -75,6 +77,7 @@ export function aggregateGuidesFeedback(feedback: Required<AppFeedback>[]) {
         rating: curr.properties.rating!,
         userID: curr.properties.userId || curr.properties.anonymousId!,
       })
+      guide.totalMessages += 1
     } else if (curr.properties.rating === Rating.Upvote) {
       guide.upvotes += 1
       guide.ratings.push({
@@ -96,21 +99,31 @@ export function aggregateGuidesFeedback(feedback: Required<AppFeedback>[]) {
   Object.values(guides).forEach(g => {
     if (!g.downvotes && !g.upvotes) {
     } else if (!g.downvotes) {
-      g.positivePercentage = 100
+      g.ratingPercentage = 1
     } else if (!g.upvotes) {
-      g.negativePercentage = 100
+      g.ratingPercentage = 0
     } else {
-      g.positivePercentage = g.upvotes / (g.upvotes + g.downvotes)
-      g.negativePercentage = 100 - g.positivePercentage
+      g.ratingPercentage = g.upvotes / (g.upvotes + g.downvotes)
     }
 
     g.ratings.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
     g.userMessages.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 
+    const timeNow = new Date().getTime()
+
     g.feed = [
       ...g.ratings,
       ...g.userMessages,
-    ]
+    ].map(m => {
+      const isFromToday = (timeNow - m.timestamp.getTime()) / hourInMs < 24
+      const isFromYesterday = !isFromToday && (timeNow - m.timestamp.getTime()) / hourInMs < 48
+      return {
+        ...m,
+        isFromToday,
+        isFromYesterday,
+      }
+    })
+
     g.feed.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 
     // Filter our the duplicate upvotes from guides

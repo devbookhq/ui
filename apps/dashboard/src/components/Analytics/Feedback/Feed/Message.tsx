@@ -50,9 +50,8 @@ function Message({ message }: Props) {
               strokeWidth="1.5"
             />
           }
-          {/* <Text text="User left feedback in the" size={Text.size.S3}></Text> */}
           <Link
-            href={message.guide.link || ''}
+            href={message.guide?.link || ''}
             className="
               hover:text-blue-600
               flex
@@ -63,12 +62,11 @@ function Message({ message }: Props) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Text text={message.guide.title} className="whitespace-nowrap" size={Text.size.S3} />
+            <Text text={message.guide?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
             <ExternalLink
               size={14}
             />
           </Link>
-          {/* <Text text="guide" size={Text.size.S3}></Text> */}
         </div>
         <Text
           text={message.timestamp.toDateString()}

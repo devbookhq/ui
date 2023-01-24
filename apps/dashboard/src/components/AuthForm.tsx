@@ -145,7 +145,7 @@ function AuthForm({ authType }: Props) {
                   'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-green-400',
+                'focus:border-green-800',
                 'text-sm',
                 'placeholder:text-slate-300',
               )}
@@ -175,7 +175,7 @@ function AuthForm({ authType }: Props) {
                   'bg-slate-50': isLoading,
                 },
                 'outline-none',
-                'focus:border-green-400',
+                'focus:border-green-800',
                 'text-sm',
                 'placeholder:text-slate-300',
               )}
