@@ -1,4 +1,5 @@
 import * as RadixSelect from '@radix-ui/react-select'
+import clsx from 'clsx'
 import { Check, ChevronDown } from 'lucide-react'
 
 interface Item<T> {
@@ -32,14 +33,21 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
           />
         </RadixSelect.Icon>
       </RadixSelect.Trigger>
-
       <RadixSelect.Portal>
         <RadixSelect.Content className="rounded border border-slate-200 bg-white p-1 shadow-lg transition-all">
           <RadixSelect.ScrollUpButton />
           <RadixSelect.Viewport className="space-y-0.5">
-            {items.map(i => (
+            {items.map((i, idx, a) => (
               <RadixSelect.Item
-                className="group flex cursor-pointer justify-between space-x-1 rounded px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-green-50 hover:text-green-800"
+                // Hackishly select "All" element
+                className={clsx(
+                  {
+                    'py-2 border-y': !i.value && idx !== a.length && idx !== 0,
+                    'py-2 border-t': !i.value && idx === a.length - 1,
+                    'py-2 border-b': !i.value && idx === 0,
+                  },
+                  'group flex cursor-pointer justify-between space-x-1 px-3 py-1.5 text-xs text-slate-600 transition-all hover:bg-green-50 hover:text-green-800 outline-none border-slate-200'
+                )}
                 key={i.label}
                 value={i.label}
               >

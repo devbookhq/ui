@@ -103,7 +103,7 @@ function GuidesOverview({ guides }: Props) {
                   </SortControl>
                 </div>
               </th>
-              <th scope="col" />
+              <th scope="col" className="p-3" />
             </tr>
           </thead>
           <tbody className="rounded-b">
@@ -166,11 +166,13 @@ function GuidesOverview({ guides }: Props) {
                       : null}
                   </div>
                 </td>
-                <td>
+                <td className="">
                   <Button
                     onClick={() => checkGuideFeedback(g.id)}
                     text="See Feedback"
                     className="
+                      float-right
+                      mr-3
                       flex
                       whitespace-nowrap
                       group

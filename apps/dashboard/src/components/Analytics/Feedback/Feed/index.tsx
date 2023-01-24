@@ -38,15 +38,18 @@ function FeedbackFeed({ feed, guides }: Props) {
     <div className="flex-col overflow-hidden flex flex-1 justify-center max-w-[800px]">
       <div className="md:left-3 md:top-3 absolute shadow md:shadow-none rounded bottom-4 right-3">
         <Select
-          items={[...guides.map(g => ({
+          items={[{
+            label: 'All',
+            value: undefined as any,
+          }, ...guides.map(g => ({
             value: g,
             label: g.title,
-          }))].sort((a, b) => {
+          })).sort((a, b) => {
             return a.label.localeCompare(b.label)
-          })}
+          })]}
           onSelect={(i) => {
             console.log({ i })
-            changeFilter(i?.value.id)
+            changeFilter(i?.value?.id)
           }}
           selectedItemLabel={queryGuideTitle || defaultGuide}
         />
