@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { GuideFeedback } from 'utils/analytics'
+import InfoPanel from './InfoPanel'
 import SortControl, { SortOrder, applySorting, SortingConfig } from './SortControl'
 
 export interface Props {
@@ -35,19 +36,20 @@ function GuidesOverview({ guides }: Props) {
     <div className="scroller overflow-auto flex flex-1 justify-center max-w-[950px] p-4 items-start">
       <div className="flex flex-col flex-1 space-y-3">
         <Text text="Guides without any rating aren't shown" size={Text.size.S3} className="text-slate-400 self-center" />
+        <InfoPanel guides={guides} />
         <div className="
-      flex
-      flex-col
-      flex-1
-      max-w-[900px]
-      min-w-[200px]
-      rounded
-      scroller
-      border-x
-      border-t
-      overflow-hidden
-      overflow-x-auto
-    ">
+            flex
+            flex-col
+            flex-1
+            max-w-[900px]
+            min-w-[200px]
+            rounded
+            scroller
+            border-x
+            border-t
+            overflow-hidden
+            overflow-x-auto
+          ">
           <table className="table-auto text-slate-500 rounded overflow-hidden">
             <thead className="text-slate-500 bg-slate-50 uppercase border-b">
               <tr>

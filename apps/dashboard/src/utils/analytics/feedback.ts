@@ -143,3 +143,24 @@ export function aggregateGuidesFeedback(feedback: Required<AppFeedback>[]) {
   })
   return Object.values(guides)
 }
+
+export function calculateTotalRating(guides?: GuideFeedback[]) {
+  if (!guides) return
+
+  const downvotes = guides.reduce((curr, prev) => {
+    return curr + prev.downvotes
+  }, 0)
+
+  const upvotes = guides.reduce((curr, prev) => {
+    return curr + prev.upvotes
+  }, 0)
+
+  const rating = upvotes / (upvotes + downvotes)
+
+  return {
+    upvotes,
+    downvotes,
+    rating,
+    messages: guides.flatMap(g => g.userMessages).length,
+  }
+}
