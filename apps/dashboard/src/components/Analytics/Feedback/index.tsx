@@ -68,7 +68,6 @@ function Feedback({ app }: Props) {
   const router = useRouter()
   const view = router.query.view || ''
 
-  console.log({ view })
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       <div className="pt-4 flex justify-between flex-col bg-white">
