@@ -13,7 +13,7 @@ function InfoPanel({ guides }: Props) {
       {totalRating &&
         <>
           <div className="flex flex-col">
-            <Text text="Total rating" className="text-slate-400" />
+            <Text text="Overall rating" className="text-slate-400" />
             {totalRating.rating >= 0.9 &&
               <Text
                 text={(totalRating.rating * 100).toPrecision(3) + '%'}
