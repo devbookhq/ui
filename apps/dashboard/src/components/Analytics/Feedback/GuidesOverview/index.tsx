@@ -34,7 +34,7 @@ function GuidesOverview({ guides }: Props) {
   return (
     <div className="scroller overflow-auto flex flex-1 justify-center max-w-[950px] p-4 items-start">
       <div className="flex flex-col flex-1 space-y-3">
-        <Text text="Guides without any rating aren't shown" size={Text.size.S3} className="text-slate-400" />
+        <Text text="Guides without any rating aren't shown" size={Text.size.S3} className="text-slate-400 self-center" />
         <div className="
       flex
       flex-col
@@ -43,9 +43,10 @@ function GuidesOverview({ guides }: Props) {
       min-w-[200px]
       rounded
       scroller
+      border-x
+      border-t
       overflow-hidden
       overflow-x-auto
-      shadow
     ">
           <table className="table-auto text-slate-500 rounded overflow-hidden">
             <thead className="text-slate-500 bg-slate-50 uppercase border-b">
