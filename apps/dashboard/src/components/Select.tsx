@@ -34,7 +34,7 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
         </RadixSelect.Icon>
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
-        <RadixSelect.Content className="rounded border border-slate-200 bg-white p-1 shadow-lg transition-all">
+        <RadixSelect.Content className="rounded z-20 border border-slate-200 bg-white p-1 shadow-lg transition-all">
           <RadixSelect.ScrollUpButton />
           <RadixSelect.Viewport className="space-y-0.5">
             {items.map((i, idx, a) => (

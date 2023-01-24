@@ -36,7 +36,8 @@ function FeedbackFeed({ feed, guides }: Props) {
 
   return (
     <div className="flex-col overflow-hidden flex flex-1 justify-center max-w-[800px]">
-      <div className="md:left-3 md:top-3 absolute shadow md:shadow-none rounded bottom-4 right-3">
+      <div className="lg:left-6 lg:top-3 absolute rounded bottom-4 right-3 space-y-1 z-10 flex items-baseline flex-col">
+        <Text text="Show feedback from" size={Text.size.S3} className="text-slate-400" />
         <Select
           items={[{
             label: 'All',
@@ -48,7 +49,6 @@ function FeedbackFeed({ feed, guides }: Props) {
             return a.label.localeCompare(b.label)
           })]}
           onSelect={(i) => {
-            console.log({ i })
             changeFilter(i?.value?.id)
           }}
           selectedItemLabel={queryGuideTitle || defaultGuide}
@@ -59,7 +59,6 @@ function FeedbackFeed({ feed, guides }: Props) {
       flex-col
       scroller
       flex-1
-      z-10
       overflow-auto
       space-y-4
       max-w-[800px]

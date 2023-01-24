@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import useAppFeedback from 'hooks/useAppFeedback'
-import { getFeedData, aggregateGuidesFeedback, GuideFeedback } from 'utils/analytics'
+import { getFeedData, aggregateGuidesFeedback } from 'utils/analytics'
 import { App } from 'queries/types'
 import Text from 'components/typography/Text'
 
@@ -15,27 +15,6 @@ export interface Props {
   app: App
 }
 
-function calculateTotalRating(guides?: GuideFeedback[]) {
-  if (!guides) return
-
-  const downvotes = guides.reduce((curr, prev) => {
-    return curr + prev.downvotes
-  }, 0)
-
-  const upvotes = guides.reduce((curr, prev) => {
-    return curr + prev.upvotes
-  }, 0)
-
-  const positivePercentage = upvotes / (upvotes + downvotes)
-  const negativePercentage = 1 - positivePercentage
-
-  return {
-    upvotes,
-    downvotes,
-    positivePercentage,
-    negativePercentage,
-  }
-}
 
 const views = [
   {
@@ -55,8 +34,6 @@ function Feedback({ app }: Props) {
     const feed = getFeedData(feedbackByGuide)
     return [feedbackByGuide, feed]
   }, [feedback])
-
-  const totalRating = calculateTotalRating(guidesFeedback)
 
   function changeView(view?: string) {
     router.query.view = view
