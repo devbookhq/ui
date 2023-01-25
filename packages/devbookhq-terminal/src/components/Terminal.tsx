@@ -34,6 +34,7 @@ export interface Handler {
 
 export interface Props {
   onLine?: (line: string) => void
+  onOutput?: (output: string) => void
   onCopy?: (selection: string) => void
   autofocus?: boolean
   onRunningCmdChange?: (state: CodeSnippetExecState) => void
@@ -56,6 +57,7 @@ const Terminal = forwardRef<Handler, Props>(({
   isReadOnly,
   isPersistent,
   onLine,
+  onOutput,
   placeholder,
   onCopy,
 }, ref) => {
@@ -66,6 +68,7 @@ const Terminal = forwardRef<Handler, Props>(({
     terminal: terminal?.terminal,
     terminalManager: session?.terminal,
     canStart: canStartTerminalSession && !!isPersistent,
+    onOutput,
   })
 
   const {
@@ -75,6 +78,7 @@ const Terminal = forwardRef<Handler, Props>(({
     terminal: terminal?.terminal,
     terminalManager: session?.terminal,
     canStart: canStartTerminalSession,
+    onOutput,
   })
 
   useEffect(function removeErrorMessage() {
@@ -178,6 +182,9 @@ const Terminal = forwardRef<Handler, Props>(({
         terminal: term,
       })
 
+
+      // TODO: We want to add handling of multiline commands
+
       if (autofocus) term.focus()
 
       // // TODO: Switch to WebGL rendering when xterm@5.1.0 and xterm-addon-webgl@0.14.0 is released, fixing Safari and other bugs.
@@ -213,6 +220,7 @@ const Terminal = forwardRef<Handler, Props>(({
     isReadOnly,
     autofocus,
     placeholder,
+    onOutput,
     isPersistent,
   ])
 

@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.21
+
+### Patch Changes
+
+- Add terminal output listener
+
 ## 0.1.20
 
 ### Patch Changes

@@ -22,6 +22,7 @@ export interface UseTerminalProcessOpts {
   terminal?: XTermTerminal,
   terminalManager?: TerminalManager
   canStart: boolean
+  onOutput?: (output: string) => void
 }
 
 async function createTerminalProcess({
@@ -30,12 +31,14 @@ async function createTerminalProcess({
   terminalManager,
   rootdir,
   envVars = {},
+  onOutput,
 }: {
   terminal: XTermTerminal,
   terminalManager: TerminalManager,
   cmd: string,
   rootdir?: string,
   envVars?: EnvVars,
+  onOutput?: (output: string) => void,
 }): Promise<TerminalProcess> {
   const {
     resolve: onExit,
@@ -43,7 +46,10 @@ async function createTerminalProcess({
   } = createDeferredPromise()
 
   const session = await terminalManager.createSession({
-    onData: data => terminal.write(data),
+    onData: data => {
+      terminal.write(data),
+        onOutput?.(data)
+    },
     onExit,
     size: {
       cols: terminal.cols,
@@ -83,6 +89,7 @@ async function createTerminalProcess({
 function useTerminalProcess({
   terminalManager,
   terminal,
+  onOutput,
 }: UseTerminalProcessOpts) {
   const [terminalProcess, setTerminalProcess] = useState<TerminalProcess>()
 
@@ -110,6 +117,7 @@ function useTerminalProcess({
       envVars,
       terminal,
       terminalManager,
+      onOutput,
     })
 
     termProcess.exited.finally(() => {
@@ -123,6 +131,7 @@ function useTerminalProcess({
     terminal,
     terminalManager,
     terminalProcess,
+    onOutput,
   ])
 
   return {

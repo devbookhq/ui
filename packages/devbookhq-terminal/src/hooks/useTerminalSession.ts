@@ -12,12 +12,14 @@ export interface UseTerminalSessionOpts {
   terminalManager?: TerminalManager
   canStart: boolean
   terminal?: XTermTerminal
+  onOutput?: (output: string) => void
 }
 
 function useTerminalSession({
   terminalManager,
   canStart,
   terminal,
+  onOutput,
 }: UseTerminalSessionOpts) {
   const [terminalSession, setTerminalSession] = useState<{ session: TerminalSession, toggleIO: (willBeEnabled: boolean) => void }>()
 
@@ -40,6 +42,7 @@ function useTerminalSession({
           onData: data => {
             if (!isEnabled) return
             terminal.write(data)
+            onOutput?.(data)
           },
           size: {
             cols: terminal.cols,
@@ -91,6 +94,7 @@ function useTerminalSession({
   }, [
     terminalManager,
     canStart,
+    onOutput,
     terminal,
   ])
 
