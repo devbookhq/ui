@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 
-import { App } from 'queries/types'
+import { App } from 'queries/db'
 
 import Header from './Header'
 

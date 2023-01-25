@@ -3,8 +3,8 @@ import {
   useState,
 } from 'react'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { listAppFeedback } from 'queries'
-import { AppFeedback, appsFeedbackTable } from 'queries/types'
+import { listAppFeedback } from 'queries/client'
+import { AppFeedback, appsFeedbackTable } from 'queries/db'
 
 function useAppFeedback(devbookAppID?: string) {
   const [feedback, setFeedback] = useState<Required<AppFeedback>[]>([])

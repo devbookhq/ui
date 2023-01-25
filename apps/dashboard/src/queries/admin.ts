@@ -1,8 +1,17 @@
 // Importing from this file in frontend code will throw runtime error.
 
-import { createClient, SupabaseClient as SupabaseAdmin } from '@supabase/supabase-js'
-import { Installation } from '@slack/oauth'
-import { AppFeedback, appsFeedbackTable, slackInstallationsTable } from './types'
+import type { Installation } from '@slack/oauth'
+import {
+  createClient,
+  SupabaseClient as SupabaseAdmin,
+} from '@supabase/supabase-js'
+
+import {
+  AppFeedback,
+  appsFeedbackTable,
+  InstallationDBEntry,
+  slackInstallationsTable
+} from './db'
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
@@ -10,13 +19,6 @@ export const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_ROLE_KEY || '',
 )
-
-interface InstallationDBEntry {
-  id: string
-  created_at?: Date
-  devbook_app_id?: string
-  installation_data: Installation
-}
 
 export async function saveAppFeedback(
   admin: SupabaseAdmin,

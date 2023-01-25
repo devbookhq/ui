@@ -2,7 +2,7 @@ import { ThumbsDown, ThumbsUp, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
 import Text from 'components/typography/Text'
-import { Rating } from 'queries/types'
+import { Rating } from 'queries/db'
 import { FeedEntry } from 'utils/analytics'
 
 export interface Props {

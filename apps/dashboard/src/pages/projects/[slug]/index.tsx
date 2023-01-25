@@ -4,8 +4,8 @@ import {
 } from '@supabase/supabase-auth-helpers/nextjs'
 import Analytics from 'components/Analytics'
 
-import { getApp } from 'queries'
-import { App } from 'queries/types'
+import { getApp } from 'queries/client'
+import { App } from 'queries/db'
 
 import { getID } from 'utils/app'
 

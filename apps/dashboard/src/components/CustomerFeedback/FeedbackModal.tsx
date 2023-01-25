@@ -7,7 +7,7 @@ import Modal from 'components/Modal'
 import Textarea from 'components/Textarea'
 import SpinnerIcon from 'components/icons/Spinner'
 
-import { insertUserFeedback } from 'queries'
+import { insertUserFeedback } from 'queries/client'
 
 export interface Props {
   isOpen: boolean

@@ -1,4 +1,4 @@
-import { AppFeedback, Rating } from 'queries/types'
+import { AppFeedback, Rating } from 'queries/db'
 
 import { FeedEntry } from './feed'
 

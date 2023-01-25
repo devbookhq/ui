@@ -16,10 +16,12 @@ function FeedbackFeed({ feed, guides }: Props) {
   const queryFilter = router.query.guide as string
 
   function changeFilter(guideID?: string) {
-    router.query.guide = guideID
     router.push({
       pathname: router.pathname,
-      query: router.query,
+      query: {
+        ...router.query,
+        guide: guideID,
+      },
     }, undefined, {
       shallow: true,
     })

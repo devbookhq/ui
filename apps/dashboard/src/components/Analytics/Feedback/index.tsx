@@ -4,9 +4,10 @@ import { useRouter } from 'next/router'
 
 import useAppFeedback from 'hooks/useAppFeedback'
 import { getFeedData, aggregateGuidesFeedback } from 'utils/analytics'
-import { App } from 'queries/types'
+import { App } from 'queries/db'
 import Text from 'components/typography/Text'
 import Spinner from 'components/icons/Spinner'
+import HeaderLink from 'components/Header/Navigation/HeaderLink'
 
 import GuidesOverview from './GuidesOverview'
 import FeedbackFeed from './Feed'
@@ -34,13 +35,6 @@ function Feedback({ app }: Props) {
     return [feedbackByGuide, feed]
   }, [feedback])
 
-  function changeView(view?: string) {
-    router.query.view = view
-    router.push(router, undefined, {
-      shallow: true,
-    })
-  }
-
   const router = useRouter()
   const view = router.query.view || ''
 
@@ -49,23 +43,22 @@ function Feedback({ app }: Props) {
       <div className="pt-3 flex space-y-2 justify-between flex-col bg-white">
         <Text text={app.title} size={Text.size.S1} className="px-4" />
         <div
-          className={clsx('flex border-b border-slate-200 px-4 space-x-4')}
+          className={clsx('flex border-b border-slate-200 px-4 space-x-2')}
         >
           {views.map(v => (
-            <div
-              className="group relative flex justify-center pb-3 cursor-pointer group"
+            <HeaderLink
+              active={v.value === view}
               key={v.label}
-              onClick={() => changeView(v.value)}
-            >
-              <Text
-                className={clsx('transition-all group-hover:text-green-800', { 'text-green-800': v.value === view, 'text-slate-400': v.value !== view })}
-                size={Text.size.S2}
-                text={v.label}
-              />
-              <div
-                className={clsx({ 'border-green-800': v.value === view, 'border-transparent': v.value !== view }, 'absolute bottom-0 -mb-px w-full border-b transition-all')}
-              />
-            </div>
+              title={v.label}
+              href={{
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  view: v.value,
+                },
+              }}
+              shallow
+            />
           ))}
         </div>
       </div>

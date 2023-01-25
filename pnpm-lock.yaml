@@ -40,6 +40,7 @@ importers:
       next: 13.1.5
       postcss: ^8.4.21
       postcss-import: ^15.1.0
+      posthog-js: ^1.40.2
       randomcolor: ^0.6.2
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -59,6 +60,7 @@ importers:
       lodash.debounce: 4.0.8
       lucide-react: 0.105.0_react@18.2.0
       next: 13.1.5_biqbaboplfbrettd7655fr4n2y
+      posthog-js: 1.40.2
       randomcolor: 0.6.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1431,6 +1433,11 @@ packages:
 
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
+
+  /@sentry/types/7.22.0:
+    resolution: {integrity: sha512-LhCL+wb1Jch+OesB2CIt6xpfO1Ab6CRvoNYRRzVumWPLns1T3ZJkarYfhbLaOEIb38EIbPgREdxn2AJT560U4Q==}
+    engines: {node: '>=8'}
+    dev: false
 
   /@seratch_/bolt-http-runner/1.0.3:
     resolution: {integrity: sha512-c4v6oSL83vjciDy2O+Nz2MJ6AKMKAuW8x7iiFSk7dN+6Ib2EGsVacQ0h1xUs/y1onC5MLgKbhZjzaNf9zMaFbA==}
@@ -3954,6 +3961,10 @@ packages:
     resolution: {integrity: sha512-WtySTkS4OKev5JtpHXnib4Gxiurzh5NCGvWrFaZ34m6JehfTUhKZvn9njTfw48t6JumVQOmrKqpmGcdwxnhqBQ==}
     dependencies:
       format: 0.2.2
+    dev: false
+
+  /fflate/0.4.8:
+    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
     dev: false
 
   /file-entry-cache/6.0.1:
@@ -6647,6 +6658,14 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
+  /posthog-js/1.40.2:
+    resolution: {integrity: sha512-jVq/g5J/339u2uHulfpTR57iyG8xmbSKpB9xtbEqp5gQpr/eu0P4OAdfye12tsjm8IB3+7RR/SDArQ7PI/m6Yg==}
+    dependencies:
+      '@sentry/types': 7.22.0
+      fflate: 0.4.8
+      rrweb-snapshot: 1.1.14
+    dev: false
+
   /preferred-pm/3.0.3:
     resolution: {integrity: sha512-+wZgbxNES/KlJs9q40F/1sfOd/j7f1O9JaHcW5Dsn3aUUOZg3L2bjpVUcKV2jvtElYfoTuQiNeMfQJ4kwUAhCQ==}
     engines: {node: '>=10'}
@@ -7052,6 +7071,10 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+    dev: false
+
+  /rrweb-snapshot/1.1.14:
+    resolution: {integrity: sha512-eP5pirNjP5+GewQfcOQY4uBiDnpqxNRc65yKPW0eSoU1XamDfc4M8oqpXGMyUyvLyxFDB0q0+DChuxxiU2FXBQ==}
     dev: false
 
   /run-parallel/1.2.0:

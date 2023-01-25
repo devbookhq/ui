@@ -1,4 +1,4 @@
-import { App } from 'queries/types'
+import { App } from 'queries/db'
 
 import Feedback from './Feedback'
 

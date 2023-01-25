@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/router'
 
-import { App } from 'queries/types'
+import { App } from 'queries/db'
 import { getSlug } from 'utils/app'
 
 import HeaderLink from './HeaderLink'
@@ -15,7 +15,6 @@ function Navigation({ app }: Props) {
 
   return (
     <div className="flex items-center space-x-2">
-
       <HeaderLink
         active={router.pathname === '/projects'}
         href="/projects"

@@ -1,7 +1,12 @@
 import { App, LogLevel } from '@slack/bolt'
 import { ClearStateStore, InstallationStore } from '@slack/oauth'
 import { AppRunner } from '@seratch_/bolt-http-runner'
-import { deleteInstallation, getInstallation, setInstallation, supabaseAdmin } from 'queries/supabaseAdmin'
+import {
+  deleteInstallation,
+  getInstallation,
+  setInstallation,
+  supabaseAdmin,
+} from 'queries/admin'
 
 const installationStore: InstallationStore = {
   storeInstallation: async (installation) => {

@@ -1,9 +1,13 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-import { App, UserFeedback, AppFeedback, appsFeedbackTable } from './types'
-
-const appsTable = 'apps'
-const userFeedbackTable = 'user_feedback'
+import {
+  App,
+  UserFeedback,
+  AppFeedback,
+  appsFeedbackTable,
+  appsTable,
+  userFeedbackTable,
+} from './db'
 
 export async function getApps(client: SupabaseClient, userID: string) {
   const { data, error } = await client

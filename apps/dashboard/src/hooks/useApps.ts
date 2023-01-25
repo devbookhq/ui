@@ -1,8 +1,8 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { useEffect, useState } from 'react'
 
-import { getApps } from 'queries'
-import { App } from 'queries/types'
+import { getApps } from 'queries/client'
+import { App } from 'queries/db'
 
 function useApps(userID?: string) {
   const [apps, setApps] = useState<Pick<App, 'id' | 'title' | 'created_at'>[]>([])

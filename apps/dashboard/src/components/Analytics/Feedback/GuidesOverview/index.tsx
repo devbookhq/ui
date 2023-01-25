@@ -23,7 +23,6 @@ function GuidesOverview({ guides }: Props) {
   const config = useMemo(() => ({ order, column }), [order, column])
   const setConfig = useCallback<(c: SetConfig) => any>((c) => {
     const newConfig = c(config)
-
     router.push({
       pathname: router.pathname,
       query: {

@@ -1,15 +1,14 @@
+import type { Installation } from '@slack/oauth'
+
 export const appsFeedbackTable = 'apps_feedback'
 export const slackInstallationsTable = 'slack_installations'
+export const appsTable = 'apps'
+export const userFeedbackTable = 'user_feedback'
 
 export interface UserFeedback {
   user_id: string
   created_at: string
   feedback: string
-}
-
-export interface ErrorRes {
-  statusCode: number
-  message: string
 }
 
 export interface App {
@@ -38,4 +37,9 @@ export interface AppFeedback {
   }
 }
 
-export type AppTemplate = Omit<App, 'created_at'>
+export interface InstallationDBEntry {
+  id: string
+  created_at?: Date
+  devbook_app_id?: string
+  installation_data: Installation
+}

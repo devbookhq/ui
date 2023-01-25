@@ -7,10 +7,10 @@ import {
   supabaseAdmin,
   saveAppFeedback,
   getInstallationsByAppID,
-} from 'queries/supabaseAdmin'
+} from 'queries/admin'
 import {
   AppFeedback,
-} from 'queries/types'
+} from 'queries/db'
 import { getGuideName } from 'utils/analytics/feedback'
 
 function getRatingEmoji(feedback: AppFeedback, label?: boolean) {
@@ -34,7 +34,6 @@ function getTitle(feedback: AppFeedback) {
   }
   return ''
 }
-
 
 function createFeedbackMessage(feedback: AppFeedback) {
   const blocks: (Block | KnownBlock)[] = [
