@@ -15,16 +15,6 @@ export interface Props {
 function GuidesOverview({ guides }: Props) {
   const router = useRouter()
 
-  function checkGuideFeedback(guideID: string) {
-    router.query.guide = guideID
-    router.query.view = 'feedback'
-    router.push({
-      pathname: router.pathname,
-      query: router.query,
-    }, undefined, {
-      shallow: true,
-    })
-  }
   const [config, setConfig] = useState<SortingConfig>({
     order: SortOrder.Descending,
     column: 'upvotes',
