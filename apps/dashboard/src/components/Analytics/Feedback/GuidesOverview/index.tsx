@@ -163,7 +163,7 @@ function GuidesOverview({ guides }: Props) {
                     }
                   </td>
                   <td className="p-3">
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-1">
                       <Text text={g.userMessages.length.toString()} />
                       {g.feed.some(f => 'text' in f && f.isFromToday)
                         ? <Text
