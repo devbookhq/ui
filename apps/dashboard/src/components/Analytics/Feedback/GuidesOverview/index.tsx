@@ -1,4 +1,4 @@
-import Button from 'components/Button'
+import clsx from 'clsx'
 import Text from 'components/typography/Text'
 import { ExternalLink, ThumbsDown, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
@@ -175,19 +175,38 @@ function GuidesOverview({ guides }: Props) {
                     </div>
                   </td>
                   <td className="">
-                    <Button
-                      onClick={() => checkGuideFeedback(g.id)}
-                      text="See Feedback"
-                      className="
-                      float-right
-                      mr-3
-                      bg-white
-                      flex
-                      whitespace-nowrap
-                      group
-                      space-x-1
-                    "
-                    />
+                    <Link
+                      href={{
+                        pathname: router.pathname,
+                        query: {
+                          ...router.query,
+                          guide: g.id,
+                          view: 'feedback',
+                        },
+                      }}
+                      className={clsx(
+                        'float-right',
+                        'mr-3',
+                        'bg-white',
+                        'flex',
+                        'whitespace-nowrap',
+                        'group',
+                        'space-x-1',
+                        'items-center',
+                        'justify-center',
+                        'transition-all',
+                        'rounded',
+                        'border',
+                        'py-1.5',
+                        'px-3',
+                        'border-slate-200',
+                        'hover:border-green-800',
+                        'hover:text-green-800',
+                      )}
+                      shallow
+                    >
+                      <Text text="See Feedback" size={Text.size.S3} />
+                    </Link>
                   </td>
                 </tr>
               ))}
