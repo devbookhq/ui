@@ -64,7 +64,7 @@ function Feedback({ app }: Props) {
                 text={v.label}
               />
               <div
-                className={clsx({ 'border-green-800': v.value === view, 'border-transparent': v.value !== view }, 'absolute bottom-0 -mb-px w-full rounded-t border-b-2 transition-all')}
+                className={clsx({ 'border-green-800': v.value === view, 'border-transparent': v.value !== view }, 'absolute bottom-0 -mb-px w-full border-b transition-all')}
               />
             </div>
           ))}

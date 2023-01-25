@@ -9,7 +9,11 @@ export interface Props {
   href: UrlObject | string
 }
 
-function HeaderLink({ active, title, href }: Props) {
+function HeaderLink({
+  active,
+  title,
+  href,
+}: Props) {
   return (
     <div className="relative flex flex-1 flex-col">
       <TitleLink
@@ -22,9 +26,9 @@ function HeaderLink({ active, title, href }: Props) {
         shallow
       />
       <div
-        className={clsx('absolute bottom-0 -mb-px w-full border-b-2', {
+        className={clsx('absolute bottom-0 -mb-px w-full border-b', {
           'border-transparent': !active,
-          'rounded-t border-green-800': active,
+          'border-green-800': active,
         })}
       ></div>
     </div>
