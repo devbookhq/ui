@@ -66,11 +66,7 @@ function Feedback({ app }: Props) {
         {isLoading && <Spinner className="m-auto" />}
         {!isLoading &&
           <>
-            {!view &&
-              <>
-                <GuidesOverview guides={guidesFeedback} />
-              </>
-            }
+            {!view && <GuidesOverview guides={guidesFeedback} />}
             {view === 'feedback' && <FeedbackFeed feed={feed} guides={guidesFeedback} />}
           </>
         }
