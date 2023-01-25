@@ -4,9 +4,7 @@ import { MouseEvent, useEffect, useMemo, useState } from 'react'
 
 import SpinnerIcon from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
-
 import { getSlug } from 'utils/app'
-import { showErrorNotif } from 'utils/notification'
 
 export interface ItemSetup {
   id: string
@@ -61,7 +59,7 @@ function Item({ item, deleteItem }: Props) {
         await deleteItem()
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
-        showErrorNotif(`Error deleting item: ${msg}`)
+        console.error(`Error deleting item: ${msg}`)
       } finally {
         setIsDeleting(false)
       }

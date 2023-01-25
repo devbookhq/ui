@@ -6,10 +6,7 @@ import { useEffect } from 'react'
 import ItemList from 'components/ItemList'
 import SpinnerIcon from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
-
 import useApps from 'hooks/useApps'
-
-import { showErrorNotif } from 'utils/notification'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -22,7 +19,7 @@ function Projects() {
   useEffect(
     function checkAppError() {
       if (!csError) return
-      showErrorNotif(`Error retrieving apps: ${csError}`)
+      console.error(`Error retrieving apps: ${csError}`)
     },
     [csError],
   )
