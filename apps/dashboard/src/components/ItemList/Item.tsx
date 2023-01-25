@@ -61,7 +61,6 @@ function Item({ item, deleteItem }: Props) {
         await deleteItem()
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
-        console.error(msg)
         showErrorNotif(`Error deleting item: ${msg}`)
       } finally {
         setIsDeleting(false)

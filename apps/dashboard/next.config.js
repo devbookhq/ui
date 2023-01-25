@@ -7,7 +7,6 @@ const exportWrapper = process.env.ANALYZE
 module.exports = exportWrapper({
   reactStrictMode: true,
   swcMinify: true,
-  transpilePackages: [],
   images: {
     remotePatterns: [
       {
@@ -23,9 +22,6 @@ module.exports = exportWrapper({
       },
     }),
   },
-  experimental: {
-    esmExternals: 'loose',
-  },
   async redirects() {
     return [
       {
@@ -35,10 +31,4 @@ module.exports = exportWrapper({
       },
     ]
   },
-  webpack: config => ({
-    ...config,
-    experiments: {
-      ...config.experiments,
-    },
-  }),
 })

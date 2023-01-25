@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
+import { UrlObject } from 'url'
 
 import Button, { Variant } from 'components/Button'
-import { UrlObject } from 'url'
 
 interface Props {
   text: string
@@ -26,4 +26,5 @@ function ButtonLink({ className, text, href, variant = Variant.Outline, icon }: 
 }
 
 ButtonLink.variant = Variant
+
 export default ButtonLink

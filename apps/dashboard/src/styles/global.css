@@ -1,13 +1,9 @@
-@import 'react-toastify/dist/ReactToastify.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  /* Override react-toastify vars */
   :root {
-    --toastify-color-dark: #313034;
     color-scheme: light;
   }
 

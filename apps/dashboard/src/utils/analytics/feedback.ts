@@ -1,4 +1,5 @@
 import { AppFeedback, Rating } from 'queries/types'
+
 import { FeedEntry } from './feed'
 
 interface Feedback {
