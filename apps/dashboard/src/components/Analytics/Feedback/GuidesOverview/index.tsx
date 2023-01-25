@@ -154,7 +154,7 @@ function GuidesOverview({ guides }: Props) {
                   </td>
                   <td className="p-3">
                     <div className="flex space-x-1">
-                      <Text text={g.userMessages.length.toString()} />
+                      <Text text={g.userMessages.length.toString()} className="min-w-[24px]" />
                       {g.feed.some(f => 'text' in f && f.isFromToday)
                         ? <Text
                           text="(new in the last 24h)"
@@ -164,7 +164,7 @@ function GuidesOverview({ guides }: Props) {
                         : null}
                     </div>
                   </td>
-                  <td className="">
+                  <td>
                     <Link
                       href={{
                         pathname: router.pathname,
