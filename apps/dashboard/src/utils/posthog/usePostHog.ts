@@ -2,20 +2,31 @@ import { useRouter } from 'next/router'
 import posthog from 'posthog-js'
 import { useEffect } from 'react'
 
+export const initPostHog = () => {
+  if (typeof window !== 'undefined') {
+    posthog.init('phc_6XVN4bgb5toqA4ZqbBDBDkLAiNR3K5MwS9dfTW9ZOXP', { api_host: 'https://app.posthog.com' })
+  }
+
+  return posthog
+}
+
 export function usePostHog() {
   const router = useRouter()
 
   useEffect(() => {
-    // if (process.env.NODE_ENV === 'development') return
-    // This is a public key
-    posthog.init('phc_Gs5E0b4K2ANz8GyCkWEZxy6XEtG40yF5PMiEHAzwEWE', { api_host: 'https://app.posthog.com' })
+    // Init for auto capturing
+    const posthog = initPostHog()
 
-    // Track page views
-    const handleRouteChange = () => posthog.capture('$pageview')
+    const handleRouteChange = () => {
+      if (typeof window !== 'undefined') {
+        posthog.capture('$pageview')
+      }
+    }
+
     router.events.on('routeChangeComplete', handleRouteChange)
 
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange)
     }
-  }, [router])
+  }, [router.events])
 }

@@ -2,13 +2,13 @@ import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { ClipboardCheck, ClipboardCopy, Settings as SettingsIcon } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { posthog } from 'posthog-js'
 
 import Button from 'components/Button'
 import Spinner from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
 import useAPIKey from 'hooks/useAPIKey'
 import useExpiringState from 'hooks/useExpiringState'
+import { initPostHog } from 'utils/posthog/usePostHog'
 
 export const getServerSideProps = withPageAuth({
   redirectTo: '/signin',
@@ -29,9 +29,9 @@ function Settings() {
   }
 
   function handleSignOut() {
-    // if (process.env.NODE_ENV !== 'development') {
-      posthog.reset()
-    // }
+    const posthog = initPostHog()
+    posthog.reset()
+
     router.push('/api/auth/logout')
   }
 

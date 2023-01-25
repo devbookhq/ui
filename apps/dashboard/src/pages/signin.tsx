@@ -5,7 +5,8 @@ import { useEffect } from 'react'
 import AuthForm from 'components/AuthForm'
 import TitleLink from 'components/TitleLink'
 import SpinnerIcon from 'components/icons/Spinner'
-import { posthog } from 'posthog-js'
+import { initPostHog } from 'utils/posthog/usePostHog'
+
 
 function SignIn() {
   const router = useRouter()
@@ -14,14 +15,13 @@ function SignIn() {
 
   useEffect(
     function redirect() {
-      if (user) {
-        // if (process.env.NODE_ENV !== 'development') {
-        posthog.identify(user.id, {
-          email: user.email,
-        })
-        // }
-        router.replace('/')
-      }
+      if (!user) return
+
+      const posthog = initPostHog()
+      posthog.identify(user.email, {
+        email: user.email,
+      })
+      router.replace('/')
     },
     [user, router],
   )
