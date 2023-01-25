@@ -6,6 +6,7 @@ import Button from 'components/Button'
 import Text from 'components/typography/Text'
 
 import SpinnerIcon from './icons/Spinner'
+import { posthog } from 'posthog-js'
 
 export enum AuthFormType {
   SignIn,
@@ -58,7 +59,7 @@ function AuthForm({ authType }: Props) {
       return
     }
 
-    const { error } =
+    const { error, user } =
       authType === AuthFormType.SignUp
         ? await supabaseClient.auth.signUp({
           email,
@@ -69,6 +70,7 @@ function AuthForm({ authType }: Props) {
           password,
         })
 
+
     if (error) {
       emailRef.current?.focus()
       setErrMessage(error.message)
@@ -78,6 +80,9 @@ function AuthForm({ authType }: Props) {
     }
 
     setIsLoading(false)
+    posthog.identify(user?.email, {
+      email: user?.email,
+    })
   }
 
   const title = authType === AuthFormType.SignUp ? 'Create a new account' : 'Sign in'

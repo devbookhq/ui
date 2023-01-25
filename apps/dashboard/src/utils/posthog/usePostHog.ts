@@ -1,22 +1,16 @@
 import { useRouter } from 'next/router'
-import posthog from 'posthog-js'
 import { useEffect } from 'react'
+import posthog from 'posthog-js'
 
-export const initPostHog = () => {
-  if (typeof window !== 'undefined') {
-    posthog.init('phc_6XVN4bgb5toqA4ZqbBDBDkLAiNR3K5MwS9dfTW9ZOXP', { api_host: 'https://app.posthog.com' })
-  }
-
-  return posthog
+if (typeof window !== 'undefined') {
+  if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) throw new Error('Missing "NEXT_PUBLIC_POSTHOG_KEY"')
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, { api_host: 'https://app.posthog.com' })
 }
 
 export function usePostHog() {
   const router = useRouter()
 
   useEffect(() => {
-    // Init for auto capturing
-    const posthog = initPostHog()
-
     const handleRouteChange = () => {
       if (typeof window !== 'undefined') {
         posthog.capture('$pageview')

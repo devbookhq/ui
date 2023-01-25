@@ -19,6 +19,7 @@
         "^build"
       ],
       "env": [
+        "NEXT_PUBLIC_POSTHOG_KEY",
         "NEXT_PUBLIC_SUPABASE_URL",
         "SUPABASE_SERVICE_ROLE_KEY",
         "SLACK_CLIENT_SECRET",

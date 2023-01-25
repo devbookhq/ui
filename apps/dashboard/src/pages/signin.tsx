@@ -1,11 +1,10 @@
 import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 import AuthForm from 'components/AuthForm'
 import TitleLink from 'components/TitleLink'
 import SpinnerIcon from 'components/icons/Spinner'
-import { initPostHog } from 'utils/posthog/usePostHog'
+import { useEffect } from 'react'
 
 
 function SignIn() {
@@ -16,11 +15,6 @@ function SignIn() {
   useEffect(
     function redirect() {
       if (!user) return
-
-      const posthog = initPostHog()
-      posthog.identify(user.email, {
-        email: user.email,
-      })
       router.replace('/')
     },
     [user, router],

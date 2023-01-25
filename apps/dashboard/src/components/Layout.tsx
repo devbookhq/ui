@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
+import { useUser } from '@supabase/supabase-auth-helpers/react'
+import { posthog } from 'posthog-js'
 
 import { App } from 'queries/db'
 
 import Header from './Header'
-import { useUser } from '@supabase/supabase-auth-helpers/react'
-import { initPostHog } from 'utils/posthog/usePostHog'
 
 export interface PageMeta {
   title: string
@@ -39,8 +39,6 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
 
   useEffect(function identify() {
     if (user.user?.email) {
-      const posthog = initPostHog()
-
       posthog.identify(user.user.email, {
         email: user.user.email,
       })
