@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
+import Button from 'components/Button'
 
 import FeedbackModal from './FeedbackModal'
-import Button from 'components/Button'
 
 function Feedback() {
   const [isFeedbackVisible, setIsFeedbackVisible] = useState(false)

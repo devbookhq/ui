@@ -1,12 +1,14 @@
 import clsx from 'clsx'
-import Text from 'components/typography/Text'
 import { ExternalLink, ThumbsDown, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useCallback, useMemo } from 'react'
+
+import Text from 'components/typography/Text'
 import { GuideFeedback } from 'utils/analytics'
+
 import InfoPanel from './InfoPanel'
-import SortControl, { SortOrder, applySorting, SortingConfig } from './SortControl'
+import SortControl, { SortOrder, applySorting, Column, SetConfig } from './SortControl'
 
 export interface Props {
   guides: GuideFeedback[]
@@ -15,12 +17,25 @@ export interface Props {
 function GuidesOverview({ guides }: Props) {
   const router = useRouter()
 
-  const [config, setConfig] = useState<SortingConfig>({
-    order: SortOrder.Descending,
-    column: 'upvotes',
-  })
+  const order: SortOrder = router.query.order as any as SortOrder || SortOrder.Descending
+  const column: Column = router.query.column as Column || 'upvotes'
 
-  const sortedGuides = applySorting(guides, config)
+  const config = useMemo(() => ({ order, column }), [order, column])
+  const setConfig = useCallback<(c: SetConfig) => any>((c) => {
+    const newConfig = c(config)
+
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        ...newConfig,
+      },
+    }, undefined, {
+      shallow: true,
+    })
+  }, [config, router])
+
+  const sortedGuides = applySorting(guides, { order, column })
 
   return (
     <div className="scroller overflow-auto flex flex-1 justify-center p-4 items-start">

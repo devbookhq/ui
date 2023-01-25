@@ -1,4 +1,5 @@
 import { App } from 'queries/types'
+
 import Feedback from './Feedback'
 
 export interface Props {

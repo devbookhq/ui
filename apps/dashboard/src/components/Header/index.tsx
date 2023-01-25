@@ -3,9 +3,9 @@ import Link from 'next/link'
 
 import UserPortrait from 'components/UserPortrait'
 import { App } from 'queries/types'
+import CustomerFeedback from 'components/CustomerFeedback'
 
 import Navigation from './Navigation'
-import Feedback from 'components/Feedback'
 
 export interface Props {
   app?: App
@@ -18,7 +18,7 @@ function Header({ app }: Props) {
     <div className="flex items-center justify-between border-b bg-white border-slate-200 px-3">
       <Navigation app={app} />
       <div className="flex items-center space-x-4">
-        <Feedback />
+        <CustomerFeedback />
         <Link
           href={{
             pathname: '/settings',

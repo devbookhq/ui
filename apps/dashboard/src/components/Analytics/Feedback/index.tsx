@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
+import clsx from 'clsx'
+import { useRouter } from 'next/router'
 
 import useAppFeedback from 'hooks/useAppFeedback'
 import { getFeedData, aggregateGuidesFeedback } from 'utils/analytics'
 import { App } from 'queries/types'
 import Text from 'components/typography/Text'
+import Spinner from 'components/icons/Spinner'
 
 import GuidesOverview from './GuidesOverview'
-import Spinner from 'components/icons/Spinner'
 import FeedbackFeed from './Feed'
-import { useRouter } from 'next/router'
-import clsx from 'clsx'
 
 export interface Props {
   app: App

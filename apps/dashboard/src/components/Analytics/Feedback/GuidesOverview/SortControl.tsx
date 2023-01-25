@@ -1,10 +1,11 @@
 import { SortAsc, SortDesc } from 'lucide-react'
 import { ReactNode } from 'react'
+
 import { GuideFeedback } from 'utils/analytics'
 
 export enum SortOrder {
-  Ascending,
-  Descending,
+  Ascending = 'asc',
+  Descending = 'desc',
 }
 
 export interface SortingConfig {
@@ -27,9 +28,9 @@ export function applySorting(guides: GuideFeedback[], config?: SortingConfig) {
   })
 }
 
-type Column = keyof Pick<GuideFeedback, 'downvotes' | 'ratingPercentage' | 'totalMessages' | 'upvotes'>
+export type Column = keyof Pick<GuideFeedback, 'downvotes' | 'ratingPercentage' | 'totalMessages' | 'upvotes'>
 
-type SetConfig = (c: SortingConfig) => SortingConfig
+export type SetConfig = (c: SortingConfig) => SortingConfig
 
 export interface Props {
   setConfig: (s: SetConfig) => any
