@@ -15,14 +15,13 @@ export interface Props {
   app: App
 }
 
-
 const views = [
   {
     label: 'Overview',
     value: '',
   },
   {
-    label: 'Feedback',
+    label: 'User Feedback',
     value: 'feedback',
   }
 ]
