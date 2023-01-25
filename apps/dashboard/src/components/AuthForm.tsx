@@ -102,7 +102,9 @@ function AuthForm({ authType }: Props) {
         // eslint-disable-next-line tailwindcss/no-custom-classname
         className="
         flex
-        w-120
+        max-w-120
+        md:w-120
+
         flex-1
         flex-col
         items-center
@@ -120,7 +122,7 @@ function AuthForm({ authType }: Props) {
           size={Text.size.S1}
           text={title}
         />
-        <div className="flex w-full flex-col space-y-8 px-16">
+        <div className="flex w-full flex-col space-y-8 md:px-16 px-8">
           <div className="flex min-w-0 flex-col space-y-2">
             <input
               autoCapitalize="off"

@@ -9,15 +9,19 @@ function InfoPanel({ guides }: Props) {
   const totalRating = calculateTotalRating(guides)
 
   return (
-    <div className="flex flex-1 px-3 py-2 border rounded justify-between max-w-[900px] min-w-[200px] bg-slate-50">
+    <div className="flex flex-1 px-3 py-2 border rounded justify-between bg-slate-50 space-x-6">
       {totalRating &&
         <>
           <div className="flex flex-col">
-            <Text text="Overall rating" className="text-slate-400" />
+            <Text
+              text="Overall rating"
+              className="text-slate-400"
+              size={Text.size.S3}
+            />
             {totalRating.rating >= 0.9 &&
               <Text
                 text={(totalRating.rating * 100).toPrecision(3) + '%'}
-                className="text-green-700 text-xl"
+                className="text-green-500 text-xl"
               />
             }
             {totalRating.rating < 0.9 && totalRating.rating >= 0.7 &&
@@ -34,21 +38,33 @@ function InfoPanel({ guides }: Props) {
             }
           </div>
           <div className="flex flex-col">
-            <Text text="Total upvotes" className="text-slate-400" />
+            <Text
+              text="Total upvotes"
+              className="text-slate-400"
+              size={Text.size.S3}
+            />
             <Text
               text={totalRating.upvotes.toString()}
               className="text-green-500 text-xl"
             />
           </div>
           <div className="flex flex-col">
-            <Text text="Total downvotes" className="text-slate-400" />
+            <Text
+              text="Total downvotes"
+              className="text-slate-400"
+              size={Text.size.S3}
+            />
             <Text
               text={totalRating.downvotes.toString()}
               className="text-red-500 text-xl"
             />
           </div>
           <div className="flex flex-col">
-            <Text text="Total messages" className="text-slate-400" />
+            <Text
+              text="Total messages"
+              className="text-slate-400"
+              size={Text.size.S3}
+            />
             <Text
               text={totalRating.messages.toString()}
               className="text-slate-500 text-xl"

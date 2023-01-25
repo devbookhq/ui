@@ -38,24 +38,22 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
           <RadixSelect.ScrollUpButton />
           <RadixSelect.Viewport className="space-y-0.5">
             {items.map((i, idx, a) => (
-              <RadixSelect.Item
-                // Hackishly select "All" element
-                className={clsx(
-                  {
-                    'py-2 border-y': !i.value && idx !== a.length && idx !== 0,
-                    'py-2 border-t': !i.value && idx === a.length - 1,
-                    'py-2 border-b': !i.value && idx === 0,
-                  },
-                  'group flex cursor-pointer relative hover:bg-green-50 justify-between space-x-1 px-3 py-1.5 text-xs text-slate-600 transition-all hover:text-green-800 outline-none border-slate-200'
-                )}
-                key={i.label}
-                value={i.label}
-              >
-                <RadixSelect.ItemText className="">{i.label}</RadixSelect.ItemText>
-                <RadixSelect.ItemIndicator>
-                  <Check size="16px" />
-                </RadixSelect.ItemIndicator>
-              </RadixSelect.Item>
+              <>
+                {!i.value && !i.value && idx !== 0 && <div className="border-b" />}
+                <RadixSelect.Item
+                  className={clsx(
+                    'group flex rounded cursor-pointer relative hover:bg-green-50 justify-between space-x-1 px-3 py-1.5 text-xs text-slate-600 transition-all hover:text-green-800 outline-none border-slate-200'
+                  )}
+                  key={i.label}
+                  value={i.label}
+                >
+                  <RadixSelect.ItemText className="">{i.label}</RadixSelect.ItemText>
+                  <RadixSelect.ItemIndicator>
+                    <Check size="16px" />
+                  </RadixSelect.ItemIndicator>
+                </RadixSelect.Item>
+                {!i.value && idx !== a.length - 1 && <div className="border-b" />}
+              </>
             ))}
           </RadixSelect.Viewport>
           <RadixSelect.ScrollDownButton />

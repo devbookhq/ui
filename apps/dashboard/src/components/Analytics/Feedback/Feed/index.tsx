@@ -35,76 +35,86 @@ function FeedbackFeed({ feed, guides }: Props) {
   const queryGuideTitle = feed.find(f => f.guide?.id === queryFilter)?.guide?.title
 
   return (
-    <>
-      <div className="flex-col overflow-hidden flex flex-1 justify-center max-w-[800px] relative">
-        <div className="
-      flex
-      flex-col
-      scroller
-      flex-1
-      overflow-auto
-      space-y-4
-      max-w-[800px]
-      min-w-[300px]
-      pb-20
-      pt-4
-      px-4
-      "
-        >
-          <FeedDivider text={`Last day (${todayFeedback.length})`} />
-          {todayFeedback.map(f => (
-            <Message message={f} key={f.timestamp.toString()} />
-          ))}
-          {todayFeedback.length == 0 &&
-            <Text
-              text="No messages yet"
-              className="text-slate-400 self-center py-2"
-            />
-          }
-          {yesterdayFeedback.length > 0 &&
-            <FeedDivider text={`Yesterday (${yesterdayFeedback.length})`} />
-          }
-          {yesterdayFeedback.map(f => (
-            <Message
-              message={f}
-              key={f.timestamp.toString()}
-            />
-          ))}
-          {olderFeedback.length > 0 &&
-            <FeedDivider
-              text={`Older (${olderFeedback.length})`}
-            />}
-          {olderFeedback.map(f => (
-            <Message
-              message={f}
-              key={f.timestamp.toString()}
-            />
-          ))}
+    <div className="flex flex-col flex-1">
+      <div className="flex flex-col bg-white border-b">
+        <div
+          className="
+              space-x-1
+              md:w-[800px]
+              md:self-center
+              py-1
+              px-4
+              justify-end
+              flex-1
+              flex
+            ">
+          <Text
+            text="Feedback from"
+            size={Text.size.S3}
+            className="text-slate-400"
+          />
+          <Select
+            items={[{
+              label: 'All guides',
+              value: undefined,
+            }, ...guides.map(g => ({
+              value: g,
+              label: g.title,
+            })).sort((a, b) => {
+              return a.label.localeCompare(b.label)
+            })]}
+            onSelect={(i) => {
+              changeFilter(i?.value?.id)
+            }}
+            selectedItemLabel={queryGuideTitle || defaultGuide}
+          />
         </div>
       </div>
-      <div className="lg:left-6 lg:top-3 lg:right-auto absolute rounded bottom-4 right-3 items-baseline space-y-1">
-        <Text
-          text="Show feedback from"
-          size={Text.size.S3}
-          className="text-slate-400 flex items-baseline"
-        />
-        <Select
-          items={[{
-            label: 'All guides',
-            value: undefined,
-          }, ...guides.map(g => ({
-            value: g,
-            label: g.title,
-          })).sort((a, b) => {
-            return a.label.localeCompare(b.label)
-          })]}
-          onSelect={(i) => {
-            changeFilter(i?.value?.id)
-          }}
-          selectedItemLabel={queryGuideTitle || defaultGuide}
-        />
+      <div className="
+          flex
+          md:w-[800px]
+          md:self-center
+          flex-col
+          scroller
+          flex-1
+          overflow-auto
+          space-y-3
+          pb-20
+          pt-4
+
+          "
+      >
+        <FeedDivider text={`Last day (${todayFeedback.length})`} />
+        {todayFeedback.map(f => (
+          <Message message={f} key={f.timestamp.toString()} />
+        ))}
+        {todayFeedback.length == 0 &&
+          <Text
+            text="No messages yet"
+            className="text-slate-400 self-center py-2"
+          />
+        }
+        {yesterdayFeedback.length > 0 &&
+          <FeedDivider text={`Yesterday (${yesterdayFeedback.length})`} />
+        }
+        {yesterdayFeedback.map(f => (
+          <Message
+            message={f}
+            key={f.timestamp.toString()}
+          />
+        ))}
+        {olderFeedback.length > 0 &&
+          <FeedDivider
+            text={`Older (${olderFeedback.length})`}
+          />}
+        {olderFeedback.map(f => (
+          <Message
+            message={f}
+            key={f.timestamp.toString()}
+          />
+        ))}
       </div>
-    </>
+    </div>
   )
 }
 

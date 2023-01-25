@@ -24,13 +24,14 @@ function AppList({ items, deleteItem }: Props) {
       max-w-[800px]
       flex-1
       flex-col
+      space-y-2
       overflow-auto
-      pr-4
+      pr-2
     "
     >
       {sorted.map(i => (
         <div
-          className="flex flex-col px-1"
+          className="flex flex-col space-y-2"
           key={i.id}
         >
           <Item item={i} deleteItem={deleteItem ? () => deleteItem(i.id) : undefined} />

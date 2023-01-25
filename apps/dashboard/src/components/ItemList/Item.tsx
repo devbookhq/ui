@@ -73,7 +73,7 @@ function Item({ item, deleteItem }: Props) {
 
   return (
     <Link
-      className="group flex items-center justify-between space-x-4 rounded px-4 py-3"
+      className="group flex items-center justify-between space-x-4 rounded"
       href={{
         pathname: item.path,
         query: {

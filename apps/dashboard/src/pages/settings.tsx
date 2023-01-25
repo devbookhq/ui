@@ -32,14 +32,14 @@ function Settings() {
       flex
       flex-1
       flex-col
-      space-y-8
+      space-y-4
       space-x-0
       overflow-hidden
-      p-12
+      p-8
       md:flex-row
       md:space-y-0
       md:space-x-8
-      md:p-16
+      md:p-12
     "
     >
       <div className="flex items-start justify-start">

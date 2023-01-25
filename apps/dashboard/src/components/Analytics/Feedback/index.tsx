@@ -47,14 +47,14 @@ function Feedback({ app }: Props) {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="pt-4 flex space-y-2 justify-between flex-col bg-white">
+      <div className="pt-3 flex space-y-2 justify-between flex-col bg-white">
         <Text text={app.title} size={Text.size.S1} className="px-6" />
         <div
           className={clsx('flex border-b border-slate-200 px-6 space-x-4')}
         >
           {views.map(v => (
             <div
-              className="group relative flex justify-center py-3 cursor-pointer group"
+              className="group relative flex justify-center pb-3 cursor-pointer group"
               key={v.label}
               onClick={() => changeView(v.value)}
             >
@@ -70,7 +70,7 @@ function Feedback({ app }: Props) {
           ))}
         </div>
       </div>
-      <div className="overflow-hidden justify-center flex relative flex-1">
+      <div className="overflow-hidden justify-center flex flex-1">
         {isLoading && <Spinner className="m-auto" />}
         {!isLoading &&
           <>

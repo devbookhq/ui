@@ -33,16 +33,19 @@ function GuidesOverview({ guides }: Props) {
   const sortedGuides = applySorting(guides, config)
 
   return (
-    <div className="scroller overflow-auto flex flex-1 justify-center max-w-[950px] p-4 items-start">
-      <div className="flex flex-col flex-1 space-y-3">
-        <Text text="Guides without any rating aren't shown" size={Text.size.S3} className="text-slate-400 self-center" />
+    <div className="scroller overflow-auto flex flex-1 justify-center p-4 items-start">
+      <div className="flex flex-col flex-1 space-y-3 overflow-hidden max-w-[1100px]">
+        <Text
+          text="Guides without any rating aren't shown"
+          size={Text.size.S3}
+          className="text-slate-400 self-center"
+        />
         <InfoPanel guides={guides} />
         <div className="
             flex
             flex-col
             flex-1
-            max-w-[900px]
-            min-w-[200px]
+
             rounded
             scroller
             border-x
@@ -113,7 +116,7 @@ function GuidesOverview({ guides }: Props) {
             </thead>
             <tbody className="rounded-b">
               {sortedGuides.map(g => (
-                <tr className="bg-white border-b" key={g.id}>
+                <tr className="bg-white border-b hover:bg-slate-50/10" key={g.id}>
                   <th scope="row" className="p-3 font-medium whitespace-nowrap">
                     <Link
                       href={g.link || ''}
@@ -143,13 +146,13 @@ function GuidesOverview({ guides }: Props) {
                     {g.ratingPercentage >= 0.9 &&
                       <Text
                         text={(g.ratingPercentage * 100).toPrecision(3) + '%'}
-                        className="text-green-700"
+                        className="text-green-500"
                       />
                     }
                     {g.ratingPercentage < 0.9 && g.ratingPercentage >= 0.7 &&
                       <Text
                         text={(g.ratingPercentage * 100).toPrecision(3) + '%'}
-                        className="text-yellow-400"
+                        className="text-yellow-500"
                       />
                     }
                     {g.ratingPercentage < 0.7 &&
@@ -178,6 +181,7 @@ function GuidesOverview({ guides }: Props) {
                       className="
                       float-right
                       mr-3
+                      bg-white
                       flex
                       whitespace-nowrap
                       group
