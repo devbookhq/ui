@@ -29,7 +29,7 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
 
   const meta = {
     title: 'Dashboard | Devbook',
-    description: 'Devbook app',
+    description: 'Devbook Dashboard',
     cardImage: '/og.png',
     ...pageMeta,
   }
