@@ -15,32 +15,14 @@ function Navigation({ app }: Props) {
 
   return (
     <div className="flex items-center space-x-2">
-      {!app &&
-        <>
-          <HeaderLink
-            active={router.pathname === '/envs'}
-            href="/envs"
-            title="Envs"
-          />
-          <HeaderLink
-            active={router.pathname === '/projects'}
-            href="/projects"
-            title="Projects"
-          />
-        </>
-      }
+
+      <HeaderLink
+        active={router.pathname === '/projects'}
+        href="/projects"
+        title="Projects"
+      />
       {app && (
         <>
-          <HeaderLink
-            active={router.pathname === '/envs'}
-            href="/envs"
-            title="Envs"
-          />
-          <HeaderLink
-            active={router.pathname === '/projects'}
-            href="/projects"
-            title="Projects"
-          />
           <ChevronRight
             className="items-center text-slate-200"
             size="16px"

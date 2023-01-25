@@ -1,10 +1,9 @@
 import { SupabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 
-import { App, UserFeedback, Env, AppFeedback, appsFeedbackTable } from './types'
+import { App, UserFeedback, AppFeedback, appsFeedbackTable } from './types'
 
 const appsTable = 'apps'
 const userFeedbackTable = 'user_feedback'
-const envsTable = 'code_snippets'
 
 export async function getApps(client: SupabaseClient, userID: string) {
   const { data, error } = await client
@@ -26,16 +25,6 @@ export async function getApp(client: SupabaseClient, id: string) {
 
   if (error) throw error
   return data
-}
-
-export async function getEnvs(client: SupabaseClient, userID: string) {
-  const { data, error } = await client
-    .from<Env>(envsTable)
-    .select('*')
-    .eq('creator_id', userID)
-
-  if (error) throw error
-  return data || []
 }
 
 export async function insertUserFeedback(

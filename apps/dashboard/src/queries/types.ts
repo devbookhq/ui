@@ -21,14 +21,6 @@ export interface App {
   devbook_app_id?: string
 }
 
-export interface Env {
-  id: string
-  title: string
-  creator_id: string
-  created_at: string
-  template: string
-}
-
 export enum Rating {
   Upvote = 'up',
   Downvote = 'down',

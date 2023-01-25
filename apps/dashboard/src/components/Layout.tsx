@@ -20,7 +20,6 @@ interface Props {
 
 export default function Layout({ children, meta: pageMeta, app }: Props) {
   const router = useRouter()
-  const isEnvsDashboard = router.pathname === '/envs'
   const isProjectsDashboard = router.pathname === '/projects'
   const isProjectOpen = router.pathname === '/projects/[slug]'
   const isSettings = router.pathname === '/settings'
@@ -38,8 +37,6 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
     meta.title = 'Projects | Devbook'
   } else if (app && isProjectOpen) {
     meta.title = `${app.title} - Project | Devbook`
-  } else if (isEnvsDashboard) {
-    meta.title = 'Envs | Devbook'
   } else if (isSignIn) {
     meta.title = 'Sign In | Devbook'
   } else if (isSignUp) {
