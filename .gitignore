@@ -14,4 +14,4 @@ public/dist
 lsp-ws-proxy
 .vercel
 # Vale styles
-styles
+/vale
