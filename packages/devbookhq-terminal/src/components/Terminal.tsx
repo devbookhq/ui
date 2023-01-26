@@ -259,7 +259,14 @@ const Terminal = forwardRef<Handler, Props>(({
         hasUserInput = false
 
         // TODO: We want to add handling of multiline commands
-        const line = terminal.terminal.buffer.active.getLine(terminal.terminal.buffer.active.cursorY - 1)?.translateToString(true)
+
+        // console.log('buffer', {
+        //   length: terminal.terminal.buffer.normal.length,
+        //   base: terminal.terminal.buffer.normal.baseY,
+        //   cursor: terminal.terminal.buffer.normal.cursorY,
+        //   viewport: terminal.terminal.buffer.normal.viewportY,
+        // })
+        const line = terminal.terminal.buffer.normal.getLine(terminal.terminal.buffer.normal.cursorY + terminal.terminal.buffer.normal.baseY - 1)?.translateToString(true)
 
         if (line && line.length > 0) {
           onLine(line)
