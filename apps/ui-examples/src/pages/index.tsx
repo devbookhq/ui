@@ -70,7 +70,6 @@ function Index() {
   const session = useSession({
     codeSnippetID: 'spZC9ISdwrRS',
     inactivityTimeout: 0,
-    __stress: 30,
     // debug: true,
   })
 
@@ -161,7 +160,7 @@ function Index() {
           isPersistent
         />
       </div>
-      <CodeEditor
+      {/* <CodeEditor
         ref={editorRef}
         content={ts}
         onCopy={handleCopy}
@@ -178,7 +177,7 @@ function Index() {
         filename="/code/prisma/schema.prisma"
         languageClients={languageClients}
         supportedLanguages={languages}
-      />
+      /> */}
     </div>
   )
 }
