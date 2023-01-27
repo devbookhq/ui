@@ -1,0 +1,129 @@
+@import '@devbookhq/terminal/dist/index.css';
+@import './codemirror.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .scrollbar-gutter {
+    /* This prevents scrollbars from moving the content */
+    /* https://css-tricks.com/almanac/properties/s/scrollbar-gutter */
+    scrollbar-gutter:stable both-edges;
+  }
+
+  .autocomplete-scrollbar {
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      /* @apply bg-black-650; */
+      &:hover {
+        /* @apply bg-black-600; */
+      }
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background: transparent;
+    }
+  }
+}
+
+@layer base {
+  *,
+  *:before,
+  *:after {
+    @apply box-border;
+  }
+
+  html,
+  body {
+    @apply antialiased;
+    @apply overflow-hidden;
+    @apply h-full;
+    text-rendering: optimizeLegibility;
+    /* Root font size. 1rem = 16px. */
+    font-size: 16px;
+  }
+
+  #__next {
+    @apply lg:h-inherit;
+    /* @apply flex flex-col items-center; */
+  }
+
+  code {
+    @apply whitespace-pre-wrap;
+  }
+
+  h1 {
+    @apply text-2xl font-medium py-1;
+  }
+
+  h2 {
+    @apply text-xl font-medium py-0.5;
+  }
+
+  h3 {
+    @apply text-base font-medium;
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #212024 inset;
+}
+
+.__dbk__container.Horizontal {
+  overflow: visible !important;
+}
+
+/* Override some code editor CSS
+.cm-editor {
+  .cm-activeLine.cm-line {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+
+  .cm-gutter.cm-gutter-lint {
+    .cm-gutterElement.cm-activeLineGutter {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+  }
+} */
+
+
+/* Guide Instructions Scrollbar */
+/* .instructions-scrollbar::-webkit-scrollbar-track
+{
+  border-radius: 10px;
+  background-color: transparent;
+} */
+
+.instructions-scrollbar::-webkit-scrollbar
+{
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+.instructions-scrollbar::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  background-color: #718096;
+}
+/* ======================== */

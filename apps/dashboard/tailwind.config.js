@@ -23,6 +23,16 @@ module.exports = {
           800: '#20BC69',
         },
       },
+      height: { inherit: 'inherit' },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-15deg)' },
+          '50%': { transform: 'rotate(15deg)' },
+        },
+      },
+      animation: { wiggle: 'wiggle 0.3s ease 2' },
+      overflow: { 'auto-important': 'auto !important' },
+      flex: { 'guide-card': '1 1 30%' },
     },
   },
   plugins: [require('tailwindcss-radix')()],

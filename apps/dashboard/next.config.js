@@ -7,6 +7,9 @@ const exportWrapper = process.env.ANALYZE
 module.exports = exportWrapper({
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    esmExternals: 'loose',
+  },
   images: {
     remotePatterns: [
       {

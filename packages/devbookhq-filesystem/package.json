@@ -1,7 +1,7 @@
 {
-  "name": "@devbookhq/codemirror-textmate",
-  "version": "0.0.4",
-  "main": "./dist/index.mjs",
+  "name": "@devbookhq/react",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
@@ -13,13 +13,15 @@
   ],
   "scripts": {
     "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/tsconfig,eslint-config-devbookhq\"",
-    "build": "tsup src/index.ts --format esm --target es2020 --dts --sourcemap --loader .wasm=dataurl",
-    "dev": "tsup src/index.ts --format esm --dts --target es2020 --watch --sourcemap --loader .wasm=dataurl",
+    "build": "tsup src/index.ts --target es2020 --format esm,cjs --dts --external react --external @devbookhq/sdk --sourcemap",
+    "dev": "tsup src/index.ts --target es2020 --format esm,cjs --dts --watch --external react --external @devbookhq/sdk --sourcemap",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
     "@devbookhq/tsconfig": "workspace:*",
+    "@types/path-browserify": "^1.0.0",
+    "@types/react": "^18.0.25",
     "eslint-config-devbookhq": "workspace:*",
     "tsup": "^6.5.0",
     "typescript": "^4.9.3"
@@ -28,9 +30,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@codemirror/language": "^6.3.1",
-    "vscode-languageserver-protocol": "^3.17.2",
-    "vscode-oniguruma": "^1.7.0",
-    "vscode-textmate": "^7.0.4"
+    "@devbookhq/sdk": "2.6.56",
+    "clsx": "^1.2.1",
+    "lucide-react": "^0.105.0",
+    "matcher": "^5.0.0",
+    "path-browserify": "^1.0.1",
+    "react": "^18.2.0"
   }
 }

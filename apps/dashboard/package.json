@@ -23,6 +23,12 @@
     "@supabase/gotrue-js": "1.22.14"
   },
   "dependencies": {
+    "@codemirror/theme-one-dark": "^6.1.0",
+    "@codemirror/view": "^6.6.0",
+    "@devbookhq/code-editor": "workspace:*",
+    "@devbookhq/react": "workspace:*",
+    "@devbookhq/splitter": "^1.4.0",
+    "@devbookhq/terminal": "workspace:^0.1.22",
     "@headlessui/react": "^1.7.7",
     "@radix-ui/react-select": "^1.2.0",
     "@seratch_/bolt-http-runner": "^1.0.3",
@@ -34,7 +40,10 @@
     "clsx": "^1.2.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.105.0",
+    "natural-compare-lite": "^1.4.0",
     "next": "13.1.5",
+    "next-mdx-remote": "^4.3.0",
+    "path-browserify": "^1.0.1",
     "posthog-js": "^1.40.2",
     "randomcolor": "^0.6.2",
     "react": "^18.2.0",
@@ -43,7 +52,9 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^13.1.5",
     "@types/lodash.debounce": "^4.0.7",
+    "@types/natural-compare-lite": "^1.4.0",
     "@types/node": "^18.11.18",
+    "@types/path-browserify": "^1.0.0",
     "@types/randomcolor": "^0.5.7",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",

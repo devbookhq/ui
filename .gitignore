@@ -15,3 +15,5 @@ lsp-ws-proxy
 .vercel
 # Vale styles
 /vale
+
+/prisma-hub

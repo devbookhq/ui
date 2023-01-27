@@ -4,6 +4,7 @@ export const appsFeedbackTable = 'apps_feedback'
 export const slackInstallationsTable = 'slack_installations'
 export const appsTable = 'apps'
 export const userFeedbackTable = 'user_feedback'
+export const guidesTable = 'guides'
 
 export interface UserFeedback {
   user_id: string
@@ -42,4 +43,26 @@ export interface InstallationDBEntry {
   created_at?: Date
   devbook_app_id?: string
   installation_data: Installation
+}
+
+export interface GuideContentDBENtry {
+  env: {
+    id: string,
+  },
+  guide: {
+    title: string
+  },
+  steps: {
+    name: string,
+    content: string,
+  }[],
+}
+
+export interface GuideDBEntry {
+  id: string
+  created_at?: string
+  project_id?: string
+  path?: string
+  subdomain?: string
+  content?: GuideContentDBENtry
 }
