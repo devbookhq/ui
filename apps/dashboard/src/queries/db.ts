@@ -59,10 +59,10 @@ export interface GuideContentDBENtry {
 }
 
 export interface GuideDBEntry {
-  id: string
   created_at?: string
-  project_id?: string
-  path?: string
-  subdomain?: string
+  project_id: string
+  slug: string
+  branch: string
+  repository_fullname: string
   content?: GuideContentDBENtry
 }

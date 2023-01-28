@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 
 import Text from 'components/typography/Text'
-import { GuideFeedback } from 'utils/analytics'
+import { GuideFeedback } from 'analytics'
 
 import InfoPanel from './InfoPanel'
 import SortControl, { SortOrder, applySorting, Column, SetConfig } from './SortControl'

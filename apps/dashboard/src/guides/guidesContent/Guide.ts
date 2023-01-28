@@ -40,7 +40,6 @@ export interface Intro {
 }
 
 export interface Guide {
-  id: string
   title: string
   environmentID: string
   intro: Intro

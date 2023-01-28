@@ -41,3 +41,7 @@ yarn build:analyze
 ## Deployment (Vercel)
 
 The app is **automatically deployed** to production via _Vercel_ when you push a new commit to the **master** branch. When you push commit any other branch you can view the preview deployment via _Vercel_ too.
+
+
+## Download session fs as zip
+https://github.com/devbookhq/guides/blob/master/utils/download.ts

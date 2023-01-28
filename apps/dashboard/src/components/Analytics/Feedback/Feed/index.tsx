@@ -1,6 +1,6 @@
 import Text from 'components/typography/Text'
 import Select from 'components/Select'
-import { FeedEntry, GuideFeedback } from 'utils/analytics'
+import { FeedEntry, GuideFeedback } from 'analytics'
 
 import Message from './Message'
 import FeedDivider from './FeedDivider'

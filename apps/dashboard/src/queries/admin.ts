@@ -15,9 +15,11 @@ import {
   slackInstallationsTable
 } from './db'
 
+import { Database } from './supabase'
+
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
-export const supabaseAdmin = createClient(
+export const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_ROLE_KEY || '',
 )
@@ -58,10 +60,22 @@ export async function getGuideEntry(
   const { error, data } = await admin
     .from(guidesTable)
     .select<'*', GuideDBEntry>('*')
-    .eq('subdomain', subdomain)
+    .eq('project_id', subdomain)
     .eq('slug', slug)
     .limit(1)
     .single()
+
+  if (error) throw error
+  return data
+}
+
+export async function upsertGuideEntry(
+  guides: Database['public']['Tables']['guides']['Insert'][],
+  admin: typeof supabaseAdmin,
+) {
+  const { error, data } = await admin
+    .from(guidesTable)
+    .upsert(guides, { onConflict: 'slug,repository_fullname' })
 
   if (error) throw error
   return data

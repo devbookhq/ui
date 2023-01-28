@@ -24,7 +24,10 @@
         "SUPABASE_SERVICE_ROLE_KEY",
         "SLACK_CLIENT_SECRET",
         "SLACK_CLIENT_ID",
+        "GITHUB_APP_ID",
+        "GITHUB_APP_PRIVATE_KEY",
         "NODE_ENV",
+        "GITHUB_APP_WEBHOOK_SECRET",
         "SLACK_SIGNING_SECRET"
       ]
     },

@@ -24,8 +24,6 @@ export interface Props {
 }
 
 export default function GuidePage(p: Props) {
-
-  console.log({ p })
   const guide = p.guide
   const router = useRouter()
 
@@ -43,22 +41,6 @@ export default function GuidePage(p: Props) {
   const stepIdx = router.query.step ? Number.parseInt(router.query.step as string) : 0
   // If stepIdx is in the range, load the step, otherwise load the last step
   const step = stepIdx <= guide.steps.length - 1 ? guide.steps[stepIdx] : guide.steps[guide.steps.length - 1]
-
-  // useEffect(
-  //   function updateFilePathsWhenSelected() {
-  //     function openFile(node: Node) {
-  //       if (node.type === NodeType.Dir) return
-  //       // Open file editor if user hasn't touched it yet.
-  //       if (!isSplitterDirty) {
-  //         setSplitterSizes([40, 60])
-  //       }
-  //     }
-
-  //     filetree.addSelectListener(openFile)
-  //     return () => filetree.removeSelectListener(openFile)
-  //   },
-  //   [filetree, isSplitterDirty]
-  // )
 
   const previousStep = useCallback(() => {
     if (stepIdx <= 0) return
@@ -220,16 +202,13 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
 export const getStaticProps: GetStaticProps<Props, PathProps> = async ({
   params,
 }) => {
-  console.log('aa')
   if (!params) throw new Error('No path parameters found')
 
   const { site, slug } = params
 
-  console.log({ site, slug })
   try {
     const guideEntry = await getGuideEntry(supabaseAdmin, site, slug)
     const guide = await getGuideData(guideEntry)
-
 
     console.log(guideEntry)
     return {

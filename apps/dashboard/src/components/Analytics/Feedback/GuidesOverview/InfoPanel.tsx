@@ -1,5 +1,5 @@
 import Text from 'components/typography/Text'
-import { calculateTotalRating, GuideFeedback } from 'utils/analytics'
+import { calculateTotalRating, GuideFeedback } from 'analytics'
 
 export interface Props {
   guides: GuideFeedback[]

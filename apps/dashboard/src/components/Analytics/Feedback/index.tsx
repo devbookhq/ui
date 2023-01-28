@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { useRouter } from 'next/router'
 
 import useAppFeedback from 'hooks/useAppFeedback'
-import { getFeedData, aggregateGuidesFeedback } from 'utils/analytics'
+import { getFeedData, aggregateGuidesFeedback } from 'analytics'
 import { App } from 'queries/db'
 import Text from 'components/typography/Text'
 import Spinner from 'components/icons/Spinner'
