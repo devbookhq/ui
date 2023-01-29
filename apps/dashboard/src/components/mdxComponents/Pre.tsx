@@ -9,7 +9,7 @@ import { useCallback } from 'react'
 import path from 'path-browserify'
 
 // import { analytics } from 'utils/analytics'
-import { rootdir } from '../../constants'
+import { rootdir } from 'utils/constants'
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import { supportedLanguages } from 'guides/languages'
 

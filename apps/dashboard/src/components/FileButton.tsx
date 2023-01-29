@@ -6,7 +6,7 @@ import {
 import clsx from 'clsx'
 
 // import { analytics } from 'utils/analytics'
-import Text from '../../components/typography/Text'
+import Text from 'components/typography/Text'
 
 export interface Props {
   text: string

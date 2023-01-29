@@ -13,7 +13,7 @@ export const config = {
   ],
 }
 
-const subdomainMatcher = /^([\w-]+)\.[\w-]+\.([\w-]+)\.[\w-]+$/
+const subsubdomainMatcher = /^([\w-]+)\.[\w-]+\.([\w-]+)\.[\w-]+$/
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl
@@ -24,14 +24,14 @@ export default async function middleware(req: NextRequest) {
   // Get the pathname of the request (e.g. /, /about, /blog/first-post)
   const path = url.pathname
 
-  const subdomainMatch = subdomainMatcher.exec(hostname)
+  const subsubdomainMatch = subsubdomainMatcher.exec(hostname)
 
-  if (subdomainMatch) {
-    const subdomain = subdomainMatch[1]
-    const domain = subdomainMatch[2]
+  if (subsubdomainMatch) {
+    const subsubdomain = subsubdomainMatch[1]
+    const domain = subsubdomainMatch[2]
     if (domain !== 'gitpod') {
       return NextResponse.rewrite(
-        new URL(`/_sites/${subdomain}${path}`, req.url)
+        new URL(`/_sites/${subsubdomain}${path}`, req.url)
       )
     }
   }

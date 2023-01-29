@@ -1,12 +1,12 @@
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import clsx from 'clsx'
 import { useLayoutEffect, useRef, useState } from 'react'
+import { posthog } from 'posthog-js'
 
 import Button from 'components/Button'
 import Text from 'components/typography/Text'
 
 import SpinnerIcon from './icons/Spinner'
-import { posthog } from 'posthog-js'
 
 export enum AuthFormType {
   SignIn,

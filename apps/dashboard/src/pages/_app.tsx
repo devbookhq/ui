@@ -6,8 +6,8 @@ import 'styles/global.css'
 
 import Layout from 'components/Layout'
 import { App as AppProp } from 'queries/db'
-import { usePostHog } from 'utils/posthog/usePostHog'
-import Loader from 'guides/components/Loader'
+import { usePostHog } from 'hooks/usePostHog'
+import Loader from 'components/Loader'
 
 export default function App({ Component, pageProps, router }: AppProps<{ app?: AppProp }>) {
   usePostHog()

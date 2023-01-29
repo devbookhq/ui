@@ -3,7 +3,7 @@ import { MDXRemote } from 'next-mdx-remote'
 import {
   GuideStep,
   Step,
-} from '../../guidesContent/Guide'
+} from 'guides/content/Guide'
 import Text from 'components/typography/Text'
 import mdxComponents from '../mdxComponents'
 
@@ -115,7 +115,7 @@ function GuideStepInstructions({
               className="text-gray-100"
               size={Text.size.S2}
               text={(activeStep as GuideStep).title}
-              // typeface={Text.typeface.InterBold}
+            // typeface={Text.typeface.InterBold}
             />
             <MDXRemote
               {...(activeStep as GuideStep).content}

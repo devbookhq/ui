@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Step } from '../../../guidesContent/Guide'
+import { Step } from 'guides/content/Guide'
 import Text from 'components/typography/Text'
 
 import StepActive from './StepActive'
@@ -81,7 +81,7 @@ function Progress({
       <Text
         className="text-green-400"
         text={`${stepIdx + 1}/${steps.length}`}
-        // typeface={Text.typeface.BarlowSemibold}
+      // typeface={Text.typeface.BarlowSemibold}
       />
       <div className="
         flex

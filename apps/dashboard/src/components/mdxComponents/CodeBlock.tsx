@@ -20,7 +20,7 @@ import path from 'path-browserify'
 //   analytics,
 //   editFileDebounce,
 // } from 'utils/analytics'
-import { rootdir } from '../../constants'
+import { rootdir } from 'utils/constants'
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'

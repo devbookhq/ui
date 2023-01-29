@@ -1,17 +1,17 @@
 import { useRouter } from 'next/router'
-
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 import { useSession, SharedSessionProvider } from '@devbookhq/react'
 import Splitter, { SplitDirection, GutterTheme } from '@devbookhq/splitter'
-import GuideFileEditor from 'guides/components/GuideFileEditor'
-import { OpenedFile } from 'guides/components/GuideFileEditor/reducer'
-import GuideStepInstructions from 'guides/components/GuideStepInstructions'
-import { CodeLayout, Guide } from 'guides/guidesContent/Guide'
 import { Loader } from 'lucide-react'
 import { useState, useEffect, useCallback } from 'react'
+
+import GuideFileEditor from 'components/GuideFileEditor'
+import { OpenedFile } from 'components/GuideFileEditor/reducer'
+import GuideStepInstructions from 'components/GuideStepInstructions'
+import { CodeLayout, Guide } from 'guides/content/Guide'
 import { getGuideEntry, supabaseAdmin } from 'queries/admin'
-import { getGuideData } from 'guides/guidesContent'
+import { getGuideData } from 'guides/content'
 import Text from 'components/typography/Text'
 
 interface PathProps extends ParsedUrlQuery {
