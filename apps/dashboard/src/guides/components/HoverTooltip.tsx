@@ -6,7 +6,7 @@ export interface Props {
   isVisible?: boolean
   text: string
 }
-function HooverTooltip({
+function HoverTooltip({
   isVisible,
   text,
 }: Props) {
@@ -50,4 +50,4 @@ function HooverTooltip({
   )
 }
 
-export default HooverTooltip
+export default HoverTooltip

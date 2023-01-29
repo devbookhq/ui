@@ -77,22 +77,7 @@ export const appRunner = new AppRunner({
 
 const app = new App(appRunner.appOptions())
 
-app.command('/devbook', async ({ ack, context }) => {
-  // const installationID = context.enterpriseId || context.teamId
-  // if (!installationID) return
-
-  // const installationDBEntry = await getInstallation(supabaseAdmin, installationID)
-
-  // if (!installationDBEntry.devbook_app_id) {
-  //   await ack({
-  //     mrkdwn: true,
-  //     text: 'No app powered by Devbook selected',
-  //   })
-  //   return
-  // }
-
-  // const feedback = await listAppFeedback(supabaseAdmin, installationDBEntry.devbook_app_id)
-
+app.command('/devbook', async ({ ack }) => {
   await ack({
     response_type: 'in_channel',
     mrkdwn: true,

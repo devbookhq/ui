@@ -7,13 +7,17 @@ import 'styles/global.css'
 import Layout from 'components/Layout'
 import { App as AppProp } from 'queries/db'
 import { usePostHog } from 'utils/posthog/usePostHog'
+import Loader from 'guides/components/Loader'
 
 export default function App({ Component, pageProps, router }: AppProps<{ app?: AppProp }>) {
   usePostHog()
 
   if (router.pathname === '/_sites/[site]/[slug]') {
-    return (
+    if (router.isFallback) {
+      return <Loader />
+    }
 
+    return (
       <div
         className="
       flex

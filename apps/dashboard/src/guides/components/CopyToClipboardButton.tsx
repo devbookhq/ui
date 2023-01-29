@@ -4,7 +4,7 @@ import {
   useState,
 } from 'react'
 
-import HooverTooltip from './HooverTooltip'
+import HoverTooltip from './HoverTooltip'
 
 export interface Props {
   onClick: (e: any) => void
@@ -44,7 +44,7 @@ function CopyToClipboardButton({ onClick }: Props) {
         size={24}
       />
 
-      <HooverTooltip
+      <HoverTooltip
         isVisible={isVisibleAfterClick}
         text={isVisibleAfterClick ? 'Copied' : 'Copy code'}
       />

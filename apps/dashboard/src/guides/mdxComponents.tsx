@@ -78,7 +78,6 @@ const lightMdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
           rounded-lg
           whitespace-pre-wrap
           text-sm
-          overflow-initial
         ">
           {(p.children as any).props.children}
         </pre>

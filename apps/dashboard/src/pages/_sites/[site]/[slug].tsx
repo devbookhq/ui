@@ -36,8 +36,6 @@ export default function GuidePage(p: Props) {
     inactivityTimeout: 0,
   })
 
-  const guidePath = router.asPath.split('?')[0]
-
   const stepIdx = router.query.step ? Number.parseInt(router.query.step as string) : 0
   // If stepIdx is in the range, load the step, otherwise load the last step
   const step = stepIdx <= guide.steps.length - 1 ? guide.steps[stepIdx] : guide.steps[guide.steps.length - 1]
@@ -195,7 +193,7 @@ export default function GuidePage(p: Props) {
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   }
 }
 
@@ -210,13 +208,11 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({
     const guideEntry = await getGuideEntry(supabaseAdmin, site, slug)
     const guide = await getGuideData(guideEntry)
 
-    console.log(guideEntry)
     return {
       props: {
         guide,
         guideEntry,
       },
-      revalidate: 3600,
     }
 
   } catch (err) {

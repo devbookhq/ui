@@ -1,12 +1,21 @@
-const exportWrapper = process.env.ANALYZE
-  ? require('@next/bundle-analyzer')({
-    enabled: process.env.ANALYZE === 'true',
-  })
-  : e => e
+function isPlugin(maybePlugin) {
+  return typeof maybePlugin === 'function'
+}
 
-module.exports = exportWrapper({
+function composePlugins(...plugins) {
+  return (baseConfig) => plugins
+    .filter(isPlugin)
+    .reduce((c, plugin) => plugin(c), baseConfig)
+}
+
+const pluginWrapper = composePlugins(
+  process.env.ANALYZE && require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' }),
+)
+
+const config = {
   reactStrictMode: true,
   swcMinify: true,
+  transpilePackages: ['@devbookhq/code-editor'],
   experimental: {
     esmExternals: 'loose',
   },
@@ -34,4 +43,6 @@ module.exports = exportWrapper({
       },
     ]
   },
-})
+}
+
+module.exports = pluginWrapper(config)

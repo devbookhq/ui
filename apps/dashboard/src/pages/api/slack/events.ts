@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { appRunner } from './_app'
+import { appRunner } from 'slack/app'
 
 export const config = {
   api: {

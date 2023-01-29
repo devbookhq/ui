@@ -1,6 +1,6 @@
 import { Square as SquareIcon } from 'lucide-react'
 
-import HooverTooltip from './HooverTooltip'
+import HoverTooltip from './HoverTooltip'
 
 export interface Props {
   onClick: (e: any) => void
@@ -24,7 +24,7 @@ function StopButton({ onClick }: Props) {
         size={24}
       />
 
-      <HooverTooltip
+      <HoverTooltip
         text="Stop"
       />
     </button>

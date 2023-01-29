@@ -28,7 +28,8 @@
         "GITHUB_APP_PRIVATE_KEY",
         "NODE_ENV",
         "GITHUB_APP_WEBHOOK_SECRET",
-        "SLACK_SIGNING_SECRET"
+        "SLACK_SIGNING_SECRET",
+        "SUPABASE_WEBHOOK_SECRET"
       ]
     },
     "test": {

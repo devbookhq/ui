@@ -115,7 +115,6 @@ function TerminalCommand({
           font-mono
           whitespace-pre-wrap
           text-sm
-          overflow-initial
         ">
           {cmd}
         </pre>
