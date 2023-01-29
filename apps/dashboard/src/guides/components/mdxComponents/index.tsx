@@ -31,6 +31,9 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   CodeBlock,
   Check,
   TerminalCommand,
+  Filetree(p) {
+    return <div>Filetree</div>
+  },
 }
 
 export default mdxComponents

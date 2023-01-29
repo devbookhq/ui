@@ -30,8 +30,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const change = req.body as SupabaseTrigger
 
   if (change.table === guidesTable) {
-    console.log(req.body)
-
     try {
       // TODO: Should we call the revalidate on the original path?
       const guidePath = `/_sites/${change.record.project_id}/${change.record.slug}`
