@@ -1,31 +1,38 @@
-import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { GetServerSideProps } from 'next'
 import JSONCrush from 'jsoncrush'
 
 import AppPage from 'components/AppPage'
 import { Guide } from 'guides/content/Guide'
 
-function useDevPageProps() {
-  const router = useRouter()
+export const config = {
+  runtime: 'edge',
+}
 
-  const guide = useMemo(() => {
-    if (!router.query.guide) return
-    if (typeof router.query.guide !== 'string') return
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+  context.res.setHeader(
+    'Cache-Control',
+    'maxage'
+  )
 
-    return JSON.parse(JSONCrush.uncrush(router.query.guide)) as Guide
-  }, [router.query.guide])
-
-  return {
-    guide,
+  if (typeof context.query.guide !== 'string') {
+    return {
+      notFound: true,
+    }
+  } else {
+    const guide = JSON.parse(JSONCrush.uncrush(context.query.guide)) as Guide
+    return {
+      props: {
+        guide,
+      }
+    }
   }
 }
 
-function DevPage() {
-  const { guide } = useDevPageProps()
-  if (!guide) {
-    return <div>Loading...</div>
-  }
+export interface Props {
+  guide: Guide
+}
 
+function DevPage({ guide }: Props) {
   return <AppPage guide={guide} />
 }
 
