@@ -4,10 +4,6 @@ import JSONCrush from 'jsoncrush'
 import AppPage from 'components/AppPage'
 import { Guide } from 'guides/content/Guide'
 
-export const config = {
-  runtime: 'edge',
-}
-
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   context.res.setHeader(
     'Cache-Control',
