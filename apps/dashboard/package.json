@@ -52,7 +52,9 @@
     "@supabase/supabase-js": "^2.4.1",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
+    "body-parser": "^1.20.1",
     "clsx": "^1.2.1",
+    "formidable": "^2.1.1",
     "jsoncrush": "^1.1.8",
     "jszip": "^3.10.1",
     "lodash.debounce": "^4.0.8",
@@ -63,11 +65,13 @@
     "path-browserify": "^1.0.1",
     "posthog-js": "^1.40.2",
     "randomcolor": "^0.6.2",
+    "raw-body": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.1.5",
+    "@types/formidable": "^2.0.5",
     "@types/lodash.debounce": "^4.0.7",
     "@types/natural-compare-lite": "^1.4.0",
     "@types/node": "^18.11.18",

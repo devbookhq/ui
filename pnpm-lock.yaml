@@ -45,6 +45,7 @@ importers:
       '@supabase/supabase-js': ^2.4.1
       '@tailwindcss/line-clamp': ^0.4.2
       '@tailwindcss/typography': ^0.5.9
+      '@types/formidable': ^2.0.5
       '@types/lodash.debounce': ^4.0.7
       '@types/natural-compare-lite': ^1.4.0
       '@types/node': ^18.11.18
@@ -53,10 +54,12 @@ importers:
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
       autoprefixer: ^10.4.13
+      body-parser: ^1.20.1
       clsx: ^1.2.1
       cssnano: ^5.1.14
       eslint: ^8.32.0
       eslint-config-next: ^13.1.5
+      formidable: ^2.1.1
       jsoncrush: ^1.1.8
       jszip: ^3.10.1
       lodash.debounce: ^4.0.8
@@ -69,6 +72,7 @@ importers:
       postcss-import: ^15.1.0
       posthog-js: ^1.40.2
       randomcolor: ^0.6.2
+      raw-body: ^2.5.1
       react: ^18.2.0
       react-dom: ^18.2.0
       tailwindcss: ^3.2.4
@@ -103,7 +107,9 @@ importers:
       '@supabase/supabase-js': 2.4.1
       '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
       '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.4
+      body-parser: 1.20.1
       clsx: 1.2.1
+      formidable: 2.1.1
       jsoncrush: 1.1.8
       jszip: 3.10.1
       lodash.debounce: 4.0.8
@@ -114,10 +120,12 @@ importers:
       path-browserify: 1.0.1
       posthog-js: 1.40.2
       randomcolor: 0.6.2
+      raw-body: 2.5.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@next/bundle-analyzer': 13.1.5
+      '@types/formidable': 2.0.5
       '@types/lodash.debounce': 4.0.7
       '@types/natural-compare-lite': 1.4.0
       '@types/node': 18.11.18
@@ -2335,6 +2343,12 @@ packages:
       '@types/serve-static': 1.15.0
     dev: false
 
+  /@types/formidable/2.0.5:
+    resolution: {integrity: sha512-uvMcdn/KK3maPOaVUAc3HEYbCEhjaGFwww4EsX6IJfWIJ1tzHtDHczuImH3GKdusPnAAmzB07St90uabZeCKPA==}
+    dependencies:
+      '@types/node': 18.11.18
+    dev: true
+
   /@types/hast/2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
@@ -2808,6 +2822,10 @@ packages:
     resolution: {integrity: sha512-3CYzex9M9FGQjCGMGyi6/31c8GJbgb0qGyrx5HWxPd0aCwh4cB2YjMb2Xf9UuoogrMrlO9cTqnB5rI5GHZTcUA==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /asap/2.0.6:
+    resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
+    dev: false
 
   /ast-types-flow/0.0.7:
     resolution: {integrity: sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==}
@@ -3588,6 +3606,13 @@ packages:
       acorn-node: 1.8.2
       defined: 1.0.1
       minimist: 1.2.7
+
+  /dezalgo/1.0.4:
+    resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
+    dependencies:
+      asap: 2.0.6
+      wrappy: 1.0.2
+    dev: false
 
   /didyoumean/1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
@@ -4746,6 +4771,15 @@ packages:
     engines: {node: '>=0.4.x'}
     dev: false
 
+  /formidable/2.1.1:
+    resolution: {integrity: sha512-0EcS9wCFEzLvfiks7omJ+SiYJAiD+TzK4Pcw1UlUoGnhUxDcMKjt0P7x8wEb0u6OHu8Nb98WG3nxtlF5C7bvUQ==}
+    dependencies:
+      dezalgo: 1.0.4
+      hexoid: 1.0.0
+      once: 1.4.0
+      qs: 6.11.0
+    dev: false
+
   /forwarded/0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
@@ -5116,6 +5150,11 @@ packages:
       hast-util-parse-selector: 3.1.0
       property-information: 6.2.0
       space-separated-tokens: 2.0.2
+    dev: false
+
+  /hexoid/1.0.0:
+    resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
+    engines: {node: '>=8'}
     dev: false
 
   /highlight.js/11.7.0:
