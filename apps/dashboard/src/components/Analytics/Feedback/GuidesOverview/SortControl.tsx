@@ -1,7 +1,7 @@
 import { SortAsc, SortDesc } from 'lucide-react'
 import { ReactNode } from 'react'
 
-import { GuideFeedback } from 'analytics'
+import { GuideFeedback } from 'feedback'
 
 export enum SortOrder {
   Ascending = 'asc',

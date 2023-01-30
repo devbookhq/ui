@@ -1,4 +1,4 @@
-import { UserMessage, GuideFeedback, UserRating } from './feedback'
+import { UserMessage, GuideFeedback, UserRating } from './guideFeedback'
 
 export interface FeedExtension {
   guide?: GuideFeedback

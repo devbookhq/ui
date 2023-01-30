@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import Text from 'components/typography/Text'
 import { Rating } from 'queries/db'
-import { FeedEntry } from 'analytics'
+import { FeedEntry } from 'feedback'
 
 export interface Props {
   message: FeedEntry
