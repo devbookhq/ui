@@ -57,6 +57,7 @@ importers:
       cssnano: ^5.1.14
       eslint: ^8.32.0
       eslint-config-next: ^13.1.5
+      jsoncrush: ^1.1.8
       jszip: ^3.10.1
       lodash.debounce: ^4.0.8
       lucide-react: ^0.105.0
@@ -103,6 +104,7 @@ importers:
       '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
       '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.4
       clsx: 1.2.1
+      jsoncrush: 1.1.8
       jszip: 3.10.1
       lodash.debounce: 4.0.8
       lucide-react: 0.105.0_react@18.2.0
@@ -5528,6 +5530,10 @@ packages:
     hasBin: true
     dependencies:
       minimist: 1.2.7
+
+  /jsoncrush/1.1.8:
+    resolution: {integrity: sha512-lvIMGzMUA0fjuqwNcxlTNRq2bibPZ9auqT/LyGdlR5hvydJtA/BasSgkx4qclqTKVeTidrJvsS/oVjlTCPQ4Nw==}
+    dev: false
 
   /jsonfile/4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}

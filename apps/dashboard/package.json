@@ -53,6 +53,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
     "clsx": "^1.2.1",
+    "jsoncrush": "^1.1.8",
     "jszip": "^3.10.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.105.0",
