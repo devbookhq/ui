@@ -30,7 +30,6 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
     return {
       props: {
         guide,
-        guideEntry,
       },
     }
   } catch (err) {
