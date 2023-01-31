@@ -83,15 +83,3 @@ export async function getGuideData(g: GuideDBEntry): Promise<Guide> {
     steps,
   }
 }
-
-// export async function getAllGuides(): Promise<Guide[]> {
-//   const guideIDs = readdirSync(guidesDir)
-//   const guides = (await Promise.all(guideIDs.map(id => getGuideData(id))))
-//     .sort((g1, g2) => {
-//       if (g1.id < g2.id) return -1
-//       else if (g2.id > g1.id) return 1
-//       return 0
-//     })
-
-//   return guides
-// }

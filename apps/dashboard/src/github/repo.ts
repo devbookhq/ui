@@ -3,8 +3,8 @@ import * as toml from '@iarna/toml'
 import JSZip from 'jszip'
 
 import getClient from './octokit'
-import path from 'path'
 import { notEmpty } from 'utils/notEmpty'
+import path from 'path'
 
 const guideConfigName = 'guide.json'
 const envConfigName = 'dbk.toml'
@@ -37,12 +37,27 @@ async function getGuideDirs({
   const zip = JSZip()
   await zip.loadAsync(archive.data as string)
 
+  const rootRegex = dir === '.' || dir === './' ? new RegExp('^[^\/]+\/$') : new RegExp(`^[^\/]+\/${dir}\/$`)
+  const rootDir = zip.folder(rootRegex)
+
+  if (rootDir.length > 0) {
+    const name = rootDir[0].name
+    const root = zip.folder(name)
+
+    if (root) {
+      const guideConfig = root.file(guideConfigName)
+      if (guideConfig) {
+        return [{ dir: root, name, isRoot: true }]
+      }
+    }
+  }
+
   const regex = dir === '.' || dir === './' ? new RegExp('^[^\/]+\/[^\/]+\/$') : new RegExp(`^[^\/]+\/${dir}\/[^\/]+\/$`)
   const devbookFiles = zip.folder(regex)
 
   return devbookFiles.map(d => {
     const dir = zip.folder(d.name)
-    return dir ? { dir, name: d.name } : undefined
+    return dir ? { dir, name: d.name, isRoot: false } : undefined
   }).filter(notEmpty)
 }
 
@@ -69,7 +84,7 @@ export async function getGuidesFromRepo({
   })
 
   const guides = guideDirs.map(async (g) => {
-    const slug = path.basename(g.name)
+    const slug = g.isRoot ? '' : path.basename(g.name)
 
     const guideConfigContentRaw = await g.dir.file(guideConfigName)?.async('string')
     if (!guideConfigContentRaw) {

@@ -6,13 +6,11 @@ import 'styles/global.css'
 
 import Layout from 'components/Layout'
 import { App as AppProp } from 'queries/db'
-import { usePostHog } from 'hooks/usePostHog'
+import { PostHogProvider } from 'utils/PostHogProvider'
 import Loader from 'components/Loader'
 
 export default function App({ Component, pageProps, router }: AppProps<{ app?: AppProp }>) {
-  usePostHog()
-
-  if (router.pathname === '/_sites/[site]/[slug]') {
+  if (router.pathname === '/_sites/[site]/[slug]' || router.pathname === '/_sites/dev') {
     if (router.isFallback) {
       return <Loader />
     }
@@ -42,10 +40,12 @@ export default function App({ Component, pageProps, router }: AppProps<{ app?: A
   }
 
   return (
-    <UserProvider supabaseClient={supabaseClient}>
-      <Layout app={pageProps.app}>
-        <Component {...pageProps} />
-      </Layout>
-    </UserProvider>
+    <PostHogProvider token={process.env.NEXT_PUBLIC_POSTHOG_KEY}>
+      <UserProvider supabaseClient={supabaseClient}>
+        <Layout app={pageProps.app}>
+          <Component {...pageProps} />
+        </Layout>
+      </UserProvider>
+    </PostHogProvider>
   )
 }

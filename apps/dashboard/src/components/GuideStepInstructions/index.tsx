@@ -120,6 +120,7 @@ function GuideStepInstructions({
             <MDXRemote
               {...(activeStep as GuideStep).content}
               components={mdxComponents}
+              lazy
             />
           </div>
         </div>

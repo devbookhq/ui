@@ -1,6 +1,5 @@
 import { useSession, SharedSessionProvider } from '@devbookhq/react'
 import Splitter, { SplitDirection, GutterTheme } from '@devbookhq/splitter'
-import { Loader } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useState, useCallback, useEffect } from 'react'
 
@@ -18,7 +17,7 @@ function AppPage(p: Props) {
   const guide = p.guide
   const router = useRouter()
 
-  const [initialOpenedFiles, setInitialOpenedFiles] = useState<OpenedFile[] | undefined>(undefined)
+  const [initialOpenedFiles, setInitialOpenedFiles] = useState<OpenedFile[]>([])
   const [splitterSizes, setSplitterSizes] = useState([0, 100])
   const [isSplitterDirty, setIsSplitterDirty] = useState(false) // True if user manually resized splitter.
   const sessionHandle = useSession({
@@ -137,8 +136,6 @@ function AppPage(p: Props) {
     </div>
   )
 
-  if (router.isFallback) return <Loader />
-
   return (
     <SharedSessionProvider session={sessionHandle}>
       <div className="
@@ -152,7 +149,7 @@ function AppPage(p: Props) {
           />
         } */}
 
-        {step.type === 'Guide' && initialOpenedFiles !== undefined &&
+        {step.type === 'Guide' &&
           <Splitter
             classes={['flex', 'flex lg:min-w-[500px]']}
             direction={SplitDirection.Horizontal}

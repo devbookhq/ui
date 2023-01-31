@@ -15,7 +15,7 @@
     "lint": "next lint",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next",
     "lint:fix": "next lint --fix",
-    "build:analyze": "ANALYZE=true yarn build",
+    "build:analyze": "ANALYZE=true pnpm build",
     "check-types": "tsc --noEmit",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "generate": "npx supabase gen types typescript --project-id \"$PROJECT_ID\" --schema public > src/queries/supabase.ts"
@@ -24,14 +24,8 @@
     "@supabase/gotrue-js": "1.22.14"
   },
   "dependencies": {
-    "@codemirror/lang-java": "^6.0.1",
     "@codemirror/lang-javascript": "^6.1.1",
     "@codemirror/lang-json": "^6.0.1",
-    "@codemirror/lang-php": "^6.0.1",
-    "@codemirror/lang-python": "^6.1.1",
-    "@codemirror/lang-rust": "^6.0.1",
-    "@codemirror/language": "^6.3.1",
-    "@codemirror/legacy-modes": "^6.3.1",
     "@codemirror/theme-one-dark": "^6.1.0",
     "@codemirror/view": "^6.6.0",
     "@devbookhq/code-editor": "workspace:*",
@@ -52,10 +46,7 @@
     "@supabase/supabase-js": "^2.4.1",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
-    "body-parser": "^1.20.1",
     "clsx": "^1.2.1",
-    "formidable": "^2.1.1",
-    "jsoncrush": "^1.1.8",
     "jszip": "^3.10.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.105.0",
@@ -71,7 +62,6 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.1.5",
-    "@types/formidable": "^2.0.5",
     "@types/lodash.debounce": "^4.0.7",
     "@types/natural-compare-lite": "^1.4.0",
     "@types/node": "^18.11.18",

@@ -1,26 +1,24 @@
 import { GetServerSideProps } from 'next'
 import getRawBody from 'raw-body'
 
-
 import AppPage from 'components/AppPage'
 import { Guide } from 'guides/content/Guide'
 import { getGuideData } from 'guides/content'
 import { GuideDBEntry } from 'queries/db'
 
+// TODO: Add realtime reloading on changes
+// https://dev.to/cassiolacerda/automatically-refresh-the-browser-on-node-express-server-changes-x1f680-1k0o#comment-1kjdg
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  // context.res.setHeader(
-  //   'Cache-Control',
-  //   'maxage'
-  // )
+  // TODO: Check the cached requests validity
+  context.res.setHeader(
+    'Cache-Control',
+    'maxage'
+  )
 
-  // if (context.req.method === 'GET') {
   // https://github.com/vercel/next.js/discussions/12152
   const body = await getRawBody(context.req)
   const stringBody = body.toString()
-  console.log('BODY >>>>>>>>>>>>>>>>>>>', stringBody)
   const jsonBody = JSON.parse(stringBody) as GuideDBEntry
-  console.log('JSON >>>>>>>>>>>>>>>>>>>', jsonBody)
-
   const guide = await getGuideData(jsonBody)
 
   return {
@@ -35,7 +33,6 @@ export interface Props {
 }
 
 function DevPage({ guide }: Props) {
-  console.log({ guide })
   return <AppPage guide={guide} />
 }
 
