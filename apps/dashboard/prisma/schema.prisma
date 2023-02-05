@@ -1,141 +1,391 @@
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  url      = env("SUPABASE_POSTGRES_URL")
+  schemas  = ["auth", "public"]
 }
 
 generator js {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "views"]
 }
 
-model User {
-  // `id` here is the Supabase Auth ID
-  id        String   @id
-  createdAt DateTime @default(now())
+model audit_log_entries {
+  instance_id String?   @db.Uuid
+  id          String    @id @db.Uuid
+  payload     Json?     @db.Json
+  created_at  DateTime? @db.Timestamptz(6)
+  ip_address  String    @default("") @db.VarChar(64)
 
-  teams    UsersInTeams[]
-  feedback UserFeedback[]
-  apiKeys  ApiKey[]
+  @@index([instance_id], map: "audit_logs_instance_id_idx")
+  @@schema("auth")
 }
 
-model ApiKey {
-  key       String   @id
-  createdAt DateTime @default(now())
+model identities {
+  id              String
+  user_id         String     @db.Uuid
+  identity_data   Json
+  provider        String
+  last_sign_in_at DateTime?  @db.Timestamptz(6)
+  created_at      DateTime?  @db.Timestamptz(6)
+  updated_at      DateTime?  @db.Timestamptz(6)
+  users           auth_users @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  user   User   @relation(fields: [userID], references: [id], onDelete: Cascade)
-  userID String
+  @@id([provider, id])
+  @@index([user_id])
+  @@schema("auth")
 }
 
-model UserFeedback {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
+model instances {
+  id              String    @id @db.Uuid
+  uuid            String?   @db.Uuid
+  raw_base_config String?
+  created_at      DateTime? @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
 
-  feedback String
-
-  user   User   @relation(fields: [userID], references: [id])
-  userID String
+  @@schema("auth")
 }
 
-model UsersInTeams {
-  createdAt DateTime @default(now())
+model mfa_amr_claims {
+  session_id            String   @db.Uuid
+  created_at            DateTime @db.Timestamptz(6)
+  updated_at            DateTime @db.Timestamptz(6)
+  authentication_method String
+  id                    String   @id(map: "amr_id_pk") @db.Uuid
+  sessions              sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  user   User   @relation(fields: [userID], references: [id], onDelete: Cascade)
-  userID String
-
-  team   Team   @relation(fields: [teamID], references: [id], onDelete: Cascade)
-  teamID String
-
-  @@id([userID, teamID])
+  @@unique([session_id, authentication_method], map: "mfa_amr_claims_session_id_authentication_method_pkey")
+  @@schema("auth")
 }
 
-model Team {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
+model mfa_challenges {
+  id          String      @id @db.Uuid
+  factor_id   String      @db.Uuid
+  created_at  DateTime    @db.Timestamptz(6)
+  verified_at DateTime?   @db.Timestamptz(6)
+  ip_address  String      @db.Inet
+  mfa_factors mfa_factors @relation(fields: [factor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "mfa_challenges_auth_factor_id_fkey")
 
-  name String
-
-  users UsersInTeams[]
-  apps  App[]
+  @@schema("auth")
 }
 
-model App {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model mfa_factors {
+  id             String           @id @db.Uuid
+  user_id        String           @db.Uuid
+  friendly_name  String?
+  factor_type    factor_type
+  status         factor_status
+  created_at     DateTime         @db.Timestamptz(6)
+  updated_at     DateTime         @db.Timestamptz(6)
+  secret         String?
+  mfa_challenges mfa_challenges[]
+  users          auth_users       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  title     String
-  subdomain String[]
-
-  env     Env?
-  content AppContent?
-
-  feedback AppFeedback[]
-  slack    SlackInstallation[]
-
-  repository   GitHubInstallation? @relation(fields: [repositoryID], references: [repositoryID])
-  repositoryID Int?
-  branch       String
-  path         String              @default("./")
-
-  team   Team   @relation(fields: [teamID], references: [id], onDelete: Cascade)
-  teamID String
+  @@index([user_id, created_at], map: "factor_id_created_at_idx")
+  @@schema("auth")
 }
 
-model AppContent {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model refresh_tokens {
+  instance_id String?   @db.Uuid
+  id          BigInt    @id @default(autoincrement())
+  token       String?   @unique(map: "refresh_tokens_token_unique") @db.VarChar(255)
+  user_id     String?   @db.VarChar(255)
+  revoked     Boolean?
+  created_at  DateTime? @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  parent      String?   @db.VarChar(255)
+  session_id  String?   @db.Uuid
+  sessions    sessions? @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  content Json
-
-  app   App    @relation(fields: [appID], references: [id], onDelete: Cascade)
-  appID String @unique
-
-  @@id([appID])
+  @@index([session_id], map: "refresh_token_session_id")
+  @@index([instance_id])
+  @@index([instance_id, user_id])
+  @@index([parent])
+  @@index([session_id, revoked])
+  @@index([token])
+  @@schema("auth")
 }
 
-model AppFeedback {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
+model saml_providers {
+  id                String        @id @db.Uuid
+  sso_provider_id   String        @db.Uuid
+  entity_id         String        @unique
+  metadata_xml      String
+  metadata_url      String?
+  attribute_mapping Json?
+  created_at        DateTime?     @db.Timestamptz(6)
+  updated_at        DateTime?     @db.Timestamptz(6)
+  sso_providers     sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  feedback   String
-  properties Json
-
-  app   App    @relation(fields: [appID], references: [id], onDelete: Cascade)
-  appID String
+  @@index([sso_provider_id])
+  @@schema("auth")
 }
 
-model GitHubInstallation {
-  repositoryID       Int    @id
-  // `installationID` identifies the connection between Devbook GitHub app and the GitHub repository.
-  // When you remove Devbook app from the repository on GitHub
-  // and then add add the app again this installationID will change - we are handling this in the Devbook app.
-  installationID     Int    @unique
-  // Full name of the GitHub repository in the moment when the repository was connected to Devbook.
-  // Is can be used as a fallback when retrieving repository info from GitHub and for navigating DB when debugging.
-  repositoryFullName String
+model saml_relay_states {
+  id              String        @id @db.Uuid
+  sso_provider_id String        @db.Uuid
+  request_id      String
+  for_email       String?
+  redirect_to     String?
+  from_ip_address String?       @db.Inet
+  created_at      DateTime?     @db.Timestamptz(6)
+  updated_at      DateTime?     @db.Timestamptz(6)
+  sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  apps App[]
+  @@index([for_email])
+  @@index([sso_provider_id])
+  @@schema("auth")
 }
 
-model SlackInstallation {
-  // This is the id of the Slack workspace
-  id        String
-  createdAt DateTime @default(now())
+model schema_migrations {
+  version String @id @db.VarChar(255)
 
-  installationData Json
-
-  app   App    @relation(fields: [appID], references: [id], onDelete: Cascade)
-  appID String
-
-  @@id([id, appID])
+  @@schema("auth")
 }
 
-model Env {
-  id             String    @id
-  createdAt      DateTime  @default(now())
-  lastAccessedAt DateTime?
+model sessions {
+  id             String           @id @db.Uuid
+  user_id        String           @db.Uuid
+  created_at     DateTime?        @db.Timestamptz(6)
+  updated_at     DateTime?        @db.Timestamptz(6)
+  factor_id      String?          @db.Uuid
+  aal            aal_level?
+  not_after      DateTime?        @db.Timestamptz(6)
+  mfa_amr_claims mfa_amr_claims[]
+  refresh_tokens refresh_tokens[]
+  users          auth_users       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  sso_sessions   sso_sessions[]
 
-  template String
+  @@index([user_id])
+  @@index([user_id, created_at], map: "user_id_created_at_idx")
+  @@schema("auth")
+}
 
-  app   App    @relation(fields: [appID], references: [id], onDelete: Cascade)
-  appID String @unique
+model sso_domains {
+  id              String        @id @db.Uuid
+  sso_provider_id String        @db.Uuid
+  domain          String
+  created_at      DateTime?     @db.Timestamptz(6)
+  updated_at      DateTime?     @db.Timestamptz(6)
+  sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+model sso_providers {
+  id                String              @id @db.Uuid
+  resource_id       String?
+  created_at        DateTime?           @db.Timestamptz(6)
+  updated_at        DateTime?           @db.Timestamptz(6)
+  saml_providers    saml_providers[]
+  saml_relay_states saml_relay_states[]
+  sso_domains       sso_domains[]
+  sso_sessions      sso_sessions[]
+
+  @@schema("auth")
+}
+
+model sso_sessions {
+  id              String         @id @db.Uuid
+  session_id      String         @db.Uuid
+  sso_provider_id String?        @db.Uuid
+  not_before      DateTime?      @db.Timestamptz(6)
+  not_after       DateTime?      @db.Timestamptz(6)
+  idp_initiated   Boolean?       @default(false)
+  created_at      DateTime?      @db.Timestamptz(6)
+  updated_at      DateTime?      @db.Timestamptz(6)
+  sessions        sessions       @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  sso_providers   sso_providers? @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([session_id])
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+model auth_users {
+  instance_id                 String?         @db.Uuid
+  id                          String          @id @db.Uuid
+  aud                         String?         @db.VarChar(255)
+  role                        String?         @db.VarChar(255)
+  email                       String?         @unique @db.VarChar(255)
+  encrypted_password          String?         @db.VarChar(255)
+  email_confirmed_at          DateTime?       @db.Timestamptz(6)
+  invited_at                  DateTime?       @db.Timestamptz(6)
+  confirmation_token          String?         @db.VarChar(255)
+  confirmation_sent_at        DateTime?       @db.Timestamptz(6)
+  recovery_token              String?         @db.VarChar(255)
+  recovery_sent_at            DateTime?       @db.Timestamptz(6)
+  email_change_token_new      String?         @db.VarChar(255)
+  email_change                String?         @db.VarChar(255)
+  email_change_sent_at        DateTime?       @db.Timestamptz(6)
+  last_sign_in_at             DateTime?       @db.Timestamptz(6)
+  raw_app_meta_data           Json?
+  raw_user_meta_data          Json?
+  is_super_admin              Boolean?
+  created_at                  DateTime?       @db.Timestamptz(6)
+  updated_at                  DateTime?       @db.Timestamptz(6)
+  phone                       String?         @unique @db.VarChar(15)
+  phone_confirmed_at          DateTime?       @db.Timestamptz(6)
+  phone_change                String?         @default("") @db.VarChar(15)
+  phone_change_token          String?         @default("") @db.VarChar(255)
+  phone_change_sent_at        DateTime?       @db.Timestamptz(6)
+  confirmed_at                DateTime?       @default(dbgenerated("LEAST(email_confirmed_at, phone_confirmed_at)")) @db.Timestamptz(6)
+  email_change_token_current  String?         @default("") @db.VarChar(255)
+  email_change_confirm_status Int?            @default(0) @db.SmallInt
+  banned_until                DateTime?       @db.Timestamptz(6)
+  reauthentication_token      String?         @default("") @db.VarChar(255)
+  reauthentication_sent_at    DateTime?       @db.Timestamptz(6)
+  identities                  identities[]
+  mfa_factors                 mfa_factors[]
+  sessions                    sessions[]
+  api_keys                    api_keys[]
+  apps                        apps[]
+  code_snippets               code_snippets[]
+  users                       users?
+
+  @@index([instance_id])
+  @@map("users")
+  @@schema("auth")
+}
+
+model api_keys {
+  api_key  String     @id
+  owner_id String     @db.Uuid
+  users    auth_users @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model apps {
+  id             String     @id
+  creator_id     String     @db.Uuid
+  title          String
+  created_at     DateTime   @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  devbook_app_id String?
+  users          auth_users @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model apps_feedback {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  appId      String
+  feedback   String?
+  properties Json?    @db.Json
+
+  @@schema("public")
+}
+
+model code_snippets {
+  id                      String                   @id
+  creator_id              String                   @db.Uuid
+  title                   String                   @default("\"\"")
+  code                    String?
+  created_at              DateTime                 @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  env_vars                Json                     @default("{}") @db.Json
+  template                String                   @default("Nodejs")
+  users                   auth_users               @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  envs                    envs[]
+  published_code_snippets published_code_snippets?
+
+  @@schema("public")
+}
+
+model envs {
+  id              String         @id
+  code_snippet_id String?
+  template        String?
+  deps            String[]
+  state           env_state?
+  code_snippets   code_snippets? @relation(fields: [code_snippet_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model guides {
+  created_at          DateTime? @default(now()) @db.Timestamptz(6)
+  project_id          String
+  repository_fullname String
+  content             Json?
+  slug                String
+  branch              String
+
+  @@id([slug, repository_fullname])
+  @@schema("public")
+}
+
+model published_code_snippets {
+  code_snippet_id String        @unique
+  title           String        @default("")
+  code            String        @default("")
+  published_at    DateTime?     @default(now()) @db.Timestamptz(6)
+  id              String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  env_vars        Json          @default("{}") @db.Json
+  template        String        @default("Nodejs")
+  code_snippets   code_snippets @relation(fields: [code_snippet_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model slack_installations {
+  id                String
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  devbook_app_id    String
+  installation_data Json
+
+  @@id([id, devbook_app_id])
+  @@schema("public")
+}
+
+model user_feedback {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  user_id    String?   @db.Uuid
+  feedback   String?
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model users {
+  id            String          @id @db.Uuid
+  created_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  email         String?
+  user_feedback user_feedback[]
+  users         auth_users      @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("users")
+  @@schema("public")
+}
+
+enum env_state {
+  Building
+  Failed
+  Done
+  None
+
+  @@schema("public")
+}
+
+enum aal_level {
+  aal1
+  aal2
+  aal3
+
+  @@schema("auth")
+}
+
+enum factor_status {
+  unverified
+  verified
+
+  @@schema("auth")
+}
+
+enum factor_type {
+  totp
+  webauthn
+
+  @@schema("auth")
 }
