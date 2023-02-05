@@ -8,9 +8,10 @@ import Layout from 'components/Layout'
 import { App as AppProp } from 'queries/db'
 import { PostHogProvider } from 'utils/PostHogProvider'
 import Loader from 'components/Loader'
+import { hiddenAppRoute } from 'utils/constants'
 
 export default function App({ Component, pageProps, router }: AppProps<{ app?: AppProp }>) {
-  if (router.pathname === '/_sites/[site]/[slug]' || router.pathname === '/_sites/dev') {
+  if (router.pathname === `/${hiddenAppRoute}/[subdomain]` || router.pathname === `/${hiddenAppRoute}/dev`) {
     if (router.isFallback) {
       return <Loader />
     }

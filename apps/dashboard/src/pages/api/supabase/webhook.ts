@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { guidesTable } from 'queries/db'
-import { Database } from 'queries/supabase'
+import { appsContentTable } from 'queries/db'
+import { hiddenAppRoute } from 'utils/constants'
+
+import type { apps_content } from '@prisma/client'
+import { prisma } from 'queries/prisma'
 
 enum SupabaseEventType {
   UPDATE = 'UPDATE',
@@ -12,7 +15,7 @@ enum SupabaseEventType {
 interface SupabaseTrigger {
   type: SupabaseEventType
   table: string
-  record: Database['public']['Tables']['guides']['Row']
+  record: apps_content
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -28,13 +31,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const change = req.body as SupabaseTrigger
+  if (change.table === appsContentTable) {
+    const app = await prisma.apps.findUniqueOrThrow({
+      where: {
+        id: change.record.app_id,
+      },
+    })
 
-  if (change.table === guidesTable) {
+    if (!app.subdomain) {
+      throw new Error('App is deployed on no subdomain')
+    }
+
     try {
-      // TODO: Should we call the revalidate on the original path?
-      const guidePath = `/_sites/${change.record.project_id}/${change.record.slug}`
-
-      await res.revalidate(guidePath)
+      const appPath = `/${hiddenAppRoute}/${app.subdomain}`
+      await res.revalidate(appPath)
       return res.status(200).json({ message: 'OK' })
     } catch (err) {
       return res.status(500).json({ error: 'Error revalidating' })

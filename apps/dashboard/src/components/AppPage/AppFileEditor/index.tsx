@@ -9,7 +9,7 @@ import {
   useEffect,
   useReducer,
 } from 'react'
-import FileButton from '../FileButton'
+import FileButton from './FileButton'
 // import useFiletree, { Node } from 'utils/useFiletree'
 
 import {
@@ -17,42 +17,25 @@ import {
   init,
   reducer,
 } from './reducer'
-import { supportedLanguages } from 'guides/languages'
-// import {
-//   analytics,
-//   editFileDebounce,
-// } from 'utils/analytics'
+import { supportedLanguages } from 'apps/languages'
 
 export interface Props {
   initialOpenedFiles: OpenedFile[]
 }
 
-function GuideFileEditor({ initialOpenedFiles }: Props) {
+function AppFileEditor({ initialOpenedFiles }: Props) {
   const { session } = useSharedSession()
   // const filetree = useFiletree()
   const [state, dispatch] = useReducer(reducer, initialOpenedFiles, init)
-
-  // const contentChangeAnalytics = useMemo(() => debounce((code: string, filename: string) => {
-  //   analytics.track('guide file edited', {
-  //     code,
-  //     filename,
-  //   })
-  // }, editFileDebounce, {
-  //   leading: false,
-  //   trailing: true,
-  // }), [])
 
   const writeFile = useCallback((content: string) => {
     if (state.openedFiles.length === 0) return
 
     const { path } = state.openedFiles[state.selectedIdx]
     session?.filesystem?.write(path, content)
-
-    // contentChangeAnalytics(content, path)
   }, [
     session,
     state,
-    // contentChangeAnalytics,
   ])
 
   const handleFileButtonClick = useCallback(async (idx: number) => {
@@ -98,13 +81,6 @@ function GuideFileEditor({ initialOpenedFiles }: Props) {
     })
   }, [initialOpenedFiles])
 
-  const handleEditorCopy = useCallback((code: string, startLine: number) => {
-    // analytics.track('guide editor selection copied', {
-    //   code,
-    //   startLine,
-    // })
-  }, [])
-
   if (state.openedFiles.length === 0) return null
   return (
     <div className="
@@ -147,7 +123,6 @@ function GuideFileEditor({ initialOpenedFiles }: Props) {
           content={state.openedFiles[state.selectedIdx].content}
           filename={state.openedFiles[state.selectedIdx].path}
           onContentChange={writeFile}
-          onCopy={handleEditorCopy}
           supportedLanguages={supportedLanguages}
           autofocus
         />
@@ -156,4 +131,4 @@ function GuideFileEditor({ initialOpenedFiles }: Props) {
   )
 }
 
-export default memo(GuideFileEditor)
+export default memo(AppFileEditor)

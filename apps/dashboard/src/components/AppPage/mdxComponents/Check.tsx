@@ -27,7 +27,6 @@ function Check({
 
   function handleClick() {
     setIsDone(true)
-    // analytics.track('guide check clicked', { guideStepCheckID: checkID })
   }
 
   return (

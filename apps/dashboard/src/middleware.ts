@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { hiddenAppRoute } from 'utils/constants'
 
 export const config = {
   matcher: [
@@ -27,11 +28,14 @@ export default async function middleware(req: NextRequest) {
   const subsubdomainMatch = subsubdomainMatcher.exec(hostname)
 
   if (subsubdomainMatch) {
+    // We are using subsubdomain here because our current URL is [subsubdomain].app.usedevbook.com
     const subsubdomain = subsubdomainMatch[1]
+    if (subsubdomain === 'dev') return
+
     const domain = subsubdomainMatch[2]
-    if (domain !== 'gitpod') {
+    if (domain !== 'gitpod' && domain !== 'github') {
       return NextResponse.rewrite(
-        new URL(`/_sites/${subsubdomain}${path}`, req.url)
+        new URL(`/${hiddenAppRoute}/${subsubdomain}${path}`, req.url)
       )
     }
   }

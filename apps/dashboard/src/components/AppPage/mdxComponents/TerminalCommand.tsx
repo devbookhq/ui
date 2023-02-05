@@ -35,7 +35,6 @@ function TerminalCommand({
 
   const handleCopyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(cmd)
-    // analytics.track('guide terminal copied', { cmd })
   }, [cmd])
 
   const run = useCallback(async () => {
@@ -50,8 +49,6 @@ function TerminalCommand({
     const process = await termRef.current?.runCmd(cmd)
     setProcess(process)
 
-    // analytics.track('guide terminal command started', { cmd })
-
     await process?.exited
     setIsRunning(false)
   }, [cmd])
@@ -59,25 +56,7 @@ function TerminalCommand({
   const stop = useCallback(async () => {
     await process?.kill()
     setIsRunning(false)
-    // analytics.track('guide terminal command stopped', { cmd })
-  }, [process, cmd])
-
-  const handleTerminalUserLine = useCallback((line: string) => {
-    const [, cmd] = line.split('$')
-    if (!cmd) return
-    const trimmedCmd = cmd.trim()
-    if (trimmedCmd.length > 0) {
-      // analytics.track('guide terminal line written', { cmd: trimmedCmd })
-    }
-  }, [])
-
-  const handleTerminalCopy = useCallback((selection: string) => {
-    if (selection.length > 0) {
-      // analytics.track('guide terminal selection copied', { selection })
-    }
-  }, [])
-
-  // const { handleOutput } = useTerminalOutputAnalytics()
+  }, [process])
 
   return (
     <div className="
@@ -150,11 +129,7 @@ function TerminalCommand({
         <Terminal
           ref={termRef}
           rootdir={rootdir}
-          onCopy={handleTerminalCopy}
-          onLine={handleTerminalUserLine}
-          // onOutput={handleOutput}
           session={session}
-          // onRunningCmdChange
           isPersistent
           canStartTerminalSession
         />

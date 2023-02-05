@@ -15,6 +15,7 @@ model User {
   teams    UsersInTeams[]
   feedback UserFeedback[]
   apiKeys  ApiKey[]
+  @@ignore
 }
 
 model ApiKey {
@@ -23,6 +24,8 @@ model ApiKey {
 
   user   User   @relation(fields: [userID], references: [id], onDelete: Cascade)
   userID String
+
+  @@ignore
 }
 
 model UserFeedback {
@@ -33,6 +36,8 @@ model UserFeedback {
 
   user   User   @relation(fields: [userID], references: [id])
   userID String
+
+  @@ignore
 }
 
 model UsersInTeams {
@@ -45,6 +50,8 @@ model UsersInTeams {
   teamID String
 
   @@id([userID, teamID])
+
+  @@ignore
 }
 
 model Team {
@@ -55,6 +62,7 @@ model Team {
 
   users UsersInTeams[]
   apps  App[]
+  @@ignore
 }
 
 model App {
@@ -63,7 +71,7 @@ model App {
   updatedAt DateTime @updatedAt
 
   title     String
-  subdomain String[]
+  subdomain String
 
   env     Env?
   content AppContent?
@@ -114,6 +122,8 @@ model GitHubInstallation {
   repositoryFullName String
 
   apps App[]
+
+  @@ignore
 }
 
 model SlackInstallation {

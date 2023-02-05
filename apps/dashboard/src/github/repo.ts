@@ -2,11 +2,8 @@ import { Octokit } from '@octokit/rest'
 import * as toml from '@iarna/toml'
 import JSZip from 'jszip'
 
-import getClient from './octokit'
-import { notEmpty } from 'utils/notEmpty'
-import path from 'path'
+import { AppContentJSON } from 'apps/content'
 
-const guideConfigName = 'guide.json'
 const envConfigName = 'dbk.toml'
 
 export interface File {
@@ -14,16 +11,18 @@ export interface File {
   name: string
 }
 
-async function getGuideDirs({
+export interface EnvConfig {
+  id: string
+}
+
+export async function getRepo({
   owner,
   repo,
-  dir,
   ref,
   github,
 }: {
   owner: string,
   repo: string,
-  dir: string,
   ref: string,
   github: Octokit,
 }) {
@@ -36,89 +35,36 @@ async function getGuideDirs({
 
   const zip = JSZip()
   await zip.loadAsync(archive.data as string)
-
-  const rootRegex = dir === '.' || dir === './' ? new RegExp('^[^\/]+\/$') : new RegExp(`^[^\/]+\/${dir}\/$`)
-  const rootDir = zip.folder(rootRegex)
-
-  if (rootDir.length > 0) {
-    const name = rootDir[0].name
-    const root = zip.folder(name)
-
-    if (root) {
-      const guideConfig = root.file(guideConfigName)
-      if (guideConfig) {
-        return [{ dir: root, name, isRoot: true }]
-      }
-    }
-  }
-
-  const regex = dir === '.' || dir === './' ? new RegExp('^[^\/]+\/[^\/]+\/$') : new RegExp(`^[^\/]+\/${dir}\/[^\/]+\/$`)
-  const devbookFiles = zip.folder(regex)
-
-  return devbookFiles.map(d => {
-    const dir = zip.folder(d.name)
-    return dir ? { dir, name: d.name, isRoot: false } : undefined
-  }).filter(notEmpty)
+  return zip
 }
 
-export async function getGuidesFromRepo({
-  installationID,
-  owner,
-  repo,
+export async function getAppContentFromRepo({
   dir,
-  ref,
+  repo,
 }: {
-  installationID: number,
-  owner: string,
-  repo: string,
+  repo: JSZip,
   dir: string,
-  ref: string,
-}) {
-  const github = await getClient({ installationID })
-  const guideDirs = await getGuideDirs({
-    ref,
-    dir,
-    github,
-    owner,
-    repo,
-  })
+}): Promise<AppContentJSON | undefined> {
+  const rootRegex = dir === '.' || dir === './' ? new RegExp('^[^\/]+\/$') : new RegExp(`^[^\/]+\/${dir}\/$`)
+  const rootDir = repo.folder(rootRegex)
 
-  const guides = guideDirs.map(async (g) => {
-    const slug = g.isRoot ? '' : path.basename(g.name)
+  if (rootDir.length === 0) return
+  const name = rootDir[0].name
+  const root = repo.folder(name)
 
-    const guideConfigContentRaw = await g.dir.file(guideConfigName)?.async('string')
-    if (!guideConfigContentRaw) {
-      throw new Error(`Invalid guide config for guide ${g.name}`)
-    }
-    const guideConfig = JSON.parse(guideConfigContentRaw)
+  if (!root) return
 
-    const envConfigContentRaw = await g.dir.file(envConfigName)?.async('string')
-    if (!envConfigContentRaw) {
-      throw new Error(`Invalid env config for guide ${g.name}`)
-    }
-    const envConfig = toml.parse(envConfigContentRaw)
+  const envConfigContentRaw = await root.file(envConfigName)?.async('string')
+  if (!envConfigContentRaw) {
+    throw new Error(`Invalid env config in ${name}`)
+  }
+  const env = toml.parse(envConfigContentRaw) as unknown as EnvConfig
+  const mdx = await Promise.all(root.file(/.+.mdx$/).map(getFile))
 
-    const introFile = await getFile(
-      g.dir.file('intro.mdx')
-    )
-
-    const ratingFile = await getFile(
-      g.dir.file('rating.mdx')
-    )
-
-    const stepFiles = await Promise.all(g.dir.file(/step-.+.mdx$/).map(getFile))
-
-    return {
-      slug,
-      stepFiles,
-      ratingFile,
-      introFile,
-      envConfig,
-      guideConfig,
-    }
-  })
-
-  return await Promise.all(guides)
+  return {
+    env,
+    mdx,
+  }
 }
 
 async function getFile(o: JSZip.JSZipObject | null): Promise<File> {

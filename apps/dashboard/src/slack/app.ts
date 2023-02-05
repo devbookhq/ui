@@ -77,12 +77,4 @@ export const appRunner = new AppRunner({
 
 const app = new App(appRunner.appOptions())
 
-app.command('/devbook', async ({ ack }) => {
-  await ack({
-    response_type: 'in_channel',
-    mrkdwn: true,
-    text: "I'm a bot, your argument is invalid.",
-  })
-})
-
 appRunner.setup(app)

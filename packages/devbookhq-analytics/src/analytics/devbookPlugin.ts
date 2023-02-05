@@ -1,4 +1,4 @@
-import { analytics } from '.'
+import analytics from 'analytics'
 import { logger } from '../logger'
 
 type PayloadType = 'track' | 'identify' | 'page'

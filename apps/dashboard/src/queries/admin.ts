@@ -9,8 +9,6 @@ import {
 import {
   AppFeedback,
   appsFeedbackTable,
-  GuideDBEntry,
-  guidesTable,
   InstallationDBEntry,
   slackInstallationsTable
 } from './db'
@@ -50,35 +48,6 @@ export async function setInstallation(
     })
 
   if (error) throw error
-}
-
-export async function getGuideEntry(
-  admin: SupabaseAdmin,
-  subdomain: string,
-  slug: string,
-) {
-  const { error, data } = await admin
-    .from(guidesTable)
-    .select<'*', GuideDBEntry>('*')
-    .eq('project_id', subdomain)
-    .eq('slug', slug)
-    .limit(1)
-    .single()
-
-  if (error) throw error
-  return data
-}
-
-export async function upsertGuideEntry(
-  guides: Database['public']['Tables']['guides']['Insert'][],
-  admin: typeof supabaseAdmin,
-) {
-  const { error, data } = await admin
-    .from(guidesTable)
-    .upsert(guides, { onConflict: 'slug,repository_fullname' })
-
-  if (error) throw error
-  return data
 }
 
 export async function getInstallation(

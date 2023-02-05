@@ -2,9 +2,11 @@ import { GetServerSideProps } from 'next'
 import getRawBody from 'raw-body'
 
 import AppPage from 'components/AppPage'
-import { Guide } from 'guides/content/Guide'
-import { getGuideData } from 'guides/content'
-import { GuideDBEntry } from 'queries/db'
+import {
+  CompiledAppContent,
+  compileContent,
+  AppContentJSON,
+} from 'apps/content'
 
 // TODO: Add realtime reloading on changes
 // https://dev.to/cassiolacerda/automatically-refresh-the-browser-on-node-express-server-changes-x1f680-1k0o#comment-1kjdg
@@ -15,25 +17,27 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     'maxage'
   )
 
+  // Info about using body and POST request for Nextjs pages:
   // https://github.com/vercel/next.js/discussions/12152
   const body = await getRawBody(context.req)
   const stringBody = body.toString()
-  const jsonBody = JSON.parse(stringBody) as GuideDBEntry
-  const guide = await getGuideData(jsonBody)
+  const appContent = JSON.parse(stringBody) as AppContentJSON
+
+  const content = await compileContent(appContent)
 
   return {
     props: {
-      guide,
+      content,
     }
   }
 }
 
 export interface Props {
-  guide: Guide
+  content: CompiledAppContent
 }
 
-function DevPage({ guide }: Props) {
-  return <AppPage guide={guide} />
+function DevApp({ content }: Props) {
+  return <AppPage content={content} />
 }
 
-export default DevPage
+export default DevApp

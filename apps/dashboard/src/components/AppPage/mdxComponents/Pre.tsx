@@ -11,7 +11,7 @@ import path from 'path-browserify'
 // import { analytics } from 'utils/analytics'
 import { rootdir } from 'utils/constants'
 import CopyToClipboardButton from '../CopyToClipboardButton'
-import { supportedLanguages } from 'guides/languages'
+import { supportedLanguages } from 'apps/languages'
 
 const darkEditorTheme = EditorView.theme({ '.cm-gutters': { background: '#282c34' } })
 
@@ -33,15 +33,7 @@ function Pre(p: Props<HTMLPreElement>) {
 
   const handleCopyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(code)
-    // analytics.track('guide code block copied', { code })
   }, [code])
-
-  const handleEditorCopy = useCallback((code: string, startLine: number) => {
-    // analytics.track('guide code block selection copied', {
-    //   code,
-    //   startLine,
-    // })
-  }, [])
 
   if ((p.children as any).type.name === 'code') {
 
@@ -87,7 +79,6 @@ function Pre(p: Props<HTMLPreElement>) {
             languageClients={undefined}
             supportedLanguages={supportedLanguages}
             theme={[oneDark, darkEditorTheme]}
-            onCopy={handleEditorCopy}
             isReadOnly
           />
         </div>

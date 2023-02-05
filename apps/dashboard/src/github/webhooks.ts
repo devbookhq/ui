@@ -4,14 +4,12 @@ import {
   createNodeMiddleware,
 } from '@octokit/webhooks'
 
-import { getGuidesFromRepo } from './repo'
-import { supabaseAdmin, upsertGuideEntry } from 'queries/admin'
-import { GuideContentDBENtry } from 'queries/db'
-import { Json } from 'queries/supabase'
+import { getAppContentFromRepo, getRepo } from './repo'
+import { prisma } from 'queries/prisma'
+import getClient from './octokit'
+import { apps_content } from '@prisma/client'
 
-export const defaultDevbookDir = 'devbook'
-export const branchRefprefix = 'refs/heads/'
-export const fileDotSlashPattern = /(?:\.\/|\.)?(.*)/
+export const branchRefPrefix = 'refs/heads/'
 
 export async function getGitHubWebhooksMiddleware() {
   const webhooks = new Webhooks({
@@ -21,44 +19,62 @@ export async function getGitHubWebhooksMiddleware() {
   return createNodeMiddleware(webhooks, { path: '/api/github/webhook' })
 }
 
+// TODO: We may need to manually trigger this handler when the user connects the repo for the first time
 const pushHandler: HandlerFunction<'push', unknown> = async (event) => {
   const { payload } = event
   const [repositoryOwnerName, repositoryName] = payload.repository.full_name.split('/')
   const installationID = payload.installation?.id
-  // const repositoryGitHubID = payload.repository.id.toString()
-  const repositoryBranch = payload.ref.slice(branchRefprefix.length)
+  const repositoryID = payload.repository.id
+  const repositoryBranch = payload.ref.slice(branchRefPrefix.length)
 
   if (!installationID) {
     throw new Error('InstallationID not found')
   }
 
-  // TODO: We may need to manually trigger this handler when the user connects the repo for the first time
-  // TODO: Get project_id associated with this repository installation
-  // TODO: Filter by a specific branch
+  const connectedApps = await prisma.apps.findMany({
+    where: {
+      repository_branch: {
+        equals: repositoryBranch,
+      },
+      github_installations: {
+        repository_id: repositoryID,
+      },
+    },
+  })
 
-  const guides = await getGuidesFromRepo({
-    installationID,
+  if (connectedApps.length === 0) return
+
+  const github = await getClient({ installationID })
+  const repo = await getRepo({
+    github,
     repo: repositoryName,
-    dir: defaultDevbookDir,
     owner: repositoryOwnerName,
     ref: payload.ref,
   })
 
-  await upsertGuideEntry(guides.map(g => ({
-    project_id: 'test',
-    repository_fullname: payload.repository.full_name,
-    slug: g.slug,
-    branch: repositoryBranch,
-    content: {
-      env: g.envConfig,
-      guide: g.guideConfig,
-      steps: [
-        g.introFile,
-        ...g.stepFiles,
-        g.ratingFile,
-      ]
-    } as GuideContentDBENtry as unknown as Json,
-  })), supabaseAdmin)
+  await Promise.all(connectedApps.map(async app => {
+    try {
+      const content = await getAppContentFromRepo({
+        dir: app.repository_path,
+        repo,
+      })
 
-  // TODO: Trigger static revalidation for the nextjs pages (maybe use supabase db triggers for this)
+      if (!content) throw new Error('No content found in the repo')
+
+      await prisma.apps_content.upsert({
+        create: {
+          content: content as unknown as NonNullable<apps_content['content']>,
+          app_id: app.id,
+        },
+        update: {
+          content: content as unknown as NonNullable<apps_content['content']>,
+        },
+        where: {
+          app_id: app.id,
+        }
+      })
+    } catch (err) {
+      console.error(`Error processing git push to app "${app.id}" content from repository "${payload.repository.full_name}"`, err)
+    }
+  }))
 }

@@ -3,8 +3,8 @@ import type { Installation } from '@slack/oauth'
 export const appsFeedbackTable = 'apps_feedback'
 export const slackInstallationsTable = 'slack_installations'
 export const appsTable = 'apps'
+export const appsContentTable = 'apps_content'
 export const userFeedbackTable = 'user_feedback'
-export const guidesTable = 'guides'
 
 export interface UserFeedback {
   user_id: string
@@ -43,26 +43,4 @@ export interface InstallationDBEntry {
   created_at?: Date
   devbook_app_id?: string
   installation_data: Installation
-}
-
-export interface GuideContentDBENtry {
-  env: {
-    id: string,
-  },
-  guide: {
-    title: string
-  },
-  steps: {
-    name: string,
-    content: string,
-  }[],
-}
-
-export interface GuideDBEntry {
-  created_at?: string
-  project_id: string
-  slug: string
-  branch: string
-  repository_fullname: string
-  content?: GuideContentDBENtry
 }

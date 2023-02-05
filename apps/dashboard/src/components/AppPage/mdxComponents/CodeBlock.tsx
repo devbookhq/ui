@@ -25,7 +25,7 @@ import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
 import Text from 'components/typography/Text'
-import { supportedLanguages } from 'guides/languages'
+import { supportedLanguages } from 'apps/languages'
 
 const darkEditorTheme = EditorView.theme({ '.cm-gutters': { background: '#282c34' } })
 
@@ -67,11 +67,6 @@ function CodeBlock({
       onExit: () => setIsRunning(false),
     }).then(setProcess)
       .catch(err => {
-        // analytics.track('guide code block error', {
-        //   cmd,
-        //   code: children as string,
-        //   language: lang,
-        // })
         const e: OutStderrResponse = {
           line: err,
           timestamp: Date.now(),
@@ -79,16 +74,9 @@ function CodeBlock({
         }
         appendOutput(e)
       })
-
-    // analytics.track('guide code block executed', {
-    //   cmd,
-    //   code: children as string,
-    //   language: lang,
-    // })
     setIsRunning(true)
   }, [
     onRun,
-    lang,
     session,
     children,
     appendOutput,
@@ -96,29 +84,9 @@ function CodeBlock({
 
   const handleCopyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(children as string)
-    // analytics.track('guide code block copied', { code: children as string })
   }, [children])
 
-  const handleEditorCopy = useCallback((code: string, startLine: number) => {
-    // analytics.track('guide code block selection copied', {
-    //   code,
-    //   startLine,
-    // })
-  }, [])
-
-  // const handleContentChange = useMemo(() => debounce((code: string) => {
-  //   analytics.track('guide code block edited', { code })
-  // }, editFileDebounce, {
-  //   leading: false,
-  //   trailing: true,
-  // }), [])
-
   const stop = useCallback(() => {
-    // analytics.track('guide code block stopped', {
-    //   cmd: onRun?.(children as string) || '',
-    //   code: children as string,
-    //   language: lang,
-    // })
     process?.kill()
   }, [
     process,
@@ -186,8 +154,6 @@ function CodeBlock({
           filename={path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={[oneDark, darkEditorTheme]}
-          // onContentChange={handleContentChange}
-          onCopy={handleEditorCopy}
           isReadOnly
         />
       </div>
