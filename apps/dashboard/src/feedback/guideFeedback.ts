@@ -128,13 +128,25 @@ export function aggregateGuidesFeedback(feedback: Required<AppFeedback>[]) {
     g.feed.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 
     // Filter our the duplicate upvotes from guides
-
     for (let i = g.feed.length - 1; i >= 0; i--) {
       const e = g.feed[i]
 
       if ('text' in e) {
-        for (let j = i; j >= 0; j++) {
-          if (g.feed[j].userID === e.userID && !('text' in g.feed[j])) {
+        let isCleaned = false
+        for (let j = i; j >= 0; j--) {
+          if (g.feed[j].userID === e.userID && !('text' in g.feed[j]) && g.feed[j].rating === e.rating) {
+            g.feed.splice(j, 1)
+            isCleaned = true
+            break
+          }
+        }
+
+        if (isCleaned) {
+          continue
+        }
+
+        for (let j = g.feed.length - 1; j > i; j--) {
+          if (g.feed[j].userID === e.userID && !('text' in g.feed[j]) && g.feed[j].rating === e.rating) {
             g.feed.splice(j, 1)
             break
           }
