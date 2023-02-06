@@ -53,13 +53,25 @@ function createFeedbackMessage(feedback: AppFeedback) {
           'text': `*Guide*\n<https://playground.prisma.io${feedback.properties.guide}|${getGuideName(feedback.properties.guide || '')}>`
         },
         {
-          // Without this the Slack is still displaying the message correctly, but it also displays incorrect notification about not being able to display content.
+          // Without this Slack is still displaying the message correctly, but it also displays incorrect notification about not being able to display content.
           text: ' ',
           type: 'plain_text',
         }
       ],
     }
   ]
+
+  if (feedback.properties.guideStep) {
+    blocks.push({
+      type: 'section',
+      fields: [
+        {
+          'type': 'mrkdwn',
+          'text': `*Step*\n<https://playground.prisma.io${feedback.properties.guide}|${feedback.properties.guideStep}>`
+        },
+      ],
+    })
+  }
 
   if (feedback.feedback) {
     blocks.push(

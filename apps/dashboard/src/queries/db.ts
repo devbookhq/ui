@@ -22,6 +22,7 @@ export interface AppFeedbackPropertiesJSON {
   anonymousId?: string
   rating?: Rating
   guide?: string
+  guideStep?: string
 }
 
 export interface AppFeedback {
