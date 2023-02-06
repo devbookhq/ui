@@ -10,6 +10,7 @@ export interface Props {
 }
 
 function Message({ message }: Props) {
+  console.log({ message })
   return (
     <div className="
       space-y-4
@@ -62,7 +63,10 @@ function Message({ message }: Props) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Text text={message.guide?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
+            {message.guide?.guideStep
+              ? <Text text={`${message.guide?.title || ''} | Step ${message.guide?.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
+              : <Text text={message.guide?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
+            }
             <ExternalLink
               size={14}
             />
