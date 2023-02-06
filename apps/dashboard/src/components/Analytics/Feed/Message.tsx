@@ -10,7 +10,6 @@ export interface Props {
 }
 
 function Message({ message }: Props) {
-  console.log({ message })
   return (
     <div className="
       space-y-4
