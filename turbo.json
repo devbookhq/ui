@@ -1,6 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "db:generate": {
+      "cache": false
+    },
     "build": {
       "outputs": [
         "dist/**",
@@ -16,6 +19,7 @@
         ".next/**"
       ],
       "dependsOn": [
+        "^db:generate",
         "^build"
       ],
       "env": [
@@ -43,6 +47,9 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": [
+        "^db:generate"
+      ],
       "cache": false
     },
     "clean": {

@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { apps_content } from 'database'
 
 import { appsContentTable } from 'queries/db'
 import { hiddenAppRoute } from 'utils/constants'
-
-import type { apps_content } from '@prisma/client'
 import { prisma } from 'queries/prisma'
 
 enum SupabaseEventType {

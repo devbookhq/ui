@@ -1,4 +1,4 @@
-import { apps_feedback } from '@prisma/client'
+import { apps_feedback } from 'database'
 import { AppFeedbackPropertiesJSON, Rating } from 'queries/db'
 
 import { FeedEntry } from './feed'

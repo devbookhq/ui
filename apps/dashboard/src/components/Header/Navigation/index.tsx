@@ -1,4 +1,4 @@
-import { apps } from '@prisma/client'
+import { apps } from 'database'
 import { ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/router'
 

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { apps } from '@prisma/client'
+import { apps } from 'database'
 import { useUser } from '@supabase/auth-helpers-react'
 
 import UserPortrait from 'components/UserPortrait'

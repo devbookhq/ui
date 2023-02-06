@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AppProps } from 'next/app'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-import { apps } from '@prisma/client'
+import { apps } from 'database'
 
 import 'styles/global.css'
 

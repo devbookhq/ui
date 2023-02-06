@@ -1,6 +1,6 @@
 import type { GetServerSideProps } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { apps, apps_feedback } from '@prisma/client'
+import { apps, apps_feedback } from 'database'
 import type { ParsedUrlQuery } from 'querystring'
 
 import Analytics from 'components/Analytics'

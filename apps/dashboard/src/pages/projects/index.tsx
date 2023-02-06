@@ -1,7 +1,7 @@
 import type { GetServerSideProps } from 'next'
 import { LayoutGrid } from 'lucide-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { apps } from '@prisma/client'
+import { apps } from 'database'
 
 import ItemList from 'components/ItemList'
 import Text from 'components/typography/Text'

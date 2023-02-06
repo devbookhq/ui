@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
-import { apps, apps_feedback } from '@prisma/client'
+import { apps, apps_feedback } from 'database'
 
 import { getFeedData, aggregateGuidesFeedback } from 'feedback'
 import Text from 'components/typography/Text'

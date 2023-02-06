@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { posthog } from 'posthog-js'
-import { apps } from '@prisma/client'
+import { apps } from 'database'
 
 import Header from './Header'
 

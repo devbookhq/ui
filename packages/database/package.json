@@ -1,0 +1,12 @@
+{
+  "name": "database",
+  "dependencies": {
+    "@prisma/client": "^4.9.0"
+  },
+  "devDependencies": {
+    "prisma": "^4.9.0"
+  },
+  "scripts": {
+    "db:generate": "prisma generate"
+  }
+}
