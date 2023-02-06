@@ -31,11 +31,12 @@ export const getServerSideProps: GetServerSideProps<Props, PathProps> = async (c
     }
   }
 
-  const app = await prisma.apps.findFirst({
+  const app = await prisma.apps.findUnique({
     where: {
-      devbook_app_id: ctx.params.id,
-    }
+      id: ctx.params.id,
+    },
   })
+
   if (!app) {
     return {
       notFound: true,
