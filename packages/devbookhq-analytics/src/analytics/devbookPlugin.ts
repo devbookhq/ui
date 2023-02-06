@@ -1,4 +1,4 @@
-import analytics from 'analytics'
+import { AnalyticsInstance } from 'analytics'
 import { logger } from '../logger'
 
 type PayloadType = 'track' | 'identify' | 'page'
@@ -55,7 +55,7 @@ export class DevbookPlugin implements Record<string, unknown> {
     // Convert nanoseconds timestamp to microseconds timestamp
     payload.meta.ts = Math.floor(payload.meta.ts / 1000)
 
-    const info = analytics.getState()
+    const info = this.analytics.getState()
 
     payload.context = {
       os: info?.context?.os?.name,
@@ -95,7 +95,7 @@ export class DevbookPlugin implements Record<string, unknown> {
     }
   }
 
-  constructor(readonly config: Config, private readonly log = logger('Devbook Analytics')) {
+  constructor(readonly config: Config, private readonly log = logger('Devbook Analytics'), private readonly analytics: AnalyticsInstance) {
     this.url = config.url || this.defaultURL
   }
 

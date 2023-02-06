@@ -72,7 +72,6 @@ const DirWrapper = memo(function ({
           className="text-center text-gray-500"
           size={Text.size.S3}
           text="Empty directory"
-          typeface={Text.typeface.InterSemibold}
         />
       }
       {nodeChildren.length > 0 && nodeChildren.map(n => (

@@ -157,7 +157,6 @@ function Filesystem({
           className="text-gray-500"
           size={Text.size.S3}
           text={rootPath.toUpperCase()}
-          typeface={Text.typeface.InterSemibold}
         />
       </div>
       <FilesystemPrimitive.Tree

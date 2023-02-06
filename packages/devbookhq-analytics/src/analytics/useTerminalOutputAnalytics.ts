@@ -1,10 +1,10 @@
-import { analytics } from './index'
 import {
   useCallback,
   useMemo,
   useRef,
 } from 'react'
 import debounce from 'lodash.debounce'
+import { AnalyticsInstance } from 'analytics'
 
 function makeID(length: number) {
   let result = ''
@@ -18,7 +18,7 @@ function makeID(length: number) {
   return result
 }
 
-function useTerminalOutputAnalytics() {
+function useTerminalOutputAnalytics(analytics: AnalyticsInstance) {
   const buffer = useRef<string>('')
   const randomID = useRef<string>(makeID(12))
 
@@ -35,7 +35,7 @@ function useTerminalOutputAnalytics() {
     maxWait: 5000,
     trailing: true,
     leading: false,
-  }), [])
+  }), [analytics])
 
   const handleOutput = useCallback((out: string) => {
     buffer.current += out
