@@ -7,7 +7,7 @@
   "access": "public",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "ui-examples",
-    "dashboard"
+    "dashboard",
+    "database"
   ]
 }

@@ -1,7 +1,0 @@
-@import '@devbookhq/code-editor/dist/index.css';
-@import '@devbookhq/terminal/dist/index.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
- 
