@@ -1,13 +1,11 @@
+import { apps } from '@prisma/client'
 import { ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/router'
-
-import { App } from 'queries/db'
-import { getSlug } from 'utils/app'
 
 import HeaderLink from './HeaderLink'
 
 export interface Props {
-  app?: App
+  app?: apps
 }
 
 function Navigation({ app }: Props) {
@@ -27,12 +25,12 @@ function Navigation({ app }: Props) {
             size="16px"
           />
           <HeaderLink
-            active={router.pathname === '/projects/[slug]'}
+            active={router.pathname === '/projects/[id]'}
             href={{
-              pathname: '/projects/[slug]',
+              pathname: '/projects/[id]',
               query: {
-                slug: getSlug(app.id, app.title)
-              }
+                id: app.id,
+              },
             }}
             title={app.title}
           />

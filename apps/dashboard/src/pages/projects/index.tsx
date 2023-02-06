@@ -1,29 +1,85 @@
-import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
-import { useUser } from '@supabase/supabase-auth-helpers/react'
+import type { GetServerSideProps } from 'next'
 import { LayoutGrid } from 'lucide-react'
-import { useEffect } from 'react'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { apps } from '@prisma/client'
 
 import ItemList from 'components/ItemList'
-import SpinnerIcon from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
-import useApps from 'hooks/useApps'
+import { prisma } from 'queries/prisma'
 
-export const getServerSideProps = withPageAuth({
-  redirectTo: '/signin',
-})
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+  const supabase = createServerSupabaseClient(ctx)
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
-function Projects() {
-  const { user } = useUser()
-  const { apps, isLoading, error: csError } = useApps(user?.id || '')
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/sign',
+        permanent: false,
+      },
+    }
+  }
 
-  useEffect(
-    function checkAppError() {
-      if (!csError) return
-      console.error(`Error retrieving apps: ${csError}`)
+  const user = await prisma.auth_users.findUnique({
+    where: {
+      id: session.user.id,
     },
-    [csError],
-  )
+    include: {
+      users_teams: {
+        include: {
+          teams: {
+            include: {
+              apps: {}
+            },
+          }
+        }
+      }
+    },
+  })
 
+  if (!user?.users_teams || user.users_teams.length === 0) {
+    // User is one of the old users without default team - create default team.
+    const team = await prisma.teams.create({
+      data: {
+        name: session.user.email || session.user.id,
+        users_teams: {
+          create: {
+            users: {
+              connect: {
+                id: session.user.id,
+              }
+            }
+          }
+        },
+      },
+      include: {
+        apps: true
+      },
+    })
+
+    return {
+      props: {
+        apps: team.apps,
+      }
+    }
+  }
+
+  // Show apps from all teams for now.
+  const appsFromAllTeams = user.users_teams.flatMap(t => t.teams.apps)
+  return {
+    props: {
+      apps: appsFromAllTeams,
+    }
+  }
+}
+
+interface Props {
+  apps: apps[]
+}
+
+function Projects({ apps: projects }: Props) {
   return (
     <div
       className="
@@ -58,31 +114,16 @@ function Projects() {
         overflow-hidden
         "
       >
-        {isLoading && (
-          <div
-            className="
-            flex
-            flex-1
-            items-center
-            justify-center
-          "
-          >
-            <SpinnerIcon className="text-slate-400" />
-          </div>
-        )}
-
-        {!isLoading && (
-          <div className="flex flex-1 justify-center overflow-hidden">
-            <ItemList
-              items={apps.map(i => ({
-                ...i,
-                path: '/projects/[slug]',
-                type: 'Project',
-                icon: <LayoutGrid size="22px" strokeWidth="1.7" />,
-              }))}
-            />
-          </div>
-        )}
+        <div className="flex flex-1 justify-center overflow-hidden">
+          <ItemList
+            items={projects.map(i => ({
+              ...i,
+              path: '/projects/[id]',
+              type: 'Project',
+              icon: <LayoutGrid size="22px" strokeWidth="1.7" />,
+            }))}
+          />
+        </div>
       </div>
     </div>
   )

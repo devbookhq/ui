@@ -1,12 +1,13 @@
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import clsx from 'clsx'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { posthog } from 'posthog-js'
 
 import Button from 'components/Button'
 import Text from 'components/typography/Text'
+import { Database } from 'queries/supabase'
 
 import SpinnerIcon from './icons/Spinner'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 export enum AuthFormType {
   SignIn,
@@ -20,6 +21,7 @@ export interface Props {
 function AuthForm({ authType }: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const [errMessage, setErrMessage] = useState('')
+  const supabaseClient = useSupabaseClient<Database>()
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -59,13 +61,13 @@ function AuthForm({ authType }: Props) {
       return
     }
 
-    const { error, user } =
+    const { error, data: { user } } =
       authType === AuthFormType.SignUp
         ? await supabaseClient.auth.signUp({
           email,
           password,
         })
-        : await supabaseClient.auth.signIn({
+        : await supabaseClient.auth.signInWithPassword({
           email,
           password,
         })

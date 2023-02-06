@@ -1,15 +1,14 @@
 import clsx from 'clsx'
 import Link from 'next/link'
-import { MouseEvent, useEffect, useMemo, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 
 import SpinnerIcon from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
-import { getSlug } from 'utils/app'
 
 export interface ItemSetup {
   id: string
   title: string
-  created_at: string
+  created_at: Date
   icon?: React.ReactNode
   path: string
   type: string
@@ -20,16 +19,10 @@ export interface Props {
   deleteItem?: () => Promise<void>
 }
 
-function useDate(timestamp: string) {
-  return useMemo(() => {
-    const d = new Date(timestamp)
-    return d.toLocaleString()
-  }, [timestamp])
-}
-
 function Item({ item, deleteItem }: Props) {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [date, setDate] = useState<string>()
 
   useEffect(
     function expireConfirm() {
@@ -43,7 +36,12 @@ function Item({ item, deleteItem }: Props) {
     [confirmDelete],
   )
 
-  const created = useDate(item.created_at)
+  useEffect(
+    function convertDate() {
+      setDate(item.created_at.toLocaleString())
+    },
+    [item.created_at],
+  )
 
   async function handleDelete(
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
@@ -74,7 +72,7 @@ function Item({ item, deleteItem }: Props) {
       href={{
         pathname: item.path,
         query: {
-          slug: getSlug(item.id, item.title),
+          id: item.id,
         },
       }}
     >
@@ -113,10 +111,11 @@ function Item({ item, deleteItem }: Props) {
               size={Text.size.S3}
               text="-"
             />
-            <Text
+            {date && <Text
               size={Text.size.S3}
-              text={created}
+              text={date}
             />
+            }
           </div>
         </div>
       </div>

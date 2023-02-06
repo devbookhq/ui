@@ -1,18 +1,18 @@
-import { useUser } from '@supabase/supabase-auth-helpers/react'
 import Link from 'next/link'
+import { apps } from '@prisma/client'
+import { useUser } from '@supabase/auth-helpers-react'
 
 import UserPortrait from 'components/UserPortrait'
-import { App } from 'queries/db'
 import CustomerFeedback from 'components/CustomerFeedback'
 
 import Navigation from './Navigation'
 
 export interface Props {
-  app?: App
+  app?: apps
 }
 
 function Header({ app }: Props) {
-  const { user } = useUser()
+  const user = useUser()
 
   return (
     <div className="flex items-center justify-between border-b bg-white border-slate-200 px-3">

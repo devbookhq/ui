@@ -16,10 +16,6 @@ import { oneDark } from '@codemirror/theme-one-dark'
 import { useSharedSession } from '@devbookhq/react'
 import path from 'path-browserify'
 
-// import {
-//   analytics,
-//   editFileDebounce,
-// } from 'utils/analytics'
 import { rootdir } from 'utils/constants'
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
@@ -90,9 +86,6 @@ function CodeBlock({
     process?.kill()
   }, [
     process,
-    children,
-    lang,
-    onRun,
   ])
 
   return (

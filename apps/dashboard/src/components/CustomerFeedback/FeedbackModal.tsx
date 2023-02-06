@@ -1,13 +1,12 @@
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { useUser } from '@supabase/supabase-auth-helpers/react'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { FormEvent, MouseEvent, useState } from 'react'
 
 import Button from 'components/Button'
 import Modal from 'components/Modal'
 import Textarea from 'components/Textarea'
 import SpinnerIcon from 'components/icons/Spinner'
-
-import { insertUserFeedback } from 'queries/client'
+import { Database } from 'queries/supabase'
+import { userFeedbackTable } from 'queries/db'
 
 export interface Props {
   isOpen: boolean
@@ -17,7 +16,9 @@ export interface Props {
 function FeedbackModal({ isOpen, onClose }: Props) {
   const [feedback, setFeedback] = useState('')
   const [isSavingFeedback, setIsSavingFeedback] = useState(false)
-  const { user } = useUser()
+  const user = useUser()
+
+  const supabaseClient = useSupabaseClient<Database>()
 
   async function saveFeedback(
     e: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
@@ -29,7 +30,14 @@ function FeedbackModal({ isOpen, onClose }: Props) {
 
     setIsSavingFeedback(true)
 
-    await insertUserFeedback(supabaseClient, user.id, feedback)
+    const response = await supabaseClient.from(userFeedbackTable).insert({
+      user_id: user.id,
+      feedback,
+    })
+
+    if (response.error) {
+      console.error(response.error)
+    }
 
     setIsSavingFeedback(false)
     onClose()

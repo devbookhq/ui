@@ -1,15 +1,14 @@
-import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useUser } from '@supabase/auth-helpers-react'
 
 import AuthForm from 'components/AuthForm'
 import TitleLink from 'components/TitleLink'
 import SpinnerIcon from 'components/icons/Spinner'
-import { useEffect } from 'react'
-
 
 function SignIn() {
   const router = useRouter()
-  const { user } = useUser()
+  const user = useUser()
   const isCreatingNewAccount = router.query.signup === 'true'
 
   useEffect(

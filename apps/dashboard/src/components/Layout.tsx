@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
-import { useUser } from '@supabase/supabase-auth-helpers/react'
+import { useUser } from '@supabase/auth-helpers-react'
 import { posthog } from 'posthog-js'
-
-import { App } from 'queries/db'
+import { apps } from '@prisma/client'
 
 import Header from './Header'
 
@@ -15,7 +14,7 @@ export interface PageMeta {
 }
 
 interface Props {
-  app?: App
+  app?: apps
   children: ReactNode
   meta?: PageMeta
 }
@@ -23,10 +22,10 @@ interface Props {
 export default function Layout({ children, meta: pageMeta, app }: Props) {
   const router = useRouter()
   const isProjectsDashboard = router.pathname === '/projects'
-  const isProjectOpen = router.pathname === '/projects/[slug]'
+  const isProjectOpen = router.pathname === '/projects/[id]'
   const isSettings = router.pathname === '/settings'
-  const isSignIn = router.pathname === '/signin' && router.query.signup !== 'true'
-  const isSignUp = router.pathname === '/signin' && router.query.signup === 'true'
+  const isSignIn = router.pathname === '/sign' && router.query.signup !== 'true'
+  const isSignUp = router.pathname === '/sign' && router.query.signup === 'true'
 
   const meta = {
     title: 'Dashboard | Devbook',
@@ -38,12 +37,12 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
   const user = useUser()
 
   useEffect(function identify() {
-    if (user.user?.email) {
-      posthog.identify(user.user.email, {
-        email: user.user.email,
+    if (user?.email) {
+      posthog.identify(user.email, {
+        email: user.email,
       })
     }
-  }, [user.user?.email])
+  }, [user?.email])
 
   if (isProjectsDashboard) {
     meta.title = 'Projects | Devbook'

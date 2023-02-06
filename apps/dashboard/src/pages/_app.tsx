@@ -1,21 +1,21 @@
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { UserProvider } from '@supabase/supabase-auth-helpers/react'
+import { useState } from 'react'
 import { AppProps } from 'next/app'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
+import { apps } from '@prisma/client'
 
 import 'styles/global.css'
 
 import Layout from 'components/Layout'
-import { App as AppProp } from 'queries/db'
 import { PostHogProvider } from 'utils/PostHogProvider'
 import Loader from 'components/Loader'
 import { hiddenAppRoute } from 'utils/constants'
 
-export default function App({ Component, pageProps, router }: AppProps<{ app?: AppProp }>) {
-  if (router.pathname === `/${hiddenAppRoute}/[subdomain]` || router.pathname === `/${hiddenAppRoute}/dev`) {
-    if (router.isFallback) {
-      return <Loader />
-    }
+export default function App({ Component, pageProps, router }: AppProps<{ app?: apps, initialSession: Session }>) {
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
+  if (router.pathname === `/${hiddenAppRoute}/[subdomain]` || router.pathname === `/${hiddenAppRoute}/dev`) {
+    if (router.isFallback) return <Loader />
     return (
       <div
         className="
@@ -42,11 +42,14 @@ export default function App({ Component, pageProps, router }: AppProps<{ app?: A
 
   return (
     <PostHogProvider token={process.env.NEXT_PUBLIC_POSTHOG_KEY}>
-      <UserProvider supabaseClient={supabaseClient}>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
         <Layout app={pageProps.app}>
           <Component {...pageProps} />
         </Layout>
-      </UserProvider>
+      </SessionContextProvider>
     </PostHogProvider>
   )
 }

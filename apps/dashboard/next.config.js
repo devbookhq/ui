@@ -18,6 +18,7 @@ const config = {
   transpilePackages: ['@devbookhq/code-editor'],
   experimental: {
     esmExternals: 'loose',
+    swcPlugins: [["next-superjson-plugin", {}]],
   },
   images: {
     remotePatterns: [

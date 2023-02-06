@@ -1,37 +1,69 @@
-import { withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
-import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { ClipboardCheck, ClipboardCopy, Settings as SettingsIcon } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { posthog } from 'posthog-js'
+import { GetServerSideProps } from 'next'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
 import Button from 'components/Button'
-import Spinner from 'components/icons/Spinner'
 import Text from 'components/typography/Text'
-import useAPIKey from 'hooks/useAPIKey'
 import useExpiringState from 'hooks/useExpiringState'
+import { prisma } from 'queries/prisma'
+import { Database } from 'queries/supabase'
 
-export const getServerSideProps = withPageAuth({
-  redirectTo: '/signin',
-})
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+  const supabase = createServerSupabaseClient(ctx)
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
-function Settings() {
-  const { user, isLoading: isUserLoading } = useUser()
-  const { key, isLoading: isAPIKeyLoading } = useAPIKey(user?.id)
+  if (!session)
+    return {
+      redirect: {
+        destination: '/sign',
+        permanent: false,
+      },
+    }
+
+  const apiKey = await prisma.api_keys.findFirstOrThrow({
+    where: {
+      owner_id: {
+        equals: session.user.id,
+      },
+    },
+  })
+
+  return {
+    props: {
+      apiKey: apiKey.api_key,
+    },
+  }
+}
+
+interface Props {
+  apiKey: string
+}
+
+function Settings({ apiKey }: Props) {
+  const user = useUser()
   const router = useRouter()
+
+  const supabaseClient = useSupabaseClient<Database>()
 
   const [copied, setWasCopied] = useExpiringState({ defaultValue: false, timeout: 2000 })
 
   async function handleCopyAPIKey() {
-    if (key) {
-      await navigator.clipboard.writeText(key)
+    if (apiKey) {
+      await navigator.clipboard.writeText(apiKey)
       setWasCopied(true)
     }
   }
 
-  function handleSignOut() {
+  async function handleSignOut() {
     posthog.reset(true)
 
-    router.push('/api/auth/logout')
+    await supabaseClient.auth.signOut()
+    router.push('/')
   }
 
   return (
@@ -81,13 +113,10 @@ function Settings() {
             size={Text.size.S3}
             text="Email"
           />
-          {isUserLoading
-            ? <Spinner />
-            : <Text
-              size={Text.size.S2}
-              text={user?.email!}
-            />
-          }
+          <Text
+            size={Text.size.S2}
+            text={user?.email!}
+          />
         </div>
         <div
           className="
@@ -101,15 +130,12 @@ function Settings() {
             size={Text.size.S3}
             text="API Key"
           />
-          {isAPIKeyLoading
-            ? <Spinner />
-            : <Button
-              className="select-text transition-all"
-              icon={copied ? <ClipboardCheck size="14px" /> : <ClipboardCopy size="14px" />}
-              text={key}
-              onClick={handleCopyAPIKey}
-            />
-          }
+          <Button
+            className="select-text transition-all"
+            icon={copied ? <ClipboardCheck size="14px" /> : <ClipboardCopy size="14px" />}
+            text={apiKey}
+            onClick={handleCopyAPIKey}
+          />
         </div>
 
         <div className="pt-2">

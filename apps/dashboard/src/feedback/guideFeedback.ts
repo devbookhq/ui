@@ -1,4 +1,5 @@
-import { AppFeedback, Rating } from 'queries/db'
+import { apps_feedback } from '@prisma/client'
+import { AppFeedbackPropertiesJSON, Rating } from 'queries/db'
 
 import { FeedEntry } from './feed'
 
@@ -50,48 +51,50 @@ export function getGuideName(guideID: string) {
   return guideID.split('/')[2].split(/[_-]+/).map(capitalizeFirstLetter).join(' ')
 }
 
-export function aggregateGuidesFeedback(feedback: Required<AppFeedback>[]) {
+export function aggregateGuidesFeedback(feedback: Required<apps_feedback>[]) {
   const guides = feedback.reduce<{ [guideID: string]: GuideFeedback }>((prev, curr) => {
-    if (!curr.properties) return prev
-    if (!curr.properties.guide) return prev
-    let guide = prev[curr.properties.guide]
+    const properties = curr.properties as AppFeedbackPropertiesJSON
+
+    if (!properties) return prev
+    if (!properties.guide) return prev
+    let guide = prev[properties.guide]
     if (!guide) {
       guide = {
-        link: (hostnames[curr.appId] && curr.properties.guide) ? `https://${hostnames[curr.appId]}${curr.properties.guide}` : undefined,
+        link: (hostnames[curr.appId] && properties.guide) ? `https://${hostnames[curr.appId]}${properties.guide}` : undefined,
         upvotes: 0,
         downvotes: 0,
         userMessages: [],
         ratingPercentage: 0,
         ratings: [],
         feed: [],
-        id: curr.properties.guide!,
-        title: getGuideName(curr.properties.guide),
+        id: properties.guide!,
+        title: getGuideName(properties.guide),
         totalMessages: 0,
       }
-      prev[curr.properties.guide] = guide
+      prev[properties.guide] = guide
     }
 
     if (curr.feedback) {
       guide.userMessages.push({
         text: curr.feedback,
         timestamp: new Date(curr.created_at),
-        rating: curr.properties.rating!,
-        userID: curr.properties.userId || curr.properties.anonymousId!,
+        rating: properties.rating!,
+        userID: properties.userId || properties.anonymousId!,
       })
       guide.totalMessages += 1
-    } else if (curr.properties.rating === Rating.Upvote) {
+    } else if (properties.rating === Rating.Upvote) {
       guide.upvotes += 1
       guide.ratings.push({
-        rating: curr.properties.rating,
+        rating: properties.rating,
         timestamp: new Date(curr.created_at),
-        userID: curr.properties.userId || curr.properties.anonymousId!,
+        userID: properties.userId || properties.anonymousId!,
       })
-    } else if (curr.properties.rating === Rating.Downvote) {
+    } else if (properties.rating === Rating.Downvote) {
       guide.downvotes += 1
       guide.ratings.push({
-        rating: curr.properties.rating,
+        rating: properties.rating,
         timestamp: new Date(curr.created_at),
-        userID: curr.properties.userId || curr.properties.anonymousId!,
+        userID: properties.userId || properties.anonymousId!,
       })
     }
     return prev

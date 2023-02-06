@@ -12,30 +12,23 @@ export interface UserFeedback {
   feedback: string
 }
 
-export interface App {
-  id: string
-  title: string
-  creator_id: string
-  created_at: string
-  // Temporal ID for identifying analytics sources
-  devbook_app_id?: string
-}
-
 export enum Rating {
   Upvote = 'up',
   Downvote = 'down',
+}
+
+export interface AppFeedbackPropertiesJSON {
+  userId?: string
+  anonymousId?: string
+  rating?: Rating
+  guide?: string
 }
 
 export interface AppFeedback {
   appId: string
   feedback?: string
   created_at?: string
-  properties: {
-    userId?: string
-    anonymousId?: string
-    rating?: Rating
-    guide?: string
-  }
+  properties: AppFeedbackPropertiesJSON
 }
 
 export interface InstallationDBEntry {

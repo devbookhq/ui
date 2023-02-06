@@ -35,5 +35,4 @@ module.exports = {
       flex: { 'guide-card': '1 1 30%' },
     },
   },
-  plugins: [require('tailwindcss-radix')()],
 }
