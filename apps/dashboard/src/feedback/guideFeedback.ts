@@ -48,8 +48,8 @@ export function capitalizeFirstLetter(value: string) {
 }
 
 export function getGuideName(guidePath: string) {
-  // guidePath looks like a URL path '/guide/<guide_id>' -> ['', 'guide', '<guide_id>']
-  return guidePath.split('/')[2].split(/[_-]+/).map(capitalizeFirstLetter).join(' ')
+  // guidePath looks like a URL path '/guide/<guide_id>?optionalStep' -> ['', 'guide', '<guide_id>']
+  return guidePath.split('/')[2].split('?')[0].split(/[_-]+/).map(capitalizeFirstLetter).join(' ')
 }
 
 export function aggregateGuidesFeedback(feedback: Required<apps_feedback>[]) {
