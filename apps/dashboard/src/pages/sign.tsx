@@ -14,7 +14,7 @@ function SignIn() {
   useEffect(
     function redirect() {
       if (!user) return
-      router.replace('/')
+      router.push('/projects')
     },
     [user, router],
   )

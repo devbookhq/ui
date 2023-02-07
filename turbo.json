@@ -1,6 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "db:pull": {
+      "cache": false,
+      "env": [
+        "SUPABASE_POSTGRES_POOL_URL"
+      ]
+    },
     "db:generate": {
       "cache": false
     },

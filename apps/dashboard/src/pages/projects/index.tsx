@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
         include: {
           teams: {
             include: {
-              apps: {}
+              apps: true,
             },
           }
         }
@@ -44,6 +44,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     const team = await prisma.teams.create({
       data: {
         name: session.user.email || session.user.id,
+        is_default: true,
         users_teams: {
           create: {
             users: {
