@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
-  const user = await prisma.auth_users.findUnique({
+  const user = await prisma.auth_users.findUniqueOrThrow({
     where: {
       id: session.user.id,
     },
@@ -39,7 +39,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     },
   })
 
-  if (!user?.users_teams || user.users_teams.length === 0) {
+  const hasDefaultTeam = user?.users_teams.some(t => t.teams.is_default)
+  if (!hasDefaultTeam) {
     // User is one of the old users without default team - create default team.
     const team = await prisma.teams.create({
       data: {
