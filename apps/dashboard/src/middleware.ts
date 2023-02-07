@@ -33,7 +33,7 @@ export default async function middleware(req: NextRequest) {
     if (subsubdomain === 'dev') return
 
     const domain = subsubdomainMatch[2]
-    if (domain !== 'gitpod' && domain !== 'github') {
+    if (domain !== 'gitpod' && domain !== 'github' && domain !== 'csb') {
       return NextResponse.rewrite(
         new URL(`/${hiddenAppRoute}/${subsubdomain}${path}`, req.url)
       )

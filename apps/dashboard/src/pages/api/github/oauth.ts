@@ -36,7 +36,7 @@ export default async function handler(
     access_token: string,
   } = await response.json()
 
-  const redirectionURL = new URL('new/project', `https://${req.headers.host}`)
+  const redirectionURL = new URL('github/callback', `https://${req.headers.host}`)
 
   redirectionURL.searchParams.set('access_token', access_token)
 

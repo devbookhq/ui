@@ -41,7 +41,7 @@ export default function App({ Component, pageProps, router }: AppProps<{ app?: a
   }
 
   return (
-    <PostHogProvider token={process.env.NEXT_PUBLIC_POSTHOG_KEY}>
+    <PostHogProvider token={process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_POSTHOG_KEY : undefined} >
       <SessionContextProvider
         supabaseClient={supabaseClient}
         initialSession={pageProps.initialSession}

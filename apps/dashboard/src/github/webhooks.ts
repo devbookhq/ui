@@ -5,9 +5,9 @@ import {
 } from '@octokit/webhooks'
 import { apps_content } from 'database'
 
-import { getAppContentFromRepo, getRepo } from './repo'
+import { getAppContentFromRepo, getRepo } from './repoProcessing'
 import { prisma } from 'queries/prisma'
-import getClient from './octokit'
+import getClient from './installationClient'
 
 export const branchRefPrefix = 'refs/heads/'
 

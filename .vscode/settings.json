@@ -30,9 +30,6 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "css.validate": false,
   "tailwindCSS.validate": true,
-  "editor.quickSuggestions": {
-    "strings": true
-  },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
@@ -40,5 +37,7 @@
   "eslint.validate": [
     "javascript",
     "typescript"
-  ]
+  ],
+  "debug.javascript.codelens.npmScripts": "never",
+  "editor.codeLens": true
 }
