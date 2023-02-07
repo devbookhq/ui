@@ -62,7 +62,10 @@ function Message({ message }: Props) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Text text={message.guide?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
+            {message.guide?.guideStep
+              ? <Text text={`${message.guide?.title || ''} | Step ${message.guide?.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
+              : <Text text={message.guide?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
+            }
             <ExternalLink
               size={14}
             />

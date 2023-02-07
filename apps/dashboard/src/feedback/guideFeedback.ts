@@ -31,6 +31,7 @@ export interface GuideFeedback {
   // Ordered in descending order
   userMessages: UserMessage[]
   totalMessages: number
+  guideStep?: string
 }
 
 interface Hostnames {
@@ -71,6 +72,7 @@ export function aggregateGuidesFeedback(feedback: Required<apps_feedback>[]) {
         id: properties.guide!,
         title: getGuideName(properties.guide),
         totalMessages: 0,
+        guideStep: properties.guideStep,
       }
       prev[properties.guide] = guide
     }
