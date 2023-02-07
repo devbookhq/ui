@@ -36,7 +36,8 @@ export default async function handler(
     access_token: string,
   } = await response.json()
 
-  const redirectionURL = new URL('/new/project', req.url)
+  const redirectionURL = new URL('new/project', `https://${req.headers.host}`)
+
   redirectionURL.searchParams.set('access_token', access_token)
 
   res.writeHead(302, { 'Location': redirectionURL.toString() })
