@@ -3,7 +3,7 @@ import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path-browserify'
 
 export interface AppContentJSON {
-  env: {
+  env?: {
     id: string,
   }
   mdx: {
@@ -26,7 +26,7 @@ export interface CodeLayout extends Layout {
 
 export interface CompiledAppContent {
   title?: string
-  environmentID: string
+  environmentID?: string
   layout: Layout | null
   serialized: MDXRemoteSerializeResult
 }
@@ -42,7 +42,7 @@ export async function compileContent(content: AppContentJSON): Promise<CompiledA
 
   return {
     serialized,
-    environmentID: content.env.id,
+    environmentID: content.env?.id,
     title: serialized.frontmatter?.title,
     layout: serialized.frontmatter?.layout as unknown as Layout || null,
   }

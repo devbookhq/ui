@@ -54,15 +54,15 @@ export async function getAppContentFromRepo({
 
   if (!root) return
 
-  const envConfigContentRaw = await root.file(envConfigName)?.async('string')
-  if (!envConfigContentRaw) {
-    throw new Error(`Invalid env config in ${name}`)
-  }
-  const env = toml.parse(envConfigContentRaw) as unknown as EnvConfig
+  // const envConfigContentRaw = await root.file(envConfigName)?.async('string')
+  // if (!envConfigContentRaw) {
+  //   throw new Error(`Invalid env config in ${name}`)
+  // }
+  // const env = toml.parse(envConfigContentRaw) as unknown as EnvConfig
   const mdx = await Promise.all(root.file(/.+.mdx$/).map(getFile))
 
   return {
-    env,
+    // env,
     mdx,
   }
 }

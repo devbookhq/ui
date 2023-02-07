@@ -11,12 +11,14 @@ export interface Props {
   content: CompiledAppContent
 }
 
+const defaultAppEnv = 'A22MmpUQaIUo'
+
 function AppPage({ content }: Props) {
   const [initialOpenedFiles, setInitialOpenedFiles] = useState<OpenedFile[]>([])
   const [splitterSizes, setSplitterSizes] = useState([0, 100])
   const [isSplitterDirty, setIsSplitterDirty] = useState(false) // True if user manually resized splitter.
   const sessionHandle = useSession({
-    codeSnippetID: content.environmentID,
+    codeSnippetID: content.environmentID || defaultAppEnv,
     debug: process.env.NODE_ENV === 'development',
     inactivityTimeout: 0,
   })
