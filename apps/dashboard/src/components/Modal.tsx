@@ -31,7 +31,7 @@ function Modal({ title, children, isOpen, onClose }: Props) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-white/40" />
+          <div className="fixed inset-0 bg-slate-400/30" />
         </Transition.Child>
 
         <div
@@ -81,8 +81,8 @@ function Modal({ title, children, isOpen, onClose }: Props) {
                 p-6
                 align-middle
                 text-slate-600
-                shadow-2xl
-                shadow-slate-800/60
+                shadow-lg
+                shadow-slate-600/60
                 backdrop-blur
                 transition-all
               "

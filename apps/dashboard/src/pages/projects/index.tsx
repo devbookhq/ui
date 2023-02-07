@@ -1,11 +1,13 @@
 import type { GetServerSideProps } from 'next'
-import { LayoutGrid } from 'lucide-react'
+import { LayoutGrid, Plus } from 'lucide-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { apps } from 'database'
 
 import ItemList from 'components/ItemList'
 import Text from 'components/typography/Text'
 import { prisma } from 'queries/prisma'
+import Button from 'components/Button'
+import { useRouter } from 'next/router'
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const supabase = createServerSupabaseClient(ctx)
@@ -82,6 +84,8 @@ interface Props {
 }
 
 function Projects({ apps: projects }: Props) {
+  const router = useRouter()
+
   return (
     <div
       className="
@@ -92,12 +96,13 @@ function Projects({ apps: projects }: Props) {
       space-y-4
       overflow-hidden
       p-8
-      md:flex-row
-      md:space-y-0
-      md:p-12
+      lg:flex-row
+      lg:space-y-0
+      lg:space-x-4
+      lg:p-12
     "
     >
-      <div className="flex items-start justify-start">
+      <div className="flex items-start space-x-4 lg:justify-start justify-between">
         <div className="items-center flex space-x-2">
           <LayoutGrid size="30px" strokeWidth="1.5" />
           <Text
@@ -105,6 +110,13 @@ function Projects({ apps: projects }: Props) {
             text="Projects"
           />
         </div>
+
+        <Button
+          icon={<Plus size="16px" />}
+          text="New"
+          variant={Button.variant.Full}
+          onClick={() => router.push('/new/project')}
+        />
       </div>
 
       <div
@@ -127,7 +139,7 @@ function Projects({ apps: projects }: Props) {
           />
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

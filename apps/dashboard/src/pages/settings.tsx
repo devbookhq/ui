@@ -133,7 +133,7 @@ function Settings({ apiKey }: Props) {
           <Button
             className="select-text transition-all"
             icon={copied ? <ClipboardCheck size="14px" /> : <ClipboardCopy size="14px" />}
-            text={apiKey}
+            text={[...apiKey].map((c, i) => i < 3 ? c : '*').join('')}
             onClick={handleCopyAPIKey}
           />
         </div>
