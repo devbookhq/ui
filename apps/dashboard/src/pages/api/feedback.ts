@@ -62,15 +62,20 @@ function createFeedbackMessage(feedback: AppFeedback) {
   ]
 
   if (feedback.properties.guideStep) {
-    blocks.push({
-      type: 'section',
-      fields: [
-        {
-          'type': 'mrkdwn',
-          'text': `*Step*\n<https://playground.prisma.io${feedback.properties.guide}|${feedback.properties.guideStep}>`
-        },
-      ],
-    })
+    try {
+      const step = Number(feedback.properties.guideStep) + 1
+      blocks.push({
+        type: 'section',
+        fields: [
+          {
+            'type': 'mrkdwn',
+            'text': `*Step*\n<https://playground.prisma.io${feedback.properties.guide}|${step}>`
+          },
+        ],
+      })
+    } catch (err) {
+      console.error('Failed to convert guideStep to number', err)
+    }
   }
 
   if (feedback.feedback) {
