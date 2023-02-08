@@ -12,19 +12,19 @@ import { apps } from 'database'
 import Text from 'components/typography/Text'
 import { defaultRepoPath } from 'utils/constants'
 import Button from 'components/Button'
-
-
-
+import { useRouter } from 'next/router'
 
 const Repositories = dynamic(() => import('components/Repositories'), { ssr: false })
 
-async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {  return await fetch(url, {
+async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {
+  return await fetch(url, {
     method: 'POST',
     body: JSON.stringify(arg),
 
     headers: {
       'Content-Type': 'application/json',
-    },  }).then(r => r.json())
+    },
+  }).then(r => r.json())
 }
 
 export default function NewProject() {
@@ -34,7 +34,9 @@ export default function NewProject() {
     trigger: createProject,
     data: project,
     error,
-  } = useSWRMutation<apps>('/api/project', handlePostProject)
+  } = useSWRMutation<Pick<apps, 'id' | 'repository_path'>>('/api/project', handlePostProject)
+
+  const router = useRouter()
 
   useEffect(function initProjectSetup() {
     if (!repoSetup) return
@@ -57,6 +59,17 @@ export default function NewProject() {
       }
     })
   }, [repoSetup])
+
+
+  useEffect(function redirect() {
+    if (!project) return
+    router.push({
+      pathname: '/project/[id]',
+      query: {
+        id: project.id,
+      },
+    })
+  }, [project])
 
   function handleCreateProject() {
     if (!repoSetup || !projectSetup) return

@@ -3,11 +3,12 @@ import {
   Webhooks,
   createNodeMiddleware,
 } from '@octokit/webhooks'
-import { apps_content, apps } from 'database'
+import { apps_content, apps, Prisma } from 'database'
 
 import { getAppContentFromRepo, getRepo } from './repoProcessing'
 import { prisma } from 'queries/prisma'
 import getClient from './installationClient'
+import { inspect } from 'util'
 
 export const branchRefPrefix = 'refs/heads/'
 
@@ -28,7 +29,7 @@ export async function deployLatestRepoState({
   repositoryFullName: string,
   installationID: number,
   branch: string,
-  apps: apps[],
+  apps: Pick<apps, 'repository_path' | 'id'>[],
 }) {
   const [repositoryOwnerName, repositoryName] = repositoryFullName.split('/')
 
@@ -39,7 +40,6 @@ export async function deployLatestRepoState({
   const github = getClient({ installationID })
   const repo = await getRepo({
     github,
-
     repo: repositoryName,
     owner: repositoryOwnerName,
     ref: `${branchRefPrefix}${branch}`,

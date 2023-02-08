@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { posthog } from 'posthog-js'
 
 import Button from 'components/Button'
@@ -26,7 +26,7 @@ function AuthForm({ authType }: Props) {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  useLayoutEffect(
+  useEffect(
     function autofocusEmailInput() {
       if (isLoading) return
 

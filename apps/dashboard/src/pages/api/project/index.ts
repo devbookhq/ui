@@ -103,6 +103,11 @@ async function postProject(req: NextApiRequest, res: NextApiResponse) {
           }
         },
       },
+      select: {
+        created_at: false,
+        id: true,
+        repository_path: true,
+      }
     })
 
     // Process the connected repo and deploy app for the first time.

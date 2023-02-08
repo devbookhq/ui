@@ -7,7 +7,6 @@ import {
   forwardRef,
   useEffect,
   useImperativeHandle,
-  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
@@ -119,7 +118,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       },
     }), [editor, filename])
 
-    useLayoutEffect(
+    useEffect(
       function initEditor() {
         if (!editorEl.current) return
 

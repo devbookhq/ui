@@ -3,6 +3,7 @@ import { Octokit } from '@octokit/rest'
 import JSZip from 'jszip'
 
 import { AppContentJSON } from 'apps/content'
+import path from 'path'
 
 // const envConfigName = 'dbk.toml'
 
@@ -59,7 +60,7 @@ export async function getAppContentFromRepo({
   //   throw new Error(`Invalid env config in ${name}`)
   // }
   // const env = toml.parse(envConfigContentRaw) as unknown as EnvConfig
-  const mdx = await Promise.all(root.file(/.+.mdx$/).map(getFile))
+  const mdx = await Promise.all(root.file(/.+.mdx$/).map(f => getFile(f, dir)))
 
   return {
     // env,
@@ -67,13 +68,13 @@ export async function getAppContentFromRepo({
   }
 }
 
-async function getFile(o: JSZip.JSZipObject | null): Promise<File> {
+async function getFile(o: JSZip.JSZipObject | null, root: string): Promise<File> {
   if (!o) {
     throw new Error('Cannot get file')
   }
 
   return {
-    name: o.name,
+    name: path.relative(root, o.name.split('/').slice(1).join('/')),
     content: await o.async('string')
   }
 }
