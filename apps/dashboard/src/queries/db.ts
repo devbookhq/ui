@@ -23,6 +23,8 @@ export interface AppFeedbackPropertiesJSON {
   rating?: Rating
   guide?: string
   guideStep?: string
+  codeExampleTitle?: string
+  codeExamplePath?: string
 }
 
 export interface AppFeedback {
