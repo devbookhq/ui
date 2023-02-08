@@ -36,7 +36,7 @@ const pushHandler: HandlerFunction<'push', unknown> = async (event) => {
       repository_branch: {
         equals: repositoryBranch,
       },
-      github_installations: {
+      github_repositories: {
         repository_id: repositoryID,
       },
     },
@@ -44,7 +44,7 @@ const pushHandler: HandlerFunction<'push', unknown> = async (event) => {
 
   if (connectedApps.length === 0) return
 
-  const github = await getClient({ installationID })
+  const github = getClient({ installationID })
   const repo = await getRepo({
     github,
     repo: repositoryName,

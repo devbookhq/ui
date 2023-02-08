@@ -53,6 +53,7 @@ importers:
       jszip: ^3.10.1
       lodash.debounce: ^4.0.8
       lucide-react: ^0.105.0
+      nanoid: ^4.0.1
       next: 13.1.5
       next-mdx-remote: ^4.3.0
       next-superjson-plugin: ^0.5.4
@@ -65,6 +66,7 @@ importers:
       react: ^18.2.0
       react-dom: ^18.2.0
       superjson: ^1.12.2
+      swr: ^2.0.3
       tailwindcss: ^3.2.4
       typescript: ^4.9.4
     dependencies:
@@ -94,6 +96,7 @@ importers:
       jszip: 3.10.1
       lodash.debounce: 4.0.8
       lucide-react: 0.105.0_react@18.2.0
+      nanoid: 4.0.1
       next: 13.1.5_biqbaboplfbrettd7655fr4n2y
       next-mdx-remote: 4.3.0_biqbaboplfbrettd7655fr4n2y
       next-superjson-plugin: 0.5.4_2phg5piouwyebc2iicnv4pnpcq
@@ -104,6 +107,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       superjson: 1.12.2
+      swr: 2.0.3_react@18.2.0
     devDependencies:
       '@next/bundle-analyzer': 13.1.5
       '@types/lodash.debounce': 4.0.7
@@ -6103,6 +6107,12 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  /nanoid/4.0.1:
+    resolution: {integrity: sha512-udKGtCCUafD3nQtJg9wBhRP3KMbPglUsgV5JVsXhvyBs/oefqb4sqMEhKBBgqZncYowu58p1prsZQBYvAj/Gww==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
+
   /natural-compare/1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
@@ -8191,6 +8201,16 @@ packages:
       stable: 0.1.8
     dev: true
 
+  /swr/2.0.3_react@18.2.0:
+    resolution: {integrity: sha512-sGvQDok/AHEWTPfhUWXEHBVEXmgGnuahyhmRQbjl9XBYxT/MSlAzvXEKQpyM++bMPaI52vcWS2HiKNaW7+9OFw==}
+    engines: {pnpm: '7'}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
+
   /synckit/0.8.4:
     resolution: {integrity: sha512-Dn2ZkzMdSX827QbowGbU/4yjWuvNaCoScLLoMo/yKbu+P4GBR6cRGKZH27k6a9bRzdqcyd1DE96pQtQ6uNkmyw==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -8837,6 +8857,14 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.4.1
+    dev: false
+
+  /use-sync-external-store/1.2.0_react@18.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /utf-8-validate/5.0.10:

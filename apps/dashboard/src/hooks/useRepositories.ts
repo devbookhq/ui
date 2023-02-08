@@ -7,6 +7,13 @@ async function fetchRepos(client: GitHubUserClient) {
   const repos = await Promise.all(
     installations.data.installations.map(async i => client.apps.listInstallationReposForAuthenticatedUser({
       installation_id: i.id,
+      // TODO: Add pagination so we fetch all the repos not just the first 100
+      per_page: 100,
+      headers: {
+        // We have to manually circumvent the caching mechanism here.
+        // This request is called only when the user changes or when the component mounts, so we don't exceed the GitHub API quotas.
+        'If-Modified-Since': 'Sun, 14 Nov 2021 13:42:15 GMT',
+      },
     })))
   return repos.flatMap(r => r.data.repositories)
 }

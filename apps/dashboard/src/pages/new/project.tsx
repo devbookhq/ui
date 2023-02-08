@@ -2,6 +2,7 @@ import {
   useCallback,
   useState,
 } from 'react'
+import useSWRMutation from 'swr/mutation'
 
 import useListenMessage from 'hooks/useListenMessage'
 import InstallModal from 'components/GitHubInstallModal'
@@ -9,6 +10,15 @@ import { useLocalStorage } from 'hooks/useLocalStorage'
 import { useGitHub } from 'hooks/useGitHub'
 import { useRepositories } from 'hooks/useRepositories'
 import { openPopupModal } from 'utils/popupModal'
+import { PostProjectBody } from 'pages/api/project'
+import { apps } from 'database'
+
+async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {
+  return await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(arg),
+  }).then(r => r.json())
+}
 
 export default function Home() {
   const [isInstalling, setIsInstalling] = useState(false)
@@ -23,6 +33,20 @@ export default function Home() {
 
   const gitHub = useGitHub(accessToken)
   const repos = useRepositories(gitHub)
+
+  const [projectSetup, setProjectSetup] = useState<PostProjectBody>()
+  const {
+    trigger: createProject,
+    data: project,
+    error,
+  } = useSWRMutation<apps>('/api/project', handlePostProject)
+
+
+  function handleCreateProject() {
+
+  }
+
+
 
   async function signWithGitHubOAuth() {
     const url = new URL('/login/oauth/authorize', 'https://github.com')
