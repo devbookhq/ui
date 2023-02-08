@@ -1,144 +1,132 @@
 import {
-  useCallback,
+  useEffect,
   useState,
 } from 'react'
 import useSWRMutation from 'swr/mutation'
+import dynamic from 'next/dynamic'
+import humanId from 'human-id'
+import { LayoutGrid } from 'lucide-react'
 
-import useListenMessage from 'hooks/useListenMessage'
-import InstallModal from 'components/GitHubInstallModal'
-import { useLocalStorage } from 'hooks/useLocalStorage'
-import { useGitHub } from 'hooks/useGitHub'
-import { useRepositories } from 'hooks/useRepositories'
-import { openPopupModal } from 'utils/popupModal'
 import { PostProjectBody } from 'pages/api/project'
 import { apps } from 'database'
+import Text from 'components/typography/Text'
+import { defaultRepoPath } from 'utils/constants'
+import Button from 'components/Button'
+
+
+
+
+const Repositories = dynamic(() => import('components/Repositories'), { ssr: false })
 
 async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {
   return await fetch(url, {
     method: 'POST',
     body: JSON.stringify(arg),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   }).then(r => r.json())
 }
 
-export default function Home() {
-  const [isInstalling, setIsInstalling] = useState(false)
-
-  const [accessToken, setAccessToken] = useLocalStorage<string | undefined>('gh_access_token', undefined)
-  const handleEvent = useCallback((event: MessageEvent) => {
-    if (event.data.accessToken) {
-      setAccessToken(event.data.accessToken)
-    }
-  }, [setAccessToken])
-  useListenMessage(handleEvent)
-
-  const gitHub = useGitHub(accessToken)
-  const repos = useRepositories(gitHub)
-
-  const [projectSetup, setProjectSetup] = useState<PostProjectBody>()
+export default function NewProject() {
+  const [repoSetup, setRepoSetup] = useState<Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string }>()
+  const [projectSetup, setProjectSetup] = useState<Pick<PostProjectBody, 'path' | 'branch' | 'id'>>()
   const {
     trigger: createProject,
     data: project,
     error,
   } = useSWRMutation<apps>('/api/project', handlePostProject)
 
+  useEffect(function initProjectSetup() {
+    if (!repoSetup) return
+    setProjectSetup(s => {
+      let id = s?.id
+      if (!s) {
+        id = humanId({
+          separator: '-',
+          capitalize: false,
+        })
+      }
+
+      return {
+        id: s?.id || humanId({
+          separator: '-',
+          capitalize: false,
+        }),
+        branch: repoSetup.defaultBranch,
+        path: s?.path || defaultRepoPath,
+      }
+    })
+  }, [repoSetup])
 
   function handleCreateProject() {
+    if (!repoSetup || !projectSetup) return
 
-  }
-
-
-
-  async function signWithGitHubOAuth() {
-    const url = new URL('/login/oauth/authorize', 'https://github.com')
-    url.searchParams.set('client_id', process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID!)
-    openPopupModal(url)
-  }
-
-  function configureGitHubApp() {
-    const url = new URL('https://github.com/apps/devbook-for-github/installations/new')
-    openPopupModal(url)
-
-    // TODO: Add on close handling so we can refresh the list of repos
+    createProject({
+      ...projectSetup,
+      ...repoSetup,
+    })
   }
 
   return (
-    <div className='h-full flex flex-col items-center justify-center'>
-      {isInstalling && (
-        <InstallModal
-          onOutsideModalClick={() => setIsInstalling(false)}
-        />
-      )}
-
-      {!repos &&
-        <button
-          className='
-              py-1
-              px-2
-              border
-              rounded
-              shadow
-              transition-all
-              hover:shadow-lg
-              cursor-pointer
-            '
-          onClick={signWithGitHubOAuth}
-        >
-          Connect Repository
-        </button>
-      }
-      {repos && repos.length > 0 && (
-        <div className="
-            p-4
-            max-h-[600px]
-            overflow-auto
-            w-full
-            max-w-[320px]
-            flex
-            flex-col
-            items-start
-            justify-start
-            space-y-1
-            bg-gray-100
-            rounded
-          ">
-          <div className="">
-            Import
-          </div>
-          {repos.map(r => (
-            <div
-              key={r.clone_url}
-              className="
-                self-stretch
-                transition-all
-                p-2
-                bg-slate-200
-                hover:bg-slate-300
-                cursor-pointer
-                rounded
-              "
-              onClick={() => { }}
-            >
-              {r.full_name}
-            </div>
-          ))}
+    <div
+      className="
+    flex
+    flex-1
+    flex-col
+    space-x-0
+    space-y-8
+    overflow-hidden
+    p-8
+    lg:flex-row
+    lg:space-y-0
+    lg:space-x-8
+    lg:p-12
+  "
+    >
+      <div className="flex items-start space-x-4 lg:justify-start justify-between">
+        <div className="items-center flex space-x-2">
+          <LayoutGrid size="30px" strokeWidth="1.5" />
+          <Text
+            size={Text.size.S1}
+            text="New Project"
+          />
         </div>
-      )}
-      {accessToken && (
-        <button className="
-            mt-4
-            py-1
-            px-2
-            border
-            rounded
-            transition-all
-            cursor-pointer
-            bg-gray-100
-          "
-          onClick={configureGitHubApp}
-        >
-          Configure GitHub Permission
-        </button>
-      )}
+      </div>
+
+      <div
+        className="
+      flex
+      flex-1
+      flex-col
+      space-x-4
+      lg:flex-row
+      items-stretch
+      "
+      >
+        <div className="space-y-2">
+          <Text text="Select content repository" className="text-base" />
+          <Repositories
+            onRepoSelection={setRepoSetup}
+          />
+        </div>
+        <div className="space-y-2">
+          <Text text="Setup project" className="text-base" />
+          <div className="space-y-2">
+            <Text text={`Name ${projectSetup?.id}`} />
+            <Text text={`Repository ${repoSetup?.fullName}`} />
+            <Text text={`Repository branch ${projectSetup?.branch}`} />
+            <Text text={`Repository path ${projectSetup?.path}`} />
+            {projectSetup &&
+              <Button
+                onClick={handleCreateProject}
+                text="Create project"
+                variant={Button.variant.Full}
+              />
+            }
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -23,7 +23,7 @@ export function PostHogProvider({
 
   useEffect(() => {
     if (!initialized.current && token) {
-      posthog.init(token, { api_host: 'https://app.posthog.com' })
+      posthog.init(token, { api_host: 'https://app.posthog.com', })
       initialized.current = true
     }
   }, [token])

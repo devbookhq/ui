@@ -7,7 +7,7 @@ export function useGitHub(accessToken?: string) {
 
   useEffect(function init() {
     if (!accessToken) return
-    getUserClient({ accessToken }).then(setGitHub)
+    setGitHub(getUserClient({ accessToken }))
   }, [accessToken])
 
   return gitHub

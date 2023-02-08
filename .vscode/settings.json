@@ -39,5 +39,6 @@
     "typescript"
   ],
   "debug.javascript.codelens.npmScripts": "never",
-  "editor.codeLens": true
+  "editor.codeLens": true,
+  "editor.suggest.localityBonus": true
 }

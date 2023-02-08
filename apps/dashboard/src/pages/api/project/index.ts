@@ -1,6 +1,6 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import getUserClient from 'github/userClient'
-import { nanoid } from 'nanoid'
+import { deployLatestRepoState } from 'github/webhooks'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { prisma } from 'queries/prisma'
@@ -11,28 +11,33 @@ export interface PostProjectBody {
   accessToken: string
   branch: string
   path: string
-  title: string
-  subdomain: string
+  id: string
 }
 
 async function postProject(req: NextApiRequest, res: NextApiResponse) {
-  const body = req.body as PostProjectBody
+  const {
+    accessToken,
+    branch,
+    installationID,
+    path,
+    repositoryID,
+    id,
+  } = req.body as PostProjectBody
+
   try {
     const supabase = createServerSupabaseClient({ req, res })
-    // Check if we have a session
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-
-    if (!session)
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
       return res.status(401).json({
         error: 'not_authenticated',
         description: 'The user does not have an active session or is not authenticated',
       })
+    }
 
-    const gh = getUserClient({ accessToken: body.accessToken })
-    const repos = await gh.apps.listInstallationReposForAuthenticatedUser({
-      installation_id: body.installationID,
+
+    const client = getUserClient({ accessToken })
+    const repos = await client.apps.listInstallationReposForAuthenticatedUser({
+      installation_id: installationID,
       // TODO: Add pagination so we fetch all the repos not just the first 100
       per_page: 100,
       headers: {
@@ -42,12 +47,12 @@ async function postProject(req: NextApiRequest, res: NextApiResponse) {
       },
     })
 
-    const repo = repos.data.repositories.find(r => r.id === body.repositoryID)
-
-    if (!repo)
+    const repo = repos.data.repositories.find(r => r.id === repositoryID)
+    if (!repo) {
       return res.status(401).json({
         error: 'invalid_repo',
       })
+    }
 
     const user = await prisma.auth_users.findUnique({
       where: {
@@ -61,42 +66,51 @@ async function postProject(req: NextApiRequest, res: NextApiResponse) {
         }
       },
     })
-    if (!user)
+    if (!user) {
       return res.status(401).json({
         error: 'invalid_user',
       })
+    }
 
     const defaultTeam = user.users_teams.find(t => t.teams.is_default)
-    if (!defaultTeam)
+    if (!defaultTeam) {
       return res.status(401).json({
         error: 'invalid_default_team',
       })
+    }
 
     const newApp = await prisma.apps.create({
       data: {
-        id: nanoid(),
+        id,
         teams: {
           connect: {
             id: defaultTeam.teams.id,
           },
         },
-        repository_branch: body.branch,
-        repository_path: body.path,
-        subdomain: body.subdomain,
-        title: body.title,
+        repository_branch: branch,
+        repository_path: path,
+        subdomain: id,
         github_repositories: {
           connectOrCreate: {
             where: {
               repository_id: repo.id,
             },
             create: {
-              installation_id: body.installationID,
+              installation_id: installationID,
               repository_fullname: repo.full_name,
               repository_id: repo.id,
             },
           }
         },
       },
+    })
+
+    // Process the connected repo and deploy app for the first time.
+    await deployLatestRepoState({
+      apps: [newApp],
+      branch,
+      installationID,
+      repositoryFullName: repo.full_name,
     })
 
     res.status(200).json(newApp)

@@ -11,7 +11,13 @@ function GitHubCallback() {
         window.close()
       }
     }
-  }, [router.query.access_token])
+    if (router.query.installation_id) {
+      if (window && window.opener) {
+        window.opener.postMessage({ installationID: router.query.installation_id }, '*')
+        window.close()
+      }
+    }
+  }, [router.query.access_token, router.query.installation_id])
 
   return null
 }

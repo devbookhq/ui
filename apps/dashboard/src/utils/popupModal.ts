@@ -1,7 +1,7 @@
 export function openPopupModal(url: URL) {
   const features = {
     popup: 'yes',
-    width: 600,
+    width: 820,
     height: 700,
     top: 'auto',
     left: 'auto',
@@ -29,5 +29,5 @@ export function openPopupModal(url: URL) {
       return str
     }, '')
     .slice(0, -1) // remove last ',' (comma)
-  window.open(url, '_blank', strWindowsFeatures)
+  return window.open(url, '_blank', strWindowsFeatures)
 }

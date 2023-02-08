@@ -3,7 +3,7 @@ import {
   Webhooks,
   createNodeMiddleware,
 } from '@octokit/webhooks'
-import { apps_content } from 'database'
+import { apps_content, apps } from 'database'
 
 import { getAppContentFromRepo, getRepo } from './repoProcessing'
 import { prisma } from 'queries/prisma'
@@ -19,40 +19,33 @@ export async function getGitHubWebhooksMiddleware() {
   return createNodeMiddleware(webhooks, { path: '/api/github/webhook' })
 }
 
-// TODO: We may need to manually trigger this handler when the user connects the repo for the first time
-const pushHandler: HandlerFunction<'push', unknown> = async (event) => {
-  const { payload } = event
-  const [repositoryOwnerName, repositoryName] = payload.repository.full_name.split('/')
-  const installationID = payload.installation?.id
-  const repositoryID = payload.repository.id
-  const repositoryBranch = payload.ref.slice(branchRefPrefix.length)
+export async function deployLatestRepoState({
+  repositoryFullName,
+  installationID,
+  apps,
+  branch,
+}: {
+  repositoryFullName: string,
+  installationID: number,
+  branch: string,
+  apps: apps[],
+}) {
+  const [repositoryOwnerName, repositoryName] = repositoryFullName.split('/')
 
   if (!installationID) {
     throw new Error('InstallationID not found')
   }
 
-  const connectedApps = await prisma.apps.findMany({
-    where: {
-      repository_branch: {
-        equals: repositoryBranch,
-      },
-      github_repositories: {
-        repository_id: repositoryID,
-      },
-    },
-  })
-
-  if (connectedApps.length === 0) return
-
   const github = getClient({ installationID })
   const repo = await getRepo({
     github,
+
     repo: repositoryName,
     owner: repositoryOwnerName,
-    ref: payload.ref,
+    ref: `${branchRefPrefix}${branch}`,
   })
 
-  await Promise.all(connectedApps.map(async app => {
+  await Promise.all(apps.map(async app => {
     try {
       const content = await getAppContentFromRepo({
         dir: app.repository_path,
@@ -74,7 +67,38 @@ const pushHandler: HandlerFunction<'push', unknown> = async (event) => {
         }
       })
     } catch (err) {
-      console.error(`Error processing git push to app "${app.id}" content from repository "${payload.repository.full_name}"`, err)
+      console.error(`Error deploying app "${app.id}" content from repository "${repositoryFullName}"`, err)
     }
   }))
+}
+
+const pushHandler: HandlerFunction<'push', unknown> = async (event) => {
+  const { payload } = event
+  const installationID = payload.installation?.id
+  const repositoryID = payload.repository.id
+  const branch = payload.ref.slice(branchRefPrefix.length)
+
+  if (!installationID) {
+    throw new Error('InstallationID not found')
+  }
+
+  const apps = await prisma.apps.findMany({
+    where: {
+      repository_branch: {
+        equals: branch,
+      },
+      github_repositories: {
+        repository_id: repositoryID,
+      },
+    },
+  })
+
+  if (apps.length === 0) return
+
+  await deployLatestRepoState({
+    apps,
+    branch,
+    installationID,
+    repositoryFullName: payload.repository.full_name,
+  })
 }

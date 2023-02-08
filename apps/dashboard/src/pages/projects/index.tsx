@@ -132,6 +132,7 @@ function Projects({ apps: projects }: Props) {
           <ItemList
             items={projects.map(i => ({
               ...i,
+              title: i.title || i.id,
               path: '/projects/[id]',
               type: 'Project',
               icon: <LayoutGrid size="22px" strokeWidth="1.7" />,
@@ -139,7 +140,7 @@ function Projects({ apps: projects }: Props) {
           />
         </div>
       </div>
-    </div >
+    </div>
   )
 }
 
