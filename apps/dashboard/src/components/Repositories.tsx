@@ -25,7 +25,6 @@ function Repositories({ onRepoSelection }: Props) {
   }, [setAccessToken, refetch])
   useListenMessage(handleEvent)
 
-
   function selectRepository(r: Pick<PostProjectBody, 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string }) {
     if (!accessToken) return
     onRepoSelection({

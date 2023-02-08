@@ -18,14 +18,13 @@ import Button from 'components/Button'
 
 const Repositories = dynamic(() => import('components/Repositories'), { ssr: false })
 
-async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {
-  return await fetch(url, {
+async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {  return await fetch(url, {
     method: 'POST',
     body: JSON.stringify(arg),
+
     headers: {
       'Content-Type': 'application/json',
-    },
-  }).then(r => r.json())
+    },  }).then(r => r.json())
 }
 
 export default function NewProject() {

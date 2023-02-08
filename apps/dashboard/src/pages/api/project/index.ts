@@ -1,8 +1,8 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import getUserClient from 'github/userClient'
-import { deployLatestRepoState } from 'github/webhooks'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import getUserClient from 'github/userClient'
+import { deployLatestRepoState } from 'github/webhooks'
 import { prisma } from 'queries/prisma'
 
 export interface PostProjectBody {
@@ -33,7 +33,6 @@ async function postProject(req: NextApiRequest, res: NextApiResponse) {
         description: 'The user does not have an active session or is not authenticated',
       })
     }
-
 
     const client = getUserClient({ accessToken })
     const repos = await client.apps.listInstallationReposForAuthenticatedUser({
@@ -89,6 +88,7 @@ async function postProject(req: NextApiRequest, res: NextApiResponse) {
         },
         repository_branch: branch,
         repository_path: path,
+        title: id,
         subdomain: id,
         github_repositories: {
           connectOrCreate: {
