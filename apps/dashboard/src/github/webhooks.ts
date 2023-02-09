@@ -3,12 +3,11 @@ import {
   Webhooks,
   createNodeMiddleware,
 } from '@octokit/webhooks'
-import { apps_content, apps, Prisma } from 'database'
+import { apps_content, apps } from 'database'
 
 import { getAppContentFromRepo, getRepo } from './repoProcessing'
 import { prisma } from 'queries/prisma'
 import getClient from './installationClient'
-import { inspect } from 'util'
 
 export const branchRefPrefix = 'refs/heads/'
 

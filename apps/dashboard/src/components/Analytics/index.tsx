@@ -39,7 +39,7 @@ function Analytics({ app, feedback }: Props) {
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       <div className="pt-3 flex space-y-2 justify-between flex-col bg-white">
-        <Text text={app.title} size={Text.size.S1} className="px-4" />
+        <Text text={app.title || app.id} size={Text.size.S1} className="px-4" />
         <div
           className={clsx('flex border-b border-slate-200 px-4 space-x-2')}
         >

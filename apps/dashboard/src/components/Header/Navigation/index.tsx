@@ -32,7 +32,7 @@ function Navigation({ app }: Props) {
                 id: app.id,
               },
             }}
-            title={app.title}
+            title={app.title || app.id}
           />
         </>
       )}
