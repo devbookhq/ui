@@ -110,13 +110,13 @@ async function postProject(req: NextApiRequest, res: NextApiResponse) {
       }
     })
 
-    // Process the connected repo and deploy app for the first time.
-    await deployLatestRepoState({
+    // Process the connected repo and deploy app for the first time asynchronously
+    deployLatestRepoState({
       apps: [newApp],
       branch,
       installationID,
       repositoryFullName: repo.full_name,
-    })
+    }).catch(err => console.error(err))
 
     res.status(200).json(newApp)
   } catch (err: any) {
