@@ -1,14 +1,17 @@
 import { useCallback } from 'react'
+import { GithubIcon, LucideGithub } from 'lucide-react'
 
 import { useGitHub } from 'hooks/useGitHub'
 import useListenMessage from 'hooks/useListenMessage'
+import Button from 'components/Button'
+import Text from 'components/typography/Text'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 import { useRepositories } from 'hooks/useRepositories'
 import { PostProjectBody } from 'pages/api/project'
 import { openPopupModal } from 'utils/popupModal'
 
 export interface Props {
-  onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string }) => void
+  onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[] }) => void
 }
 
 function Repositories({ onRepoSelection }: Props) {
@@ -25,10 +28,23 @@ function Repositories({ onRepoSelection }: Props) {
   }, [setAccessToken, refetch])
   useListenMessage(handleEvent)
 
-  function selectRepository(r: Pick<PostProjectBody, 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string }) {
+  async function selectRepository(r: Pick<PostProjectBody, 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string }) {
     if (!accessToken) return
     onRepoSelection({
       ...r,
+      accessToken,
+    })
+
+    const [repositoryOwnerName, repositoryName] = r.fullName.split('/')
+    const repoBranches = await gitHub?.repos.listBranches({
+      owner: repositoryOwnerName,
+      repo: repositoryName,
+    })
+
+    const branches = repoBranches?.data.map(b => b.name)
+    onRepoSelection({
+      ...r,
+      branches,
       accessToken,
     })
   }
@@ -51,97 +67,74 @@ function Repositories({ onRepoSelection }: Props) {
   }
 
   return (
-    <div className="border border-slate-200 rounded p-8 space-y-4 max-w-[450px] flex flex-col">
-      {!accessToken
-        ? <button
-          className="
-          py-1
-          px-2
-          border
-          rounded
-          shadow
-          transition-all
-          hover:shadow-lg
-          cursor-pointer
-        "
-          onClick={signWithGitHubOAuth}
-        >
-          Sign In
-        </button>
-        : <button
-          className="
-          py-1
-          px-2
-          border
-          rounded
-          shadow
-          transition-all
-          hover:shadow-lg
-          cursor-pointer
-        "
-          onClick={signWithGitHubOAuth}
-        >
-          Change Account
-        </button>}
-      {
-        repos && repos.length > 0 && (
+    <>
+      <div className="border border-slate-200 rounded p-8 space-y-4 max-w-[450px] flex flex-col">
+        {!accessToken &&
+          <div>
+            <Button
+              variant={Button.variant.Full}
+              onClick={signWithGitHubOAuth}
+              text="Connect GitHub"
+              icon={<GithubIcon />}
+            />
+          </div>
+        }
+        {accessToken && repos && repos.length === 0 &&
+          <div>
+            <Text text="No connected repositories found" />
+            <Button
+              variant={Button.variant.Full}
+              onClick={configureGitHubApp}
+              text="Configure permissions"
+              icon={<GithubIcon />}
+            />
+          </div>
+        }
+
+        {accessToken && repos && repos.length > 0 &&
           <div className="
-            p-4
             max-h-[600px]
             overflow-auto
             w-full
             max-w-[320px]
             flex
             flex-col
-            items-start
             justify-start
             space-y-1
-            bg-gray-100
-            rounded
+            items-stretch
           ">
-            <div className="">
-              Import
-            </div>
             {repos.map(r => (
-              <div
-                key={r.id}
-                className="
-                self-stretch
-                transition-all
-                p-2
-                bg-slate-200
-                hover:bg-slate-300
-                cursor-pointer
-                rounded
-              "
+              <Button
+                className=""
                 onClick={() => selectRepository({
                   defaultBranch: r.default_branch,
                   installationID: r.installation_id,
                   repositoryID: r.id,
                   fullName: r.full_name,
                 })}
-              >
-                {r.full_name}
-              </div>
+                text={r.full_name}
+              />
             ))}
           </div>
-        )
+        }
+      </div>
+      {accessToken &&
+        <div className="flex space-x-2 justify-between">
+          <div
+            className="cursor-pointer text-xs text-slate-500 hover:text-green-800 transition-all"
+            onClick={signWithGitHubOAuth}
+          >
+            Change Account
+          </div>
+          <div
+            className="cursor-pointer text-xs text-slate-500 hover:text-green-800 transition-all"
+            onClick={configureGitHubApp}
+          >
+            Configure Permissions
+          </div>
+        </div>
       }
-      <button className="
-            mt-4
-            py-1
-            px-2
-            border
-            rounded
-            transition-all
-            cursor-pointer
-            bg-gray-100
-          "
-        onClick={configureGitHubApp}
-      >
-        Configure GitHub Permission
-      </button>
-    </div>
+    </>
   )
 }
 

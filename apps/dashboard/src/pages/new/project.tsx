@@ -10,6 +10,8 @@ import { LayoutGrid } from 'lucide-react'
 import { PostProjectBody } from 'pages/api/project'
 import { apps } from 'database'
 import Text from 'components/typography/Text'
+import Input from 'components/Input'
+import Select from 'components/Select'
 import { defaultRepoPath } from 'utils/constants'
 import Button from 'components/Button'
 import { useRouter } from 'next/router'
@@ -28,7 +30,7 @@ async function handlePostProject(url: string, { arg }: { arg: PostProjectBody })
 }
 
 export default function NewProject() {
-  const [repoSetup, setRepoSetup] = useState<Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string }>()
+  const [repoSetup, setRepoSetup] = useState<Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[] }>()
   const [projectSetup, setProjectSetup] = useState<Pick<PostProjectBody, 'path' | 'branch' | 'id'>>()
   const {
     trigger: createProject,
@@ -40,24 +42,14 @@ export default function NewProject() {
 
   useEffect(function initProjectSetup() {
     if (!repoSetup) return
-    setProjectSetup(s => {
-      let id = s?.id
-      if (!s) {
-        id = humanId({
-          separator: '-',
-          capitalize: false,
-        })
-      }
-
-      return {
-        id: s?.id || humanId({
-          separator: '-',
-          capitalize: false,
-        }),
-        branch: repoSetup.defaultBranch,
-        path: s?.path || defaultRepoPath,
-      }
-    })
+    setProjectSetup(s => ({
+      id: s?.id || humanId({
+        separator: '-',
+        capitalize: false,
+      }),
+      branch: repoSetup.defaultBranch,
+      path: s?.path || defaultRepoPath,
+    }))
   }, [repoSetup])
 
   useEffect(function redirect() {
@@ -123,19 +115,29 @@ export default function NewProject() {
         </div>
         <div className="space-y-2">
           <Text text="Setup project" className="text-base" />
-          <div className="space-y-2">
-            <Text text={`Name ${projectSetup?.id}`} />
-            <Text text={`Repository ${repoSetup?.fullName}`} />
-            <Text text={`Repository branch ${projectSetup?.branch}`} />
+          {projectSetup && <div className="space-y-2 rounded border p-8">
+            <Input value={projectSetup?.id || ''} onChange={v => setProjectSetup(p => p ? ({ ...p, id: v }) : undefined)} />
+            <Text text={`${repoSetup?.fullName}`} />
+            <Select
+              items={(repoSetup?.branches || []).map(r => ({
+                label: r,
+                value: r,
+              })).sort((a, b) => {
+                return a.label.localeCompare(b.label)
+              })}
+              onSelect={(i) => {
+                setProjectSetup(s => s ? ({ ...s, branch: i?.value || s.branch }) : undefined)
+              }}
+              selectedItemLabel={projectSetup?.branch}
+            />
             <Text text={`Repository path ${projectSetup?.path}`} />
-            {projectSetup &&
-              <Button
-                onClick={handleCreateProject}
-                text="Create project"
-                variant={Button.variant.Full}
-              />
-            }
+            <Button
+              onClick={handleCreateProject}
+              text="Create project"
+              variant={Button.variant.Full}
+            />
           </div>
+          }
         </div>
       </div>
     </div>
