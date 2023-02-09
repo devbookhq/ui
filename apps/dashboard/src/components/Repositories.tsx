@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { GithubIcon, LucideGithub } from 'lucide-react'
+import { GithubIcon } from 'lucide-react'
 
 import { useGitHub } from 'hooks/useGitHub'
 import useListenMessage from 'hooks/useListenMessage'
@@ -105,7 +105,7 @@ function Repositories({ onRepoSelection }: Props) {
           ">
             {repos.map(r => (
               <Button
-                className=""
+                key={r.id}
                 onClick={() => selectRepository({
                   defaultBranch: r.default_branch,
                   installationID: r.installation_id,
