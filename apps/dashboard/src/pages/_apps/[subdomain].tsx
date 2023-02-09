@@ -37,6 +37,7 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
     }
 
     const content = await compileContent(app.apps_content.content as unknown as AppContentJSON)
+
     return {
       props: {
         content,

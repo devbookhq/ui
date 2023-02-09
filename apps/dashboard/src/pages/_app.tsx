@@ -1,36 +1,27 @@
-import { useState } from 'react'
-import { AppProps } from 'next/app'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-import { apps } from 'database'
+import type { AppProps } from 'next/app'
+import type { apps } from 'database'
+import type { Session } from '@supabase/auth-helpers-react'
+import dynamic from 'next/dynamic'
 
 import 'styles/global.css'
 
-import Layout from 'components/Layout'
-import { PostHogProvider } from 'utils/PostHogProvider'
 import Loader from 'components/Loader'
 import { hiddenAppRoute } from 'utils/constants'
 
-export default function App({ Component, pageProps, router }: AppProps<{ app?: apps, initialSession: Session }>) {
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+const Dashboard = dynamic(() =>
+  import('components/Dashboard')
+)
 
-  if (router.pathname === `/${hiddenAppRoute}/[subdomain]` || router.pathname === `/${hiddenAppRoute}/dev`) {
-    if (router.isFallback) return <Loader />
-    return (
-      <Component {...pageProps} />
-    )
-  }
-
+export default function App(props: AppProps<{ app?: apps, initialSession: Session }>) {
   return (
-    <PostHogProvider token={process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_POSTHOG_KEY : undefined} >
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
-        <Layout app={pageProps.app}>
-          <Component {...pageProps} />
-        </Layout>
-      </SessionContextProvider>
-    </PostHogProvider>
+    <>
+      {(props.router.pathname === `/${hiddenAppRoute}/[subdomain]` || props.router.pathname === `/${hiddenAppRoute}/dev`)
+        ? <>
+          {props.router.isFallback && <Loader />}
+          {!props.router.isFallback && <props.Component {...props.pageProps} />}
+        </>
+        : <Dashboard appProps={props} />
+      }
+    </>
   )
 }

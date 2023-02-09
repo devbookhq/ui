@@ -33,7 +33,6 @@
     "@devbookhq/splitter": "^1.4.0",
     "@devbookhq/terminal": "workspace:^0.1.22",
     "@headlessui/react": "^1.7.7",
-    "@iarna/toml": "^2.2.5",
     "@octokit/auth-app": "^4.0.9",
     "@octokit/rest": "^19.0.7",
     "@octokit/webhooks": "^10.7.0",

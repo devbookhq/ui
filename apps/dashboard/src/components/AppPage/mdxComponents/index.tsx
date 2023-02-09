@@ -13,9 +13,7 @@ import {
   strong,
 } from './base'
 import Check from './Check'
-import CodeBlock from './CodeBlock'
 import Pre from './Pre'
-import TerminalCommand from './TerminalCommand'
 
 const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   a,
@@ -28,9 +26,7 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   p,
   pre: Pre,
   strong,
-  CodeBlock,
   Check,
-  TerminalCommand,
   Filetree(p) {
     return <div>Filetree</div>
   },

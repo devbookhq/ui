@@ -69,7 +69,7 @@ export default function NewProject() {
         id: project.id,
       },
     })
-  }, [project])
+  }, [project, router])
 
   function handleCreateProject() {
     if (!repoSetup || !projectSetup) return

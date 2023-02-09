@@ -2,6 +2,9 @@ import { useSession, SharedSessionProvider } from '@devbookhq/react'
 import Splitter, { SplitDirection, GutterTheme } from '@devbookhq/splitter'
 import { useState, useCallback, useEffect } from 'react'
 
+import '@devbookhq/terminal/dist/index.css'
+import '@devbookhq/code-editor/dist/index.css'
+
 import { CodeLayout, CompiledAppContent } from 'apps/content'
 import AppFileEditor from './AppFileEditor'
 import { OpenedFile } from './AppFileEditor/reducer'

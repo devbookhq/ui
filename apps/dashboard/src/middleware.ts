@@ -27,8 +27,6 @@ export default async function middleware(req: NextRequest) {
 
   const subsubdomainMatch = subsubdomainMatcher.exec(hostname)
 
-  console.log(subsubdomainMatch)
-
   if (subsubdomainMatch) {
     // We are using subsubdomain here because our current URL is [subsubdomain].app.usedevbook.com
     const subsubdomain = subsubdomainMatch[1]
