@@ -60,11 +60,10 @@ export default function NewProject() {
     })
   }, [repoSetup])
 
-
   useEffect(function redirect() {
     if (!project) return
     router.push({
-      pathname: '/project/[id]',
+      pathname: '/projects/[id]',
       query: {
         id: project.id,
       },
