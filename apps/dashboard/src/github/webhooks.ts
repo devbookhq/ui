@@ -60,6 +60,7 @@ export async function deployLatestRepoState({
         },
         update: {
           content: content as unknown as NonNullable<apps_content['content']>,
+          updated_at: new Date(),
         },
         where: {
           app_id: app.id,

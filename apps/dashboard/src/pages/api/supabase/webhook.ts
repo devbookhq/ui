@@ -31,6 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const change = req.body as SupabaseTrigger
   if (change.table === appsContentTable) {
+
     const app = await prisma.apps.findUniqueOrThrow({
       where: {
         id: change.record.app_id,
