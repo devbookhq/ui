@@ -17,26 +17,7 @@ export default function App({ Component, pageProps, router }: AppProps<{ app?: a
   if (router.pathname === `/${hiddenAppRoute}/[subdomain]` || router.pathname === `/${hiddenAppRoute}/dev`) {
     if (router.isFallback) return <Loader />
     return (
-      <div
-        className="
-      flex
-      w-full
-      flex-1
-      flex-col
-      overflow-hidden
-    "
-      >
-        <div
-          className="
-        flex
-        flex-1
-        flex-col
-        overflow-hidden
-      "
-        >
-          <Component {...pageProps} />
-        </div>
-      </div>
+      <Component {...pageProps} />
     )
   }
 

@@ -73,6 +73,10 @@ function AppPage({ content }: Props) {
       <div className="
           flex
           flex-1
+          w-full
+          flex-1
+          flex-col
+          overflow-hidden
         ">
         <Splitter
           classes={['flex', 'flex lg:min-w-[500px]']}
