@@ -74,7 +74,6 @@ function AppPage({ content }: Props) {
           flex
           flex-1
           w-full
-          flex-1
           flex-col
           overflow-hidden
         ">

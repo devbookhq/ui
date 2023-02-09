@@ -14,7 +14,7 @@ function AppContentView({ content }: Props) {
       flex
       bg-gray-900
       text-gray-100
-      relative
+      overflow-hidden
     ">
       <div className="
         pr-1
