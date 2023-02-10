@@ -14,6 +14,7 @@ import { openPopupModal } from 'utils/popupModal'
 
 import TitleButton from './TitleButton'
 import Input from './Input'
+import SpinnerIcon from './icons/Spinner'
 
 export interface Props {
   onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[] }) => void
@@ -103,8 +104,8 @@ function Repositories({ onRepoSelection }: Props) {
         }
 
         {accessToken &&
-          <div>
-            <div className="flex items-center space-x-2 border-b p-4">
+          <div className="flex overflow-hidden flex-col flex-1">
+            <div className="flex items-center space-x-2 border-b px-8 py-4">
               <SearchIcon size="18px" />
               <Input
                 placeholder="Search repositories..."
@@ -114,8 +115,15 @@ function Repositories({ onRepoSelection }: Props) {
               />
             </div>
 
+
+            {!repos &&
+              <div className="flex flex-1 items-center justify-center">
+                <SpinnerIcon className="text-slate-400" />
+              </div>
+            }
+
             {repos && repos.length === 0 &&
-              <div>
+              <div className="flex flex-1 items-center justify-center">
                 <Text text="No connected repositories found" />
                 <Button
                   variant={Button.variant.Full}
@@ -130,10 +138,11 @@ function Repositories({ onRepoSelection }: Props) {
               <div className="
             flex
             flex-col
-            justify-start
-            overflow-auto
             scroller
-            px-4
+            overflow-auto
+            pl-8
+            pr-6
+            justify-start
             items-stretch
           ">
                 {filteredRepos.map(r => (
@@ -148,7 +157,7 @@ function Repositories({ onRepoSelection }: Props) {
                   >
                     <div className="flex items-center space-x-2">
                       <GithubIcon size="16px" />
-                      <Text text={r.full_name} className="font-semibold" />
+                      <Text text={r.full_name} className="" />
                     </div>
                     <Button
                       onClick={() => selectRepository({
@@ -157,7 +166,6 @@ function Repositories({ onRepoSelection }: Props) {
                         repositoryID: r.id,
                         fullName: r.full_name,
                       })}
-                      variant={Button.variant.Full}
                       text="Select"
                     />
                   </div>

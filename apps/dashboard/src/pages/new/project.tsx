@@ -22,6 +22,7 @@ import Input from 'components/Input'
 import Select from 'components/Select'
 import { defaultRepoPath } from 'utils/constants'
 import Button from 'components/Button'
+import TitleButton from 'components/TitleButton'
 
 const Repositories = dynamic(() => import('components/Repositories'), { ssr: false })
 
@@ -140,17 +141,10 @@ export default function NewProject() {
                     <GithubIcon size="16px" />
                     <div className="flex flex-col space-y-1">
                       <Text text="Repository" size={Text.size.S3} />
-                      <div className="flex items-center space-x-1">
-                        <Text
-                          text={`${repoSetup?.fullName}`}
-                          className="font-semibold"
-                        />
-                        <X
-                          className="text-slate-300 hover:text-slate-500 cursor-pointer"
-                          size="16px"
-                          onClick={() => setRepoSetup(undefined)}
-                        />
-                      </div>
+                      <Text
+                        text={`${repoSetup?.fullName}`}
+                        className="font-semibold"
+                      />
                     </div>
                   </div>
 
@@ -194,6 +188,10 @@ export default function NewProject() {
                   />
                 </div>
               </div>
+              <TitleButton
+                onClick={() => setRepoSetup(undefined)}
+                text="Change repository"
+              />
             </div>
           }
         </div>

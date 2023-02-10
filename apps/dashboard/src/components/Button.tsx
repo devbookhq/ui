@@ -50,7 +50,7 @@ function Button({
         'px-3',
         {
           'cursor-not-allowed opacity-70': isDisabled,
-          'border-green-400 bg-green-400 stroke-green-800 text-green-800 hover:border-green-800':
+          'bg-green-800/90 text-white border-transparent hover:bg-green-800':
             variant === Variant.Full,
           'border-slate-200 hover:border-green-800 hover:text-green-800':
             variant === Variant.Outline,

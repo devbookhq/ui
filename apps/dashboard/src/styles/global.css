@@ -65,6 +65,7 @@
   .scroller {
     scrollbar-color: #cbd5e1 transparent;
     scrollbar-width: thin;
+    scrollbar-gutter: stable;
   }
 
   code {
