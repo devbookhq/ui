@@ -5,7 +5,7 @@ import {
 import useSWRMutation from 'swr/mutation'
 import dynamic from 'next/dynamic'
 import humanId from 'human-id'
-import { LayoutGrid } from 'lucide-react'
+import { GitBranch, LayoutGrid, Folder, GithubIcon } from 'lucide-react'
 
 import { PostProjectBody } from 'pages/api/project'
 import { apps } from 'database'
@@ -99,44 +99,78 @@ export default function NewProject() {
 
       <div
         className="
-      flex
-      flex-1
-      flex-col
-      space-x-4
-      lg:flex-row
-      items-stretch
-      "
+          flex
+          flex-1
+          flex-col
+          space-x-2
+          lg:flex-row
+          justify-center
+          "
       >
-        <div className="space-y-2">
-          <Text text="Select content repository" className="text-base" />
+        <div
+          className="space-y-2 flex flex-col flex-1"
+        >
+          <div className="flex">
+            <Text
+              text="1. Select content repository"
+              className="text-base"
+            />
+          </div>
           <Repositories
             onRepoSelection={setRepoSetup}
           />
         </div>
-        <div className="space-y-2">
-          <Text text="Setup project" className="text-base" />
-          {projectSetup && <div className="space-y-2 rounded border p-8">
-            <Input value={projectSetup?.id || ''} onChange={v => setProjectSetup(p => p ? ({ ...p, id: v }) : undefined)} />
-            <Text text={`${repoSetup?.fullName}`} />
-            <Select
-              items={(repoSetup?.branches || []).map(r => ({
-                label: r,
-                value: r,
-              })).sort((a, b) => {
-                return a.label.localeCompare(b.label)
-              })}
-              onSelect={(i) => {
-                setProjectSetup(s => s ? ({ ...s, branch: i?.value || s.branch }) : undefined)
-              }}
-              selectedItemLabel={projectSetup?.branch}
-            />
-            <Text text={`Repository path ${projectSetup?.path}`} />
-            <Button
-              onClick={handleCreateProject}
-              text="Create project"
-              variant={Button.variant.Full}
-            />
-          </div>
+        <div className="space-y-2 flex-1 flex items-stretch flex-col">
+          <Text
+            text="2. Configure project"
+            className="text-base"
+          />
+          {projectSetup &&
+            <div
+              className="space-y-6 rounded border p-8"
+            >
+              <Input
+                value={projectSetup?.id || ''}
+                onChange={v => setProjectSetup(p => p ? ({ ...p, id: v }) : undefined)}
+              />
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <GithubIcon size="16px" />
+                  <Text
+                    text={`${repoSetup?.fullName}`}
+                    className="font-semibold"
+                  />
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <GitBranch size="16px" />
+                  <Select
+                    items={(repoSetup?.branches || []).map(r => ({
+                      label: r,
+                      value: r,
+                    })).sort((a, b) => {
+                      return a.label.localeCompare(b.label)
+                    })}
+                    onSelect={(i) => {
+                      setProjectSetup(s => s ? ({ ...s, branch: i?.value || s.branch }) : undefined)
+                    }}
+                    selectedItemLabel={projectSetup?.branch}
+                  />
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Folder size="16px" />
+                  <Text text={`${projectSetup?.path}`} />
+                </div>
+              </div>
+              <div className="flex flex-1">
+                <Button
+                  onClick={handleCreateProject}
+                  text="Create project"
+                  variant={Button.variant.Full}
+                />
+              </div>
+            </div>
           }
         </div>
       </div>

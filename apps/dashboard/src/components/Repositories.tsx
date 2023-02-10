@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { GithubIcon } from 'lucide-react'
 
 import { useGitHub } from 'hooks/useGitHub'
@@ -10,6 +10,7 @@ import { useRepositories } from 'hooks/useRepositories'
 import { PostProjectBody } from 'pages/api/project'
 import { openPopupModal } from 'utils/popupModal'
 import TitleButton from './TitleButton'
+import clsx from 'clsx'
 
 export interface Props {
   onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[] }) => void
@@ -19,6 +20,7 @@ function Repositories({ onRepoSelection }: Props) {
   const [accessToken, setAccessToken] = useLocalStorage<string | undefined>('gh_access_token', undefined)
   const gitHub = useGitHub(accessToken)
   const { repos, refetch } = useRepositories(gitHub)
+  const [selectedRepo, setSelectedRepo] = useState<number>()
 
   const handleEvent = useCallback((event: MessageEvent) => {
     if (event.data.accessToken) {
@@ -35,6 +37,8 @@ function Repositories({ onRepoSelection }: Props) {
       ...r,
       accessToken,
     })
+
+    setSelectedRepo(r.repositoryID)
 
     const [repositoryOwnerName, repositoryName] = r.fullName.split('/')
     const repoBranches = await gitHub?.repos.listBranches({
@@ -68,8 +72,8 @@ function Repositories({ onRepoSelection }: Props) {
   }
 
   return (
-    <>
-      <div className="border border-slate-200 rounded p-8 space-y-4 max-w-[450px] flex flex-col">
+    <div className="flex flex-1 max-w-[450px] flex-col space-y-2">
+      <div className="border border-slate-200 rounded p-8 space-y-4 flex flex-col items-center">
         {!accessToken &&
           <div>
             <Button
@@ -106,6 +110,7 @@ function Repositories({ onRepoSelection }: Props) {
           ">
             {repos.map(r => (
               <Button
+                className={clsx({ 'border-slate-500 font-semibold': r.id === selectedRepo })}
                 key={r.id}
                 onClick={() => selectRepository({
                   defaultBranch: r.default_branch,
@@ -131,7 +136,7 @@ function Repositories({ onRepoSelection }: Props) {
           />
         </div>
       }
-    </>
+    </div>
   )
 }
 
