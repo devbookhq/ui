@@ -59,22 +59,24 @@ export function aggregateGuidesFeedback(feedback: Required<apps_feedback>[]) {
 
     if (!properties) return prev
     if (!properties.guide) return prev
-    let guide = prev[properties.guide]
+    const urlWithoutQuery = properties.guide.split(/[?#]/)[0]
+
+    let guide = prev[urlWithoutQuery]
+
     if (!guide) {
       guide = {
-        link: (hostnames[curr.appId] && properties.guide) ? `https://${hostnames[curr.appId]}${properties.guide}` : undefined,
+        link: (hostnames[curr.appId] && urlWithoutQuery) ? `https://${hostnames[curr.appId]}${urlWithoutQuery}` : undefined,
         upvotes: 0,
         downvotes: 0,
         userMessages: [],
         ratingPercentage: 0,
         ratings: [],
         feed: [],
-        id: properties.guide!,
-        title: getGuideName(properties.guide),
+        id: urlWithoutQuery!,
+        title: getGuideName(urlWithoutQuery),
         totalMessages: 0,
-        guideStep: properties.guideStep,
       }
-      prev[properties.guide] = guide
+      prev[urlWithoutQuery] = guide
     }
 
     if (curr.feedback) {
