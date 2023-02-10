@@ -10,7 +10,6 @@ import {
   LayoutGrid,
   Folder,
   GithubIcon,
-  X,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
