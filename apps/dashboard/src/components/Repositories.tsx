@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { GithubIcon } from 'lucide-react'
+import clsx from 'clsx'
 
 import { useGitHub } from 'hooks/useGitHub'
 import useListenMessage from 'hooks/useListenMessage'
@@ -9,6 +10,7 @@ import { useLocalStorage } from 'hooks/useLocalStorage'
 import { useRepositories } from 'hooks/useRepositories'
 import { PostProjectBody } from 'pages/api/project'
 import { openPopupModal } from 'utils/popupModal'
+import TitleButton from './TitleButton'
 
 export interface Props {
   onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[] }) => void
@@ -120,18 +122,14 @@ function Repositories({ onRepoSelection }: Props) {
       </div>
       {accessToken &&
         <div className="flex space-x-2 justify-between">
-          <div
-            className="cursor-pointer text-xs text-slate-500 hover:text-green-800 transition-all"
+          <TitleButton
             onClick={signWithGitHubOAuth}
-          >
-            Change Account
-          </div>
-          <div
-            className="cursor-pointer text-xs text-slate-500 hover:text-green-800 transition-all"
+            text="Change Account"
+          />
+          <TitleButton
             onClick={configureGitHubApp}
-          >
-            Configure Permissions
-          </div>
+            text="Configure Permissions"
+          />
         </div>
       }
     </>
