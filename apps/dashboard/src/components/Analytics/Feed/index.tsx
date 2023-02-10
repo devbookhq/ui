@@ -15,7 +15,6 @@ function FeedbackFeed({
   feed,
   feedback,
 }: Props) {
-  console.log({ feed, feedback })
   const router = useRouter()
   const queryFilter = router.query.item as string
 

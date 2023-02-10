@@ -35,7 +35,6 @@ const views = [
 function Analytics({ app, feedback }: Props) {
   const [selectedFeedback, setSelectedFeedback] = useState<SelectedFeedback>('guides')
   const [guidesFeedback, codeExamplesFeedback, feed] = useMemo(() => {
-    console.log({ feedback })
     const feedbackByGuide = aggregateFeedbackBy('guides', feedback)
     const feedbackByCodeExample = aggregateFeedbackBy('codeExamples', feedback)
     const feed = getFeedData([...feedbackByGuide, ...feedbackByCodeExample])
