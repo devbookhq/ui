@@ -62,7 +62,7 @@ interface Props {
   feedback: apps_feedback[]
 }
 
-function Project({ app, feedback }: Props) {
+function ProjectSettings({ app, feedback }: Props) {
   return (
     <Analytics
       app={app}
@@ -71,4 +71,4 @@ function Project({ app, feedback }: Props) {
   )
 }
 
-export default Project
+export default ProjectSettings

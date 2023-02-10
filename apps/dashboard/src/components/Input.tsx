@@ -10,10 +10,16 @@ export interface Props {
   isTransparent?: boolean
   autofocus?: boolean
   label?: string
+  pattern?: string
+  title?: string
+  required?: boolean
 }
 
 function Input({
   value,
+  required,
+  pattern,
+  title,
   isTransparent,
   autofocus,
   onChange,
@@ -34,12 +40,15 @@ function Input({
     <div className="flex flex-col space-y-1 flex-1">
       {label && <Text text={label} size={Text.size.S3} />}
       <input
+        required={required}
         autoCapitalize="off"
         autoCorrect="off"
+        title={title}
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         ref={ref}
+        pattern={pattern}
         type="text"
         className={clsx(
           { 'bg-transparent': isTransparent },
@@ -56,7 +65,6 @@ function Input({
           'text-sm',
           'placeholder:text-slate-300',
         )}
-        required
       />
     </div>
   )

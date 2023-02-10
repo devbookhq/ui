@@ -30,8 +30,6 @@ function Select<T>({ items, selectedItemLabel, onSelect, isTransparent }: Props<
     setValue(newSelected?.label)
   }
 
-  console.log(items)
-
   return (
     <RadixSelect.Root
       value={value}

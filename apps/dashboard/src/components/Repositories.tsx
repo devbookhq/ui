@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { GithubIcon, SearchIcon } from 'lucide-react'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
@@ -11,10 +11,9 @@ import { useLocalStorage } from 'hooks/useLocalStorage'
 import { useRepositories } from 'hooks/useRepositories'
 import { PostProjectBody } from 'pages/api/project'
 import { openPopupModal } from 'utils/popupModal'
-
-import TitleButton from './TitleButton'
-import Input from './Input'
-import SpinnerIcon from './icons/Spinner'
+import TitleButton from 'components/TitleButton'
+import Input from 'components/Input'
+import SpinnerIcon from 'components/icons/Spinner'
 
 export interface Props {
   onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[], url: string }) => void
@@ -174,14 +173,14 @@ function Repositories({ onRepoSelection }: Props) {
         }
       </div>
       {accessToken &&
-        <div className="flex space-x-2 justify-between">
+        <div className="flex justify-between">
           <TitleButton
             onClick={signWithGitHubOAuth}
-            text="Change Account"
+            text="Reauthenticate GitHub Account"
           />
           <TitleButton
             onClick={configureGitHubApp}
-            text="Configure Permissions"
+            text="Configure GitHub App"
           />
         </div>
       }

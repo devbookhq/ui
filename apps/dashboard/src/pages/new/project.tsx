@@ -3,7 +3,6 @@ import {
   useState,
 } from 'react'
 import useSWRMutation from 'swr/mutation'
-import dynamic from 'next/dynamic'
 import humanId from 'human-id'
 import {
   GitBranch,
@@ -11,6 +10,7 @@ import {
   Folder,
   GithubIcon,
   ExternalLink,
+  ArrowRight,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
@@ -23,10 +23,8 @@ import Input from 'components/Input'
 import Select from 'components/Select'
 import { defaultRepoPath } from 'utils/constants'
 import Button from 'components/Button'
-import TitleButton from 'components/TitleButton'
 import SpinnerIcon from 'components/icons/Spinner'
-
-const Repositories = dynamic(() => import('components/Repositories'), { ssr: false })
+import Repositories from 'components/Repositories'
 
 async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {
   return await fetch(url, {
@@ -39,16 +37,16 @@ async function handlePostProject(url: string, { arg }: { arg: PostProjectBody })
   }).then(r => r.json())
 }
 
+const re = /[^a-zA-Z0-9\-]/
+
 export default function NewProject() {
   const [isCreating, setIsCreating] = useState(false)
   const [repoSetup, setRepoSetup] = useState<Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[], url: string }>()
   const [projectSetup, setProjectSetup] = useState<Pick<PostProjectBody, 'path' | 'branch' | 'id'>>()
   const {
     trigger: createProject,
-    data: project,
-    error,
   } = useSWRMutation<Pick<apps, 'id' | 'repository_path'>>('/api/project', handlePostProject)
-
+  const [err, setErr] = useState<string>()
   const router = useRouter()
 
   useEffect(function initProjectSetup() {
@@ -63,26 +61,41 @@ export default function NewProject() {
     }))
   }, [repoSetup])
 
-  useEffect(function redirect() {
-    if (!project) return
-    router.push({
-      pathname: '/projects/[id]',
-      query: {
-        id: project.id,
-      },
-    })
-  }, [project, router])
-
   async function handleCreateProject() {
     if (!repoSetup || !projectSetup) return
 
+    setErr(undefined)
     setIsCreating(true)
+
+    const id = projectSetup.id.trim()
+
+    if (re.test(id)) {
+      setErr('Project name must be a combination of letters, numbers and dashes')
+      setIsCreating(false)
+      return
+    }
+
     try {
-      await createProject({
+      const project = await createProject({
         ...projectSetup,
         ...repoSetup,
+        id,
       })
-    } finally {
+
+      if (project && 'statusCode' in project) {
+        setErr(`Project with name "${id}" already exists`)
+        setIsCreating(false)
+        return
+      }
+
+      router.push({
+        pathname: '/projects/[id]',
+        query: {
+          id,
+        },
+      })
+    } catch (err) {
+      console.error(err)
       setIsCreating(false)
     }
   }
@@ -100,7 +113,7 @@ export default function NewProject() {
     lg:p-12
   "
     >
-      <div className="flex items-start space-x-4">
+      <div className="flex">
         <div className="items-center flex space-x-2">
           <LayoutGrid size="30px" strokeWidth="1.5" />
           <Text
@@ -109,39 +122,55 @@ export default function NewProject() {
           />
         </div>
       </div>
-      <div className="flex flex-1 justify-center">
-        <div className="w-[450px] flex max-h-[600px]">
+
+      <div className="flex flex-1 justify-center overflow-hidden min-h-[200px]">
+        <div className="w-[450px] max-h-[600px] flex flex-col space-y-2 overflow-hidden">
+          <div className="flex space-x-2 items-center transition-all">
+            <Text
+              text="Select repository"
+              className={clsx('text-base', { 'text-slate-300 hover:text-green-800 cursor-pointer': repoSetup })}
+              onClick={() => setRepoSetup(undefined)}
+            />
+            <ArrowRight size="18px" className="text-slate-300" />
+            <Text
+              text="Configure project"
+              className={clsx(
+                'text-base',
+                { 'text-slate-300': !repoSetup },
+              )}
+            />
+          </div>
           <div
             className={clsx(
-              'flex flex-col flex-1 space-y-2',
+              'flex overflow-hidden flex-1',
               { 'hidden': repoSetup },
             )}
           >
-            <Text
-              text="Select repository"
-              className="text-base"
-            />
             <Repositories
               onRepoSelection={setRepoSetup}
             />
           </div>
           {repoSetup &&
             <div className="space-y-2 flex-1 flex flex-col">
-              <Text
-                text="Configure project"
-                className="text-base"
-              />
               <div
                 className="space-y-6 rounded border p-8 flex flex-col bg-white"
               >
                 <div className="flex flex-col space-y-6">
-                  <div className="flex space-x-2 items-start">
+                  <div className="flex flex-col flex-1 space-y-1">
                     <Input
+                      required
+                      title="Must be a combination of letters, numbers and dashes"
+                      pattern="[^a-zA-Z0-9\-]"
                       label="Project name"
                       placeholder="Project name"
                       value={projectSetup?.id}
                       onChange={v => setProjectSetup(p => p ? ({ ...p, id: v }) : undefined)}
                       autofocus
+                    />
+                    <Text
+                      text="Combination of letters, numbers and dashes"
+                      size={Text.size.S3}
+                      className="text-slate-400"
                     />
                   </div>
 
@@ -197,28 +226,24 @@ export default function NewProject() {
                     />
                   </div>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center flex-col space-y-4">
                   <Button
-                    isDisabled={!projectSetup || !repoSetup || !projectSetup.id || !projectSetup.branch || !projectSetup.path || isCreating}
+                    isDisabled={!projectSetup || !repoSetup || !projectSetup.id || !projectSetup.branch || !projectSetup.path || isCreating || re.test(projectSetup.id.trim())}
                     onClick={handleCreateProject}
                     text="Create project"
                     variant={Button.variant.Full}
                     className="self-center whitespace-nowrap"
                     icon={isCreating ? <SpinnerIcon className="text-white" /> : null}
                   />
-                  {!isCreating && error && (
+                  {!isCreating && err && (
                     <Text
                       className="self-center text-red-500"
                       size={Text.size.S3}
-                      text={error}
+                      text={err}
                     />
                   )}
                 </div>
               </div>
-              <TitleButton
-                onClick={() => setRepoSetup(undefined)}
-                text="Change repository"
-              />
             </div>
           }
         </div>
