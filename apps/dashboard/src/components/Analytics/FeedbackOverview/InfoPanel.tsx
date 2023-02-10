@@ -2,11 +2,11 @@ import Text from 'components/typography/Text'
 import { calculateTotalRating, Feedback } from 'feedback'
 
 export interface Props {
-  guides: Feedback[]
+  feedback: Feedback[]
 }
 
-function InfoPanel({ guides }: Props) {
-  const totalRating = calculateTotalRating(guides)
+function InfoPanel({ feedback }: Props) {
+  const totalRating = calculateTotalRating(feedback)
 
   return (
     <div className="flex flex-1 px-3 py-2 border rounded justify-between bg-slate-50 space-x-6">

@@ -54,9 +54,9 @@ function FeedbackOverview({ feedback }: Props) {
         max-h-full
         overflow-hidden
       ">
-        <InfoPanel guides={feedback} />
+        <InfoPanel feedback={feedback} />
         <Text
-          text="Not yet rated guides aren't shown"
+          text="Not yet rated items aren't shown"
           size={Text.size.S3}
           className="text-slate-400 self-center"
         />
