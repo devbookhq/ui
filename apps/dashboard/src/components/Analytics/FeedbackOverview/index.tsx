@@ -76,7 +76,7 @@ function FeedbackOverview({ feedback }: Props) {
             <thead className="text-slate-500 bg-slate-50 uppercase border-b">
               <tr>
                 <th scope="col" className="p-3">
-                  <Text text="Guide" size={Text.size.S3} />
+                  <Text text="Item" size={Text.size.S3} />
                 </th>
                 <th scope="col" className="p-3">
                   <div className="flex space-x-1">
@@ -139,10 +139,10 @@ function FeedbackOverview({ feedback }: Props) {
                   <td
                     scope="row"
                     className="
-                    w-[338px]
-                    p-3
-                    font-medium
-                    whitespace-nowrap
+                      w-[338px]
+                      p-3
+                      font-medium
+                      whitespace-nowrap
                   ">
                     <Link
                       className="
