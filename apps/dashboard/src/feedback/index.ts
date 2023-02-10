@@ -1,2 +1,2 @@
 export * from './feed'
-export * from './guideFeedback'
+export * from './feedback'

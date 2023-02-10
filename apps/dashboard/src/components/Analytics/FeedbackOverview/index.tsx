@@ -5,16 +5,16 @@ import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 
 import Text from 'components/typography/Text'
-import { GuideFeedback } from 'feedback'
+import { Feedback } from 'feedback'
 
 import InfoPanel from './InfoPanel'
 import SortControl, { SortOrder, applySorting, Column, SetConfig } from './SortControl'
 
 export interface Props {
-  guides: GuideFeedback[]
+  feedback: Feedback[]
 }
 
-function GuidesOverview({ guides }: Props) {
+function FeedbackOverview({ feedback }: Props) {
   const router = useRouter()
 
   const order: SortOrder = router.query.order as any as SortOrder || SortOrder.Descending
@@ -34,30 +34,45 @@ function GuidesOverview({ guides }: Props) {
     })
   }, [config, router])
 
-  const sortedGuides = applySorting(guides, { order, column })
+  const sortedFeedback = applySorting(feedback, { order, column })
 
   return (
-    <div className="scroller overflow-auto flex flex-1 justify-center p-4 items-start">
-      <div className="flex flex-col flex-1 space-y-3 overflow-hidden max-w-[1100px]">
+    <div className="
+      flex
+      flex-1
+      justify-center
+      p-4
+      items-start
+      overflow-hidden
+    ">
+      <div className="
+        flex
+        flex-col
+        flex-1
+        space-y-3
+        max-w-[1100px]
+        max-h-full
+        overflow-hidden
+      ">
+        <InfoPanel guides={feedback} />
         <Text
-          text="Guides without any rating aren't shown"
+          text="Not yet rated guides aren't shown"
           size={Text.size.S3}
           className="text-slate-400 self-center"
         />
-        <InfoPanel guides={guides} />
         <div className="
-            flex
-            flex-col
-            flex-1
+          flex
+          flex-col
+          flex-1
 
-            rounded
-            scroller
-            border-x
-            border-t
-            overflow-hidden
-            overflow-x-auto
-          ">
-          <table className="table-auto text-slate-500 rounded overflow-hidden">
+          rounded
+          border-x
+          border-t
+          scroller
+          max-h-full
+          overflow-auto
+        ">
+          <table className="table-auto text-slate-500 rounded">
             <thead className="text-slate-500 bg-slate-50 uppercase border-b">
               <tr>
                 <th scope="col" className="p-3">
@@ -119,57 +134,66 @@ function GuidesOverview({ guides }: Props) {
               </tr>
             </thead>
             <tbody className="rounded-b">
-              {sortedGuides.map(g => (
-                <tr className="bg-white border-b hover:bg-slate-50/10" key={g.id}>
-                  <th scope="row" className="p-3 font-medium whitespace-nowrap">
+              {sortedFeedback.map(f => (
+                <tr className="bg-white border-b hover:bg-slate-50/10" key={f.id}>
+                  <td
+                    scope="row"
+                    className="
+                    w-[338px]
+                    p-3
+                    font-medium
+                    whitespace-nowrap
+                  ">
                     <Link
-                      href={g.link || ''}
                       className="
-                      hover:text-blue-600
-                      flex
-                      group
-                      text-blue-500
-                      space-x-1
-                    "
+                        hover:text-blue-600
+                        flex
+                        justify-start
+                        items-center
+                        group
+                        text-blue-500
+                        space-x-1
+                      "
+                      href={f.link || ''}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Text text={g.title} className="whitespace-nowrap" size={Text.size.S3} />
+                      <Text text={f.title} className="whitespace-nowrap" size={Text.size.S3} />
                       <ExternalLink
                         size={14}
                       />
                     </Link>
-                  </th>
-                  <td className="p-3">
-                    <Text text={g.upvotes.toString()} />
                   </td>
                   <td className="p-3">
-                    <Text text={g.downvotes.toString()} />
+                    <Text text={f.upvotes.toString()} />
                   </td>
                   <td className="p-3">
-                    {g.ratingPercentage >= 0.9 &&
+                    <Text text={f.downvotes.toString()} />
+                  </td>
+                  <td className="p-3">
+                    {f.ratingPercentage >= 0.9 &&
                       <Text
-                        text={(g.ratingPercentage * 100).toPrecision(3) + '%'}
+                        text={(f.ratingPercentage * 100).toPrecision(3) + '%'}
                         className="text-green-500"
                       />
                     }
-                    {g.ratingPercentage < 0.9 && g.ratingPercentage >= 0.7 &&
+                    {f.ratingPercentage < 0.9 && f.ratingPercentage >= 0.7 &&
                       <Text
-                        text={(g.ratingPercentage * 100).toPrecision(3) + '%'}
+                        text={(f.ratingPercentage * 100).toPrecision(3) + '%'}
                         className="text-yellow-500"
                       />
                     }
-                    {g.ratingPercentage < 0.7 &&
+                    {f.ratingPercentage < 0.7 &&
                       <Text
-                        text={(g.ratingPercentage * 100).toPrecision(3) + '%'}
+                        text={(f.ratingPercentage * 100).toPrecision(3) + '%'}
                         className="text-red-600"
                       />
                     }
                   </td>
                   <td className="p-3">
                     <div className="flex space-x-1">
-                      <Text text={g.userMessages.length.toString()} className="min-w-[24px]" />
-                      {g.feed.some(f => 'text' in f && f.isFromToday)
+                      <Text text={f.userMessages.length.toString()} className="min-w-[24px]" />
+                      {f.feed.some(f => 'text' in f && f.isFromToday)
                         ? <Text
                           text="(new in the last 24h)"
                           size={Text.size.S3}
@@ -184,7 +208,7 @@ function GuidesOverview({ guides }: Props) {
                         pathname: router.pathname,
                         query: {
                           ...router.query,
-                          guide: g.id,
+                          item: f.id,
                           view: 'feedback',
                         },
                       }}
@@ -222,4 +246,4 @@ function GuidesOverview({ guides }: Props) {
   )
 }
 
-export default GuidesOverview
+export default FeedbackOverview

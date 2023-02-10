@@ -1,14 +1,20 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { apps, apps_feedback } from 'database'
 
-import { getFeedData, aggregateGuidesFeedback } from 'feedback'
+import {
+  getFeedData,
+  aggregateFeedbackBy,
+} from 'feedback'
 import Text from 'components/typography/Text'
 import HeaderLink from 'components/Header/Navigation/HeaderLink'
+import SelectButton from 'components/SelectButton'
 
-import GuidesOverview from './GuidesOverview'
+import FeedbackOverview from './FeedbackOverview'
 import FeedbackFeed from './Feed'
+
+type SelectedFeedback = 'guides' | 'codeExamples'
 
 export interface Props {
   app: apps
@@ -27,10 +33,13 @@ const views = [
 ]
 
 function Analytics({ app, feedback }: Props) {
-  const [guidesFeedback, feed] = useMemo(() => {
-    const feedbackByGuide = aggregateGuidesFeedback(feedback)
-    const feed = getFeedData(feedbackByGuide)
-    return [feedbackByGuide, feed]
+  const [selectedFeedback, setSelectedFeedback] = useState<SelectedFeedback>('guides')
+  const [guidesFeedback, codeExamplesFeedback, feed] = useMemo(() => {
+    console.log({ feedback })
+    const feedbackByGuide = aggregateFeedbackBy('guides', feedback)
+    const feedbackByCodeExample = aggregateFeedbackBy('codeExamples', feedback)
+    const feed = getFeedData([...feedbackByGuide, ...feedbackByCodeExample])
+    return [feedbackByGuide, feedbackByCodeExample, feed]
   }, [feedback])
 
   const router = useRouter()
@@ -60,9 +69,47 @@ function Analytics({ app, feedback }: Props) {
           ))}
         </div>
       </div>
-      <div className="overflow-hidden justify-center flex flex-1">
-        {!view && <GuidesOverview guides={guidesFeedback} />}
-        {view === 'feedback' && <FeedbackFeed feed={feed} guides={guidesFeedback} />}
+      <div className="
+        flex-1
+        overflow-hidden
+        justify-center
+        flex
+      ">
+        {!view &&
+          <div className="
+            py-4
+            flex-1
+            flex
+            flex-col
+            overflow-hidden
+          ">
+            <div className="
+              flex
+              justify-center
+              space-x-4
+            ">
+              <SelectButton
+                text="Guides"
+                isSelected={selectedFeedback === 'guides'}
+                onClick={() => setSelectedFeedback('guides')}
+              />
+              <SelectButton
+                text="Code Examples"
+                isSelected={selectedFeedback === 'codeExamples'}
+                onClick={() => setSelectedFeedback('codeExamples')}
+              />
+            </div>
+            <FeedbackOverview
+              feedback={selectedFeedback === 'guides' ? guidesFeedback : codeExamplesFeedback}
+            />
+          </div>
+        }
+        {view === 'feedback' &&
+          <FeedbackFeed
+            feed={feed}
+            feedback={[...guidesFeedback, ...codeExamplesFeedback]}
+          />
+        }
       </div>
     </div>
   )

@@ -1,8 +1,8 @@
 import Text from 'components/typography/Text'
-import { calculateTotalRating, GuideFeedback } from 'feedback'
+import { calculateTotalRating, Feedback } from 'feedback'
 
 export interface Props {
-  guides: GuideFeedback[]
+  guides: Feedback[]
 }
 
 function InfoPanel({ guides }: Props) {

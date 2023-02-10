@@ -3,21 +3,20 @@ import { AppFeedbackPropertiesJSON, Rating } from 'queries/db'
 
 import { FeedEntry } from './feed'
 
-interface Feedback {
+export interface UserMessage {
   userID: string
   timestamp: Date
-}
-
-export interface UserMessage extends Feedback {
   text: string
   rating: Rating
 }
 
-export interface UserRating extends Feedback {
+export interface UserRating {
+  userID: string
+  timestamp: Date
   rating: Rating
 }
 
-export interface GuideFeedback {
+export interface Feedback {
   id: string
   upvotes: number
   downvotes: number
@@ -32,6 +31,7 @@ export interface GuideFeedback {
   userMessages: UserMessage[]
   totalMessages: number
   guideStep?: string
+  from: 'guide' | 'codeExample'
 }
 
 interface Hostnames {
@@ -53,74 +53,87 @@ export function getGuideName(guidePath: string) {
   return guidePath.split('/')[2].split('?')[0].split(/[_-]+/).map(capitalizeFirstLetter).join(' ')
 }
 
-export function aggregateGuidesFeedback(feedback: Required<apps_feedback>[]) {
-  const guides = feedback.reduce<{ [guideID: string]: GuideFeedback }>((prev, curr) => {
-    const properties = curr.properties as AppFeedbackPropertiesJSON
+export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Required<apps_feedback>[]) {
+  const key = by === 'guides' ? 'guide' : 'codeExamplePath'
 
+  const items = feedback.reduce<({ [id: string]: Feedback })>((prev, curr) => {
+    const properties = curr.properties as AppFeedbackPropertiesJSON
     if (!properties) return prev
-    if (!properties.guide) return prev
-    let guide = prev[properties.guide]
-    if (!guide) {
-      guide = {
-        link: (hostnames[curr.appId] && properties.guide) ? `https://${hostnames[curr.appId]}${properties.guide}` : undefined,
+
+    const val = properties[key]
+    if (!val) return prev
+
+    let item = prev[val]
+    if (!item) {
+      let link = ''
+      if (hostnames[curr.appId]) {
+        link = `https://${hostnames[curr.appId]}${val}`
+      } else {
+        throw new Error(`Unknown appID: '${curr.appId}'`)
+      }
+
+      item = {
+        link,
         upvotes: 0,
         downvotes: 0,
         userMessages: [],
         ratingPercentage: 0,
         ratings: [],
         feed: [],
-        id: properties.guide!,
-        title: getGuideName(properties.guide),
+        id: properties[key]!,
+        title: by === 'guides' ? getGuideName(properties.guide!) : properties.codeExampleTitle!,
         totalMessages: 0,
         guideStep: properties.guideStep,
+        from: by === 'guides' ? 'guide' : 'codeExample',
       }
-      prev[properties.guide] = guide
+      prev[val] = item
     }
 
     if (curr.feedback) {
-      guide.userMessages.push({
+      item.userMessages.push({
         text: curr.feedback,
         timestamp: new Date(curr.created_at),
         rating: properties.rating!,
         userID: properties.userId || properties.anonymousId!,
       })
-      guide.totalMessages += 1
+      item.totalMessages += 1
     } else if (properties.rating === Rating.Upvote) {
-      guide.upvotes += 1
-      guide.ratings.push({
+      item.upvotes += 1
+      item.ratings.push({
         rating: properties.rating,
         timestamp: new Date(curr.created_at),
         userID: properties.userId || properties.anonymousId!,
       })
     } else if (properties.rating === Rating.Downvote) {
-      guide.downvotes += 1
-      guide.ratings.push({
+      item.downvotes += 1
+      item.ratings.push({
         rating: properties.rating,
         timestamp: new Date(curr.created_at),
         userID: properties.userId || properties.anonymousId!,
       })
     }
+
     return prev
   }, {})
 
-  Object.values(guides).forEach(g => {
-    if (!g.downvotes && !g.upvotes) {
-    } else if (!g.downvotes) {
-      g.ratingPercentage = 1
-    } else if (!g.upvotes) {
-      g.ratingPercentage = 0
+  Object.values(items).forEach(item => {
+    if (!item.downvotes && !item.upvotes) {
+    } else if (!item.downvotes) {
+      item.ratingPercentage = 1
+    } else if (!item.upvotes) {
+      item.ratingPercentage = 0
     } else {
-      g.ratingPercentage = g.upvotes / (g.upvotes + g.downvotes)
+      item.ratingPercentage = item.upvotes / (item.upvotes + item.downvotes)
     }
 
-    g.ratings.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
-    g.userMessages.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+    item.ratings.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+    item.userMessages.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 
     const timeNow = new Date().getTime()
 
-    g.feed = [
-      ...g.ratings,
-      ...g.userMessages,
+    item.feed = [
+      ...item.ratings,
+      ...item.userMessages,
     ].map(m => {
       const isFromToday = (timeNow - m.timestamp.getTime()) / hourInMs < 24
       const isFromYesterday = !isFromToday && (timeNow - m.timestamp.getTime()) / hourInMs < 48
@@ -131,17 +144,18 @@ export function aggregateGuidesFeedback(feedback: Required<apps_feedback>[]) {
       }
     })
 
-    g.feed.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+    item.feed.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 
     // Filter our the duplicate upvotes from guides
-    for (let i = g.feed.length - 1; i >= 0; i--) {
-      const e = g.feed[i]
+    for (let i = item.feed.length - 1; i >= 0; i--) {
+      const entry = item.feed[i]
 
-      if ('text' in e) {
+      // Only feedback with messages have the field 'text'.
+      if ('text' in entry) {
         let isCleaned = false
         for (let j = i; j >= 0; j--) {
-          if (g.feed[j].userID === e.userID && !('text' in g.feed[j]) && g.feed[j].rating === e.rating) {
-            g.feed.splice(j, 1)
+          if (item.feed[j].userID === entry.userID && !('text' in item.feed[j]) && item.feed[j].rating === entry.rating) {
+            item.feed.splice(j, 1)
             isCleaned = true
             break
           }
@@ -151,26 +165,27 @@ export function aggregateGuidesFeedback(feedback: Required<apps_feedback>[]) {
           continue
         }
 
-        for (let j = g.feed.length - 1; j > i; j--) {
-          if (g.feed[j].userID === e.userID && !('text' in g.feed[j]) && g.feed[j].rating === e.rating) {
-            g.feed.splice(j, 1)
+        for (let j = item.feed.length - 1; j > i; j--) {
+          if (item.feed[j].userID === entry.userID && !('text' in item.feed[j]) && item.feed[j].rating === entry.rating) {
+            item.feed.splice(j, 1)
             break
           }
         }
       }
     }
   })
-  return Object.values(guides)
+
+  return Object.values(items)
 }
 
-export function calculateTotalRating(guides?: GuideFeedback[]) {
-  if (!guides) return
+export function calculateTotalRating(feedback?: Feedback[]) {
+  if (!feedback) return
 
-  const downvotes = guides.reduce((curr, prev) => {
+  const downvotes = feedback.reduce((curr, prev) => {
     return curr + prev.downvotes
   }, 0)
 
-  const upvotes = guides.reduce((curr, prev) => {
+  const upvotes = feedback.reduce((curr, prev) => {
     return curr + prev.upvotes
   }, 0)
 
@@ -180,6 +195,6 @@ export function calculateTotalRating(guides?: GuideFeedback[]) {
     upvotes,
     downvotes,
     rating,
-    messages: guides.flatMap(g => g.userMessages).length,
+    messages: feedback.flatMap(g => g.userMessages).length,
   }
 }

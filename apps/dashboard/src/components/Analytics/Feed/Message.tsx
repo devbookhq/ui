@@ -51,10 +51,11 @@ function Message({ message }: Props) {
             />
           }
           <Link
-            href={message.guide?.link || ''}
+            href={message.feedback?.link || ''}
             className="
               hover:text-blue-600
               flex
+              items-center
               group
               text-blue-500
               space-x-1
@@ -62,10 +63,13 @@ function Message({ message }: Props) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {message.guide?.guideStep
-              ? <Text text={`${message.guide?.title || ''} | Step ${message.guide?.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
-              : <Text text={message.guide?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
-            }
+            <>
+              <Text text={message.feedback?.from === 'guide' ? 'Guide |' : 'Code Example |'} size={Text.size.S3} />
+              {message.feedback?.guideStep
+                ? <Text text={`${message.feedback?.title || ''} | Step ${message.feedback?.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
+                : <Text text={message.feedback?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
+              }
+            </>
             <ExternalLink
               size={14}
             />

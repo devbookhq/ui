@@ -1,7 +1,7 @@
-import { UserMessage, GuideFeedback, UserRating } from './guideFeedback'
+import { UserMessage, Feedback, UserRating } from './feedback'
 
 export interface FeedExtension {
-  guide?: GuideFeedback
+  feedback?: Feedback
   isFromYesterday: boolean
   isFromToday: boolean
 }
@@ -10,11 +10,11 @@ export interface FeedMessage extends UserMessage, FeedExtension { }
 export interface FeedRating extends UserRating, FeedExtension { }
 export type FeedEntry = FeedMessage | FeedRating
 
-export function getFeedData(feedback: GuideFeedback[]): FeedEntry[] {
-  const feed = feedback.flatMap(g => {
-    const messages = g.feed.map(m => {
+export function getFeedData(feedback: Feedback[]): FeedEntry[] {
+  const feed = feedback.flatMap(f => {
+    const messages = f.feed.map(m => {
       return {
-        guide: g,
+        feedback: f,
         ...m,
       }
     })
