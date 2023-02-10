@@ -1,46 +1,64 @@
 import clsx from 'clsx'
 import { useEffect, useRef } from 'react'
 
+import Text from 'components/typography/Text'
+
 export interface Props {
-  value: string
+  value?: string
+  placeholder?: string
   onChange: (value: string) => void
+  isTransparent?: boolean
+  autofocus?: boolean
+  label?: string
 }
 
-function Input({ value, onChange }: Props) {
+function Input({
+  value,
+  isTransparent,
+  autofocus,
+  onChange,
+  placeholder,
+  label,
+}: Props) {
   const ref = useRef<HTMLInputElement>(null)
 
   useEffect(
-    function autofocus() {
-      if (!ref.current?.value) {
-        ref.current?.focus()
+    function focus() {
+      if (!ref.current) return
+      if (autofocus) {
+        ref.current.focus()
       }
-    }, [])
+    }, [autofocus])
 
   return (
-    <input
-      autoCapitalize="off"
-      autoComplete="email"
-      autoCorrect="off"
-      name="email"
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      placeholder="Email"
-      ref={ref}
-      type="email"
-      className={clsx(
-        'w-full',
-        'px-2',
-        'py-1',
-        'rounded',
-        'border',
-        'border-slate-200',
-        'outline-none',
-        'focus:border-green-800',
-        'text-sm',
-        'placeholder:text-slate-300',
-      )}
-      required
-    />
+    <div className="flex flex-col space-y-1 flex-1">
+      {label && <Text text={label} size={Text.size.S3} />}
+      <input
+        autoCapitalize="off"
+        autoCorrect="off"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder}
+        ref={ref}
+        type="text"
+        className={clsx(
+          { 'bg-transparent': isTransparent },
+          'w-full',
+          'px-2',
+          'focus:bg-white',
+          'py-1',
+          'rounded',
+          'border',
+          'border-slate-200',
+          'hover:border-slate-300',
+          'outline-none',
+          'focus:border-green-800',
+          'text-sm',
+          'placeholder:text-slate-300',
+        )}
+        required
+      />
+    </div>
   )
 }
 

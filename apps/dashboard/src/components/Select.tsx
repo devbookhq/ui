@@ -12,20 +12,20 @@ export interface Props<T> {
   items: Item<T>[]
   selectedItemLabel?: string
   onSelect?: (item?: Item<T>) => any
+  isTransparent?: boolean
 }
 
-function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
+function Select<T>({ items, selectedItemLabel, onSelect, isTransparent }: Props<T>) {
   function handleSelect(label: string) {
     const newSelected = items.find(i => i.label === label)
     onSelect?.(newSelected)
   }
-
   return (
     <RadixSelect.Root
       defaultValue={selectedItemLabel}
       onValueChange={handleSelect}
     >
-      <RadixSelect.Trigger className="group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition-all hover:border-green-800 hover:text-green-800 bg-white">
+      <RadixSelect.Trigger className={clsx("group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition-all hover:border-green-800 hover:text-green-800", { 'bg-white': !isTransparent })}>
         <RadixSelect.Value />
         <RadixSelect.Icon>
           <ChevronDown
@@ -43,7 +43,7 @@ function Select<T>({ items, selectedItemLabel, onSelect }: Props<T>) {
                 {!i.value && !i.value && idx !== 0 && <div className="border-b" />}
                 <RadixSelect.Item
                   className={clsx(
-                    'group flex rounded cursor-pointer relative hover:bg-green-50 justify-between space-x-1 px-3 py-1.5 text-xs text-slate-600 transition-all hover:text-green-800 outline-none border-slate-200'
+                    'group flex rounded cursor-pointer relative hover:bg-green-50 justify-between space-x-1 px-3 py-1.5 text-sm text-slate-600 transition-all hover:text-green-800 outline-none border-slate-200'
                   )}
                   value={i.label}
                 >

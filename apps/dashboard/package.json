@@ -46,6 +46,7 @@
     "@supabase/supabase-js": "^2.4.1",
     "clsx": "^1.2.1",
     "database": "workspace:*",
+    "fuse.js": "^6.6.2",
     "human-id": "^4.0.0",
     "jszip": "^3.10.1",
     "lodash.debounce": "^4.0.8",
