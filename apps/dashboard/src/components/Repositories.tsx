@@ -104,13 +104,13 @@ function Repositories({ onRepoSelection }: Props) {
 
         {accessToken &&
           <div>
-            <div className="flex items-center space-x-2 border-b px-4 py-4">
+            <div className="flex items-center space-x-2 border-b p-4">
               <SearchIcon size="18px" />
               <Input
                 placeholder="Search repositories..."
-                autofocus
                 value={query}
                 onChange={q => setQuery(q)}
+                autofocus
               />
             </div>
 

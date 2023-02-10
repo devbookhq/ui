@@ -25,7 +25,7 @@ function Select<T>({ items, selectedItemLabel, onSelect, isTransparent }: Props<
       defaultValue={selectedItemLabel}
       onValueChange={handleSelect}
     >
-      <RadixSelect.Trigger className={clsx("group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition-all hover:border-green-800 hover:text-green-800", { 'bg-white': !isTransparent })}>
+      <RadixSelect.Trigger className={clsx('group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition-all hover:border-green-800 hover:text-green-800', { 'bg-white': !isTransparent })}>
         <RadixSelect.Value />
         <RadixSelect.Icon>
           <ChevronDown

@@ -129,10 +129,10 @@ export default function NewProject() {
                   <div className="flex space-x-2 items-start">
                     <Input
                       label="Project name"
-                      autofocus
                       placeholder="Project name"
                       value={projectSetup?.id}
                       onChange={v => setProjectSetup(p => p ? ({ ...p, id: v }) : undefined)}
+                      autofocus
                     />
                   </div>
 
@@ -159,7 +159,6 @@ export default function NewProject() {
                     <div className="flex flex-col space-y-1">
                       <Text text="Branch" size={Text.size.S3} />
                       <Select
-                        isTransparent
                         items={(repoSetup?.branches || []).map(r => ({
                           label: r,
                           value: r,
@@ -170,6 +169,7 @@ export default function NewProject() {
                           setProjectSetup(s => s ? ({ ...s, branch: i?.value || s.branch }) : undefined)
                         }}
                         selectedItemLabel={projectSetup?.branch}
+                        isTransparent
                       />
                     </div>
                   </div>
@@ -178,10 +178,10 @@ export default function NewProject() {
                     <Folder size="16px" />
                     <Input
                       label="Root directory"
-                      isTransparent
                       placeholder="Root directory"
                       value={projectSetup?.path}
                       onChange={v => setProjectSetup(p => p ? ({ ...p, path: v }) : undefined)}
+                      isTransparent
                     />
                   </div>
                 </div>
