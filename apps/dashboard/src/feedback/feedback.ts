@@ -60,7 +60,7 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
     const properties = curr.properties as AppFeedbackPropertiesJSON
     if (!properties) return prev
 
-    const val = properties[key]
+    const val = properties[key]?.split(/[?#]/)[0]
     if (!val) return prev
 
     let item = prev[val]
@@ -72,8 +72,6 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
         throw new Error(`Unknown appID: '${curr.appId}'`)
       }
 
-      const urlWithoutQuery = properties[key]?.split(/[?#]/)[0]!
-
       item = {
         link,
         upvotes: 0,
@@ -82,10 +80,9 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
         ratingPercentage: 0,
         ratings: [],
         feed: [],
-        id: urlWithoutQuery,
-        title: by === 'guides' ? getGuideName(urlWithoutQuery) : properties.codeExampleTitle!,
+        id: val,
+        title: by === 'guides' ? getGuideName(val) : properties.codeExampleTitle!,
         totalMessages: 0,
-        guideStep: properties.guideStep,
         from: by === 'guides' ? 'guide' : 'codeExample',
       }
       prev[val] = item

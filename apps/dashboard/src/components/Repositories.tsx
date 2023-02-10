@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { GithubIcon, SearchIcon } from 'lucide-react'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
