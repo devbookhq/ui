@@ -158,13 +158,13 @@ export default function NewProject() {
                 <div className="flex flex-col space-y-6">
                   <div className="flex flex-col flex-1 space-y-1">
                     <Input
-                      required
                       title="Must be a combination of letters, numbers and dashes"
                       pattern="[^a-zA-Z0-9\-]"
                       label="Project name"
                       placeholder="Project name"
                       value={projectSetup?.id}
                       onChange={v => setProjectSetup(p => p ? ({ ...p, id: v }) : undefined)}
+                      required
                       autofocus
                     />
                     <Text
