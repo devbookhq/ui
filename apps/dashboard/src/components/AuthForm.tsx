@@ -8,6 +8,7 @@ import { Database } from 'queries/supabase'
 
 import SpinnerIcon from './icons/Spinner'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 
 export enum AuthFormType {
   SignIn,
@@ -22,6 +23,7 @@ function AuthForm({ authType }: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const [errMessage, setErrMessage] = useState('')
   const supabaseClient = useSupabaseClient<Database>()
+  const router = useRouter()
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -81,10 +83,12 @@ function AuthForm({ authType }: Props) {
       setErrMessage('')
     }
 
-    setIsLoading(false)
     posthog.identify(user?.email, {
       email: user?.email,
     })
+
+    router.push('/projects')
+    setIsLoading(false)
   }
 
   const title = authType === AuthFormType.SignUp ? 'Create a new account' : 'Sign in'
@@ -194,7 +198,7 @@ function AuthForm({ authType }: Props) {
           <div className="flex flex-col space-y-4">
             <Button
               className="self-center whitespace-nowrap"
-              icon={isLoading ? <SpinnerIcon className="text-green-800" /> : null}
+              icon={isLoading ? <SpinnerIcon className="text-white" /> : null}
               isDisabled={isLoading}
               text={isLoading ? buttonLoadingLabel : buttonLabel}
               type="submit"
