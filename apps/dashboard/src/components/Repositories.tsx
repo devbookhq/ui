@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 import { GithubIcon } from 'lucide-react'
-import clsx from 'clsx'
 
 import { useGitHub } from 'hooks/useGitHub'
 import useListenMessage from 'hooks/useListenMessage'
