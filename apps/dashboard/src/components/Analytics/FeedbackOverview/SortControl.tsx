@@ -1,7 +1,7 @@
 import { SortAsc, SortDesc } from 'lucide-react'
 import { ReactNode } from 'react'
 
-import { GuideFeedback } from 'feedback'
+import { Feedback } from 'feedback'
 
 export enum SortOrder {
   Ascending = 'asc',
@@ -13,7 +13,7 @@ export interface SortingConfig {
   order: SortOrder
 }
 
-export function applySorting(guides: GuideFeedback[], config?: SortingConfig) {
+export function applySorting(guides: Feedback[], config?: SortingConfig) {
   if (!config) return guides
 
   return guides.slice().sort((g, o) => {
@@ -28,7 +28,7 @@ export function applySorting(guides: GuideFeedback[], config?: SortingConfig) {
   })
 }
 
-export type Column = keyof Pick<GuideFeedback, 'downvotes' | 'ratingPercentage' | 'totalMessages' | 'upvotes'>
+export type Column = keyof Pick<Feedback, 'downvotes' | 'ratingPercentage' | 'totalMessages' | 'upvotes'>
 
 export type SetConfig = (c: SortingConfig) => SortingConfig
 
