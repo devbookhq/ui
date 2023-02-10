@@ -1,7 +1,7 @@
 import * as RadixSelect from '@radix-ui/react-select'
 import clsx from 'clsx'
 import { Check, ChevronDown } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface Item<T> {
   value: T
@@ -16,16 +16,33 @@ export interface Props<T> {
 }
 
 function Select<T>({ items, selectedItemLabel, onSelect, isTransparent }: Props<T>) {
+  const [value, setValue] = useState<string>()
+
+  useEffect(function selectDefault() {
+    if (selectedItemLabel) {
+      setValue(selectedItemLabel)
+    }
+  }, [selectedItemLabel])
+
   function handleSelect(label: string) {
     const newSelected = items.find(i => i.label === label)
     onSelect?.(newSelected)
+    setValue(newSelected?.label)
   }
+
+  console.log(items)
+
   return (
     <RadixSelect.Root
-      defaultValue={selectedItemLabel}
+      value={value}
       onValueChange={handleSelect}
+      defaultValue={selectedItemLabel}
     >
-      <RadixSelect.Trigger className={clsx('group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition-all hover:border-green-800 hover:text-green-800', { 'bg-white': !isTransparent })}>
+      <RadixSelect.Trigger
+        defaultChecked={true}
+        defaultValue={selectedItemLabel}
+        className={clsx('group flex items-center justify-center space-x-1 rounded border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition-all hover:border-green-800 hover:text-green-800', { 'bg-white': !isTransparent })}
+      >
         <RadixSelect.Value />
         <RadixSelect.Icon>
           <ChevronDown

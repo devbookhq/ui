@@ -60,9 +60,8 @@ function Settings({ apiKey }: Props) {
   }
 
   async function handleSignOut() {
-    posthog.reset(true)
-
     await supabaseClient.auth.signOut()
+    posthog.reset(true)
     router.push('/')
   }
 

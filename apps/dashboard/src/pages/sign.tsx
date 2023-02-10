@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
 
 import AuthForm from 'components/AuthForm'
@@ -10,14 +9,6 @@ function SignIn() {
   const router = useRouter()
   const user = useUser()
   const isCreatingNewAccount = router.query.signup === 'true'
-
-  useEffect(
-    function redirect() {
-      if (!user) return
-      router.push('/projects')
-    },
-    [user, router],
-  )
 
   return (
     <div className="flex flex-1 bg-slate-100">

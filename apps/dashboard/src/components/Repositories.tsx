@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { GithubIcon, SearchIcon } from 'lucide-react'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
@@ -17,14 +17,13 @@ import Input from './Input'
 import SpinnerIcon from './icons/Spinner'
 
 export interface Props {
-  onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[] }) => void
+  onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[], url: string }) => void
 }
 
 function Repositories({ onRepoSelection }: Props) {
   const [accessToken, setAccessToken] = useLocalStorage<string | undefined>('gh_access_token', undefined)
   const gitHub = useGitHub(accessToken)
   const { repos, refetch } = useRepositories(gitHub)
-  const [selectedRepo, setSelectedRepo] = useState<number>()
   const [query, setQuery] = useState<string>()
 
   const searchEngine = useMemo(() => {
@@ -46,15 +45,13 @@ function Repositories({ onRepoSelection }: Props) {
   }, [setAccessToken, refetch])
   useListenMessage(handleEvent)
 
-  async function selectRepository(r: Pick<PostProjectBody, 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string }) {
+  async function selectRepository(r: Pick<PostProjectBody, 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, url: string }) {
     if (!accessToken) return
     onRepoSelection({
       ...r,
       accessToken,
       branches: [r.defaultBranch],
     })
-
-    setSelectedRepo(r.repositoryID)
 
     const [repositoryOwnerName, repositoryName] = r.fullName.split('/')
     const repoBranches = await gitHub?.repos.listBranches({
@@ -106,7 +103,7 @@ function Repositories({ onRepoSelection }: Props) {
         {accessToken &&
           <div className="flex overflow-hidden flex-col flex-1">
             <div className="flex items-center space-x-2 border-b px-8 py-4">
-              <SearchIcon size="18px" />
+              <SearchIcon size="16px" />
               <Input
                 placeholder="Search repositories..."
                 value={query}
@@ -117,8 +114,9 @@ function Repositories({ onRepoSelection }: Props) {
 
 
             {!repos &&
-              <div className="flex flex-1 items-center justify-center">
+              <div className="flex flex-1 items-center justify-center flex-col space-y-1 text-slate-500">
                 <SpinnerIcon className="text-slate-400" />
+                <Text text="Fetching repositories" />
               </div>
             }
 
@@ -141,9 +139,8 @@ function Repositories({ onRepoSelection }: Props) {
             scroller
             overflow-auto
             pl-8
+            flex-1
             pr-6
-            justify-start
-            items-stretch
           ">
                 {filteredRepos.map(r => (
                   <div
@@ -165,6 +162,7 @@ function Repositories({ onRepoSelection }: Props) {
                         installationID: r.installation_id,
                         repositoryID: r.id,
                         fullName: r.full_name,
+                        url: r.html_url,
                       })}
                       text="Select"
                     />

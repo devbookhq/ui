@@ -23,6 +23,7 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
   const router = useRouter()
   const isProjectsDashboard = router.pathname === '/projects'
   const isProjectOpen = router.pathname === '/projects/[id]'
+  const isNewProject = router.pathname === '/new/project'
   const isSettings = router.pathname === '/settings'
   const isSignIn = router.pathname === '/sign' && router.query.signup !== 'true'
   const isSignUp = router.pathname === '/sign' && router.query.signup === 'true'
@@ -54,6 +55,8 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
     meta.title = 'Sign Up | Devbook'
   } else if (isSettings) {
     meta.title = 'Settings | Devbook'
+  } else if (isNewProject) {
+    meta.title = 'New Project | Devbook'
   }
 
   return (

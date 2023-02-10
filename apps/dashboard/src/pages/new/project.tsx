@@ -10,9 +10,11 @@ import {
   LayoutGrid,
   Folder,
   GithubIcon,
+  ExternalLink,
 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
+import Link from 'next/link'
 
 import { PostProjectBody } from 'pages/api/project'
 import { apps } from 'database'
@@ -22,6 +24,7 @@ import Select from 'components/Select'
 import { defaultRepoPath } from 'utils/constants'
 import Button from 'components/Button'
 import TitleButton from 'components/TitleButton'
+import SpinnerIcon from 'components/icons/Spinner'
 
 const Repositories = dynamic(() => import('components/Repositories'), { ssr: false })
 
@@ -37,7 +40,8 @@ async function handlePostProject(url: string, { arg }: { arg: PostProjectBody })
 }
 
 export default function NewProject() {
-  const [repoSetup, setRepoSetup] = useState<Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[] }>()
+  const [isCreating, setIsCreating] = useState(false)
+  const [repoSetup, setRepoSetup] = useState<Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[], url: string }>()
   const [projectSetup, setProjectSetup] = useState<Pick<PostProjectBody, 'path' | 'branch' | 'id'>>()
   const {
     trigger: createProject,
@@ -69,13 +73,18 @@ export default function NewProject() {
     })
   }, [project, router])
 
-  function handleCreateProject() {
+  async function handleCreateProject() {
     if (!repoSetup || !projectSetup) return
 
-    createProject({
-      ...projectSetup,
-      ...repoSetup,
-    })
+    setIsCreating(true)
+    try {
+      await createProject({
+        ...projectSetup,
+        ...repoSetup,
+      })
+    } finally {
+      setIsCreating(false)
+    }
   }
 
   return (
@@ -123,9 +132,9 @@ export default function NewProject() {
                 className="text-base"
               />
               <div
-                className="space-y-8 rounded border p-8 flex flex-col bg-white"
+                className="space-y-6 rounded border p-8 flex flex-col bg-white"
               >
-                <div className="flex flex-col space-y-8">
+                <div className="flex flex-col space-y-6">
                   <div className="flex space-x-2 items-start">
                     <Input
                       label="Project name"
@@ -140,10 +149,20 @@ export default function NewProject() {
                     <GithubIcon size="16px" />
                     <div className="flex flex-col space-y-1">
                       <Text text="Repository" size={Text.size.S3} />
-                      <Text
-                        text={`${repoSetup?.fullName}`}
-                        className="font-semibold"
-                      />
+                      <Link
+                        href={{
+                          pathname: repoSetup.url,
+                        }}
+                        className="flex space-x-1 hover:text-blue-600"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Text
+                          text={`${repoSetup?.fullName}`}
+                          className="font-semibold underline"
+                        />
+                        <ExternalLink size="12px" />
+                      </Link>
                     </div>
                   </div>
 
@@ -180,11 +199,20 @@ export default function NewProject() {
                 </div>
                 <div className="flex justify-center">
                   <Button
-                    isDisabled={!projectSetup || !repoSetup || !projectSetup.id || !projectSetup.branch || !projectSetup.path}
+                    isDisabled={!projectSetup || !repoSetup || !projectSetup.id || !projectSetup.branch || !projectSetup.path || isCreating}
                     onClick={handleCreateProject}
                     text="Create project"
                     variant={Button.variant.Full}
+                    className="self-center whitespace-nowrap"
+                    icon={isCreating ? <SpinnerIcon className="text-white" /> : null}
                   />
+                  {!isCreating && error && (
+                    <Text
+                      className="self-center text-red-500"
+                      size={Text.size.S3}
+                      text={error}
+                    />
+                  )}
                 </div>
               </div>
               <TitleButton
