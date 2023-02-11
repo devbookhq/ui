@@ -60,7 +60,7 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
     const properties = curr.properties as AppFeedbackPropertiesJSON
     if (!properties) return prev
 
-    const val = properties[key]
+    const val = properties[key]?.split(/[?#]/)[0]
     if (!val) return prev
 
     let item = prev[val]
@@ -80,10 +80,9 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
         ratingPercentage: 0,
         ratings: [],
         feed: [],
-        id: properties[key]!,
-        title: by === 'guides' ? getGuideName(properties.guide!) : properties.codeExampleTitle!,
+        id: val,
+        title: by === 'guides' ? getGuideName(val) : properties.codeExampleTitle!,
         totalMessages: 0,
-        guideStep: properties.guideStep,
         from: by === 'guides' ? 'guide' : 'codeExample',
       }
       prev[val] = item
