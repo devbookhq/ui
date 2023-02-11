@@ -65,8 +65,8 @@ function Message({ message }: Props) {
           >
             <>
               <Text text={message.feedback?.from === 'guide' ? 'Guide |' : 'Code Example |'} size={Text.size.S3} />
-              {message.feedback?.guideStep
-                ? <Text text={`${message.feedback?.title || ''} | Step ${message.feedback?.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
+              {message.guideStep
+                ? <Text text={`${message.feedback?.title || ''} | Step ${message.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
                 : <Text text={message.feedback?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
               }
             </>
