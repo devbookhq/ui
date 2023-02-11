@@ -51,7 +51,7 @@ function Message({ message }: Props) {
             />
           }
           <Link
-            href={message.feedback?.link || ''}
+            href={message.feedback?.link + (message?.guideStep ? `?step={message.guideStep}` : '') || ''}
             className="
               hover:text-blue-600
               flex
@@ -89,7 +89,7 @@ function Message({ message }: Props) {
           <Text text="No message left" className="max-w-prose text-slate-400" size={Text.size.S3} />
         }
       </div>
-    </div>
+    </div >
   )
 }
 
