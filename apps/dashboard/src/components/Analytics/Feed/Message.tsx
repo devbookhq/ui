@@ -51,7 +51,7 @@ function Message({ message }: Props) {
             />
           }
           <Link
-            href={message.feedback?.link + (message?.guideStep ? `?step={message.guideStep}` : '') || ''}
+            href={message.feedback?.link + (message?.guideStep !== undefined ? `?step=${message.guideStep}` : '') || ''}
             className="
               hover:text-blue-600
               flex
