@@ -33,6 +33,9 @@ function getTitle(feedback: AppFeedback) {
     throw new Error('Cannot get title from feedback: unknown feedback type')
   }
 
+  if (feedback.properties.email) {
+    return `User left email for ${type} feedback`
+  }
   if (feedback.feedback) {
     return `User left message for ${type}`
   }
@@ -69,6 +72,18 @@ function createCodeExampleFeedbackMessage(feedback: AppFeedback) {
       ],
     }
   ]
+
+  if (feedback.properties.email) {
+    blocks.push(
+      {
+        'type': 'section',
+        'text': {
+          'text': `*Email*\n\`\`\`${feedback.properties.email}\`\`\``,
+          'type': 'mrkdwn',
+        }
+      },
+    )
+  }
 
   if (feedback.feedback) {
     blocks.push(
@@ -146,6 +161,17 @@ function createGuideFeedbackMessage(feedback: AppFeedback) {
     }
   ]
 
+  if (feedback.properties.email) {
+    blocks.push(
+      {
+        'type': 'section',
+        'text': {
+          'text': `*Email*\n\`\`\`${feedback.properties.email}\`\`\``,
+          'type': 'mrkdwn',
+        }
+      },
+    )
+  }
 
   if (feedback.properties.guideStep) {
     try {
@@ -227,6 +253,8 @@ async function appFeedback(req: NextApiRequest, res: NextApiResponse) {
         message = createGuideFeedbackMessage(feedback)
       } else if (feedback.properties.codeExamplePath) {
         message = createCodeExampleFeedbackMessage(feedback)
+      } else if (feedback.properties.email) {
+
       } else {
         res.status(400).json({ error: 'Unknown feedback type' })
       }
