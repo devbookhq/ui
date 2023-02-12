@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     if (!app.subdomain) {
-      throw new Error('App is deployed on no subdomain')
+      throw new Error('App is not deployed on any subdomain')
     }
 
     try {

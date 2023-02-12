@@ -27,7 +27,7 @@ const darkEditorTheme = EditorView.theme({ '.cm-gutters': { background: '#282c34
 
 export interface Props {
   title?: string
-  lang?: 'js' | 'ts' | 'sql' | 'prisma'
+  lang?: string
   onRun?: (code: string) => string
   children: ReactNode
   enableDiagnostic?: boolean
