@@ -38,5 +38,7 @@ export default async function middleware(req: NextRequest) {
         new URL(`/${hiddenAppRoute}/${subsubdomain}${path}`, req.url)
       )
     }
+  } else if (path === '/') {
+    new URL('/projects', req.url)
   }
 }
