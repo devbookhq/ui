@@ -87,7 +87,7 @@ function AuthForm({ authType }: Props) {
       email: user?.email,
     })
 
-    router.push('/projects')
+    router.replace('/projects')
     setIsLoading(false)
   }
 
