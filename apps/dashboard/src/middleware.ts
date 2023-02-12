@@ -39,6 +39,8 @@ export default async function middleware(req: NextRequest) {
       )
     }
   } else if (path === '/') {
-    new URL('/projects', req.url)
+    return NextResponse.rewrite(
+      new URL('/projects', req.url)
+    )
   }
 }
