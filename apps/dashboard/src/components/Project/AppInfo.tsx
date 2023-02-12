@@ -1,8 +1,6 @@
-import { Select } from '@radix-ui/react-select'
 import { GithubIcon, ExternalLink, GitBranch, Folder } from 'lucide-react'
 import Link from 'next/link'
 
-import Input from 'components/Input'
 import Text from 'components/typography/Text'
 import { apps } from 'database'
 
