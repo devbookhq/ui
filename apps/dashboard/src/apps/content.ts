@@ -30,11 +30,6 @@ export interface CompiledAppContent {
   environmentID?: string
   layout: Layout | null
   serialized: MDXRemoteSerializeResult
-  componentNames: string[]
-}
-
-function checkMDXComponents(source: string, components: string[]) {
-  return components.map(c => source.indexOf(`_jsxDEV(${c}`) >= 0 ? c : null).filter(notEmpty)
 }
 
 export async function compileContent(content: AppContentJSON): Promise<CompiledAppContent> {
@@ -45,11 +40,9 @@ export async function compileContent(content: AppContentJSON): Promise<CompiledA
   }
 
   const serialized = await serialize(indexMDX.content, { parseFrontmatter: true })
-  const componentNames = checkMDXComponents(serialized.compiledSource, ['CodeBlock', 'TerminalCommand'])
 
   return {
     serialized,
-    componentNames,
     environmentID: content.env?.id,
     title: serialized.frontmatter?.title,
     layout: serialized.frontmatter?.layout as unknown as Layout || null,

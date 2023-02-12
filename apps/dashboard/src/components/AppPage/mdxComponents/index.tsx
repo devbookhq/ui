@@ -1,5 +1,6 @@
 import type { MDXRemote } from 'next-mdx-remote'
 import { ComponentProps } from 'react'
+import dynamic from 'next/dynamic'
 
 import {
   a,
@@ -14,6 +15,9 @@ import {
 } from './base'
 import Check from './Check'
 import Pre from './Pre'
+
+const CodeBlock = dynamic(() => import('./CodeBlock'), { ssr: false })
+const TerminalCommand = dynamic(() => import('./TerminalCommand'), { ssr: false })
 
 const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   a,
@@ -30,6 +34,8 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   Filetree(p) {
     return <div>Filetree</div>
   },
+  CodeBlock,
+  TerminalCommand,
 }
 
 export default mdxComponents

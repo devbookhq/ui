@@ -1,11 +1,7 @@
 import { MDXRemote } from 'next-mdx-remote'
-import dynamic from 'next/dynamic'
 
 import mdxComponents from './mdxComponents'
 import { CompiledAppContent } from 'apps/content'
-
-const CodeBlock = dynamic(() => import('./mdxComponents/CodeBlock'), { ssr: false })
-const TerminalCommand = dynamic(() => import('./mdxComponents/TerminalCommand'), { ssr: false })
 
 export interface Props {
   content: CompiledAppContent
@@ -52,11 +48,7 @@ function AppContentView({ content }: Props) {
           ">
             <MDXRemote
               {...content.serialized}
-              components={{
-                ...mdxComponents,
-                CodeBlock: content.componentNames.includes('CodeBlock') ? CodeBlock : null as any,
-                TerminalCommand: content.componentNames.includes('TerminalCommand') ? TerminalCommand : null as any,
-              }}
+              components={mdxComponents}
               lazy
             />
           </div>
