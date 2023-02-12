@@ -49,31 +49,30 @@ function FeedbackModal({ isOpen, onClose }: Props) {
       title="Send us your feedback"
       onClose={onClose}
     >
-      {isSavingFeedback && <SpinnerIcon className="m-auto text-slate-400" />}
-      {!isSavingFeedback && (
-        <form
-          autoComplete="of"
-          className="
+      <form
+        autoComplete="of"
+        className="
             flex
             w-full
             flex-col
             items-center
             space-y-4
           "
-          onSubmit={saveFeedback}
-        >
-          <Textarea
-            placeholder="Your feedback..."
-            value={feedback}
-            onChange={e => setFeedback(e.target.value)}
-          />
-          <Button
-            text="Send feedback"
-            variant={Button.variant.Full}
-            onClick={saveFeedback}
-          />
-        </form>
-      )}
+        onSubmit={saveFeedback}
+      >
+        <Textarea
+          placeholder="Your feedback..."
+          value={feedback}
+          onChange={e => setFeedback(e.target.value)}
+        />
+        <Button
+          text={isSavingFeedback ? 'Sending' : 'Send feedback'}
+          icon={isSavingFeedback ? <SpinnerIcon className="text-white" /> : null}
+          isDisabled={isSavingFeedback || feedback.trim() === ''}
+          variant={Button.variant.Full}
+          onClick={saveFeedback}
+        />
+      </form>
     </Modal>
   )
 }

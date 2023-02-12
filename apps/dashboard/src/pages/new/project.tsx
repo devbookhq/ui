@@ -236,7 +236,7 @@ export default function NewProject() {
                   <Button
                     isDisabled={!projectSetup || !repoSetup || !projectSetup.id || !projectSetup.branch || !projectSetup.path || isCreating || re.test(projectSetup.id.trim())}
                     onClick={handleCreateProject}
-                    text={isCreating ? 'Creating project' : 'Create project'}
+                    text={isCreating ? 'Creating & deploying' : 'Create project'}
                     variant={Button.variant.Full}
                     className="self-center whitespace-nowrap"
                     icon={isCreating ? <SpinnerIcon className="text-white" /> : null}
