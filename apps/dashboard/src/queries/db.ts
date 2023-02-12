@@ -25,6 +25,7 @@ export interface AppFeedbackPropertiesJSON {
   guideStep?: string
   codeExampleTitle?: string
   codeExamplePath?: string
+  email?: string
 }
 
 export interface AppFeedback {
