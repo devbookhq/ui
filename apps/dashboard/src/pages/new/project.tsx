@@ -75,6 +75,12 @@ export default function NewProject() {
       return
     }
 
+    if (id.length > 63) {
+      setErr('Project name is too long. It must have 63 or less characters')
+      setIsCreating(false)
+      return
+    }
+
     try {
       const project = await createProject({
         ...projectSetup,

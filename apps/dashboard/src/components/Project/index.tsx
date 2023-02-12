@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
-import { apps, apps_feedback } from 'database'
+import Link from 'next/link'
+import { ExternalLink } from 'lucide-react'
 
+import { apps, apps_feedback } from 'database'
 import {
   getFeedData,
   aggregateFeedbackBy,
@@ -13,11 +15,16 @@ import SelectButton from 'components/SelectButton'
 
 import FeedbackOverview from './FeedbackOverview'
 import FeedbackFeed from './Feed'
+import AppInfo from './AppInfo'
 
 type SelectedFeedback = 'guides' | 'codeExamples'
 
 export interface Props {
-  app: apps
+  app: apps & {
+    github_repositories: {
+      repository_fullname: string;
+    } | null
+  }
   feedback: apps_feedback[]
 }
 
@@ -32,7 +39,7 @@ const views = [
   }
 ]
 
-function Analytics({ app, feedback }: Props) {
+function Project({ app, feedback }: Props) {
   const [selectedFeedback, setSelectedFeedback] = useState<SelectedFeedback>('guides')
   const [guidesFeedback, codeExamplesFeedback, feed] = useMemo(() => {
     const feedbackByGuide = aggregateFeedbackBy('guides', feedback)
@@ -44,29 +51,61 @@ function Analytics({ app, feedback }: Props) {
   const router = useRouter()
   const view = router.query.view || ''
 
+
+  const [deployedUrl, setDeployedUrl] = useState<string>()
+
+  useEffect(function getUrl() {
+    if (typeof window !== undefined) {
+      setDeployedUrl(`https://${app.subdomain}.${window.location.host}`)
+    }
+  }, [app.subdomain])
+
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="pt-3 flex space-y-2 justify-between flex-col bg-white">
-        <Text text={app.title || app.id} size={Text.size.S1} className="px-4" />
-        <div
-          className={clsx('flex border-b border-slate-200 px-4 space-x-2')}
-        >
-          {views.map(v => (
-            <HeaderLink
-              active={v.value === view}
-              key={v.label}
-              title={v.label}
-              href={{
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  view: v.value,
-                },
-              }}
-              shallow
-            />
-          ))}
+      <div className="flex justify-between bg-white border-b border-slate-200 items-center">
+        <div className="flex flex-col">
+          <div className="flex pt-2 px-4 items-center">
+            <>
+              {app.repository_id &&
+                <Link
+                  href={{
+                    pathname: deployedUrl,
+                  }}
+                  className="flex space-x-1 hover:text-blue-600  text-blue-500"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Text text={app.title || app.id} size={Text.size.S1} />
+                  <ExternalLink size="12px" />
+                </Link>
+              }
+
+              {!app.repository_id &&
+                <Text text={app.title || app.id} size={Text.size.S1} />
+              }
+            </>
+          </div>
+          <div
+            className={clsx('flex px-4 space-x-2')}
+          >
+            {views.map(v => (
+              <HeaderLink
+                active={v.value === view}
+                key={v.label}
+                title={v.label}
+                href={{
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    view: v.value,
+                  },
+                }}
+                shallow
+              />
+            ))}
+          </div>
         </div>
+        <AppInfo app={app} />
       </div>
       <div className="
         flex-1
@@ -74,7 +113,14 @@ function Analytics({ app, feedback }: Props) {
         justify-center
         flex
       ">
-        {!view &&
+        {feedback.length === 0 &&
+          <Text
+            text="There is no feedback for this project yet"
+            size={Text.size.S3}
+            className="text-slate-400 self-center"
+          />
+        }
+        {feedback.length > 0 && !view &&
           <div className="
             py-4
             flex-1
@@ -103,15 +149,15 @@ function Analytics({ app, feedback }: Props) {
             />
           </div>
         }
-        {view === 'feedback' &&
+        {feedback.length > 0 && view === 'feedback' &&
           <FeedbackFeed
             feed={feed}
             feedback={[...guidesFeedback, ...codeExamplesFeedback]}
           />
         }
       </div>
-    </div>
+    </div >
   )
 }
 
-export default Analytics
+export default Project

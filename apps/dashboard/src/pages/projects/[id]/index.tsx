@@ -3,7 +3,7 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { apps, apps_feedback } from 'database'
 import type { ParsedUrlQuery } from 'querystring'
 
-import Analytics from 'components/Analytics'
+import Project from 'components/Project'
 import { prisma } from 'queries/prisma'
 
 interface PathProps extends ParsedUrlQuery {
@@ -35,6 +35,13 @@ export const getServerSideProps: GetServerSideProps<Props, PathProps> = async (c
     where: {
       id: ctx.params.id,
     },
+    include: {
+      github_repositories: {
+        select: {
+          repository_fullname: true,
+        },
+      },
+    },
   })
 
   if (!app) {
@@ -58,17 +65,21 @@ export const getServerSideProps: GetServerSideProps<Props, PathProps> = async (c
 }
 
 interface Props {
-  app: apps
+  app: apps & {
+    github_repositories: {
+      repository_fullname: string;
+    } | null
+  }
   feedback: apps_feedback[]
 }
 
-function Project({ app, feedback }: Props) {
+function ProjectPage({ app, feedback }: Props) {
   return (
-    <Analytics
+    <Project
       app={app}
       feedback={feedback}
     />
   )
 }
 
-export default Project
+export default ProjectPage
