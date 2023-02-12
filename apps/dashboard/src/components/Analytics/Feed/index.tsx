@@ -30,11 +30,11 @@ function FeedbackFeed({
     })
   }
 
-  const filteredFeedback = queryFilter ? feed.filter(f => f.feedback?.id === queryFilter) : feed
+  const filteredFeed = queryFilter ? feed.filter(f => f.feedback?.id === queryFilter) : feed
 
-  const todayFeedback = filteredFeedback.filter(f => f.isFromToday)
-  const yesterdayFeedback = filteredFeedback.filter(f => f.isFromYesterday)
-  const olderFeedback = filteredFeedback.filter(f => !f.isFromYesterday && !f.isFromToday)
+  const todayFeed = filteredFeed.filter(f => f.isFromToday)
+  const yesterdayFeed = filteredFeed.filter(f => f.isFromYesterday)
+  const olderFeed = filteredFeed.filter(f => !f.isFromYesterday && !f.isFromToday)
 
   const defaultItem = 'All'
   const queryItem = feed.find(f => f.feedback?.id === queryFilter)?.feedback
@@ -91,30 +91,30 @@ function FeedbackFeed({
         pb-20
         pt-4
       ">
-        <FeedDivider text={`Last day (${todayFeedback.length})`} />
-        {todayFeedback.map(f => (
+        <FeedDivider text={`Last day (${todayFeed.length})`} />
+        {todayFeed.map(f => (
           <Message message={f} key={f.timestamp.toString()} />
         ))}
-        {todayFeedback.length == 0 &&
+        {todayFeed.length == 0 &&
           <Text
             text="No messages yet"
             className="text-slate-400 self-center py-2"
           />
         }
-        {yesterdayFeedback.length > 0 &&
-          <FeedDivider text={`Yesterday (${yesterdayFeedback.length})`} />
+        {yesterdayFeed.length > 0 &&
+          <FeedDivider text={`Yesterday (${yesterdayFeed.length})`} />
         }
-        {yesterdayFeedback.map(f => (
+        {yesterdayFeed.map(f => (
           <Message
             message={f}
             key={f.timestamp.toString()}
           />
         ))}
-        {olderFeedback.length > 0 &&
+        {olderFeed.length > 0 &&
           <FeedDivider
-            text={`Older (${olderFeedback.length})`}
+            text={`Older (${olderFeed.length})`}
           />}
-        {olderFeedback.map(f => (
+        {olderFeed.map(f => (
           <Message
             message={f}
             key={f.timestamp.toString()}

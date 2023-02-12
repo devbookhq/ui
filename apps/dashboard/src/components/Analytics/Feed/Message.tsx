@@ -51,7 +51,7 @@ function Message({ message }: Props) {
             />
           }
           <Link
-            href={message.feedback?.link || ''}
+            href={message.feedback?.link + (message?.guideStep !== undefined ? `?step=${message.guideStep}` : '') || ''}
             className="
               hover:text-blue-600
               flex
@@ -65,8 +65,8 @@ function Message({ message }: Props) {
           >
             <>
               <Text text={message.feedback?.from === 'guide' ? 'Guide |' : 'Code Example |'} size={Text.size.S3} />
-              {message.feedback?.guideStep
-                ? <Text text={`${message.feedback?.title || ''} | Step ${message.feedback?.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
+              {message.guideStep
+                ? <Text text={`${message.feedback?.title || ''} | Step ${message.guideStep}`} className="whitespace-nowrap" size={Text.size.S3} />
                 : <Text text={message.feedback?.title || ''} className="whitespace-nowrap" size={Text.size.S3} />
               }
             </>
@@ -89,7 +89,7 @@ function Message({ message }: Props) {
           <Text text="No message left" className="max-w-prose text-slate-400" size={Text.size.S3} />
         }
       </div>
-    </div>
+    </div >
   )
 }
 

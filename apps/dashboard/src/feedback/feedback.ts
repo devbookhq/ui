@@ -8,12 +8,14 @@ export interface UserMessage {
   timestamp: Date
   text: string
   rating: Rating
+  guideStep?: string
 }
 
 export interface UserRating {
   userID: string
   timestamp: Date
   rating: Rating
+  guideStep?: string
 }
 
 export interface Feedback {
@@ -30,7 +32,6 @@ export interface Feedback {
   // Ordered in descending order
   userMessages: UserMessage[]
   totalMessages: number
-  guideStep?: string
   from: 'guide' | 'codeExample'
 }
 
@@ -94,6 +95,7 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
         timestamp: new Date(curr.created_at),
         rating: properties.rating!,
         userID: properties.userId || properties.anonymousId!,
+        guideStep: properties.guideStep,
       })
       item.totalMessages += 1
     } else if (properties.rating === Rating.Upvote) {
@@ -102,6 +104,7 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
         rating: properties.rating,
         timestamp: new Date(curr.created_at),
         userID: properties.userId || properties.anonymousId!,
+        guideStep: properties.guideStep,
       })
     } else if (properties.rating === Rating.Downvote) {
       item.downvotes += 1
@@ -109,6 +112,7 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
         rating: properties.rating,
         timestamp: new Date(curr.created_at),
         userID: properties.userId || properties.anonymousId!,
+        guideStep: properties.guideStep,
       })
     }
 
