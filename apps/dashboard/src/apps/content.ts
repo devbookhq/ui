@@ -1,7 +1,6 @@
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path-browserify'
-import { notEmpty } from 'utils/notEmpty'
 
 export interface AppContentJSON {
   env?: {

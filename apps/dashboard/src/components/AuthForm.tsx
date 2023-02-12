@@ -74,7 +74,6 @@ function AuthForm({ authType }: Props) {
           password,
         })
 
-
     if (error) {
       emailRef.current?.focus()
       setErrMessage(error.message)
