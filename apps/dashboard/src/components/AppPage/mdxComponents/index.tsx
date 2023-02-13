@@ -15,7 +15,7 @@ import {
 } from './base'
 import Check from './Check'
 import Pre from './Pre'
-import Iframe from './Iframe/Iframe'
+import Iframe from './Iframe'
 
 const CodeBlock = dynamic(() => import('./CodeBlock'), { ssr: false })
 const TerminalCommand = dynamic(() => import('./TerminalCommand'), { ssr: false })
