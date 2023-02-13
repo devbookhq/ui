@@ -1,4 +1,9 @@
-import { ThumbsDown, ThumbsUp, ExternalLink } from 'lucide-react'
+import {
+  ThumbsDown,
+  ThumbsUp,
+  ExternalLink,
+  Mail
+} from 'lucide-react'
 import Link from 'next/link'
 
 import Text from 'components/typography/Text'
@@ -77,22 +82,37 @@ function Message({ message }: Props) {
             <Text text="No message left" className="max-w-prose text-slate-400" size={Text.size.S3} />
           }
         </div>
+        {'email' in message && message.email &&
+          <div className="
+            flex
+            items-center
+            justify-start
+            space-x-1
+          ">
+            <Mail
+              className="
+                text-slate-500
+                relative
+                top-px
+              "
+              size={14}
+            />
+            <Text
+              text={message.email}
+              size={Text.size.S2}
+              className="text-slate-600"
+            />
+          </div>
+        }
       </div>
-      <div className="flex flex-col justify-between items-end">
+      <div>
         <Text
           text={message.timestamp.toDateString()}
           size={Text.size.S3}
           className="text-slate-400"
         />
-        {'email' in message && message.email &&
-          <Text
-            text={message.email}
-            size={Text.size.S3}
-            className="text-slate-600 font-semibold"
-          />
-        }
       </div>
-    </div >
+    </div>
   )
 }
 
