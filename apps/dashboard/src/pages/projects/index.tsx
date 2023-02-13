@@ -2,12 +2,13 @@ import type { GetServerSideProps } from 'next'
 import { LayoutGrid, Plus } from 'lucide-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { apps } from 'database'
+import useSWRMutation from 'swr/mutation'
+import { useRouter } from 'next/router'
 
 import ItemList from 'components/ItemList'
 import Text from 'components/typography/Text'
 import { prisma } from 'queries/prisma'
 import Button from 'components/Button'
-import { useRouter } from 'next/router'
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const supabase = createServerSupabaseClient(ctx)
@@ -79,12 +80,37 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   }
 }
 
+interface DeleteProjectBody {
+  id: string
+}
+
+async function handleDeleteProject(url: string, { arg }: { arg: DeleteProjectBody }) {
+  return await fetch(url, {
+    method: 'DELETE',
+    body: JSON.stringify(arg),
+
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then(r => r.json())
+}
+
+
 interface Props {
   apps: apps[]
 }
 
 function Projects({ apps: projects }: Props) {
   const router = useRouter()
+
+  const {
+    trigger: deleteProject,
+  } = useSWRMutation('/api/project', handleDeleteProject)
+
+  async function handleDelete(id: string) {
+    await deleteProject({ id })
+    router.replace(router.asPath)
+  }
 
   return (
     <div
@@ -130,6 +156,7 @@ function Projects({ apps: projects }: Props) {
       >
         <div className="flex flex-1 justify-center overflow-hidden">
           <ItemList
+            deleteItem={handleDelete}
             items={projects.map(i => ({
               ...i,
               title: i.title || i.id,

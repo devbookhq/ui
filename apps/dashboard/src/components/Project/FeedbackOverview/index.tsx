@@ -5,13 +5,13 @@ import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 
 import Text from 'components/typography/Text'
-import { Feedback } from 'feedback'
+import { ItemFeedbackOverview } from 'feedback'
 
 import InfoPanel from './InfoPanel'
 import SortControl, { SortOrder, applySorting, Column, SetConfig } from './SortControl'
 
 export interface Props {
-  feedback: Feedback[]
+  feedback: ItemFeedbackOverview[]
 }
 
 function FeedbackOverview({ feedback }: Props) {

@@ -129,16 +129,82 @@ async function postProject(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
+async function deleteProject(req: NextApiRequest, res: NextApiResponse) {
+  const { id } = req.body as PostProjectBody
+
+  try {
+    const supabase = createServerSupabaseClient({ req, res })
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      return res.status(401).json({
+        error: 'not_authenticated',
+        description: 'The user does not have an active session or is not authenticated',
+      })
+    }
+
+    const app = await prisma.apps.findFirst({
+      where: {
+        AND: [
+          {
+            id: {
+              equals: id,
+            }
+          },
+          {
+            teams: {
+              users_teams: {
+                some: {
+                  user_id: {
+                    equals: session.user.id,
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    })
+
+    if (!app) {
+      res.status(404).json({})
+      return
+    }
+
+    await prisma.apps_content.delete({
+      where: {
+        app_id: id,
+      },
+    })
+
+    await prisma.apps.delete({
+      where: {
+        id,
+      },
+    })
+
+    res.status(200).json({})
+  } catch (err: any) {
+    console.error(err)
+    res.status(500).json({ statusCode: 500, message: err.message })
+  }
+}
+
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST')
-    res.status(405).json({ statusCode: 405, message: 'Method Not Allowed' })
+  if (req.method === 'POST') {
+    await postProject(req, res)
     return
   }
-  await postProject(req, res)
+  if (req.method === 'DELETE') {
+    await deleteProject(req, res)
+    return
+  }
+
+  res.setHeader('Allow', 'POST')
+  res.status(405).json({ statusCode: 405, message: 'Method Not Allowed' })
+  return
 }
 
 export default handler

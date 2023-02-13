@@ -10,11 +10,11 @@ import Text from 'components/typography/Text'
 type Props<T, U extends HTMLAttributes<T> = HTMLAttributes<T>> = DetailedHTMLProps<U, T>
 
 export function h1(p: Props<HTMLHeadingElement>) {
-  return <h1 className="text-gray-100">{p.children}</h1>
+  return <h1 className="text-gray-100 font-semibold text-4xl py-4">{p.children}</h1>
 }
 
 export function h2(p: Props<HTMLHeadingElement>) {
-  return <h2 className="text-gray-100">{p.children}</h2>
+  return <h2 className="text-gray-100 text-2xl">{p.children}</h2>
 }
 
 export function h3(p: Props<HTMLHeadingElement>) {
@@ -66,7 +66,7 @@ export function li(p: Props<HTMLLIElement, LiHTMLAttributes<HTMLLIElement>>) {
 export function p(p: Props<HTMLParagraphElement>) {
   return (
     <p className="
-      text-gray-500
+      text-gray-400
       text-base
       leading-7
     ">

@@ -12,9 +12,7 @@ export interface Props {
 function Message({ message }: Props) {
   return (
     <div className="
-      space-y-4
       flex
-      flex-col
       justify-between
       mx-2
       rounded-lg
@@ -25,13 +23,9 @@ function Message({ message }: Props) {
       <div className="
         flex
         flex-col
-        md:flex-row
-        space-y-2
-        md:space-y-0
+        space-y-4
         items-start
-        md:items-center
         justify-start
-        md:justify-between
       ">
         <div className="
           flex
@@ -75,18 +69,27 @@ function Message({ message }: Props) {
             />
           </Link>
         </div>
+        <div className="flex space-x-4 flex-1 items-center">
+          {('text' in message && message.text)
+            ?
+            <Text text={'"' + message.text + '"'} className="italic max-w-prose" />
+            :
+            <Text text="No message left" className="max-w-prose text-slate-400" size={Text.size.S3} />
+          }
+        </div>
+      </div>
+      <div className="flex flex-col justify-between items-end">
         <Text
           text={message.timestamp.toDateString()}
           size={Text.size.S3}
           className="text-slate-400"
         />
-      </div>
-      <div className="flex space-x-4 flex-1 items-center">
-        {('text' in message && message.text)
-          ?
-          <Text text={'"' + message.text + '"'} className="italic max-w-prose" />
-          :
-          <Text text="No message left" className="max-w-prose text-slate-400" size={Text.size.S3} />
+        {'email' in message && message.email &&
+          <Text
+            text={message.email}
+            size={Text.size.S3}
+            className="text-slate-600 font-semibold"
+          />
         }
       </div>
     </div >

@@ -7,6 +7,7 @@ export interface UserMessage {
   userID: string
   timestamp: Date
   text: string
+  email?: string
   rating: Rating
   guideStep?: string
 }
@@ -18,21 +19,22 @@ export interface UserRating {
   guideStep?: string
 }
 
-export interface Feedback {
+export interface ItemFeedbackOverview {
   id: string
   upvotes: number
   downvotes: number
   ratingPercentage: number
   title: string
   link?: string
+  totalMessages: number
+  from: 'guide' | 'codeExample'
+
   // Ordered in descending order
   feed: FeedEntry[]
   // Ordered in descending order
   ratings: UserRating[]
   // Ordered in descending order
   userMessages: UserMessage[]
-  totalMessages: number
-  from: 'guide' | 'codeExample'
 }
 
 interface Hostnames {
@@ -54,10 +56,49 @@ export function getGuideName(guidePath: string) {
   return guidePath.split('/')[2].split('?')[0].split(/[_-]+/).map(capitalizeFirstLetter).join(' ')
 }
 
+function removeNearestItemForAnchors<T>({
+  items,
+  isAnchor,
+  shouldRemove,
+}: {
+  items: T[],
+  isAnchor: (item: T) => boolean,
+  shouldRemove: (item: T, anchor: T) => boolean,
+}) {
+  for (let i = items.length - 1; i >= 0; i--) {
+    const anchor = items[i]
+
+    if (!isAnchor(anchor)) continue
+
+    let wasItemRemoved = false
+    for (let j = i; j >= 0; j--) {
+      const item = items[j]
+      if (shouldRemove(item, anchor)) {
+        items.splice(j, 1)
+        wasItemRemoved = true
+        i--
+        break
+      }
+    }
+
+    if (wasItemRemoved) {
+      continue
+    }
+
+    for (let j = i; j < items.length; j++) {
+      const item = items[j]
+      if (shouldRemove(item, anchor)) {
+        items.splice(j, 1)
+        break
+      }
+    }
+  }
+}
+
 export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Required<apps_feedback>[]) {
   const key = by === 'guides' ? 'guide' : 'codeExamplePath'
 
-  const items = feedback.reduce<({ [id: string]: Feedback })>((prev, curr) => {
+  const items = feedback.reduce<({ [id: string]: ItemFeedbackOverview })>((prev, curr) => {
     const properties = curr.properties as AppFeedbackPropertiesJSON
     if (!properties) return prev
 
@@ -96,6 +137,7 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
         rating: properties.rating!,
         userID: properties.userId || properties.anonymousId!,
         guideStep: properties.guideStep,
+        email: properties.email,
       })
       item.totalMessages += 1
     } else if (properties.rating === Rating.Upvote) {
@@ -119,8 +161,11 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
     return prev
   }, {})
 
+  const timeNow = new Date().getTime()
+
   Object.values(items).forEach(item => {
     if (!item.downvotes && !item.upvotes) {
+      // If there are no downvotes and upvotes the rating % doesn't make sense.
     } else if (!item.downvotes) {
       item.ratingPercentage = 1
     } else if (!item.upvotes) {
@@ -131,8 +176,6 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
 
     item.ratings.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
     item.userMessages.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
-
-    const timeNow = new Date().getTime()
 
     item.feed = [
       ...item.ratings,
@@ -149,39 +192,34 @@ export function aggregateFeedbackBy(by: 'guides' | 'codeExamples', feedback: Req
 
     item.feed.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 
-    // Filter our the duplicate upvotes from guides
-    for (let i = item.feed.length - 1; i >= 0; i--) {
-      const entry = item.feed[i]
+    // For each feed entry with email (anchor) remove the nearest matching feed entry with message and rating (preferring entries with smaller timestamp). 
+    removeNearestItemForAnchors({
+      items: item.feed,
+      isAnchor: e => !!('email' in e && e.email),
+      shouldRemove: (entry, anchor) =>
+        entry.userID === anchor.userID &&
+        entry.rating === entry.rating &&
+        'text' in entry &&
+        'text' in anchor &&
+        entry.text === anchor.text &&
+        !('email' in entry && entry.email),
+    })
 
-      // Only feedback with messages have the field 'text'.
-      if ('text' in entry) {
-        let isCleaned = false
-        for (let j = i; j >= 0; j--) {
-          if (item.feed[j].userID === entry.userID && !('text' in item.feed[j]) && item.feed[j].rating === entry.rating) {
-            item.feed.splice(j, 1)
-            isCleaned = true
-            break
-          }
-        }
-
-        if (isCleaned) {
-          continue
-        }
-
-        for (let j = item.feed.length - 1; j > i; j--) {
-          if (item.feed[j].userID === entry.userID && !('text' in item.feed[j]) && item.feed[j].rating === entry.rating) {
-            item.feed.splice(j, 1)
-            break
-          }
-        }
-      }
-    }
+    // For each feed entry with message (anchor) remove the nearest matching feed entry with just rating (preferring entries with smaller timestamp). 
+    removeNearestItemForAnchors({
+      items: item.feed,
+      isAnchor: e => !!('text' in e && e.text),
+      shouldRemove: (entry, anchor) =>
+        entry.userID === anchor.userID &&
+        entry.rating === anchor.rating &&
+        !('text' in entry && entry.text),
+    })
   })
 
   return Object.values(items)
 }
 
-export function calculateTotalRating(feedback?: Feedback[]) {
+export function calculateTotalRating(feedback?: ItemFeedbackOverview[]) {
   if (!feedback) return
 
   const downvotes = feedback.reduce((curr, prev) => {

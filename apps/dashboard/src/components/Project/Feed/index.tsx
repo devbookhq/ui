@@ -1,6 +1,6 @@
 import Text from 'components/typography/Text'
 import Select from 'components/Select'
-import { FeedEntry, Feedback } from 'feedback'
+import { FeedEntry, ItemFeedbackOverview } from 'feedback'
 
 import Message from './Message'
 import FeedDivider from './FeedDivider'
@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 export interface Props {
   feed: FeedEntry[]
-  feedback: Feedback[]
+  feedback: ItemFeedbackOverview[]
 }
 
 function FeedbackFeed({

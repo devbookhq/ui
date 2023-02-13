@@ -34,6 +34,7 @@ function AppContentView({ content }: Props) {
           self-stretch
           flex
           flex-col
+          scroller
           overflow-auto
           instructions-scrollbar
           scrollbar-gutter
