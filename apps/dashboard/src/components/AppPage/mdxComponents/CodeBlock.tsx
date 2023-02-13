@@ -31,6 +31,7 @@ export interface Props {
   onRun?: (code: string) => string
   children: ReactNode
   enableDiagnostic?: boolean
+  isEditable?: boolean
 }
 
 function CodeBlock({
@@ -39,6 +40,7 @@ function CodeBlock({
   onRun,
   children,
   enableDiagnostic,
+  isEditable,
 }: Props) {
   const [process, setProcess] = useState<Process>()
   const [isRunning, setIsRunning] = useState(false)
@@ -147,7 +149,7 @@ function CodeBlock({
           filename={path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={[oneDark, darkEditorTheme]}
-          isReadOnly
+          isReadOnly={!isEditable}
         />
       </div>
 

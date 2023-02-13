@@ -2,6 +2,8 @@ import { MDXRemote } from 'next-mdx-remote'
 
 import mdxComponents from './mdxComponents'
 import { CompiledAppContent } from 'apps/content'
+import { h1 as H1 } from './mdxComponents/base'
+
 
 export interface Props {
   content: CompiledAppContent
@@ -47,6 +49,11 @@ function AppContentView({ content }: Props) {
             prose-slate
             mx-auto
           ">
+            {content.title &&
+              <div className="sticky">
+                <H1>{content.title}</H1>
+              </div>
+            }
             <MDXRemote
               {...content.serialized}
               components={mdxComponents}

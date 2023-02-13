@@ -15,6 +15,7 @@ import {
 } from './base'
 import Check from './Check'
 import Pre from './Pre'
+import Iframe from './Iframe/Iframe'
 
 const CodeBlock = dynamic(() => import('./CodeBlock'), { ssr: false })
 const TerminalCommand = dynamic(() => import('./TerminalCommand'), { ssr: false })
@@ -30,6 +31,7 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   p,
   pre: Pre,
   strong,
+  Iframe,
   Check,
   Filetree(p) {
     return <div>Filetree</div>
