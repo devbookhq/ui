@@ -13,11 +13,10 @@ import {
   p,
   strong,
 } from './base'
-import Check from './Check'
 import Pre from './Pre'
-import Iframe from './Iframe'
-import Horizontal from './Horizontal'
+import Columns from './Columns'
 
+const Filetree = dynamic(() => import('./Filetree'), { ssr: false })
 const Code = dynamic(() => import('./Code'), { ssr: false })
 const Terminal = dynamic(() => import('./Terminal'), { ssr: false })
 
@@ -32,14 +31,10 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   p,
   pre: Pre,
   strong,
-  Iframe,
-  Check,
-  Filetree(p) {
-    return <div>Filetree</div>
-  },
+  Filetree,
   Code,
   Terminal,
-  Horizontal,
+  Columns,
 }
 
 export default mdxComponents

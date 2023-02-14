@@ -14,15 +14,15 @@ import { useSharedSession } from '@devbookhq/react'
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
-import { rootdir as root } from 'utils/constants'
+import { rootdir } from 'utils/constants'
 
 export interface Props {
-  rootdir?: string
+  root?: string
   cmd: string
 }
 
 function Terminal({
-  rootdir = root,
+  root = rootdir,
   cmd,
 }: Props) {
   const termRef = useRef<TerminalHandler>(null)

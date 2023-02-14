@@ -1,4 +1,5 @@
 import { useSession, SharedSessionProvider } from '@devbookhq/react'
+import { FiletreeProvider } from '@devbookhq/filesystem'
 
 import '@devbookhq/terminal/dist/index.css'
 // import '@devbookhq/code-editor/dist/index.css'
@@ -21,8 +22,9 @@ function AppPage({ content }: Props) {
 
   return (
     <SharedSessionProvider session={sessionHandle}>
-      <div
-        className="
+      <FiletreeProvider>
+        <div
+          className="
         flex
         w-full
         h-full
@@ -30,11 +32,12 @@ function AppPage({ content }: Props) {
         flex-col
         overflow-hidden
       "
-      >
-        <AppContentView
-          content={content}
-        />
-      </div>
+        >
+          <AppContentView
+            content={content}
+          />
+        </div>
+      </FiletreeProvider>
     </SharedSessionProvider >
   )
 }

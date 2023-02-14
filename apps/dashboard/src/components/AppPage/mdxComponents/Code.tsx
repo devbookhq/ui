@@ -10,6 +10,7 @@ import {
 import React, {
   ReactNode,
   useCallback,
+  useEffect,
   useState,
 } from 'react'
 import { oneDark } from '@codemirror/theme-one-dark'
@@ -89,21 +90,19 @@ function Code({
     process,
   ])
 
-  const [pre, code] = React.Children.toArray(children);
-  let title;
-  let component;
-  if (code) {
-    const [preamble, source] = [pre, code].map(
-      c => c.props.children.props.children
-    );
-    title = code.props.children.props.metastring;
-    component = <Code source={source} preamble={preamble} title={title} />;
-  } else {
-    const source = pre.props.children.props.children;
-    title = pre.props.children.props.metastring;
-    component = <Code source={source} title={title} />;
-  }
+  const writeFile = useCallback((content: string) => {
+    if (!file) return
+    session?.filesystem?.write(path.join(rootdir, file), content)
+  }, [
+    session,
+    file,
+  ])
 
+  useEffect(function writeInitialFile() {
+    if (typeof children === 'string') {
+      writeFile(children)
+    }
+  }, [writeFile, children])
 
   return (
     <div className="
@@ -162,6 +161,7 @@ function Code({
           supportedLanguages={supportedLanguages}
           theme={[oneDark, darkEditorTheme]}
           isReadOnly={!isEditable}
+          onContentChange={writeFile}
         />
       </div>
 

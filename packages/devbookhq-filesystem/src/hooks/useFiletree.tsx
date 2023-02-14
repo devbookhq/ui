@@ -13,7 +13,9 @@ export type Node = {
   type: NodeType
   path: string
 }
+
 type Listener = (f: Node) => void
+
 export const filetreeContext = createContext<{
   select: (f: Node) => void
   addSelectListener: (l: Listener) => void
@@ -59,7 +61,7 @@ export function FiletreeProvider({ children }: FiletreeProviderProps) {
   )
 }
 
-export default function useFiletree() {
+export function useFiletree() {
   const ctx = useContext(filetreeContext)
   if (ctx === undefined) {
     throw new Error('useFiletree must be used within `FileTreeProvider`')

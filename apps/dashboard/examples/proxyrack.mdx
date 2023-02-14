@@ -5,11 +5,12 @@ envID: Hq8oDghsbnd7
 # Proxyrack
 ## Premium Residential - Target a Specific OS
 
-<Horizontal>
+<Columns>
 
 <Code file="index.js" isEditable>
 
-{`const request = require('request');
+{`js
+const request = require('request');
 
 // You can target IPs from a specific OS by adjusting your username like this:
 const username = 'yourUsername-osName-Windows';
@@ -40,11 +41,12 @@ const checkStats = () => {
             console.log('body = ', body);
         }
     })
-}`}
+}
+`}
 
 </Code>
 
 <Terminal cmd="node index.js" />
-<Terminal cmd="node index.js" />
+<Filetree root="/" />
 
-</Horizontal>
+</Columns>

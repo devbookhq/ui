@@ -3,28 +3,16 @@ import {
   useEffect,
   useState,
 } from 'react'
-import Dir from './dir'
-import File from './file'
 import Filesystem from './filesystem'
 import Node from './node'
-
-// const d = new Dir({
-//   name: 'd',
-//   isExpanded: true,
-// })
-// const f = new File({
-//   name: 'f',
-//   parent: d,
-// })
-// d.children.set(f.name, f)
 
 export function useFilesystem({
   rootPath = '/',
   initial = [],
 }: { rootPath?: string, initial?: Node[] } = {
-  rootPath: '/',
-  initial: [],
-}) {
+    rootPath: '/',
+    initial: [],
+  }) {
   const [fs] = useState(() => new Filesystem(rootPath, initial))
   return fs
 }

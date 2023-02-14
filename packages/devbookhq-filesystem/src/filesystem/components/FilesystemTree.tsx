@@ -14,7 +14,7 @@ import DirWrapper, { DirProps } from './DirWrapper'
 import Filesystem from '../filesystem'
 
 import Text from '../../components/typography/Text'
-import useFiletree from '../../hooks/useFiletree'
+import { useFiletree } from '../../hooks/useFiletree'
 
 export type SelectHandler = (
   event: MouseEvent | TouchEvent,

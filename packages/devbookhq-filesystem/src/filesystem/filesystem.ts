@@ -2,7 +2,6 @@ import { isMatch } from 'matcher'
 import path from 'path-browserify'
 
 import { logger } from '../logger'
-
 import Dir from './dir'
 import Node, { NodeType } from './node'
 

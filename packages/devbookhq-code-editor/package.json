@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/tsconfig,eslint-config-devbookhq\"",
-    "build": "tsup src/index.ts --target es2020 --format esm,cjs --dts --external react --external @devbookhq/sdk --loader .svg=text --sourcemap",
-    "dev": "tsup src/index.ts --target es2020 --format esm,cjs --dts --watch --external react --external @devbookhq/sdk --loader .svg=text --sourcemap",
+    "build": "tsup src/index.ts --target es2020 --format esm --dts --external react --external @devbookhq/sdk --loader .svg=text --sourcemap",
+    "dev": "tsup src/index.ts --target es2020 --format esm --dts --watch --external react --external @devbookhq/sdk --loader .svg=text --sourcemap",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
