@@ -1,6 +1,5 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
-import { GetServerSideProps } from 'next'
 import fs from 'fs/promises'
 
 import AppPage from 'components/AppPage'

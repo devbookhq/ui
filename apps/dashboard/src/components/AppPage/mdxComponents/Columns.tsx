@@ -1,4 +1,3 @@
-import Splitter, { SplitDirection } from '@devbookhq/splitter'
 import React, {
   ReactNode,
 

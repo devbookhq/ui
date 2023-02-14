@@ -131,8 +131,8 @@ function AppFileEditor({ initialOpenedFiles }: Props) {
               content={state.openedFiles[state.selectedIdx].content}
               filename={state.openedFiles[state.selectedIdx].path}
               onContentChange={writeFile}
-              autofocus
               theme={[oneDark, darkEditorTheme]}
+              autofocus
             />
           </div>
         </div>
