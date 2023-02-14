@@ -1,0 +1,50 @@
+---
+envID: Hq8oDghsbnd7
+---
+
+# Proxyrack
+## Premium Residential - Target a Specific OS
+
+<Horizontal>
+
+<Code file="index.js" isEditable>
+
+{`const request = require('request');
+
+// You can target IPs from a specific OS by adjusting your username like this:
+const username = 'yourUsername-osName-Windows';
+const password = 'yourPassword';
+const PROXY_RACK_DNS = 'premium.residential.proxyrack.net';
+const PROXYRACK_PORT = 10000;
+
+const proxyUrl = "http://" + username + ":" + password + "@" + PROXY_RACK_DNS + ":" + PROXYRACK_PORT;
+const proxiedRequest = request.defaults({ 'proxy': proxyUrl });
+
+proxiedRequest.get("http://api.ipify.org/?format=json", function (err, resp, body) {
+    if (err) {
+        console.log('error = ', err);
+    }
+    if (body) {
+        console.log('body = ', body);
+    }
+    checkStats();
+})
+
+// You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under 'requestParams' you will see this reflected as 'osName'
+const checkStats = () => {
+    proxiedRequest.get("http://api.proxyrack.net/stats", function (err, resp, body) {
+        if (err) {
+            console.log('error = ', err);
+        }
+        if (body) {
+            console.log('body = ', body);
+        }
+    })
+}`}
+
+</Code>
+
+<Terminal cmd="node index.js" />
+<Terminal cmd="node index.js" />
+
+</Horizontal>

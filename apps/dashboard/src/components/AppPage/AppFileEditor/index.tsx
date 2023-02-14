@@ -1,6 +1,7 @@
 import { basename } from 'path-browserify'
 import { useSharedSession } from '@devbookhq/react'
 import dynamic from 'next/dynamic'
+import { oneDark } from '@codemirror/theme-one-dark'
 
 // import { NodeType } from 'utils/filesystem'
 import {
@@ -12,6 +13,8 @@ import {
 import FileButton from './FileButton'
 // import useFiletree, { Node } from 'utils/useFiletree'
 
+const darkEditorTheme = EditorView.theme({ '.cm-gutters': { background: '#282c34' } })
+
 const CodeEditor = dynamic(() =>
   import('../Editor')
 )
@@ -21,6 +24,7 @@ import {
   init,
   reducer,
 } from './reducer'
+import { EditorView } from '@codemirror/view'
 
 export interface Props {
   initialOpenedFiles: OpenedFile[]
@@ -128,6 +132,7 @@ function AppFileEditor({ initialOpenedFiles }: Props) {
               filename={state.openedFiles[state.selectedIdx].path}
               onContentChange={writeFile}
               autofocus
+              theme={[oneDark, darkEditorTheme]}
             />
           </div>
         </div>

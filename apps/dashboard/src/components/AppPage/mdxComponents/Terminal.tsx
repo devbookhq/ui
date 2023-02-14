@@ -1,6 +1,6 @@
 import { Loader as LoaderIcon } from 'lucide-react'
 import {
-  Terminal,
+  Terminal as Term,
   TerminalHandler,
   TerminalProcess,
 } from '@devbookhq/terminal'
@@ -11,21 +11,18 @@ import {
 } from 'react'
 import { useSharedSession } from '@devbookhq/react'
 
-// import { analytics } from 'utils/analytics'
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
-// import useTerminalOutputAnalytics from 'utils/analytics/useTerminalOutputAnalytics'
+import { rootdir as root } from 'utils/constants'
 
 export interface Props {
-  rootdir: string
+  rootdir?: string
   cmd: string
-  // tooltips: { [name: string]: string }
-  // placeholder: string
 }
 
-function TerminalCommand({
-  rootdir,
+function Terminal({
+  rootdir = root,
   cmd,
 }: Props) {
   const termRef = useRef<TerminalHandler>(null)
@@ -62,9 +59,11 @@ function TerminalCommand({
     <div className="
       flex
       flex-col
+      flex-1
     ">
       <div className="
         flex
+        flex-1
         space-x-2
         items-center
         py-1
@@ -126,7 +125,7 @@ function TerminalCommand({
         rounded-t-none
         rounded-b-lg
       ">
-        <Terminal
+        <Term
           ref={termRef}
           rootdir={rootdir}
           session={session}
@@ -138,4 +137,4 @@ function TerminalCommand({
   )
 }
 
-export default TerminalCommand
+export default Terminal

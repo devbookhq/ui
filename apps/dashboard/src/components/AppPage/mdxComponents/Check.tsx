@@ -4,7 +4,6 @@ import {
   useState,
 } from 'react'
 
-// import { analytics } from 'utils/analytics'
 import Text from 'components/typography/Text'
 
 export interface Props {
@@ -20,7 +19,6 @@ function Check({
   hoverText,
   doneText,
   children,
-  checkID,
 }: Props) {
   const [isDone, setIsDone] = useState(false)
   const [isMouseOver, setIsMouseOver] = useState(false)
@@ -84,7 +82,6 @@ function Check({
             <Text
               className="text-green-500"
               text={doneText || 'Done'}
-            // typeface={Text.typeface.InterSemibold}
             />
           }
           {!isDone &&
@@ -92,12 +89,10 @@ function Check({
               <Text
                 className="transition-all text-gray-500 group-hover:text-gray-100"
                 text={text || 'Done with the previous segment?'}
-              // typeface={Text.typeface.InterSemibold}
               />
               <Text
                 className="transition-all opacity-0 group-hover:opacity-100 text-green-500"
                 text={hoverText || 'Click here to mark it done!'}
-              // typeface={Text.typeface.InterSemibold}
               />
             </>
           }

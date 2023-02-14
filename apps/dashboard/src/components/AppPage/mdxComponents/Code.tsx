@@ -7,7 +7,7 @@ import {
   OutType,
   Process,
 } from '@devbookhq/react'
-import {
+import React, {
   ReactNode,
   useCallback,
   useState,
@@ -17,29 +17,28 @@ import { useSharedSession } from '@devbookhq/react'
 import path from 'path-browserify'
 
 import { rootdir } from 'utils/constants'
+import Text from 'components/typography/Text'
+import { supportedLanguages } from 'apps/languages'
+
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
-import Text from 'components/typography/Text'
-import { supportedLanguages } from 'apps/languages'
 
 const darkEditorTheme = EditorView.theme({ '.cm-gutters': { background: '#282c34' } })
 
 export interface Props {
-  title?: string
+  file?: string
   lang?: string
   onRun?: (code: string) => string
   children: ReactNode
-  enableDiagnostic?: boolean
   isEditable?: boolean
 }
 
-function CodeBlock({
-  title,
+function Code({
+  file,
   lang,
   onRun,
   children,
-  enableDiagnostic,
   isEditable,
 }: Props) {
   const [process, setProcess] = useState<Process>()
@@ -90,10 +89,24 @@ function CodeBlock({
     process,
   ])
 
+  const [pre, code] = React.Children.toArray(children);
+  let title;
+  let component;
+  if (code) {
+    const [preamble, source] = [pre, code].map(
+      c => c.props.children.props.children
+    );
+    title = code.props.children.props.metastring;
+    component = <Code source={source} preamble={preamble} title={title} />;
+  } else {
+    const source = pre.props.children.props.children;
+    title = pre.props.children.props.metastring;
+    component = <Code source={source} title={title} />;
+  }
+
+
   return (
     <div className="
-      mt-5
-      mb-8
       flex
       flex-col
       rounded-lg
@@ -111,8 +124,7 @@ function CodeBlock({
       ">
         <Text
           className="text-gray-400"
-          text={title || ''}
-        // typeface={Text.typeface.MonoRegular}
+          text={file || ''}
         />
         <div />
         <div className="
@@ -146,7 +158,7 @@ function CodeBlock({
         <CodeEditor
           className={isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           content={children as string}
-          filename={path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
+          filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={[oneDark, darkEditorTheme]}
           isReadOnly={!isEditable}
@@ -199,12 +211,10 @@ function CodeBlock({
               <Text
                 className="text-gray-600"
                 text=">"
-              // typeface={Text.typeface.MonoRegular}
               />
               <Text
                 className={o.type === OutType.Stdout ? 'text-gray-400' : 'text-red-500'}
                 text={o.line}
-              // typeface={Text.typeface.MonoRegular}
               />
             </div>
           ))}
@@ -214,4 +224,4 @@ function CodeBlock({
   )
 }
 
-export default CodeBlock
+export default Code

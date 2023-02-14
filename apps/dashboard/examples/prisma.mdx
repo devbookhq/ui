@@ -15,7 +15,7 @@ When adding a new field to a mdoel with existing data, you can either:
 ---
 
 
-<CodeBlock 
+<Code
   lang="js"
   isEditable
   title="index.js"
@@ -29,16 +29,12 @@ When adding a new field to a mdoel with existing data, you can either:
   })
   console.log(post)
 }`}
-</CodeBlock>
+</Code>
 
-
-
-<TerminalCommand
+<Terminal
   rootdir="/code"
   cmd="node index.js"
 />
-
-
 
 On the left is a Prisma schema (`prisma/schema.prisma`) file.
 
@@ -46,18 +42,18 @@ On the left is a Prisma schema (`prisma/schema.prisma`) file.
 
 Update the `Post` model by adding a `likes` field with a default value of 0.
 
-<CodeBlock
+<Code
   title="schema.prisma"
   lang="prisma"
 >
 {`likes     Int      @default(0)`}
-</CodeBlock>
+</Code>
 
 > **HINT**: You can hit <kbd>CMD</kbd>/<kbd>CTRL</kbd> + <kbd>S</kbd> to invoke the auto formatting in the  Prisma schema.
 
 Your `Post` model should resemble the following after adding the `likes` field:
 
-<CodeBlock
+<Code
   title="schema.prisma"
   lang="prisma"
 >
@@ -73,7 +69,7 @@ Your `Post` model should resemble the following after adding the `likes` field:
   authorId  Int?
   author    User?     @relation(fields: [authorId], references: [id])
 }`}
-</CodeBlock>
+</Code>
 
 
 
