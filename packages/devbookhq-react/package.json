@@ -1,7 +1,7 @@
 {
   "name": "@devbookhq/react",
   "version": "2.0.8",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "prepublish": "node ./scripts/cleanse-pkg \"a,b,prepublish,postpublish\" \"@devbookhq/tsconfig,eslint-config-devbookhq\"",
-    "build": "tsup src/index.ts --target es2020 --format esm --dts --external react --external @devbookhq/sdk --sourcemap",
-    "dev": "tsup src/index.ts --target es2020 --format esm --dts --watch --external react --external @devbookhq/sdk --sourcemap",
+    "build": "tsup src/index.ts --target es2020 --format esm --dts --external react --external @devbookhq/sdk --sourcemap --minify",
+    "dev": "tsup src/index.ts --target es2020 --format esm --dts --watch --external react --external @devbookhq/sdk",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },

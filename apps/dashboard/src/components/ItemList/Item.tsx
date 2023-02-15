@@ -22,7 +22,6 @@ export interface Props {
 function Item({ item, deleteItem }: Props) {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [date, setDate] = useState<string>()
 
   useEffect(
     function expireConfirm() {
@@ -34,13 +33,6 @@ function Item({ item, deleteItem }: Props) {
       }
     },
     [confirmDelete],
-  )
-
-  useEffect(
-    function convertDate() {
-      setDate(item.created_at.toLocaleString())
-    },
-    [item.created_at],
   )
 
   async function handleDelete(
@@ -96,7 +88,9 @@ function Item({ item, deleteItem }: Props) {
         >
           {item.icon}
         </div>
-        <div className="flex flex-col">
+        <div
+          className="flex flex-col"
+        >
           <Text
             className="text-slate-600 transition-all group-hover:text-green-800"
             size={Text.size.S2}
@@ -111,11 +105,11 @@ function Item({ item, deleteItem }: Props) {
               size={Text.size.S3}
               text="-"
             />
-            {date && <Text
+            <Text
+              suppressHydrationWarning
               size={Text.size.S3}
-              text={date}
+              text={item.created_at.toLocaleString()}
             />
-            }
           </div>
         </div>
       </div>

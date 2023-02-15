@@ -13,6 +13,13 @@ export interface Props {
 
 const defaultAppEnvID = '6VaSXKc5wNSr'
 
+
+const css = `
+.test {
+  background: black;
+}
+`
+
 function AppPage({ content }: Props) {
   const sessionHandle = useSession({
     codeSnippetID: content.environmentID || content.serialized?.frontmatter?.envID || defaultAppEnvID,
@@ -21,24 +28,30 @@ function AppPage({ content }: Props) {
   })
 
   return (
-    <SharedSessionProvider session={sessionHandle}>
-      <FiletreeProvider>
-        <div
-          className="
-        flex
-        w-full
-        h-full
-        flex-1
-        flex-col
-        overflow-hidden
-      "
-        >
-          <AppContentView
-            content={content}
-          />
-        </div>
-      </FiletreeProvider>
-    </SharedSessionProvider >
+    <>
+      <style jsx>
+        {css}
+      </style>
+      <SharedSessionProvider session={sessionHandle}>
+        <FiletreeProvider>
+          <div
+            className="
+            flex
+              w-full
+              h-full
+              test
+              flex-1
+              flex-col
+              overflow-hidden
+            "
+          >
+            <AppContentView
+              content={content}
+            />
+          </div>
+        </FiletreeProvider>
+      </SharedSessionProvider>
+    </>
   )
 }
 

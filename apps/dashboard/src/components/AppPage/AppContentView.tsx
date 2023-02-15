@@ -14,7 +14,7 @@ function AppContentView({ content }: Props) {
       flex-1
       flex
       flex-col
-      bg-gray-900
+      test
       text-gray-100
       overflow-auto
       scroller

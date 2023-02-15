@@ -7,6 +7,7 @@ export interface Props {
   size?: Size
   icon?: ReactNode
   onClick?: (e: MouseEvent<HTMLElement, globalThis.MouseEvent>) => any
+  suppressHydrationWarning?: boolean
 }
 
 export enum Size {
@@ -21,7 +22,7 @@ const Sizes = {
   [Size.S3]: 'text-xs space-x-1',
 }
 
-function Text({ className, text, size = Size.S2, icon, onClick }: Props) {
+function Text({ className, text, size = Size.S2, icon, onClick, suppressHydrationWarning }: Props) {
   const classes = clsx(
     'flex',
     'flex-row',
@@ -38,13 +39,16 @@ function Text({ className, text, size = Size.S2, icon, onClick }: Props) {
         onClick={onClick}
       >
         {icon}
-        <span>{text}</span>
+        <span suppressHydrationWarning={suppressHydrationWarning}>
+          {text}
+        </span>
       </div>
     )
   }
 
   return (
     <span
+      suppressHydrationWarning={suppressHydrationWarning}
       className={classes}
       onClick={onClick}
     >
