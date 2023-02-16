@@ -19,7 +19,10 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
 
 export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params }) => {
   if (!params) throw new Error('No path parameters found')
-  const { subdomain, page } = params
+
+  const pagePath = params?.page as any as string[]
+  const subdomain = pagePath.shift()
+  const page = `${pagePath.length === 0 ? 'index' : pagePath.join('/')}.mdx`
 
   try {
     const app = await prisma.apps.findUniqueOrThrow({
@@ -27,7 +30,7 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
         subdomain,
       },
       include: {
-        apps_content: {G
+        apps_content: {
           select: {
             content: true,
           }
@@ -40,13 +43,7 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
     }
 
     const dbContent = app?.apps_content?.content as unknown as AppContentJSON
-
-    const mdx = dbContent.mdx.find(n => {
-      if (!page && n.name === 'index.mdx') return true
-      const pageName = n.name.split('.').slice(0, -1).join('.')
-      return pageName === page
-    })?.content
-
+    const mdx = dbContent.mdx.find(n => n.name === page)?.content
     if (!mdx) {
       return {
         notFound: true
