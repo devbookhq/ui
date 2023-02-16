@@ -32,7 +32,12 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
   const mdxPath = path.join(dirpath, ...pagePath, `${filename}.mdx`)
 
   const mdx = await fs.readFile(mdxPath, 'utf-8')
-  const css = await fs.readFile(cssPath, 'utf-8')
+  let css: string | undefined
+  try {
+    css = await fs.readFile(cssPath, 'utf-8')
+  } catch (err) {
+    // ignore
+  }
 
   const content = await compileContent({
     mdx,

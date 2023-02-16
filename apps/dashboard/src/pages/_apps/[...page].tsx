@@ -7,7 +7,6 @@ import AppPage from 'components/AppPage'
 import { AppContentJSON, compileContent } from 'apps/content'
 
 interface PathProps extends ParsedUrlQuery {
-  subdomain: string
   page: string
 }
 
@@ -28,7 +27,7 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
         subdomain,
       },
       include: {
-        apps_content: {
+        apps_content: {G
           select: {
             content: true,
           }

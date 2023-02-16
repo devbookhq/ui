@@ -105,10 +105,13 @@ function Code({
   }, [writeFile, children])
 
   return (
-    <div className="
+    <div
+      style={{
+        colorScheme: 'dark',
+      }}
+      className="
       flex
       flex-col
-      rounded-lg
       border
       border-indigo-400/20
       bg-gray-800
@@ -150,32 +153,29 @@ function Code({
         </div>
       </div>
 
-      <div className="
-        relative
-        rounded-b-lg
-      ">
-        <CodeEditor
-          className={isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
-          content={children as string}
-          filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
-          supportedLanguages={supportedLanguages}
-          theme={[oneDark, darkEditorTheme]}
-          isReadOnly={!isEditable}
-          onContentChange={writeFile}
-        />
-      </div>
+      <CodeEditor
+        className={isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
+        content={children as string}
+        filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
+        supportedLanguages={supportedLanguages}
+        theme={[oneDark, darkEditorTheme]}
+        isReadOnly={!isEditable}
+        onContentChange={writeFile}
+      />
 
       {isRunnable &&
         <div className="
           pt-2
           pb-1
+          min-h-0
           px-3
           font-mono
           text-gray-300
           text-sm
           flex
+          h-[200px]
           flex-col
-          space-y-1
+          space-y-0.5
         ">
           <div className="
             flex
@@ -186,7 +186,6 @@ function Code({
               className="text-gray-500"
               size={Text.size.S3}
               text="Output"
-            // typeface={Text.typeface.InterSemibold}
             />
             {isRunning &&
               <LoaderIcon

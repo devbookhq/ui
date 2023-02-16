@@ -14,11 +14,6 @@ export interface Props {
 
 const defaultAppEnvID = '6VaSXKc5wNSr'
 
-const defaultCSS = `
-.test {
-  background: black;
-}
-`
 
 function AppPage({ content }: Props) {
   const sessionHandle = useSession({
@@ -27,35 +22,31 @@ function AppPage({ content }: Props) {
     inactivityTimeout: 0,
   })
 
-  const css = content.css || defaultCSS
+  const css = content.css
 
   return (
-    <>
-      <SharedSessionProvider session={sessionHandle}>
-        <FiletreeProvider>
-          <div
-            className="
+    <SharedSessionProvider session={sessionHandle}>
+      <FiletreeProvider>
+        <div
+          className="
               flex
               w-full
-              h-full
               App
               flex-1
               flex-col
               overflow-hidden
               "
-          >
-            <MDXRemote
-              {...content.serialized}
-              components={mdxComponents}
-              lazy
-            />
-            <style jsx global>
-              {`${css}`}
-            </style>
-          </div>
-        </FiletreeProvider>
-      </SharedSessionProvider>
-    </>
+        >
+          <MDXRemote
+            {...content.serialized}
+            components={mdxComponents}
+          />
+          <style jsx global>
+            {`${css}`}
+          </style>
+        </div>
+      </FiletreeProvider>
+    </SharedSessionProvider>
   )
 }
 

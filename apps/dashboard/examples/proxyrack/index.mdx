@@ -2,20 +2,34 @@
 envID: Hq8oDghsbnd7
 ---
 
-# Proxyrack
-## Premium Residential - Target a Specific OS
-
-
-<Navigate page="page-2" />
-
 <Columns>
 
-<Code file="index.js" isEditable>
+<div className="container prose">
+## Premium Residential
+### Geo-Target a Country
 
+
+This endpoint provides access to unique monthly residential IP addresses and has a high success rate.
+
+HTTPS and SOCKS protocols are enabled on this service.
+
+<div className="note">
+You can geo-target a country by adjusting the username, like this:
+`const username = 'yourUsername-country-US'`
+</div>
+
+<div className="note">
+You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under `requestParams` you will see this reflected as `country`.
+</div>
+
+</div>
+
+<Code file="index.js" isEditable onRun={() => "node /code/index.js"}>
 {`const request = require('request');
 
-// You can target IPs from a specific OS by adjusting your username like this:
-const username = 'yourUsername-osName-Windows';
+// You can geo-target a country by adjusting the username, like this:
+const username = 'yourUsername-country-US';
+//  Here we are geo-targeting US IPs, but you can change this to another country of your choosing
 const password = 'yourPassword';
 const PROXY_RACK_DNS = 'premium.residential.proxyrack.net';
 const PROXYRACK_PORT = 10000;
@@ -33,7 +47,7 @@ proxiedRequest.get("http://api.ipify.org/?format=json", function (err, resp, bod
     checkStats();
 })
 
-// You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under 'requestParams' you will see this reflected as 'osName'
+// You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under 'requestParams' you will see this reflected as 'country'
 const checkStats = () => {
     proxiedRequest.get("http://api.proxyrack.net/stats", function (err, resp, body) {
         if (err) {
@@ -45,9 +59,6 @@ const checkStats = () => {
     })
 }
 `}
-
 </Code>
-
-<Terminal cmd="node index.js" />
 
 </Columns>

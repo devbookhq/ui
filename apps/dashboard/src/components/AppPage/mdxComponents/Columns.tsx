@@ -7,22 +7,18 @@ export interface Props {
   children: ReactNode
 }
 
-const Half = (props: any) => <div {...props} style={{
-  width: '50%',
-  img: {
-    height: 'auto',
-  }
-}} />
-
 function Columns({
   children,
 }: Props) {
   const [first, ...rest] = React.Children.toArray(children)
-  const c = [<Half key='first'>{first}</Half>, <Half key='rest'>{rest}</Half>]
+  const c = [
+    <div key='first' className="w-7/12">{first}</div>,
+    <div key='rest' className="w-5/12">{rest}</div>
+  ]
 
   return (
     <div
-      className="flex flex-1 items-start"
+      className="flex flex-1"
     >
       {c}
     </div>

@@ -22,16 +22,16 @@ const Code = dynamic(() => import('./Code'), { ssr: false })
 const Terminal = dynamic(() => import('./Terminal'), { ssr: false })
 
 const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
-  a,
-  code,
   h1,
   h2,
   h3,
+  a,
   hr,
   li,
   p,
-  pre: Pre,
   strong,
+  code,
+  pre: Pre,
   Filetree,
   Code,
   Terminal,

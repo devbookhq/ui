@@ -59,12 +59,11 @@ function Terminal({
     <div className="
       flex
       flex-col
-      flex-1
     ">
       <div className="
         flex
-        flex-1
         space-x-2
+        text-white
         items-center
         py-1
         px-3

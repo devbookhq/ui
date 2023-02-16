@@ -4,6 +4,12 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        barlow: ['Barlow', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        mono: ['\'JetBrains Mono\'', 'monospace'],
+      },
+      lineClamp: { 10: '10' },
       transparent: 'transparent',
       spacing: {
         120: '30rem',
@@ -35,4 +41,5 @@ module.exports = {
       flex: { 'guide-card': '1 1 30%' },
     },
   },
+  plugins: [require('@tailwindcss/line-clamp'), require('@tailwindcss/typography')],
 }
