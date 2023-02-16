@@ -6,12 +6,11 @@ import AppPage from 'components/AppPage'
 import {
   CompiledAppContent,
   compileContent,
-  AppContentJSON,
 } from 'apps/content'
 import path from 'path'
 
 interface PathProps extends ParsedUrlQuery {
-  name: string
+  page: string
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
@@ -25,19 +24,20 @@ const examplesDirectory = 'examples'
 
 // https://github.com/hashicorp/next-mdx-enhanced may be a bette fit for out layout needs
 export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params }) => {
-  const name = `${params!.name}.mdx`
-  const filepath = path.join(process.cwd(), examplesDirectory, name)
+  const pagePath = params?.page as any as string[]
+  const filename = pagePath.length === 1 ? 'index' : pagePath.pop()
 
-  const appContent = {
-    mdx: [
-      {
-        name: 'index.mdx',
-        content: await fs.readFile(filepath, 'utf-8'),
-      }
-    ],
-  } as AppContentJSON
+  const dirpath = path.join(process.cwd(), examplesDirectory)
+  const cssPath = path.join(dirpath, ...pagePath, 'index.css')
+  const mdxPath = path.join(dirpath, ...pagePath, `${filename}.mdx`)
 
-  const content = await compileContent(appContent)
+  const mdx = await fs.readFile(mdxPath, 'utf-8')
+  const css = await fs.readFile(cssPath, 'utf-8')
+
+  const content = await compileContent({
+    mdx,
+    css,
+  })
 
   return {
     props: {

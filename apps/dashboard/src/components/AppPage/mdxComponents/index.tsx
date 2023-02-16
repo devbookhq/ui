@@ -15,6 +15,7 @@ import {
 } from './base'
 import Pre from './Pre'
 import Columns from './Columns'
+import Navigate from './Navigate'
 
 const Filetree = dynamic(() => import('./Filetree'), { ssr: false })
 const Code = dynamic(() => import('./Code'), { ssr: false })
@@ -35,6 +36,7 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   Code,
   Terminal,
   Columns,
+  Navigate,
 }
 
 export default mdxComponents

@@ -61,9 +61,11 @@ export async function getAppContentFromRepo({
   // }
   // const env = toml.parse(envConfigContentRaw) as unknown as EnvConfig
   const mdx = await Promise.all(root.file(/.+.mdx$/).map(f => getFile(f, dir)))
+  const css = await Promise.all(root.file(/.+.css$/).map(f => getFile(f, dir)))
 
   return {
     // env,
+    css,
     mdx,
   }
 }

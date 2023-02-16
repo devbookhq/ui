@@ -6,7 +6,6 @@ function getUserClient({ accessToken }: { accessToken: string }) {
   })
 }
 
-
 export type GitHubUserClient = ReturnType<typeof getUserClient>
 
 export default getUserClient

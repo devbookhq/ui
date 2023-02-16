@@ -1,6 +1,5 @@
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
-import path from 'path-browserify'
 
 export interface AppContentJSON {
   env?: {
@@ -10,40 +9,34 @@ export interface AppContentJSON {
     name: string
     content: string
   }[]
+  css?: {
+    name: string
+    content: string
+  }[]
 }
 
-export interface Layout {
-  type: 'Code'
-}
 
-export interface CodeLayout extends Layout {
-  props: {
-    tabs: {
-      path: string
-    }[]
+export interface AppPageContent {
+  mdx: string
+  css?: string
+  env?: {
+    id: string,
   }
 }
+
 
 export interface CompiledAppContent {
-  title?: string
   environmentID?: string
-  layout: Layout | null
   serialized: MDXRemoteSerializeResult
+  css?: string
 }
 
-export async function compileContent(content: AppContentJSON): Promise<CompiledAppContent> {
-  const indexMDX = content.mdx.find(m => path.basename(m.name) === 'index.mdx')
-
-  if (!indexMDX) {
-    throw new Error('Cannot find "index.mdx"')
-  }
-
-  const serialized = await serialize(indexMDX.content, { parseFrontmatter: true })
+export async function compileContent(content: AppPageContent): Promise<CompiledAppContent> {
+  const serialized = await serialize(content.mdx, { parseFrontmatter: true })
 
   return {
     serialized,
+    css: content.css,
     environmentID: content.env?.id,
-    title: serialized.frontmatter?.title,
-    layout: serialized.frontmatter?.layout as unknown as Layout || null,
   }
 }

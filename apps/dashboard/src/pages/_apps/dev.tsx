@@ -5,7 +5,7 @@ import AppPage from 'components/AppPage'
 import {
   CompiledAppContent,
   compileContent,
-  AppContentJSON,
+  AppPageContent,
 } from 'apps/content'
 
 // TODO: Add realtime reloading on changes
@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   // https://github.com/vercel/next.js/discussions/12152
   const body = await getRawBody(context.req)
   const stringBody = body.toString()
-  const appContent = JSON.parse(stringBody) as AppContentJSON
+  const appContent = JSON.parse(stringBody) as AppPageContent
 
   const content = await compileContent(appContent)
 

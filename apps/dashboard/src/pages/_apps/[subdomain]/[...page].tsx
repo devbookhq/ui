@@ -8,6 +8,7 @@ import { AppContentJSON, compileContent } from 'apps/content'
 
 interface PathProps extends ParsedUrlQuery {
   subdomain: string
+  page: string
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
@@ -19,8 +20,7 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
 
 export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params }) => {
   if (!params) throw new Error('No path parameters found')
-
-  const { subdomain } = params
+  const { subdomain, page } = params
 
   try {
     const app = await prisma.apps.findUniqueOrThrow({
@@ -28,7 +28,11 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
         subdomain,
       },
       include: {
-        apps_content: true
+        apps_content: {
+          select: {
+            content: true,
+          }
+        }
       },
     })
 
@@ -36,7 +40,26 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
       throw new Error('App content not found')
     }
 
-    const content = await compileContent(app.apps_content.content as unknown as AppContentJSON)
+    const dbContent = app?.apps_content?.content as unknown as AppContentJSON
+
+    const mdx = dbContent.mdx.find(n => {
+      if (!page && n.name === 'index.mdx') return true
+      const pageName = n.name.split('.').slice(0, -1).join('.')
+      return pageName === page
+    })?.content
+
+    if (!mdx) {
+      return {
+        notFound: true
+      }
+    }
+
+    const css = dbContent.css?.find(n => n.name === 'index.css')?.content
+
+    const content = await compileContent({
+      mdx,
+      css,
+    })
 
     return {
       props: {

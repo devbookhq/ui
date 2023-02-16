@@ -1,11 +1,12 @@
 import { useSession, SharedSessionProvider } from '@devbookhq/react'
 import { FiletreeProvider } from '@devbookhq/filesystem'
+import { MDXRemote } from 'next-mdx-remote'
 
 import '@devbookhq/terminal/dist/index.css'
 // import '@devbookhq/code-editor/dist/index.css'
 
+import mdxComponents from './mdxComponents'
 import { CompiledAppContent } from 'apps/content'
-import AppContentView from './AppContentView'
 
 export interface Props {
   content: CompiledAppContent
@@ -13,8 +14,7 @@ export interface Props {
 
 const defaultAppEnvID = '6VaSXKc5wNSr'
 
-
-const css = `
+const defaultCSS = `
 .test {
   background: black;
 }
@@ -27,27 +27,31 @@ function AppPage({ content }: Props) {
     inactivityTimeout: 0,
   })
 
+  const css = content.css || defaultCSS
+
   return (
     <>
-      <style jsx>
-        {css}
-      </style>
       <SharedSessionProvider session={sessionHandle}>
         <FiletreeProvider>
           <div
             className="
-            flex
+              flex
               w-full
               h-full
-              test
+              App
               flex-1
               flex-col
               overflow-hidden
-            "
+              "
           >
-            <AppContentView
-              content={content}
+            <MDXRemote
+              {...content.serialized}
+              components={mdxComponents}
+              lazy
             />
+            <style jsx global>
+              {`${css}`}
+            </style>
           </div>
         </FiletreeProvider>
       </SharedSessionProvider>

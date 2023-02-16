@@ -106,9 +106,9 @@ function Item({ item, deleteItem }: Props) {
               text="-"
             />
             <Text
-              suppressHydrationWarning
               size={Text.size.S3}
               text={item.created_at.toLocaleString()}
+              suppressHydrationWarning
             />
           </div>
         </div>
