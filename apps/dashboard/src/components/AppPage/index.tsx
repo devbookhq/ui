@@ -33,7 +33,10 @@ function AppPage({ content }: Props) {
               w-full
               App
               flex-1
+              justify-start
+              items-stretch
               flex-col
+              bg-slate-50
               "
         >
           <MDXRemote

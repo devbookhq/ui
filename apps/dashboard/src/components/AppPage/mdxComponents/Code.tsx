@@ -27,8 +27,6 @@ import StopButton from '../StopButton'
 
 const darkEditorTheme = EditorView.theme({
   '.cm-gutters': { background: '#282c34' },
-  '&': { maxHeight: '600px' },
-  '.cm-scroller': { overflow: 'auto' },
 })
 
 export interface Props {
@@ -121,6 +119,8 @@ function Code({
       flex
       flex-col
       flex-1
+      items-stretch
+      justify-start
       border
       border-indigo-400/20
       bg-gray-800
@@ -140,6 +140,7 @@ function Code({
         <div />
         <div className="
           flex
+          justify-start
           items-center
           space-x-1
         ">
@@ -161,7 +162,6 @@ function Code({
           />
         </div>
       </div>
-
       <CodeEditor
         className={isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
         content={children as string}
@@ -180,11 +180,14 @@ function Code({
           text-gray-300
           flex
           h-[300px]
+          items-stretch
+          justify-start
           flex-col
           space-y-0.5
         ">
           <div className="
             flex
+            justify-start
             items-center
             space-x-1
           ">
@@ -209,6 +212,8 @@ function Code({
               <div
                 className="
                 flex
+                items-stretch
+                justify-start
                 whitespace-pre
                 space-x-1
               "
@@ -219,7 +224,7 @@ function Code({
                   text=">"
                 />
                 <Text
-                  className={o.type === OutType.Stdout ? 'text-gray-400' : 'text-red-500'}
+                  className={o.type === OutType.Stdout ? 'text-slate-200' : 'text-red-500'}
                   text={o.line}
                 />
               </div>

@@ -14,14 +14,14 @@ function Columns({
 
   return (
     <div
-      className="flex flex-1"
+      className="flex flex-1 justify-start items-stretch"
     >
-      <div key='first' className="w-7/12 flex-1 justify-center p-8 flex">
-        <div className="prose">
+      <div key='first' className="w-7/12 justify-center p-4 flex items-stretch">
+        <div className="prose prose-slate">
           {first}
         </div>
       </div>
-      <div key='rest' className="w-5/12">
+      <div key='rest' className="w-5/12 flex">
         {rest}
       </div>
     </div>
