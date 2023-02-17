@@ -66,7 +66,7 @@ function FeedbackModal({ isOpen, onClose }: Props) {
           onChange={e => setFeedback(e.target.value)}
         />
         <Button
-          text={isSavingFeedback ? 'Sending' : 'Send feedback'}
+          text={isSavingFeedback ? 'Processing...' : 'Send'}
           icon={isSavingFeedback ? <SpinnerIcon className="text-white" /> : null}
           isDisabled={isSavingFeedback || feedback.trim() === ''}
           variant={Button.variant.Full}
