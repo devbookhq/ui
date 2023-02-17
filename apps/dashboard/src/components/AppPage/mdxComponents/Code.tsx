@@ -25,7 +25,11 @@ import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
 
-const darkEditorTheme = EditorView.theme({ '.cm-gutters': { background: '#282c34' } })
+const darkEditorTheme = EditorView.theme({
+  '.cm-gutters': { background: '#282c34' },
+  '&': { maxHeight: '600px' },
+  '.cm-scroller': { overflow: 'auto' },
+})
 
 export interface Props {
   file?: string
@@ -92,7 +96,11 @@ function Code({
 
   const writeFile = useCallback((content: string) => {
     if (!file) return
-    session?.filesystem?.write(path.join(rootdir, file), content)
+    const replacedCode = content
+      .replace('\'yourUsername-country-US\'', 'process.env.USERNAME + "-country-US"')
+      .replace('\'yourPassword\'', 'process.env.PASSWORD')
+
+    session?.filesystem?.write(path.join(rootdir, file), replacedCode)
   }, [
     session,
     file,
@@ -112,6 +120,7 @@ function Code({
       className="
       flex
       flex-col
+      flex-1
       border
       border-indigo-400/20
       bg-gray-800
@@ -162,18 +171,15 @@ function Code({
         isReadOnly={!isEditable}
         onContentChange={writeFile}
       />
-
       {isRunnable &&
         <div className="
-          pt-2
-          pb-1
-          min-h-0
-          px-3
+          pl-4
+          pr-2
+          py-2
           font-mono
           text-gray-300
-          text-sm
           flex
-          h-[200px]
+          h-[300px]
           flex-col
           space-y-0.5
         ">
@@ -198,25 +204,27 @@ function Code({
             }
           </div>
 
-          {output.map(o => (
-            <div
-              className="
+          <div className="flex flex-1 overflow-auto flex-col scroller">
+            {output.map(o => (
+              <div
+                className="
                 flex
-                items-center
+                whitespace-pre
                 space-x-1
               "
-              key={o.timestamp}
-            >
-              <Text
-                className="text-gray-600"
-                text=">"
-              />
-              <Text
-                className={o.type === OutType.Stdout ? 'text-gray-400' : 'text-red-500'}
-                text={o.line}
-              />
-            </div>
-          ))}
+                key={o.timestamp}
+              >
+                <Text
+                  className="text-gray-600"
+                  text=">"
+                />
+                <Text
+                  className={o.type === OutType.Stdout ? 'text-gray-400' : 'text-red-500'}
+                  text={o.line}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       }
     </div>

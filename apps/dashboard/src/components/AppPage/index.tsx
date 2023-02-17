@@ -34,7 +34,6 @@ function AppPage({ content }: Props) {
               App
               flex-1
               flex-col
-              overflow-hidden
               "
         >
           <MDXRemote

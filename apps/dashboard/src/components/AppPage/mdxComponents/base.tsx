@@ -14,7 +14,7 @@ export function h1(p: Props<HTMLHeadingElement>) {
 }
 
 export function h2(p: Props<HTMLHeadingElement>) {
-  return <h2 className="text-slate-800 text-2xl font-inter font-bold">{p.children}</h2>
+  return <h2 className="text-2xl font-inter font-bold text-slate-800">{p.children}</h2>
 }
 
 export function h3(p: Props<HTMLHeadingElement>) {

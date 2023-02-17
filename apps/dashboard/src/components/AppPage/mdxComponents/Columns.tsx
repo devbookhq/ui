@@ -11,16 +11,19 @@ function Columns({
   children,
 }: Props) {
   const [first, ...rest] = React.Children.toArray(children)
-  const c = [
-    <div key='first' className="w-7/12">{first}</div>,
-    <div key='rest' className="w-5/12">{rest}</div>
-  ]
 
   return (
     <div
       className="flex flex-1"
     >
-      {c}
+      <div key='first' className="w-7/12 flex-1 justify-center p-8 flex">
+        <div className="prose">
+          {first}
+        </div>
+      </div>
+      <div key='rest' className="w-5/12">
+        {rest}
+      </div>
     </div>
   )
 }

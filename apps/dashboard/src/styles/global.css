@@ -32,7 +32,7 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   *,
@@ -65,7 +65,7 @@
   }
 
   .scroller {
-    scrollbar-color: #cbd5e1 transparent;
+    scrollbar-color: #6b6b6c transparent;
     scrollbar-width: thin;
     scrollbar-gutter: stable;
   }
@@ -97,7 +97,7 @@ select:-webkit-autofill:focus {
 }
 
 .scroller::-webkit-scrollbar-thumb {
-  @apply bg-slate-300;
+  @apply bg-slate-600;
   @apply rounded;
 }
 
