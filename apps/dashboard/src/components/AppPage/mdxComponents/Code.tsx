@@ -27,6 +27,7 @@ import StopButton from '../StopButton'
 
 const darkEditorTheme = EditorView.theme({
   '.cm-gutters': { background: '#282c34' },
+  '.cm-scroller': { overflow: 'auto' },
 })
 
 export interface Props {
