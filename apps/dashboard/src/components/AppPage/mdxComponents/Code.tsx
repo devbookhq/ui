@@ -26,6 +26,7 @@ import RunButton from '../RunButton'
 import StopButton from '../StopButton'
 
 const darkEditorTheme = EditorView.theme({
+  '&': { height: '100%' },
   '.cm-gutters': { background: '#282c34' },
   '.cm-scroller': { overflow: 'auto' },
 })
@@ -117,14 +118,15 @@ function Code({
         colorScheme: 'dark',
       }}
       className="
-      flex
-      flex-col
-      flex-1
-      items-stretch
-      justify-start
-      border
-      border-indigo-400/20
-      bg-gray-800
+        w-full
+        flex
+        flex-col
+        items-stretch
+        justify-start
+        border
+        border-indigo-400/20
+        bg-gray-800
+        overflow-hidden
     ">
       <div className="
         py-1
@@ -163,15 +165,26 @@ function Code({
           />
         </div>
       </div>
-      <CodeEditor
-        className={isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
-        content={children as string}
-        filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
-        supportedLanguages={supportedLanguages}
-        theme={[oneDark, darkEditorTheme]}
-        isReadOnly={!isEditable}
-        onContentChange={writeFile}
-      />
+      <div className="
+        flex-1
+        overflow-hidden
+        relative
+        bg-yellow-500
+      ">
+        <CodeEditor
+          className={`
+            absolute
+            inset-0
+            ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
+          `}
+          content={children as string}
+          filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
+          supportedLanguages={supportedLanguages}
+          theme={[oneDark, darkEditorTheme]}
+          isReadOnly={!isEditable}
+          onContentChange={writeFile}
+        />
+      </div>
       {isRunnable &&
         <div className="
           pl-4
@@ -180,11 +193,12 @@ function Code({
           font-mono
           text-gray-300
           flex
-          h-[300px]
+          h-[200px]
           items-stretch
           justify-start
           flex-col
           space-y-0.5
+          bg-red-500
         ">
           <div className="
             flex

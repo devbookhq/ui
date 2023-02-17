@@ -27,18 +27,12 @@ function AppPage({ content }: Props) {
   return (
     <SharedSessionProvider session={sessionHandle}>
       <FiletreeProvider>
-        <div
-          className="
-              flex
-              w-full
-              App
-              flex-1
-              justify-start
-              items-stretch
-              flex-col
-              bg-slate-50
-              "
-        >
+        <div className="
+          min-h-[100vh]
+          min-w-[100vw]
+          overflow-hidden
+          bg-green-500
+        ">
           <MDXRemote
             {...content.serialized}
             components={mdxComponents}
