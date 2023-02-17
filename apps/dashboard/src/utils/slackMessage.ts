@@ -86,6 +86,9 @@ export function createCodeExampleFeedbackMessage(feedback: AppFeedback, host: st
           'type': 'mrkdwn',
         }
       },
+    )
+
+    const context: any = [
       {
         'type': 'context',
         'elements': [
@@ -93,18 +96,25 @@ export function createCodeExampleFeedbackMessage(feedback: AppFeedback, host: st
             'type': 'mrkdwn',
             'text': `Made by user with ID \`${feedback.properties.userId || feedback.properties.anonymousId}\``
           },
-          {
-            'type': 'mrkdwn',
-            'text': `This user previously ${feedback.properties.rating === 'down' ? '*downvoted* :-1:' : '*upvoted* :+1:'
-              } the code example`,
-          },
         ]
       },
-      {
-        'type': 'divider'
-      },
-    )
-  } else {
+    ]
+
+    if (feedback.properties.rating) {
+      context[0].elements.push(
+        {
+          'type': 'mrkdwn',
+          'text': `This user previously ${feedback.properties.rating === 'down' ? '*downvoted* :-1:' : '*upvoted* :+1:'
+            } the code example`,
+        },
+      )
+    }
+
+    context.push({
+      'type': 'divider',
+    })
+    blocks.push(context)
+  } else if (feedback.properties.rating) {
     blocks.push(
       {
         'type': 'section',
