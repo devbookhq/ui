@@ -99,7 +99,6 @@ export function createCodeExampleFeedbackMessage(feedback: AppFeedback, host: st
         ]
       },
     ]
-
     if (feedback.properties.rating) {
       context[0].elements.push(
         {
@@ -110,9 +109,6 @@ export function createCodeExampleFeedbackMessage(feedback: AppFeedback, host: st
       )
     }
 
-    context.push({
-      'type': 'divider',
-    })
     blocks = blocks.concat(context)
   } else if (feedback.properties.rating) {
     blocks.push(
