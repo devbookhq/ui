@@ -41,7 +41,7 @@ function getTitle(feedback: AppFeedback) {
 }
 
 export function createCodeExampleFeedbackMessage(feedback: AppFeedback, host: string) {
-  const blocks: (Block | KnownBlock)[] = [
+  let blocks: (Block | KnownBlock)[] = [
     {
       'type': 'header',
       'text': {
@@ -113,7 +113,7 @@ export function createCodeExampleFeedbackMessage(feedback: AppFeedback, host: st
     context.push({
       'type': 'divider',
     })
-    blocks.push(context)
+    blocks = blocks.concat(context)
   } else if (feedback.properties.rating) {
     blocks.push(
       {
