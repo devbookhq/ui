@@ -2,7 +2,8 @@ import {
   ThumbsDown,
   ThumbsUp,
   ExternalLink,
-  Mail
+  Mail,
+  MessageSquare,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -37,14 +38,23 @@ function Message({ message }: Props) {
           space-x-1
           text-slate-500
         ">
-          {message.rating === Rating.Upvote
-            ? <ThumbsUp
+          {message.rating === Rating.Upvote &&
+            <ThumbsUp
               className="text-green-500 mr-1.5 -mt-0.5"
               size="18px"
               strokeWidth="1.5"
             />
-            : <ThumbsDown
+          }
+          {message.rating === Rating.Downvote &&
+            <ThumbsDown
               className="text-red-500 mr-1.5 -mb-0.5"
+              size="18px"
+              strokeWidth="1.5"
+            />
+          }
+          {!message.rating &&
+            <MessageSquare
+              className="text-slate-300 mr-1.5 -mb-0.5"
               size="18px"
               strokeWidth="1.5"
             />
