@@ -43,6 +43,7 @@ interface Hostnames {
 
 const hostnames: Hostnames = {
   'prisma-hub': 'playground.prisma.io',
+  'proxyrack': 'proxyrack.usedevbook.com',
 }
 
 const hourInMs = 60 * 60 * 1000
