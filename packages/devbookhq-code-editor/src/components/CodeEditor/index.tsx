@@ -210,8 +210,6 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!highlightedLines) return
         if (highlightedLines.length === 0) return
 
-        // const docPosition = this.editorView.state.doc.line(lineNo).from
-        // this.editorView.dispatch({effects: addLineHighlight.of(docPosition)});
         editor.view.dispatch({
           effects: addLineHighlight.of({ lines: highlightedLines }),
         })
@@ -317,9 +315,16 @@ const CodeEditor = forwardRef<Handler, Props>(
             onLineHover(undefined)
           }
         }
+
+        const handleMouseLeave = (_: MouseEvent) => {
+          onLineHover(undefined)
+        }
+
         editor.view.dom.addEventListener('mousemove', handleMouseMove)
+        editor.view.dom.addEventListener('mouseleave', handleMouseLeave)
         return () => {
           editor.view.dom.removeEventListener('mousemove', handleMouseMove)
+          editor.view.dom.removeEventListener('mouseleave', handleMouseLeave)
         }
       },
       [editor, onLineHover],

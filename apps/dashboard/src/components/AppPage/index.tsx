@@ -17,12 +17,10 @@ const defaultAppEnvID = '6VaSXKc5wNSr'
 
 function AppPage({ content }: Props) {
   const sessionHandle = useSession({
-    codeSnippetID: content.environmentID || content.serialized?.frontmatter?.envID || defaultAppEnvID,
+    codeSnippetID: content.serialized?.frontmatter?.envID || content.environmentID || defaultAppEnvID,
     debug: process.env.NODE_ENV === 'development',
     inactivityTimeout: 0,
   })
-
-  const css = content.css
 
   return (
     <AppContextProvider>
@@ -33,14 +31,13 @@ function AppPage({ content }: Props) {
             min-h-[100vh]
             min-w-[100vw]
             overflow-hidden
-          bg-green-500
           ">
             <MDXRemote
               {...content.serialized}
               components={mdxComponents}
             />
             <style jsx global>
-              {`${css}`}
+              {`${content.css}`}
             </style>
           </div>
         </FiletreeProvider>

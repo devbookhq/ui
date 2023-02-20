@@ -1,14 +1,15 @@
+import clsx from 'clsx'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
-
 
 import { parseNumericRange } from 'utils/parseNumericRange'
 import { useAppContext } from '../AppContext'
-
 
 export interface Props {
   children?: ReactNode
   // Expression like 1-10,20-30
   lines?: string
+  // This helps identifying the actual editor
+  file?: string
 }
 
 let idCounter = 0
@@ -41,7 +42,6 @@ function Explanation({ children, lines }: Props) {
     setIsActive,
   ])
 
-
   useEffect(function propagateToAppState() {
     if (id === undefined) return
     if (!parsedLines) return
@@ -72,7 +72,7 @@ function Explanation({ children, lines }: Props) {
 
   return (
     <div
-      className="my-2 hover:bg-slate-300 rounded transition-all cursor-pointer border"
+      className={clsx('my-2 hover:bg-slate-300 rounded transition-all cursor-pointer border', { 'bg-slate-300': isActive })}
       onMouseOver={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >

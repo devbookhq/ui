@@ -11,17 +11,17 @@ This endpoint provides access to unique monthly residential IP addresses and has
 
 HTTPS and SOCKS protocols are enabled on this service.
 
-<Explanation lines="3-6">
+<Explanation lines="3-5">
 * You can geo-target a country by adjusting the username, like this `const username = 'yourUsername-country-US'`
 </Explanation>
 
 
-<Explanation lines="23-26">
+<Explanation lines="23-33">
 * You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under `requestParams` you will see this reflected as `country`.
 </Explanation>
 </div>
 
-<Code file="AuthForm.js" isEditable onRun={() => "node /code/index.js"}>
+<Code file="index.js" isEditable onRun={() => "node /code/index.js"}>
 {`const request = require('request');
 
 // You can geo-target a country by adjusting the username, like this:

@@ -21,7 +21,6 @@ function Columns({
         flex
         items-start
         justify-start
-        bg-red-500
       "
     >
       <div
@@ -30,7 +29,6 @@ function Columns({
           self-stretch
           w-full
           max-w-[calc(100%-5/12*100vw)]
-          bg-yellow-200
           max-h-full
           p-4
           overflow-auto

@@ -12,11 +12,15 @@ interface AppContextProviderProps {
 
 export interface AppContext {
   Code: {
-    hoveredLine?: number
+    [id: number]: {
+      hoveredLine?: number
+      file: string
+    } | undefined
   }
   Explanation: {
     [id: number]: {
-      highlightLines?: number[]
+      highlightLines: number[]
+      file: string
     } | undefined
   }
 }

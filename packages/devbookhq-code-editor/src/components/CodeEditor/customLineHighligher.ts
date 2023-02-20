@@ -27,7 +27,7 @@ export function customLineHighlighter() {
   })
 
   const lineHighlightMark = Decoration.line({
-    attributes: { style: 'background-color: yellow' },
+    attributes: { style: 'background-color: darkblue; cursor: pointer;' },
   })
 
   return customLineHighlight

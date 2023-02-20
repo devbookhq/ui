@@ -51,7 +51,7 @@ import type {
   Message,
   MessageConnection,
   NotificationHandler,
-} from 'vscode-ws-jsonrpc'
+} from 'vscode-jsonrpc'
 
 export type LSPConnection = ReturnType<typeof createLSPConnection>
 

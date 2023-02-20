@@ -222,7 +222,6 @@ function Code({
           justify-start
           flex-col
           space-y-0.5
-          bg-red-500
         ">
           <div className="
             flex
