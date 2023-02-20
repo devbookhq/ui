@@ -9,7 +9,6 @@ import {
   h2,
   h3,
   hr,
-  li,
   p,
   strong,
 } from './base'

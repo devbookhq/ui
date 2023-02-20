@@ -48,9 +48,16 @@ function Project({ app, feedback }: Props) {
     return [feedbackByGuide, feedbackByCodeExample, feed]
   }, [feedback])
 
+  useEffect(function handleFeedbackSelection() {
+    if (guidesFeedback.length === 0) {
+      setSelectedFeedback('codeExamples')
+    } else if (codeExamplesFeedback.length === 0) {
+      setSelectedFeedback('guides')
+    }
+  }, [guidesFeedback, codeExamplesFeedback])
+
   const router = useRouter()
   const view = router.query.view || ''
-
 
   const [deployedUrl, setDeployedUrl] = useState<string>()
 
@@ -128,22 +135,24 @@ function Project({ app, feedback }: Props) {
             flex-col
             overflow-hidden
           ">
-            <div className="
+            {(guidesFeedback.length !== 0 && codeExamplesFeedback.length !== 0) &&
+              <div className="
               flex
               justify-center
               space-x-4
-            ">
-              <SelectButton
-                text="Guides"
-                isSelected={selectedFeedback === 'guides'}
-                onClick={() => setSelectedFeedback('guides')}
-              />
-              <SelectButton
-                text="Code Examples"
-                isSelected={selectedFeedback === 'codeExamples'}
-                onClick={() => setSelectedFeedback('codeExamples')}
-              />
-            </div>
+              ">
+                <SelectButton
+                  text="Guides"
+                  isSelected={selectedFeedback === 'guides'}
+                  onClick={() => setSelectedFeedback('guides')}
+                />
+                <SelectButton
+                  text="Code Examples"
+                  isSelected={selectedFeedback === 'codeExamples'}
+                  onClick={() => setSelectedFeedback('codeExamples')}
+                />
+              </div>
+            }
             <FeedbackOverview
               feedback={selectedFeedback === 'guides' ? guidesFeedback : codeExamplesFeedback}
             />
