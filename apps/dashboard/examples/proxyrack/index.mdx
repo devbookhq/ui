@@ -15,40 +15,53 @@ HTTPS and SOCKS protocols are enabled on this service.
 * You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under `requestParams` you will see this reflected as `country`.
 </div>
 
-<Code file="index.js" isEditable onRun={() => "node /code/index.js"}>
-{`const request = require('request');
+<Code file="AuthForm.js" isEditable onRun={() => "node /code/index.js"}>
+{`  async function authWithEmail() {
+    setIsLoading(true)
 
-// You can geo-target a country by adjusting the username, like this:
-const username = 'yourUsername-country-US';
-//  Here we are geo-targeting US IPs, but you can change this to another country of your choosing
-const password = 'yourPassword';
-const PROXY_RACK_DNS = 'premium.residential.proxyrack.net';
-const PROXYRACK_PORT = 10000;
+    const email = emailRef.current?.value
+    const password = passwordRef.current?.value
 
-const proxyUrl = "http://" + username + ":" + password + "@" + PROXY_RACK_DNS + ":" + PROXYRACK_PORT;
-const proxiedRequest = request.defaults({ 'proxy': proxyUrl });
-
-proxiedRequest.get("http://api.ipify.org/?format=json", function (err, resp, body) {
-    if (err) {
-        console.log('error = ', err);
+    if (!email) {
+      setErrMessage('Email must not be empty')
+      emailRef.current?.focus()
+      setIsLoading(false)
+      return
     }
-    if (body) {
-        console.log('body = ', body);
-    }
-    checkStats();
-})
 
-// You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under 'requestParams' you will see this reflected as 'country'
-const checkStats = () => {
-    proxiedRequest.get("http://api.proxyrack.net/stats", function (err, resp, body) {
-        if (err) {
-            console.log('error = ', err);
-        }
-        if (body) {
-            console.log('body = ', body);
-        }
+    if (!password) {
+      passwordRef.current?.focus()
+      setErrMessage('Password must not be empty')
+      setIsLoading(false)
+      return
+    }
+
+    const { error, data: { user } } =
+      authType === AuthFormType.SignUp
+        ? await supabaseClient.auth.signUp({
+          email,
+          password,
+        })
+        : await supabaseClient.auth.signInWithPassword({
+          email,
+          password,
+        })
+
+    if (error) {
+      emailRef.current?.focus()
+      setErrMessage(error.message)
+      console.error(error.message)
+    } else {
+      setErrMessage('')
+    }
+
+    posthog.identify(user?.email, {
+      email: user?.email,
     })
-}
+
+    router.replace('/projects')
+    setIsLoading(false)
+  }
 `}
 </Code>
 </Columns>

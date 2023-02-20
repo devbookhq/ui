@@ -193,7 +193,7 @@ function Code({
           font-mono
           text-gray-300
           flex
-          h-[200px]
+          h-[600px]
           items-stretch
           justify-start
           flex-col
