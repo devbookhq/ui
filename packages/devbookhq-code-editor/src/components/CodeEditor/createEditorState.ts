@@ -26,7 +26,7 @@ const disableSpellchecking = {
   spellcheck: 'false',
 }
 
-function createEditorState(content: string, options: { style: string }) {
+function createEditorState(content: string) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
@@ -46,7 +46,7 @@ function createEditorState(content: string, options: { style: string }) {
       lineNumbers(),
       bracketMatching(),
       highlightSpecialChars(),
-      customLineHighlighter(options.style),
+      customLineHighlighter(),
       history(),
       EditorState.tabSize.of(2),
       // drawSelection(),

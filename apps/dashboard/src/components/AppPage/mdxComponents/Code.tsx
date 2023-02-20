@@ -11,6 +11,7 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { oneDark } from '@codemirror/theme-one-dark'
@@ -25,6 +26,8 @@ import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
 import { useAppContext } from '../AppContext'
+import { notEmpty } from 'utils/notEmpty'
+import { onlyUnique } from 'utils/onlyUnique'
 
 const darkEditorTheme = EditorView.theme({
   '&': { height: '100%' },
@@ -52,7 +55,16 @@ function Code({
   const [output, setOutput] = useState<(OutStdoutResponse | OutStderrResponse)[]>([])
   const { session } = useSharedSession()
   const isRunnable = !!onRun
-  const [appCtx,] = useAppContext()
+  const [appCtx, setAppCtx] = useAppContext()
+
+  const highlightedLines = useMemo(() => {
+    const lines = Object.values(appCtx.Explanation)
+      .flatMap(v => v?.highlightLines)
+      .filter(notEmpty)
+      .filter(onlyUnique)
+
+    return lines
+  }, [appCtx.Explanation])
 
   const appendOutput = useCallback((out: OutStdoutResponse | OutStderrResponse) => {
     setOutput(arr => [...arr, out])
@@ -108,11 +120,19 @@ function Code({
     file,
   ])
 
+  const handleLineHover = useCallback((line: number | undefined) => {
+    setAppCtx(d => {
+      d.Code.hoveredLine = line
+    })
+  }, [setAppCtx])
+
   useEffect(function writeInitialFile() {
     if (typeof children === 'string') {
       writeFile(children)
     }
   }, [writeFile, children])
+
+  console.log('HIGH', highlightedLines)
 
   return (
     <div
@@ -179,13 +199,14 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
-          highlightedLines={appCtx?.codeEditor.highlightedLines}
+          highlightedLines={highlightedLines}
           content={children as string}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={[oneDark, darkEditorTheme]}
           isReadOnly={!isEditable}
           onContentChange={writeFile}
+          onLineHover={handleLineHover}
         />
       </div>
       {isRunnable &&

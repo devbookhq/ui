@@ -15,7 +15,6 @@ export interface Props {
 
 const defaultAppEnvID = '6VaSXKc5wNSr'
 
-
 function AppPage({ content }: Props) {
   const sessionHandle = useSession({
     codeSnippetID: content.environmentID || content.serialized?.frontmatter?.envID || defaultAppEnvID,

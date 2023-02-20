@@ -1,6 +1,9 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react'
+
+
 import { parseNumericRange } from 'utils/parseNumericRange'
 import { useAppContext } from '../AppContext'
+
 
 export interface Props {
   children?: ReactNode
@@ -8,26 +11,64 @@ export interface Props {
   lines?: string
 }
 
+let idCounter = 0
+
 function Explanation({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
-  const [, setAppCtx] = useAppContext()
-
-
-  // Get id 
-
-  // react to editor line hover over the specified lines by activiting self hover and highlighted lines in the code
-
+  const [appCtx, setAppCtx] = useAppContext()
   const [isActive, setIsActive] = useState(false)
-  useEffect(function propagateToAppState() {
+
+  const [id, setID] = useState<number>()
+  useEffect(function getComponentID() {
+    setID(idCounter++)
+  }, [])
+
+  useEffect(function handleEditorHover() {
     if (!parsedLines) return
+    if (!appCtx.Code.hoveredLine) return
+    if (parsedLines.length === 0) return
+
+    const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
+    if (!hasOverlap) return
+
+    setIsActive(true)
+    return () => {
+      setIsActive(false)
+    }
+  }, [
+    appCtx.Code.hoveredLine,
+    parsedLines,
+    setIsActive,
+  ])
+
+
+  useEffect(function propagateToAppState() {
+    if (id === undefined) return
+    if (!parsedLines) return
+    if (parsedLines.length === 0) return
     if (!isActive) return
 
-    // add this explanation to app context
+    setAppCtx(d => {
+      if (!d.Explanation[id]) {
+        d.Explanation[id] = {
+          highlightLines: parsedLines,
+        }
+      } else {
+        d.Explanation[id]!.highlightLines = parsedLines
+      }
+    })
 
     return () => {
-      // remove this explanation from app context
+      setAppCtx(d => {
+        d.Explanation[id] = undefined
+      })
     }
-  }, [isActive, parsedLines])
+  }, [
+    isActive,
+    parsedLines,
+    setAppCtx,
+    id,
+  ])
 
   return (
     <div

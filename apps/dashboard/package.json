@@ -50,6 +50,7 @@
     "database": "workspace:*",
     "fuse.js": "^6.6.2",
     "human-id": "^4.0.0",
+    "immer": "^9.0.19",
     "jszip": "^3.10.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.105.0",
@@ -64,7 +65,8 @@
     "react-dom": "^18.2.0",
     "styled-jsx": "^5.1.2",
     "superjson": "^1.12.2",
-    "swr": "^2.0.3"
+    "swr": "^2.0.3",
+    "use-immer": "^0.8.1"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.1.5",

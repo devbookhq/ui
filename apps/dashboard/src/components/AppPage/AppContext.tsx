@@ -1,34 +1,36 @@
-import { useContext, useState } from 'react'
+import { useImmer, ImmerHook } from 'use-immer'
+import { useContext } from 'react'
 
 import {
   ReactNode,
   createContext,
-  Dispatch,
-  SetStateAction,
 } from 'react'
 
 interface AppContextProviderProps {
   children: ReactNode | ReactNode[] | null
 }
 
-
 export interface AppContext {
   Code: {
-    hoveredLines?: number
-  }[]
+    hoveredLine?: number
+  }
   Explanation: {
-    highlightLines?: string
-  }[]
+    [id: number]: {
+      highlightLines?: number[]
+    } | undefined
+  }
 }
 
-type AppContextState = [AppContext | undefined, Dispatch<SetStateAction<AppContext | undefined>>]
-
-export const appContext = createContext<AppContextState | undefined>(undefined)
+export const appContext = createContext<ImmerHook<AppContext> | undefined>(undefined)
 
 export function AppContextProvider({
   children,
 }: AppContextProviderProps) {
-  const state = useState<AppContext>()
+  const state = useImmer<AppContext>({
+    Code: {},
+    Explanation: {},
+  })
+
   return (
     <appContext.Provider value={state}>
       {children}

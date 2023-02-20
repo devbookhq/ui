@@ -18,6 +18,7 @@ import { LSClients } from '../../hooks/useLanguageServer/useLanguageServerClient
 import { getFileURI, offsetToPos } from '../../hooks/useLanguageServer/utils'
 import { activeLineHighlighter } from './activeLineHighlighter'
 import createEditorState from './createEditorState'
+import { addLineHighlight } from './customLineHighligher'
 
 export interface Props {
   content?: string
@@ -209,8 +210,16 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!highlightedLines) return
         if (highlightedLines.length === 0) return
 
-        return () => {
+        // const docPosition = this.editorView.state.doc.line(lineNo).from
+        // this.editorView.dispatch({effects: addLineHighlight.of(docPosition)});
+        editor.view.dispatch({
+          effects: addLineHighlight.of({ lines: highlightedLines }),
+        })
 
+        return () => {
+          editor.view.dispatch({
+            effects: addLineHighlight.of({ lines: [] }),
+          })
         }
       },
       [editor, highlightedLines],
