@@ -32,15 +32,11 @@ export interface Props {
   className?: string
   autofocus?: boolean
   /**
-   *
    * **Absolute** path to the file in the filesystem
-   *
    */
   filename: string
   /**
-   *
    * The result of the `useLanguageServer` hook should be passed here.
-   *
    */
   languageClients?: LSClients
   /**
@@ -49,6 +45,8 @@ export interface Props {
    */
   openFileInLanguageServer?: boolean
   onCopy?: (selection: string, startLine: number) => void
+  highlightedLines?: number[]
+  onLineHover?: (line: number | undefined) => void
 }
 
 export interface ExtendedCMDiagnostic extends CMDiagnostic {
@@ -72,6 +70,8 @@ const CodeEditor = forwardRef<Handler, Props>(
       onCopy,
       className = '',
       handleRun,
+      highlightedLines,
+      onLineHover,
       onHoverView,
       autofocus,
       onDiagnosticsChange,
@@ -278,6 +278,29 @@ const CodeEditor = forwardRef<Handler, Props>(
         }
       },
       [editor, onContentChange],
+    )
+
+    useEffect(
+      function configureLineHoverChangeHandler() {
+        if (!editor) return
+        if (!onLineHover) return
+
+        const handleMouseMove = (event: MouseEvent) => {
+          const state = editor.view.state
+          const pos = editor.view.posAtCoords(event)
+          if (pos) {
+            let line = state.doc.lineAt(pos).number
+            onLineHover(line)
+          } else {
+            onLineHover(undefined)
+          }
+        }
+        editor.view.dom.addEventListener('mousemove', handleMouseMove)
+        return () => {
+          editor.view.dom.removeEventListener('mousemove', handleMouseMove)
+        }
+      },
+      [editor, onLineHover],
     )
 
     useEffect(
