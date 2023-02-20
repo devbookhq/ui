@@ -29,7 +29,7 @@ function Columns({
         className="
           self-stretch
           w-full
-          max-w-[calc(100%-7/12*100vw)]
+          max-w-[calc(100%-5/12*100vw)]
           bg-yellow-200
           max-h-full
           p-4
@@ -45,7 +45,7 @@ function Columns({
         className="
           self-stretch
           w-full
-          max-w-[calc(100%-5/12*100vw)]
+          max-w-[calc(100%-7/12*100vw)]
           max-h-full
           flex
           overflow-auto

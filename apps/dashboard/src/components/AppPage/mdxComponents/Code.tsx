@@ -24,6 +24,7 @@ import { supportedLanguages } from 'apps/languages'
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
+import { useAppContext } from '../AppContext'
 
 const darkEditorTheme = EditorView.theme({
   '&': { height: '100%' },
@@ -51,6 +52,7 @@ function Code({
   const [output, setOutput] = useState<(OutStdoutResponse | OutStderrResponse)[]>([])
   const { session } = useSharedSession()
   const isRunnable = !!onRun
+  const [appCtx,] = useAppContext()
 
   const appendOutput = useCallback((out: OutStdoutResponse | OutStderrResponse) => {
     setOutput(arr => [...arr, out])
@@ -177,6 +179,7 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
+          highlightedLines={appCtx?.codeEditor.highlightedLines}
           content={children as string}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
@@ -193,7 +196,7 @@ function Code({
           font-mono
           text-gray-300
           flex
-          h-[600px]
+          h-[300px]
           items-stretch
           justify-start
           flex-col

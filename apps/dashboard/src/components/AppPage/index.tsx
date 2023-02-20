@@ -7,6 +7,7 @@ import '@devbookhq/terminal/dist/index.css'
 
 import mdxComponents from './mdxComponents'
 import { CompiledAppContent } from 'apps/content'
+import { AppContextProvider } from './AppContext'
 
 export interface Props {
   content: CompiledAppContent
@@ -25,24 +26,27 @@ function AppPage({ content }: Props) {
   const css = content.css
 
   return (
-    <SharedSessionProvider session={sessionHandle}>
-      <FiletreeProvider>
-        <div className="
-          min-h-[100vh]
-          min-w-[100vw]
-          overflow-hidden
+    <AppContextProvider>
+      <SharedSessionProvider session={sessionHandle}>
+        <FiletreeProvider>
+          <div
+            className="
+            min-h-[100vh]
+            min-w-[100vw]
+            overflow-hidden
           bg-green-500
-        ">
-          <MDXRemote
-            {...content.serialized}
-            components={mdxComponents}
-          />
-          <style jsx global>
-            {`${css}`}
-          </style>
-        </div>
-      </FiletreeProvider>
-    </SharedSessionProvider>
+          ">
+            <MDXRemote
+              {...content.serialized}
+              components={mdxComponents}
+            />
+            <style jsx global>
+              {`${css}`}
+            </style>
+          </div>
+        </FiletreeProvider>
+      </SharedSessionProvider>
+    </AppContextProvider>
   )
 }
 
