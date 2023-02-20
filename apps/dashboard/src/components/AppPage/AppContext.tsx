@@ -14,8 +14,11 @@ interface AppContextProviderProps {
 
 export interface AppContext {
   Code: {
-    highlightedLines?: number[]
-  }
+    hoveredLines?: number
+  }[]
+  Explanation: {
+    highlightLines?: string
+  }[]
 }
 
 type AppContextState = [AppContext | undefined, Dispatch<SetStateAction<AppContext | undefined>>]

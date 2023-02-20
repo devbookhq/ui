@@ -204,6 +204,19 @@ const CodeEditor = forwardRef<Handler, Props>(
     )
 
     useEffect(
+      function configureHighlightedLines() {
+        if (!editor) return
+        if (!highlightedLines) return
+        if (highlightedLines.length === 0) return
+
+        return () => {
+
+        }
+      },
+      [editor, highlightedLines],
+    )
+
+    useEffect(
       function configureLanguageExtensions() {
         if (!editor) return
         if (!languageSetup?.languageExtensions) return
