@@ -14,9 +14,8 @@ export function customLineHighlighter() {
         if (e.is(addLineHighlight)) {
           lines = Decoration.none
           if (e.value) {
-            const state = tr.state
             lines = lines.update({
-              add: e.value.lines.map(l => lineHighlightMark.range(state.doc.line(l).from)),
+              add: e.value.lines.map(l => lineHighlightMark.range(l)),
             })
           }
         }

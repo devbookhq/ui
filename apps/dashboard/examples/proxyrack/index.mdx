@@ -11,22 +11,20 @@ This endpoint provides access to unique monthly residential IP addresses and has
 
 HTTPS and SOCKS protocols are enabled on this service.
 
-<Explanation lines="3-5">
-* You can geo-target a country by adjusting the username, like this `const username = 'yourUsername-country-US'`
+<Explanation lines="3">
+**Geo-target a country by adjusting the username.** With `'yourUsername-country-US'` we are geo-targeting US IPs, but you can change this to another country of your choosing.
 </Explanation>
 
 
-<Explanation lines="23-33">
-* You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under `requestParams` you will see this reflected as `country`.
+<Explanation lines="21-30">
+To make sure this works properly **check by making a request to the `/stats` API endpoint**. Under `requestParams` you will see this reflected as `country`.
 </Explanation>
 </div>
 
-<Code file="index.js" isEditable onRun={() => "node /code/index.js"}>
+<Code file="index.js" onRun={() => "node /code/index.js"}>
 {`const request = require('request');
 
-// You can geo-target a country by adjusting the username, like this:
 const username = 'yourUsername-country-US';
-//  Here we are geo-targeting US IPs, but you can change this to another country of your choosing
 const password = 'yourPassword';
 const PROXY_RACK_DNS = 'premium.residential.proxyrack.net';
 const PROXYRACK_PORT = 10000;
@@ -36,22 +34,21 @@ const proxiedRequest = request.defaults({ 'proxy': proxyUrl });
 
 proxiedRequest.get("http://api.ipify.org/?format=json", function (err, resp, body) {
     if (err) {
-        console.log('error = ', err);
+        console.log('error =', err);
     }
     if (body) {
-        console.log('body = ', body);
+        console.log('body =', body);
     }
     checkStats();
 })
 
-// You can then check to make sure this works properly by making a request to the 'stats' API endpoint. Under 'requestParams' you will see this reflected as 'country'
 const checkStats = () => {
     proxiedRequest.get("http://api.proxyrack.net/stats", function (err, resp, body) {
         if (err) {
-            console.log('error = ', err);
+            console.log('error =', err);
         }
         if (body) {
-            console.log('body = ', body);
+            console.log('body =', body);
         }
     })
 }

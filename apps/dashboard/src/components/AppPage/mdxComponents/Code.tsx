@@ -59,8 +59,18 @@ function Code({
 
   const highlightedLines = useMemo(() => {
     const lines = Object.values(appCtx.Explanation)
-      .flatMap(v => v?.highlightLines)
       .filter(notEmpty)
+      .filter(v => v.enabled)
+      .flatMap(v => v.highlightLines)
+      .filter(onlyUnique)
+
+    return lines
+  }, [appCtx.Explanation])
+
+  const gutterIndicatorLines = useMemo(() => {
+    const lines = Object.values(appCtx.Explanation)
+      .filter(notEmpty)
+      .flatMap(v => v.highlightLines)
       .filter(onlyUnique)
 
     return lines
@@ -200,6 +210,7 @@ function Code({
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
           highlightedLines={highlightedLines}
+          gutterIndicatorLines={gutterIndicatorLines}
           content={children as string}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}

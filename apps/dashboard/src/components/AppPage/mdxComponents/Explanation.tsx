@@ -46,12 +46,12 @@ function Explanation({ children, lines }: Props) {
     if (id === undefined) return
     if (!parsedLines) return
     if (parsedLines.length === 0) return
-    if (!isActive) return
 
     setAppCtx(d => {
       if (!d.Explanation[id]) {
         d.Explanation[id] = {
           highlightLines: parsedLines,
+          enabled: false
         }
       } else {
         d.Explanation[id]!.highlightLines = parsedLines
@@ -64,15 +64,42 @@ function Explanation({ children, lines }: Props) {
       })
     }
   }, [
-    isActive,
     parsedLines,
+    setAppCtx,
+    id,
+  ])
+
+  useEffect(function propagateToAppState() {
+    if (id === undefined) return
+    if (!isActive) return
+
+    setAppCtx(d => {
+      if (!d.Explanation[id]) {
+        d.Explanation[id] = {
+          highlightLines: [],
+          enabled: true
+        }
+      } else {
+        d.Explanation[id]!.enabled = isActive
+      }
+    })
+
+    return () => {
+      setAppCtx(d => {
+        if (d.Explanation[id]) {
+          d.Explanation[id]!.enabled = false
+        }
+      })
+    }
+  }, [
+    isActive,
     setAppCtx,
     id,
   ])
 
   return (
     <div
-      className={clsx('my-2 hover:bg-slate-300 rounded transition-all cursor-pointer border', { 'bg-slate-300': isActive })}
+      className={clsx('my-4 px-4 hover:bg-slate-300 rounded transition-all cursor-pointer border', { 'bg-slate-300': isActive })}
       onMouseOver={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >

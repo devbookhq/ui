@@ -47,6 +47,7 @@ export interface Props {
   openFileInLanguageServer?: boolean
   onCopy?: (selection: string, startLine: number) => void
   highlightedLines?: number[]
+  gutterIndicatorLines?: number[]
   onLineHover?: (line: number | undefined) => void
 }
 
@@ -76,6 +77,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       onHoverView,
       autofocus,
       onDiagnosticsChange,
+      gutterIndicatorLines,
       filename,
       theme = syntaxHighlighting(classHighlighter),
       languageClients,
@@ -210,8 +212,10 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!highlightedLines) return
         if (highlightedLines.length === 0) return
 
+        const state = editor.view.state
+
         editor.view.dispatch({
-          effects: addLineHighlight.of({ lines: highlightedLines }),
+          effects: addLineHighlight.of({ lines: highlightedLines.map(l => state.doc.line(l).from) }),
         })
 
         return () => {
