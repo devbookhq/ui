@@ -45,6 +45,35 @@ function Explanation({ children, lines }: Props) {
     setIsActive,
   ])
 
+  // TODO: Delete
+  useEffect(function propagateToAppState() {
+    if (id === undefined) return
+    if (!parsedLines) return
+    if (parsedLines.length === 0) return
+
+    setAppCtx(d => {
+      if (!d.Explanation[id]) {
+        d.Explanation[id] = {
+          highlightLines: parsedLines,
+          enabled: false
+        }
+      } else {
+        d.Explanation[id]!.highlightLines = parsedLines
+      }
+    })
+
+    return () => {
+      setAppCtx(d => {
+        d.Explanation[id] = undefined
+      })
+    }
+  }, [
+    parsedLines,
+    setAppCtx,
+    id,
+  ])
+
+
   useEffect(function propagateToAppState() {
     if (id === undefined) return
     const state = wasClicked || isActive
@@ -90,12 +119,20 @@ function Explanation({ children, lines }: Props) {
         className={clsx(`
           flex
           transition-all
+          border-transparent
+          border
+          border-r-8
+          p-2
+          rounded-md
           items-center`,
+          {
+            'border-cyan-500/40': wasClicked || isActive,
+          }
         )}
       >
         {children}
       </div>
-      <div
+      {/* <div
         className={clsx(`
           flex
           transition-all
@@ -106,10 +143,10 @@ function Explanation({ children, lines }: Props) {
           border-r-2
           `,
           {
-            'border-cyan-500': wasClicked || isActive,
+            'border-cyan-200': wasClicked || isActive,
             'border-transparent': !wasClicked && !isActive,
           })}
-      />
+      /> */}
       <div
         className={clsx(`
           right-0
@@ -149,7 +186,7 @@ function Explanation({ children, lines }: Props) {
           space-x-1
           `,
             {
-              'border-cyan-500 text-cyan-500': wasClicked,
+              'border-cyan-200 text-cyan-200': wasClicked,
               'border-slate-300': !wasClicked,
             }
           )}
