@@ -20,6 +20,7 @@ import {
   lineNumbers,
   Decoration,
 } from '@codemirror/view'
+import { customGutter } from './customGutter'
 import { customLineHighlighter } from './customLineHighligher'
 
 const disableSpellchecking = {
@@ -30,6 +31,7 @@ const disableSpellchecking = {
 function createEditorState(content: string, style: {
   highlightDecoration?: Decoration,
   indicateDecoration?: Decoration,
+  highlightGutter?: boolean,
 }) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
@@ -52,6 +54,7 @@ function createEditorState(content: string, style: {
       highlightSpecialChars(),
       customLineHighlighter(style),
       history(),
+      style.highlightGutter ? customGutter() : [],
       EditorState.tabSize.of(2),
       // drawSelection(),
       dropCursor(),

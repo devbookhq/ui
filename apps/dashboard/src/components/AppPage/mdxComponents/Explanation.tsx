@@ -45,37 +45,11 @@ function Explanation({ children, lines }: Props) {
     setIsActive,
   ])
 
-  // TODO: Delete
   useEffect(function propagateToAppState() {
     if (id === undefined) return
     if (!parsedLines) return
     if (parsedLines.length === 0) return
 
-    setAppCtx(d => {
-      if (!d.Explanation[id]) {
-        d.Explanation[id] = {
-          highlightLines: parsedLines,
-          enabled: false
-        }
-      } else {
-        d.Explanation[id]!.highlightLines = parsedLines
-      }
-    })
-
-    return () => {
-      setAppCtx(d => {
-        d.Explanation[id] = undefined
-      })
-    }
-  }, [
-    parsedLines,
-    setAppCtx,
-    id,
-  ])
-
-
-  useEffect(function propagateToAppState() {
-    if (id === undefined) return
     const state = wasClicked || isActive
     if (!state) return
 
@@ -83,7 +57,7 @@ function Explanation({ children, lines }: Props) {
     setAppCtx(d => {
       if (!d.Explanation[id]) {
         d.Explanation[id] = {
-          highlightLines: [],
+          highlightLines: parsedLines,
           enabled: true
         }
       } else {
@@ -100,6 +74,7 @@ function Explanation({ children, lines }: Props) {
     }
   }, [
     isActive,
+    parsedLines,
     wasClicked,
     setAppCtx,
     id,
@@ -132,21 +107,6 @@ function Explanation({ children, lines }: Props) {
       >
         {children}
       </div>
-      {/* <div
-        className={clsx(`
-          flex
-          transition-all
-          self-stretch
-          rounded
-          ml-1
-          border-l
-          border-r-2
-          `,
-          {
-            'border-cyan-200': wasClicked || isActive,
-            'border-transparent': !wasClicked && !isActive,
-          })}
-      /> */}
       <div
         className={clsx(`
           right-0

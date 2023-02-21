@@ -47,6 +47,7 @@ export interface Props {
   openFileInLanguageServer?: boolean
   onCopy?: (selection: string, startLine: number) => void
   highlightedLines?: number[]
+  highlightGutter?: boolean
   highlightDecoration?: Decoration
   indicatedLines?: number[]
   indicateDecoration?: Decoration
@@ -70,6 +71,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       content = '',
       highlightDecoration,
       indicateDecoration,
+      highlightGutter,
       onContentChange,
       isReadOnly = false,
       supportedLanguages,
@@ -140,6 +142,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           state,
         } = createEditorState(content, {
           highlightDecoration,
+          highlightGutter,
           indicateDecoration,
         })
 
@@ -171,6 +174,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         autofocus,
         content,
         highlightDecoration,
+        highlightGutter,
         indicateDecoration,
       ],
     )
