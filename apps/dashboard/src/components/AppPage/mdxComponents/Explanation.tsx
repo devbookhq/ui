@@ -101,16 +101,19 @@ function Explanation({ children, lines }: Props) {
           transition-all
           self-stretch
           rounded
-          border-4`,
+          ml-1
+          border-l
+          border-r-2
+          `,
           {
-            'border-violet-300': wasClicked || isActive,
+            'border-cyan-500': wasClicked || isActive,
             'border-transparent': !wasClicked && !isActive,
           })}
       />
       <div
         className={clsx(`
           right-0
-          -mr-4
+          -mr-5
           top-1/2
           -translate-y-1/2
           translate-x-full
@@ -118,7 +121,9 @@ function Explanation({ children, lines }: Props) {
           space-x-2
           absolute
           not-prose
+          group
           items-center
+          transition-all
           cursor-pointer
           hover:text-slate-600
           `,

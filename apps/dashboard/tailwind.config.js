@@ -29,6 +29,7 @@ module.exports = {
           800: '#20BC69',
         },
         cyan: {
+          200: '#AFCDF3',
           500: '#5BA0FA',
         }
       },
