@@ -32,10 +32,10 @@ function Columns({
           max-h-full
           p-4
           overflow-auto
-          prose
-          prose-slate
       ">
-        {first}
+        <div className="prose prose-slate mx-auto">
+          {first}
+        </div>
       </div>
 
       <div
