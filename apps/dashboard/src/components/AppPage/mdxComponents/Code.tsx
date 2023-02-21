@@ -35,12 +35,18 @@ const darkEditorTheme = EditorView.theme({
   '.cm-scroller': { overflow: 'auto' },
 })
 
+const transitionAll = `
+transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+transition-duration: 150ms;
+`
+
 const lineHighlightMark = Decoration.line({
-  attributes: { style: 'background: yellow; cursor: pointer;' },
+  attributes: { style: 'background: #475569; cursor: pointer;' + transitionAll },
 })
 
 const lineIndicateMark = Decoration.line({
-  attributes: { style: 'background: #3d424d; cursor: pointer;' },
+  attributes: { style: 'background: #334155; cursor: pointer;' + transitionAll },
 })
 
 export interface Props {

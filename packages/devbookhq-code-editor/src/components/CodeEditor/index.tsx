@@ -230,14 +230,14 @@ const CodeEditor = forwardRef<Handler, Props>(
           }),
         })
 
-        return () => {
-          editor.view.dispatch({
-            effects: addLineHighlight.of({
-              highlight: [],
-              indicate: [],
-            }),
-          })
-        }
+        // return () => {
+        //   editor.view.dispatch({
+        //     effects: addLineHighlight.of({
+        //       highlight: [],
+        //       indicate: [],
+        //     }),
+        //   })
+        // }
       },
       [
         editor,
@@ -331,7 +331,6 @@ const CodeEditor = forwardRef<Handler, Props>(
         const handleMouseMove = (event: MouseEvent) => {
           const state = editor.view.state
           const pos = editor.view.posAtCoords(event)
-          console.log('POS', pos)
           if (pos) {
             let line = state.doc.lineAt(pos).number
             onLineHover(line)
