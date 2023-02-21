@@ -28,6 +28,9 @@ module.exports = {
           400: '#E9F5E6',
           800: '#20BC69',
         },
+        cyan: {
+          500: '#5BA0FA',
+        }
       },
       height: { inherit: 'inherit' },
       keyframes: {

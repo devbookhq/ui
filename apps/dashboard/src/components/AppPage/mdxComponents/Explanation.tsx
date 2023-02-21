@@ -47,33 +47,6 @@ function Explanation({ children, lines }: Props) {
 
   useEffect(function propagateToAppState() {
     if (id === undefined) return
-    if (!parsedLines) return
-    if (parsedLines.length === 0) return
-
-    setAppCtx(d => {
-      if (!d.Explanation[id]) {
-        d.Explanation[id] = {
-          highlightLines: parsedLines,
-          enabled: false
-        }
-      } else {
-        d.Explanation[id]!.highlightLines = parsedLines
-      }
-    })
-
-    return () => {
-      setAppCtx(d => {
-        d.Explanation[id] = undefined
-      })
-    }
-  }, [
-    parsedLines,
-    setAppCtx,
-    id,
-  ])
-
-  useEffect(function propagateToAppState() {
-    if (id === undefined) return
     const state = wasClicked || isActive
     if (!state) return
 
@@ -105,30 +78,83 @@ function Explanation({ children, lines }: Props) {
 
   return (
     <div
-      className="flex items-center flex-1"
+      className="
+      flex
+      items-center
+      flex-1
+      relative
+      py-0.5
+    "
     >
       <div
-        className={clsx('flex transition-all items-center border-r-4', { 'border-slate-200': wasClicked || isActive, 'border-transparent': !wasClicked && !isActive })}
+        className={clsx(`
+          flex
+          transition-all
+          items-center`,
+        )}
       >
         {children}
       </div>
-      <div className="not-prose flex relative">
+      <div
+        className={clsx(`
+          flex
+          transition-all
+          self-stretch
+          rounded
+          border-4`,
+          {
+            'border-violet-300': wasClicked || isActive,
+            'border-transparent': !wasClicked && !isActive,
+          })}
+      />
+      <div
+        className={clsx(`
+          right-0
+          -mr-4
+          top-1/2
+          -translate-y-1/2
+          translate-x-full
+          flex
+          space-x-2
+          absolute
+          not-prose
+          items-center
+          cursor-pointer
+          hover:text-slate-600
+          `,
+          {
+            'text-slate-600': wasClicked,
+            'text-slate-400': !wasClicked,
+          })
+        }
+        onMouseOver={() => setIsActive(true)}
+        onMouseLeave={() => setIsActive(false)}
+        onClick={() => setWasClicked(e => !e)}
+      >
         <div
-          className={clsx('left-2 flex space-x-2 absolute items-center cursor-pointer hover:text-slate-600', { 'text-slate-600': wasClicked, 'text-slate-400': !wasClicked })}
-          onMouseOver={() => setIsActive(true)}
-          onMouseLeave={() => setIsActive(false)}
-          onClick={() => setWasClicked(e => !e)}
+          className={clsx(`
+          bg-white
+          p-1
+          transition-all
+          rounded
+          border
+          flex
+          hover:bg-slate-50
+          items-center
+          space-x-1
+          `,
+            {
+              'border-cyan-500 text-cyan-500': wasClicked,
+              'border-slate-300': !wasClicked,
+            }
+          )}
         >
-          <div
-            className={clsx('bg-white border p-1 transition-all rounded border-slate-300 flex hover:bg-slate-50 items-center space-x-1', { 'bg-border border-slate-400': wasClicked })}
-          >
-            <CurlyBraces size="16px" />
-          </div>
-          <Text
-            size={Text.size.S3}
-            text="Show code"
-          />
+          <CurlyBraces size="16px" />
         </div>
+        <Text
+          size={Text.size.S3}
+          text="Show code"
+        />
       </div>
     </div>
   )

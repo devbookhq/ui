@@ -33,7 +33,12 @@ function Columns({
           p-4
           overflow-auto
       ">
-        <div className="prose prose-slate mx-auto">
+        <div className="
+          prose
+          prose-sm
+          prose-slate
+          mx-auto
+        ">
           {first}
         </div>
       </div>
