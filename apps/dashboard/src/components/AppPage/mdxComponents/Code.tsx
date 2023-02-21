@@ -142,8 +142,6 @@ function Code({
     }
   }, [writeFile, children])
 
-  console.log('HIGH', highlightedLines)
-
   return (
     <div
       style={{
@@ -201,7 +199,6 @@ function Code({
         flex-1
         overflow-hidden
         relative
-        bg-yellow-500
       ">
         <CodeEditor
           className={`
