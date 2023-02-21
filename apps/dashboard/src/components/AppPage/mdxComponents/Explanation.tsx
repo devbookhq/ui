@@ -109,7 +109,7 @@ function Explanation({ children, lines }: Props) {
       className="flex items-center space-x-4"
     >
       <div
-        className={clsx('rounded flex transition-all items-center', { 'bg-slate-200': wasClicked || isActive })}
+        className={clsx('rounded px-2 flex transition-all items-center', { 'bg-slate-200': wasClicked || isActive })}
       >
         {children}
       </div>

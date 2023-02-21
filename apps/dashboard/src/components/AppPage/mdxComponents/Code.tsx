@@ -33,10 +33,20 @@ const darkEditorTheme = EditorView.theme({
   '&': { height: '100%', fontSize: '14px' },
   '.cm-gutters': { background: '#282c34' },
   '.cm-scroller': { overflow: 'auto' },
+  '.cm-line': {
+    transitionProperty: 'color, background-color, border-color, text-decoration-color, fill, stroke;',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    transitionDuration: '150ms;',
+  }
 })
 
 const dimLines = EditorView.theme({
-  '.cm-line': { opacity: '0.6' },
+  '.cm-line': {
+    opacity: '0.6',
+    transitionProperty: 'color, background-color, border-color, text-decoration-color, fill, stroke;',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    transitionDuration: '150ms;',
+  },
 })
 
 const transitionAll = `
