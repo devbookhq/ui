@@ -75,7 +75,6 @@ function Explanation({ children, lines }: Props) {
   useEffect(function propagateToAppState() {
     if (id === undefined) return
     const state = wasClicked || isActive
-    console.log(state)
     if (!state) return
 
 
@@ -106,26 +105,32 @@ function Explanation({ children, lines }: Props) {
 
   return (
     <div
-      className="flex items-center space-x-4"
+      className="flex items-center flex-1"
     >
       <div
-        className={clsx('rounded px-2 flex transition-all items-center', { 'bg-slate-200': wasClicked || isActive })}
+        className={clsx('flex transition-all items-center border-r-4', { 'border-slate-200': wasClicked || isActive, 'border-transparent': !wasClicked && !isActive })}
       >
         {children}
       </div>
-      <div
-        className={clsx('cursor-pointer border p-2 transition-all rounded border-slate-300 flex hover:bg-slate-200 items-center space-x-1', { 'bg-slate-200': wasClicked || isActive })}
-        onMouseOver={() => setIsActive(true)}
-        onMouseLeave={() => setIsActive(false)}
-        onClick={() => setWasClicked(e => !e)}
-      >
-        <CurlyBraces size="16px" />
-        <Text
-          size={Text.size.S3}
-          text="Code"
-        />
+      <div className="not-prose flex relative">
+        <div
+          className={clsx('left-2 flex space-x-2 absolute items-center cursor-pointer hover:text-slate-600', { 'text-slate-600': wasClicked, 'text-slate-400': !wasClicked })}
+          onMouseOver={() => setIsActive(true)}
+          onMouseLeave={() => setIsActive(false)}
+          onClick={() => setWasClicked(e => !e)}
+        >
+          <div
+            className={clsx('bg-white border p-1 transition-all rounded border-slate-300 flex hover:bg-slate-50 items-center space-x-1', { 'bg-border border-slate-400': wasClicked })}
+          >
+            <CurlyBraces size="16px" />
+          </div>
+          <Text
+            size={Text.size.S3}
+            text="Show code"
+          />
+        </div>
       </div>
-    </div >
+    </div>
   )
 }
 
