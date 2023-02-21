@@ -35,6 +35,10 @@ const darkEditorTheme = EditorView.theme({
   '.cm-scroller': { overflow: 'auto' },
 })
 
+const dimLines = EditorView.theme({
+  '.cm-line': { opacity: '0.6' },
+})
+
 const transitionAll = `
 transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -42,7 +46,7 @@ transition-duration: 150ms;
 `
 
 const lineHighlightMark = Decoration.line({
-  attributes: { style: 'background: #475569; cursor: pointer;' + transitionAll },
+  attributes: { style: 'background: #475569; opacity: 1; cursor: pointer;' + transitionAll },
 })
 
 const lineIndicateMark = Decoration.line({
@@ -227,7 +231,7 @@ function Code({
           content={children as string}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
-          theme={[oneDark, darkEditorTheme]}
+          theme={[oneDark, darkEditorTheme, highlightedLines.length > 0 ? dimLines : []]}
           isReadOnly={!isEditable}
           onContentChange={writeFile}
           onLineHover={handleLineHover}
