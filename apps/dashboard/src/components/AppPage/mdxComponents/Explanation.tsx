@@ -99,7 +99,7 @@ function Explanation({ children, lines }: Props) {
 
   return (
     <div
-      className={clsx('my-4 px-4 shadow hover:bg-slate-200 rounded transition-all cursor-pointer border', { 'bg-slate-200': isActive })}
+      className={clsx('my-4 px-4 shadow hover:bg-slate-200 rounded cursor-pointer border', { 'bg-slate-200': isActive })}
       onMouseOver={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >

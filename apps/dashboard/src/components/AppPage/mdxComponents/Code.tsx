@@ -1,5 +1,5 @@
 import { CodeEditor } from '@devbookhq/code-editor'
-import { EditorView } from '@codemirror/view'
+import { Decoration, EditorView } from '@codemirror/view'
 import { Loader as LoaderIcon } from 'lucide-react'
 import {
   OutStderrResponse,
@@ -30,9 +30,17 @@ import { notEmpty } from 'utils/notEmpty'
 import { onlyUnique } from 'utils/onlyUnique'
 
 const darkEditorTheme = EditorView.theme({
-  '&': { height: '100%' },
+  '&': { height: '100%', fontSize: '14px' },
   '.cm-gutters': { background: '#282c34' },
   '.cm-scroller': { overflow: 'auto' },
+})
+
+const lineHighlightMark = Decoration.line({
+  attributes: { style: 'background: yellow; cursor: pointer;' },
+})
+
+const lineIndicateMark = Decoration.line({
+  attributes: { style: 'background: #3d424d; cursor: pointer;' },
 })
 
 export interface Props {
@@ -67,7 +75,7 @@ function Code({
     return lines
   }, [appCtx.Explanation])
 
-  const gutterIndicatorLines = useMemo(() => {
+  const indicatedLines = useMemo(() => {
     const lines = Object.values(appCtx.Explanation)
       .filter(notEmpty)
       .flatMap(v => v.highlightLines)
@@ -206,8 +214,10 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
+          highlightDecoration={lineHighlightMark}
+          indicateDecoration={lineIndicateMark}
           highlightedLines={highlightedLines}
-          gutterIndicatorLines={gutterIndicatorLines}
+          indicatedLines={indicatedLines}
           content={children as string}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}

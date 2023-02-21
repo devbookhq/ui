@@ -1,9 +1,12 @@
 import { StateEffect, StateField } from '@codemirror/state'
 import { Decoration, EditorView } from '@codemirror/view'
 
-export const addLineHighlight = StateEffect.define<{ lines: number[] }>()
+export const addLineHighlight = StateEffect.define<{
+  highlight: number[]
+  indicate: number[]
+}>()
 
-export function customLineHighlighter() {
+export function customLineHighlighter({ highlightDecoration, indicateDecoration }: { highlightDecoration?: Decoration, indicateDecoration?: Decoration }) {
   const customLineHighlight = StateField.define({
     create() {
       return Decoration.none
@@ -15,7 +18,11 @@ export function customLineHighlighter() {
           lines = Decoration.none
           if (e.value) {
             lines = lines.update({
-              add: e.value.lines.map(l => lineHighlightMark.range(l)),
+              add: [
+                ...(highlightDecoration ? e.value.highlight.map(l => highlightDecoration.range(l)) : []),
+                ...(indicateDecoration ? e.value.indicate.map(l => indicateDecoration.range(l)) : []),
+              ],
+              sort: true,
             })
           }
         }
@@ -25,9 +32,6 @@ export function customLineHighlighter() {
     provide: (f) => EditorView.decorations.from(f),
   })
 
-  const lineHighlightMark = Decoration.line({
-    attributes: { style: 'background-color: darkblue; cursor: pointer;' },
-  })
 
   return customLineHighlight
 }

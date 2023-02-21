@@ -1,7 +1,7 @@
 import { syntaxHighlighting } from '@codemirror/language'
 import { Diagnostic as CMDiagnostic, forEachDiagnostic } from '@codemirror/lint'
 import { Compartment, EditorState, Prec, Extension } from '@codemirror/state'
-import { EditorView, keymap } from '@codemirror/view'
+import { Decoration, EditorView, keymap } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
 import {
   forwardRef,
@@ -47,8 +47,11 @@ export interface Props {
   openFileInLanguageServer?: boolean
   onCopy?: (selection: string, startLine: number) => void
   highlightedLines?: number[]
-  gutterIndicatorLines?: number[]
+  highlightDecoration?: Decoration
+  indicatedLines?: number[]
+  indicateDecoration?: Decoration
   onLineHover?: (line: number | undefined) => void
+
 }
 
 export interface ExtendedCMDiagnostic extends CMDiagnostic {
@@ -65,6 +68,8 @@ const CodeEditor = forwardRef<Handler, Props>(
   (
     {
       content = '',
+      highlightDecoration,
+      indicateDecoration,
       onContentChange,
       isReadOnly = false,
       supportedLanguages,
@@ -77,7 +82,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       onHoverView,
       autofocus,
       onDiagnosticsChange,
-      gutterIndicatorLines,
+      indicatedLines,
       filename,
       theme = syntaxHighlighting(classHighlighter),
       languageClients,
@@ -133,7 +138,10 @@ const CodeEditor = forwardRef<Handler, Props>(
           editabilityExtensions,
           keymapExtensions,
           state,
-        } = createEditorState(content)
+        } = createEditorState(content, {
+          highlightDecoration,
+          indicateDecoration,
+        })
 
         const view = new EditorView({
           state,
@@ -162,6 +170,8 @@ const CodeEditor = forwardRef<Handler, Props>(
       [
         autofocus,
         content,
+        highlightDecoration,
+        indicateDecoration,
       ],
     )
 
@@ -207,24 +217,33 @@ const CodeEditor = forwardRef<Handler, Props>(
     )
 
     useEffect(
-      function configureHighlightedLines() {
+      function configureHighlightedAndIndicatedLines() {
         if (!editor) return
-        if (!highlightedLines) return
-        if (highlightedLines.length === 0) return
+        if (!highlightedLines && !indicatedLines) return
+        if (highlightedLines?.length === 0 && indicatedLines?.length === 0) return
 
         const state = editor.view.state
-
         editor.view.dispatch({
-          effects: addLineHighlight.of({ lines: highlightedLines.map(l => state.doc.line(l).from) }),
+          effects: addLineHighlight.of({
+            highlight: highlightedLines ? highlightedLines.map(l => state.doc.line(l).from) : [],
+            indicate: indicatedLines ? indicatedLines.filter(l => !highlightedLines?.includes(l)).map(l => state.doc.line(l).from) : [],
+          }),
         })
 
         return () => {
           editor.view.dispatch({
-            effects: addLineHighlight.of({ lines: [] }),
+            effects: addLineHighlight.of({
+              highlight: [],
+              indicate: [],
+            }),
           })
         }
       },
-      [editor, highlightedLines],
+      [
+        editor,
+        highlightedLines,
+        indicatedLines,
+      ],
     )
 
     useEffect(
@@ -312,6 +331,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         const handleMouseMove = (event: MouseEvent) => {
           const state = editor.view.state
           const pos = editor.view.posAtCoords(event)
+          console.log('POS', pos)
           if (pos) {
             let line = state.doc.lineAt(pos).number
             onLineHover(line)

@@ -31,6 +31,7 @@ function AppPage({ content }: Props) {
             min-h-[100vh]
             min-w-[100vw]
             overflow-hidden
+            bg-slate-50
           ">
             <MDXRemote
               {...content.serialized}
