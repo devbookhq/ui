@@ -9,22 +9,33 @@ import {
 } from 'apps/content'
 import path from 'path'
 
+const examplesDirectory = 'examples'
+
 interface PathProps extends ParsedUrlQuery {
-  page: string
+  page: string[]
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
+  const dirpath = path.join(process.cwd(), examplesDirectory)
+  const examplesDir = await fs.readdir(dirpath, { withFileTypes: true })
+  const pages = examplesDir.filter(e => e.isDirectory).map(e => e.name)
+
+  // TODO: Build examples pages for all mdx files, not just index.mdx.
   return {
-    paths: [],
+    paths: pages.map(page => ({ params: { page: [page] } })),
     fallback: true,
   }
 }
 
-const examplesDirectory = 'examples'
-
 // https://github.com/hashicorp/next-mdx-enhanced may be a bette fit for out layout needs
 export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params }) => {
-  const pagePath = params?.page as any as string[]
+  const pagePath = params?.page
+  if (!pagePath) {
+    return {
+      notFound: true
+    }
+  }
+
   const filename = pagePath.length === 1 ? 'index' : pagePath.pop()
 
   const dirpath = path.join(process.cwd(), examplesDirectory)
