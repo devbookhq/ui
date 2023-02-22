@@ -34,7 +34,7 @@ const darkEditorTheme = EditorView.theme({
   '.cm-gutters': { background: '#282c34' },
   '.cm-scroller': { overflow: 'auto' },
   '.cm-line': {
-    transitionProperty: 'color, background-color, border-color, text-decoration-color, fill, stroke;',
+    transitionProperty: 'color;',
     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
   }
@@ -42,8 +42,8 @@ const darkEditorTheme = EditorView.theme({
 
 const dimLines = EditorView.theme({
   '.cm-line': {
-    opacity: '0.6',
-    transitionProperty: 'color, background-color, border-color, text-decoration-color, fill, stroke;',
+    opacity: '0.5',
+    transitionProperty: 'color;',
     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
   },
@@ -56,12 +56,12 @@ transition-duration: 150ms;
 `
 
 const lineHighlightMark = Decoration.line({
-  attributes: { style: 'background: #475569; opacity: 1; cursor: pointer;' + transitionAll },
+  attributes: { style: 'opacity: 1; cursor: pointer;' + transitionAll },
 })
 
-const lineIndicateMark = Decoration.line({
-  attributes: { style: 'background: #334155; cursor: pointer;' + transitionAll },
-})
+// const lineIndicateMark = Decoration.line({
+//   attributes: { style: 'background: #334155; cursor: pointer;' + transitionAll },
+// })
 
 export interface Props {
   file?: string
@@ -234,10 +234,10 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
+          highlightGutter
+          gutterHighlightLines={indicatedLines}
           highlightDecoration={lineHighlightMark}
-          indicateDecoration={lineIndicateMark}
           highlightedLines={highlightedLines}
-          indicatedLines={indicatedLines}
           content={children as string}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
