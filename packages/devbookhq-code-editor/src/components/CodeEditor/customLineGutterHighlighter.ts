@@ -1,12 +1,22 @@
-import { gutter, gutterLineClass, GutterMarker } from "@codemirror/view"
+import { gutterLineClass, GutterMarker } from "@codemirror/view"
 import { StateField, StateEffect, RangeSet } from "@codemirror/state"
 
 export const addGutterHighlight = StateEffect.define<{
   highlight: number[]
 }>()
 
+const baseClass = 'cm-highlight-gutter-line'
+
+const firstHighlightMarker = new class extends GutterMarker {
+  elementClass = baseClass + ' ' + 'cm-highlight-gutter-line-first'
+}
+
 const highlightMarker = new class extends GutterMarker {
-  elementClass = 'cm-highlight-gutter-line'
+  elementClass = baseClass
+}
+
+const lastHighlightMarker = new class extends GutterMarker {
+  elementClass = baseClass + ' ' + 'cm-highlight-gutter-line-first'
 }
 
 export function customLineGutterHighlighter() {
@@ -20,7 +30,9 @@ export function customLineGutterHighlighter() {
           set = RangeSet.empty
           if (e.value) {
             set = set.update({
-              add: e.value.highlight.map(l => highlightMarker.range(l)),
+              add:
+
+                e.value.highlight.map(l => highlightMarker.range(l)),
               sort: true,
             })
           }
@@ -30,12 +42,5 @@ export function customLineGutterHighlighter() {
     }
   })
 
-  return [
-    field,
-    gutter({
-      class: 'cm-highlight-gutter',
-      markers: v => v.state.field(field),
-      initialSpacer: () => highlightMarker,
-    }),
-  ]
+  return [field]
 }

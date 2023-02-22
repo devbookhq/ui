@@ -21,17 +21,20 @@ import path from 'path-browserify'
 import { rootdir } from 'utils/constants'
 import Text from 'components/typography/Text'
 import { supportedLanguages } from 'apps/languages'
+import { notEmpty } from 'utils/notEmpty'
+import { onlyUnique } from 'utils/onlyUnique'
 
 import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
 import { useAppContext } from '../AppContext'
-import { notEmpty } from 'utils/notEmpty'
-import { onlyUnique } from 'utils/onlyUnique'
+
+const gutterHighlightRadius = '8px'
 
 const darkEditorTheme = EditorView.theme({
   '&': { height: '100%', fontSize: '14px' },
-  '.cm-gutters': { background: '#282c34' },
+  '.cm-gutters': { background: '#282c34', paddingLeft: '4px' },
+  '.cm-lineNumbers .cm-gutterElement': { paddingRight: '12px' },
   '.cm-scroller': { overflow: 'auto' },
   '.cm-line': {
     transitionProperty: 'color;',
@@ -42,11 +45,23 @@ const darkEditorTheme = EditorView.theme({
     background: '#3d424d',
     cursor: 'pointer'
   },
+  '.cm-gutter-lint .cm-highlight-gutter-line-first': {
+    borderTopLeftRadius: gutterHighlightRadius,
+  },
+  '.cm-gutter-lint .cm-highlight-gutter-line-last': {
+    borderBottomLeftRadius: gutterHighlightRadius,
+  },
+  '.cm-lineNumbers .cm-highlight-gutter-line-last': {
+    borderBottomRightRadius: gutterHighlightRadius,
+  },
+  '.cm-lineNumbers .cm-highlight-gutter-line-first': {
+    borderTopRightRadius: gutterHighlightRadius,
+  },
 })
 
 const dimLines = EditorView.theme({
   '.cm-line': {
-    opacity: '0.5',
+    opacity: '0.4',
     transitionProperty: 'color;',
     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
@@ -54,7 +69,7 @@ const dimLines = EditorView.theme({
 })
 
 const transitionAll = `
-transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+transition-property: color;
 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 transition-duration: 150ms;
 `
