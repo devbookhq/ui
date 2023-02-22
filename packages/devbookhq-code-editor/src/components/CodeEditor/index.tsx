@@ -1,7 +1,7 @@
 import { syntaxHighlighting } from '@codemirror/language'
 import { Diagnostic as CMDiagnostic, forEachDiagnostic } from '@codemirror/lint'
 import { Compartment, EditorState, Prec, Extension } from '@codemirror/state'
-import { Decoration, EditorView, keymap } from '@codemirror/view'
+import { EditorView, keymap } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
 import {
   forwardRef,
@@ -48,13 +48,16 @@ export interface Props {
    */
   openFileInLanguageServer?: boolean
   onCopy?: (selection: string, startLine: number) => void
+  /**
+   * Add class to these lines so they can be styled
+   */
   highlightedLines?: number[]
-  highlightDecoration?: Decoration
+  /**
+   * Add class to these lines so they can be styled like `highlightedLines`. 
+   * If a lines is both indicated and highlighted the highlight class takes precedence.
+   */
   indicatedLines?: number[]
-  indicateDecoration?: Decoration
-  gutterHighlightLines?: number[]
-  gutterIndicateLines?: number[]
-  onLineHover?: (line: number | undefined) => void
+  onGutterHover?: (line: number | undefined) => void
 }
 
 export interface ExtendedCMDiagnostic extends CMDiagnostic {
@@ -71,10 +74,6 @@ const CodeEditor = forwardRef<Handler, Props>(
   (
     {
       content = '',
-      highlightDecoration,
-      indicateDecoration,
-      gutterHighlightLines,
-      gutterIndicateLines,
       onContentChange,
       isReadOnly = false,
       supportedLanguages,
@@ -83,7 +82,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       className = '',
       handleRun,
       highlightedLines,
-      onLineHover,
+      onGutterHover,
       onHoverView,
       autofocus,
       onDiagnosticsChange,
@@ -143,10 +142,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           editabilityExtensions,
           keymapExtensions,
           state,
-        } = createEditorState(content, {
-          highlightDecoration,
-          indicateDecoration,
-        })
+        } = createEditorState(content)
 
         const view = new EditorView({
           state,
@@ -175,8 +171,6 @@ const CodeEditor = forwardRef<Handler, Props>(
       [
         autofocus,
         content,
-        highlightDecoration,
-        indicateDecoration,
       ],
     )
 
@@ -222,17 +216,17 @@ const CodeEditor = forwardRef<Handler, Props>(
     )
 
     useEffect(
-      function configureHighlightedGutterLines() {
+      function configureHighlightGutter() {
         if (!editor) return
-        if (!gutterHighlightLines && !gutterIndicateLines) return
+        if (!highlightedLines && !indicatedLines) return
 
         // Sort the lines and then aggregate them to sequences.
-        const highlightSequences = gutterHighlightLines
-          ? findSequences(gutterHighlightLines.slice().sort((a, b) => a - b))
+        const highlightSequences = highlightedLines
+          ? findSequences(highlightedLines.slice().sort((a, b) => a - b))
           : []
         // Filter out the highlighted lines, sort the lines and then aggregate them to sequences.
-        const indicateSequences = gutterIndicateLines
-          ? findSequences(gutterIndicateLines.filter(l => !gutterHighlightLines?.includes(l)).slice().sort((a, b) => a - b))
+        const indicateSequences = indicatedLines
+          ? findSequences(indicatedLines.filter(l => !highlightedLines?.includes(l)).slice().sort((a, b) => a - b))
           : []
         editor.view.dispatch({
           effects: addGutterHighlight.of({
@@ -243,22 +237,34 @@ const CodeEditor = forwardRef<Handler, Props>(
       },
       [
         editor,
-        gutterHighlightLines,
-        gutterIndicateLines,
+        highlightedLines,
+        indicatedLines,
       ],
     )
 
     useEffect(
-      function configureHighlightedAndIndicatedLines() {
+      function configureHighlightLines() {
         if (!editor) return
         if (!highlightedLines && !indicatedLines) return
 
         const state = editor.view.state
+
+        const dimLines: number[] = []
+
+        if (highlightedLines && highlightedLines?.length > 0) {
+          for (let i = 1; i <= state.doc.lines; i++) {
+            if (!highlightedLines.includes(i)) {
+              dimLines.push(i)
+            }
+          }
+        }
+
         editor.view.dispatch({
           effects: addLineHighlight.of({
-            highlight: highlightedLines ? highlightedLines.map(l => state.doc.line(l).from) : [],
-            // Fitlers out the highlighted lines
-            indicate: indicatedLines ? indicatedLines.filter(l => !highlightedLines?.includes(l)).map(l => state.doc.line(l).from) : [],
+            highlight: highlightedLines?.map(l => state.doc.line(l).from) || [],
+            // Filters out the highlighted lines
+            indicate: indicatedLines?.filter(l => !highlightedLines?.includes(l)).map(l => state.doc.line(l).from) || [],
+            dim: dimLines.map(l => state.doc.line(l).from),
           }),
         })
       },
@@ -347,23 +353,23 @@ const CodeEditor = forwardRef<Handler, Props>(
     )
 
     useEffect(
-      function configureLineHoverChangeHandler() {
+      function configureGutterHoverChangeHandler() {
         if (!editor) return
-        if (!onLineHover) return
+        if (!onGutterHover) return
 
         const handleMouseMove = (event: MouseEvent) => {
           const state = editor.view.state
           const pos = editor.view.posAtCoords(event)
           if (pos) {
             let line = state.doc.lineAt(pos).number
-            onLineHover(line)
+            onGutterHover(line)
           } else {
-            onLineHover(undefined)
+            onGutterHover(undefined)
           }
         }
 
         const handleMouseLeave = (_: MouseEvent) => {
-          onLineHover(undefined)
+          onGutterHover(undefined)
         }
 
         const gutters = editor.view.dom.getElementsByClassName('cm-gutters').item(0) as HTMLElement
@@ -376,7 +382,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           gutters.removeEventListener('mouseleave', handleMouseLeave)
         }
       },
-      [editor, onLineHover],
+      [editor, onGutterHover],
     )
 
     useEffect(

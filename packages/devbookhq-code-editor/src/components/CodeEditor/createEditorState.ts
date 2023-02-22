@@ -18,7 +18,6 @@ import {
   highlightSpecialChars,
   keymap,
   lineNumbers,
-  Decoration,
 } from '@codemirror/view'
 import { customLineGutterHighlighter } from './customLineGutterHighlighter'
 import { customLineHighlighter } from './customLineHighligher'
@@ -28,10 +27,7 @@ const disableSpellchecking = {
   spellcheck: 'false',
 }
 
-function createEditorState(content: string, style: {
-  highlightDecoration?: Decoration,
-  indicateDecoration?: Decoration,
-}) {
+function createEditorState(content: string) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
@@ -51,7 +47,7 @@ function createEditorState(content: string, style: {
       lineNumbers(),
       bracketMatching(),
       highlightSpecialChars(),
-      customLineHighlighter(style),
+      customLineHighlighter(),
       history(),
       customLineGutterHighlighter(),
       EditorState.tabSize.of(2),

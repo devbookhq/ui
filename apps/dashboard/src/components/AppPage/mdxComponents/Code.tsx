@@ -1,5 +1,5 @@
 import { CodeEditor } from '@devbookhq/code-editor'
-import { Decoration, EditorView } from '@codemirror/view'
+import { EditorView } from '@codemirror/view'
 import { Loader as LoaderIcon } from 'lucide-react'
 import {
   OutStderrResponse,
@@ -31,30 +31,25 @@ import { useAppContext } from '../AppContext'
 
 const gutterHighlightRadius = '8px'
 
-const darkEditorTheme = EditorView.theme({
+const customTheme = EditorView.theme({
   '&': { height: '100%', fontSize: '14px' },
   '.cm-gutters': { background: '#282c34', paddingLeft: '4px' },
   '.cm-lineNumbers .cm-gutterElement': { paddingRight: '12px' },
   '.cm-scroller': { overflow: 'auto' },
-  '.cm-line': {
-    // transitionProperty: 'all;',
-    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    // transitionDuration: '150ms;',
-  },
   '.cm-highlight-gutter-line': {
     background: '#b3d1fb',
+    transformOrigin: 'center left;',
     cursor: 'pointer',
-    // scale: '1.05',
-    // transitionProperty: 'all;',
-    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    // transitionDuration: '150ms;',
+    transitionProperty: 'opacity;',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    transitionDuration: '150ms;',
   },
   '.cm-indicate-gutter-line': {
     background: '#3d424d',
     cursor: 'pointer',
-    // transitionProperty: 'all;',
-    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    // transitionDuration: '150ms;',
+    transitionProperty: 'opacity;',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    transitionDuration: '150ms;',
   },
   '.cm-gutter-lint .cm-custom-gutter-line-first': {
     borderTopLeftRadius: gutterHighlightRadius,
@@ -68,28 +63,32 @@ const darkEditorTheme = EditorView.theme({
   '.cm-lineNumbers .cm-custom-gutter-line-first': {
     borderTopRightRadius: gutterHighlightRadius,
   },
-})
-
-const dimLines = EditorView.theme({
+  '.cm-highlight-line': {
+    scale: '1.05;',
+    opacity: '1;',
+    cursor: 'pointer',
+    transitionProperty: 'opacity height width;',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    transitionDuration: '150ms;',
+    transformOrigin: 'center left;',
+  },
   '.cm-line': {
+    transitionProperty: 'opacity height width;',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    transitionDuration: '150ms;',
+    transformOrigin: 'center left;',
+  },
+  '.cm-dim-line': {
     opacity: '0.4',
-    scale: '0.95',
-    transitionProperty: 'all;',
-    transitionTimingFunction: 'linear;',
+    scale: '0.95;',
+    transitionProperty: 'opacity height width;',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
     transformOrigin: 'center left;',
   },
 })
 
-const transitionAll = `
-transition-property: all;
-transition-timing-function: linear;
-transition-duration: 150ms;
-`
-
-const lineHighlightMark = Decoration.line({
-  attributes: { style: 'scale: 1.15; opacity: 1; cursor: pointer; transform-origin: center left;' + transitionAll },
-})
+const theme = [oneDark, customTheme]
 
 export interface Props {
   file?: string
@@ -264,17 +263,15 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
-          gutterHighlightLines={highlightedLines}
-          gutterIndicateLines={indicatedLines}
-          highlightDecoration={lineHighlightMark}
+          indicatedLines={indicatedLines}
           highlightedLines={highlightedLines}
           content={children as string}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
-          theme={[oneDark, darkEditorTheme, highlightedLines.length > 0 ? dimLines : []]}
+          theme={theme}
           isReadOnly={!isEditable}
           onContentChange={writeFile}
-          onLineHover={handleLineHover}
+          onGutterHover={handleLineHover}
         />
       </div>
       {isRunnable &&

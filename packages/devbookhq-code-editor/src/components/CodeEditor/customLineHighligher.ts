@@ -4,9 +4,29 @@ import { Decoration, EditorView } from '@codemirror/view'
 export const addLineHighlight = StateEffect.define<{
   highlight: number[]
   indicate: number[]
+  dim: number[]
 }>()
 
-export function customLineHighlighter({ highlightDecoration, indicateDecoration }: { highlightDecoration?: Decoration, indicateDecoration?: Decoration }) {
+
+const dimDecoration = Decoration.line({
+  attributes: {
+    class: 'cm-dim-line',
+  },
+})
+
+const highlightDecoration = Decoration.line({
+  attributes: {
+    class: 'cm-highlight-line',
+  },
+})
+
+const indicateDecoration = Decoration.line({
+  attributes: {
+    class: 'cm-highlight-line',
+  },
+})
+
+export function customLineHighlighter() {
   const customLineHighlight = StateField.define({
     create() {
       return Decoration.none
@@ -19,8 +39,9 @@ export function customLineHighlighter({ highlightDecoration, indicateDecoration 
           if (e.value) {
             lines = lines.update({
               add: [
-                ...(highlightDecoration ? e.value.highlight.map(l => highlightDecoration.range(l)) : []),
-                ...(indicateDecoration ? e.value.indicate.map(l => indicateDecoration.range(l)) : []),
+                ...e.value.highlight.map(l => highlightDecoration.range(l)),
+                ...e.value.indicate.map(l => indicateDecoration.range(l)),
+                ...e.value.dim.map(l => dimDecoration.range(l)),
               ],
               sort: true,
             })
