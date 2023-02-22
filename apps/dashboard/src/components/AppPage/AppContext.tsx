@@ -13,6 +13,7 @@ interface AppContextProviderProps {
 export interface AppContext {
   Code: {
     hoveredLine?: number
+    output?: string[]
   }
   Explanation: {
     [id: number]: {

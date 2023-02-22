@@ -65,16 +65,16 @@ const customTheme = EditorView.theme({
     cursor: 'pointer',
     ...transition,
   },
-  '.cm-gutter-lint .cm-custom-gutter-line-first': {
+  '.cm-gutter-lint .cm-first-gutter-line': {
     borderTopLeftRadius: gutterHighlightRadius,
   },
-  '.cm-gutter-lint .cm-custom-gutter-line-last': {
+  '.cm-gutter-lint .cm-last-gutter-line': {
     borderBottomLeftRadius: gutterHighlightRadius,
   },
-  '.cm-lineNumbers .cm-custom-gutter-line-last': {
+  '.cm-lineNumbers .cm-last-gutter-line': {
     borderBottomRightRadius: gutterHighlightRadius,
   },
-  '.cm-lineNumbers .cm-custom-gutter-line-first': {
+  '.cm-lineNumbers .cm-first-gutter-line': {
     borderTopRightRadius: gutterHighlightRadius,
   },
   '.cm-dim-gutter-line': {
@@ -143,7 +143,10 @@ function Code({
 
   const appendOutput = useCallback((out: OutStdoutResponse | OutStderrResponse) => {
     setOutput(arr => [...arr, out])
-  }, [])
+    setAppCtx(a => {
+      a.Code.output = a.Code.output ? [...a.Code.output, out.line] : [out.line]
+    })
+  }, [setAppCtx])
 
   const run = useCallback(() => {
     if (!onRun) return
@@ -151,6 +154,9 @@ function Code({
 
     const cmd = onRun(children as string)
     setOutput([])
+    setAppCtx(a => {
+      a.Code.output = []
+    })
     session.process?.start({
       cmd,
       onStdout: appendOutput,
@@ -171,7 +177,13 @@ function Code({
     session,
     children,
     appendOutput,
+    setAppCtx,
   ])
+
+
+  useEffect(function autorun() {
+    run()
+  }, [run])
 
   const handleCopyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(children as string)

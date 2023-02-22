@@ -1,9 +1,11 @@
 import clsx from 'clsx'
 import { CurlyBraces } from 'lucide-react'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
+import debounce from 'lodash.debounce'
 
 import { parseNumericRange } from 'utils/parseNumericRange'
 import Text from 'components/typography/Text'
+
 import { useAppContext } from '../AppContext'
 
 export interface Props {
@@ -16,6 +18,8 @@ export interface Props {
 
 let idCounter = 0
 
+const hoverTimeout = 550
+
 function Highlight({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
   const [appCtx, setAppCtx] = useAppContext()
@@ -27,22 +31,29 @@ function Highlight({ children, lines }: Props) {
     setID(idCounter++)
   }, [])
 
+  const debouncedHover = useMemo(() => debounce((active: boolean) => setIsActive(active)
+    , hoverTimeout, {
+    leading: false,
+    trailing: true,
+    maxWait: 650,
+  }), [setIsActive])
+
   useEffect(function handleEditorHover() {
     if (!parsedLines) return
-    if (!appCtx.Code.hoveredLine) return
     if (parsedLines.length === 0) return
 
-    const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
-    if (!hasOverlap) return
-
-    setIsActive(true)
-    return () => {
+    if (!appCtx.Code.hoveredLine || !parsedLines) {
       setIsActive(false)
+      debouncedHover(false)
+      debouncedHover.flush()
+    } else {
+      const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
+      debouncedHover(hasOverlap)
     }
   }, [
     appCtx.Code.hoveredLine,
     parsedLines,
-    setIsActive,
+    debouncedHover,
   ])
 
   useEffect(function propagateToAppState() {
@@ -116,6 +127,7 @@ function Highlight({ children, lines }: Props) {
       flex-1
       relative
       my-0.5
+      py-1
     "
     >
       <div
@@ -125,20 +137,20 @@ function Highlight({ children, lines }: Props) {
           border-transparent
           border
           z-10
+          flex-col
+          flex-1
           rounded-md
-          items-center`,
+          items-stretch`,
         )}
       >
         {children}
       </div>
       <div className={clsx(
         `absolute
-        top-0
-        -right-2
-        rounded
-        bottom-0
-        -left-2
-        `,
+        transition-all
+        inset-y-0
+        -inset-x-2
+        rounded`,
         {
           'bg-slate-200': wasClicked || isActive,
         },
@@ -191,7 +203,7 @@ function Highlight({ children, lines }: Props) {
           <CurlyBraces size="16px" />
         </div>
         <Text
-          className="group-hover:text-cyan-200"
+          className="group-hover:text-cyan-200 transition-all"
           size={Text.size.S3}
           text="Show code"
         />

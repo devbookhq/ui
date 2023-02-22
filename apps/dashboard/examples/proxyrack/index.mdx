@@ -14,12 +14,17 @@ HTTPS and SOCKS protocols are enabled on this service.
 <Highlight lines="3">
 **Geo-target a country by adjusting the username.** With `'yourUsername-country-US'` we are geo-targeting US IPs, but you can change this to another country of your choosing.
 </Highlight>
+<Output type="json" position={1} label="Proxied IP address" noContentLabel="Waiting for data" />
 
 
 <Highlight lines="21-30">
 To make sure this works properly **check by making a request to the `/stats` API endpoint**. Under `requestParams` you will see this reflected as `country`.
 </Highlight>
+<Output type="json" position={2} expandPaths={['$','$.requestParams','$.requestParams.country']} label="Information about the proxy" noContentLabel="Waiting for data" />
+
+
 </div>
+
 
 <Code file="index.js" onRun={() => "node /code/index.js"}>
 {`const request = require('request');

@@ -47,9 +47,7 @@ function createEditorState(content: string) {
       lineNumbers(),
       bracketMatching(),
       highlightSpecialChars(),
-      customLineHighlighter(),
       history(),
-      customLineGutterHighlighter(),
       EditorState.tabSize.of(2),
       // drawSelection(),
       dropCursor(),
@@ -72,6 +70,8 @@ function createEditorState(content: string) {
       languageServiceExtensions.of([]),
       contentHandlingExtensions.of([]),
       languageExtensions.of([]),
+      customLineHighlighter(),
+      customLineGutterHighlighter(),
     ],
   })
 

@@ -31,6 +31,7 @@ function Columns({
           max-w-[calc(100%-5/12*100vw)]
           max-h-full
           p-4
+          scroller
           overflow-auto
       ">
         <div className="

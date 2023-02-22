@@ -42,9 +42,8 @@ export const addGutterHighlight = StateEffect.define<{
 const highlightClass = 'cm-highlight-gutter-line'
 const indicateClass = 'cm-indicate-gutter-line'
 
-const baseClass = 'cm-custom-gutter-line'
-const firstClass = `${baseClass}-first`
-const lastClass = `${baseClass}-last`
+const firstClass = 'cm-first-gutter-line'
+const lastClass = 'cm-last-gutter-line'
 
 /**
  * Marks gutter elements that first in the sequence
