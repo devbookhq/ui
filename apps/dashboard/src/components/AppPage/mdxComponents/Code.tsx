@@ -37,17 +37,24 @@ const darkEditorTheme = EditorView.theme({
   '.cm-lineNumbers .cm-gutterElement': { paddingRight: '12px' },
   '.cm-scroller': { overflow: 'auto' },
   '.cm-line': {
-    transitionProperty: 'all;',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    transitionDuration: '150ms;',
+    // transitionProperty: 'all;',
+    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    // transitionDuration: '150ms;',
   },
   '.cm-highlight-gutter-line': {
     background: '#b3d1fb',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    // scale: '1.05',
+    // transitionProperty: 'all;',
+    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    // transitionDuration: '150ms;',
   },
   '.cm-indicate-gutter-line': {
     background: '#3d424d',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    // transitionProperty: 'all;',
+    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    // transitionDuration: '150ms;',
   },
   '.cm-gutter-lint .cm-custom-gutter-line-first': {
     borderTopLeftRadius: gutterHighlightRadius,
@@ -66,20 +73,20 @@ const darkEditorTheme = EditorView.theme({
 const dimLines = EditorView.theme({
   '.cm-line': {
     opacity: '0.4',
-    transitionProperty: 'all;',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    transitionDuration: '150ms;',
+    // transitionProperty: 'all;',
+    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+    // transitionDuration: '150ms;',
   },
 })
 
 const transitionAll = `
 transition-property: all;
-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+transition-timing-function: linear;
 transition-duration: 150ms;
 `
 
 const lineHighlightMark = Decoration.line({
-  attributes: { style: 'opacity: 1; cursor: pointer;' + transitionAll },
+  attributes: { style: 'scale: 1.05; opacity: 1; cursor: pointer; transform-origin: center left;' },
 })
 
 export interface Props {
