@@ -5,11 +5,11 @@ import dynamic from 'next/dynamic'
 import {
   a,
   code,
-  h1,
-  h2,
-  h3,
+  // h1,
+  // h2,
+  // h3,
   hr,
-  p,
+  // p,
   strong,
 } from './base'
 import Pre from './Pre'
