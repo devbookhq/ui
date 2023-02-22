@@ -129,7 +129,7 @@ function Highlight({ children, lines }: Props) {
           rounded-md
           items-center`,
           {
-            'border-cyan-500/40': wasClicked || isActive,
+            'border-cyan-100': wasClicked || isActive,
           }
         )}
       >

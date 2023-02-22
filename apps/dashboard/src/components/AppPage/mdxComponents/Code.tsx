@@ -37,16 +37,16 @@ const darkEditorTheme = EditorView.theme({
   '.cm-lineNumbers .cm-gutterElement': { paddingRight: '12px' },
   '.cm-scroller': { overflow: 'auto' },
   '.cm-line': {
-    transitionProperty: 'color;',
+    transitionProperty: 'all;',
     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
   },
   '.cm-highlight-gutter-line': {
-    background: '#3d424d',
+    background: '#b3d1fb',
     cursor: 'pointer'
   },
-  '.cm-indicated-gutter-line': {
-    background: 'yellow',
+  '.cm-indicate-gutter-line': {
+    background: '#3d424d',
     cursor: 'pointer'
   },
   '.cm-gutter-lint .cm-custom-gutter-line-first': {
@@ -66,14 +66,14 @@ const darkEditorTheme = EditorView.theme({
 const dimLines = EditorView.theme({
   '.cm-line': {
     opacity: '0.4',
-    transitionProperty: 'color;',
+    transitionProperty: 'all;',
     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
   },
 })
 
 const transitionAll = `
-transition-property: color;
+transition-property: all;
 transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 transition-duration: 150ms;
 `
@@ -255,7 +255,7 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
-          gutterHighlightLines={indicatedLines}
+          gutterHighlightLines={highlightedLines}
           gutterIndicateLines={indicatedLines}
           highlightDecoration={lineHighlightMark}
           highlightedLines={highlightedLines}

@@ -226,8 +226,14 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!editor) return
         if (!gutterHighlightLines && !gutterIndicateLines) return
 
-        const highlightSequences = gutterHighlightLines ? findSequences(gutterHighlightLines.slice().sort((a, b) => a - b)) : []
-        const indicateSequences = gutterIndicateLines ? findSequences(gutterIndicateLines.slice().sort((a, b) => a - b)) : []
+        // Sort the lines and then aggregate them to sequences.
+        const highlightSequences = gutterHighlightLines
+          ? findSequences(gutterHighlightLines.slice().sort((a, b) => a - b))
+          : []
+        // Filter out the highlighted lines, sort the lines and then aggregate them to sequences.
+        const indicateSequences = gutterIndicateLines
+          ? findSequences(gutterIndicateLines.filter(l => !gutterHighlightLines?.includes(l)).slice().sort((a, b) => a - b))
+          : []
         editor.view.dispatch({
           effects: addGutterHighlight.of({
             highlightSequences,
@@ -251,6 +257,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         editor.view.dispatch({
           effects: addLineHighlight.of({
             highlight: highlightedLines ? highlightedLines.map(l => state.doc.line(l).from) : [],
+            // Fitlers out the highlighted lines
             indicate: indicatedLines ? indicatedLines.filter(l => !highlightedLines?.includes(l)).map(l => state.doc.line(l).from) : [],
           }),
         })
