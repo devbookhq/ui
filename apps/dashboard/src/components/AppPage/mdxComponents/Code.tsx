@@ -45,16 +45,20 @@ const darkEditorTheme = EditorView.theme({
     background: '#3d424d',
     cursor: 'pointer'
   },
-  '.cm-gutter-lint .cm-highlight-gutter-line-first': {
+  '.cm-indicated-gutter-line': {
+    background: 'yellow',
+    cursor: 'pointer'
+  },
+  '.cm-gutter-lint .cm-custom-gutter-line-first': {
     borderTopLeftRadius: gutterHighlightRadius,
   },
-  '.cm-gutter-lint .cm-highlight-gutter-line-last': {
+  '.cm-gutter-lint .cm-custom-gutter-line-last': {
     borderBottomLeftRadius: gutterHighlightRadius,
   },
-  '.cm-lineNumbers .cm-highlight-gutter-line-last': {
+  '.cm-lineNumbers .cm-custom-gutter-line-last': {
     borderBottomRightRadius: gutterHighlightRadius,
   },
-  '.cm-lineNumbers .cm-highlight-gutter-line-first': {
+  '.cm-lineNumbers .cm-custom-gutter-line-first': {
     borderTopRightRadius: gutterHighlightRadius,
   },
 })
@@ -252,6 +256,7 @@ function Code({
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
           gutterHighlightLines={indicatedLines}
+          gutterIndicateLines={indicatedLines}
           highlightDecoration={lineHighlightMark}
           highlightedLines={highlightedLines}
           content={children as string}

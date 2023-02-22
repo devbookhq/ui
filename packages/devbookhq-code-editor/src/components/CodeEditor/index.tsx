@@ -53,6 +53,7 @@ export interface Props {
   indicatedLines?: number[]
   indicateDecoration?: Decoration
   gutterHighlightLines?: number[]
+  gutterIndicateLines?: number[]
   onLineHover?: (line: number | undefined) => void
 }
 
@@ -73,6 +74,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       highlightDecoration,
       indicateDecoration,
       gutterHighlightLines,
+      gutterIndicateLines,
       onContentChange,
       isReadOnly = false,
       supportedLanguages,
@@ -222,18 +224,21 @@ const CodeEditor = forwardRef<Handler, Props>(
     useEffect(
       function configureHighlightedGutterLines() {
         if (!editor) return
-        if (!gutterHighlightLines) return
+        if (!gutterHighlightLines && !gutterIndicateLines) return
 
-        const sequences = findSequences(gutterHighlightLines.slice().sort((a, b) => a - b))
+        const highlightSequences = gutterHighlightLines ? findSequences(gutterHighlightLines.slice().sort((a, b) => a - b)) : []
+        const indicateSequences = gutterIndicateLines ? findSequences(gutterIndicateLines.slice().sort((a, b) => a - b)) : []
         editor.view.dispatch({
           effects: addGutterHighlight.of({
-            sequences,
+            highlightSequences,
+            indicateSequences,
           }),
         })
       },
       [
         editor,
         gutterHighlightLines,
+        gutterIndicateLines,
       ],
     )
 
@@ -354,11 +359,14 @@ const CodeEditor = forwardRef<Handler, Props>(
           onLineHover(undefined)
         }
 
-        editor.view.dom.addEventListener('mousemove', handleMouseMove)
-        editor.view.dom.addEventListener('mouseleave', handleMouseLeave)
+        const gutters = editor.view.dom.getElementsByClassName('cm-gutters').item(0) as HTMLElement
+        if (!gutters) return
+
+        gutters.addEventListener('mousemove', handleMouseMove)
+        gutters.addEventListener('mouseleave', handleMouseLeave)
         return () => {
-          editor.view.dom.removeEventListener('mousemove', handleMouseMove)
-          editor.view.dom.removeEventListener('mouseleave', handleMouseLeave)
+          gutters.removeEventListener('mousemove', handleMouseMove)
+          gutters.removeEventListener('mouseleave', handleMouseLeave)
         }
       },
       [editor, onLineHover],
