@@ -38,9 +38,9 @@ const darkEditorTheme = EditorView.theme({
     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
   },
-  ".cm-highlight-gutter-line": {
-    background: "#3d424d",
-    cursor: "pointer"
+  '.cm-highlight-gutter-line': {
+    background: '#3d424d',
+    cursor: 'pointer'
   }
 })
 
@@ -234,7 +234,6 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
-          highlightGutter
           gutterHighlightLines={indicatedLines}
           highlightDecoration={lineHighlightMark}
           highlightedLines={highlightedLines}
@@ -245,6 +244,7 @@ function Code({
           isReadOnly={!isEditable}
           onContentChange={writeFile}
           onLineHover={handleLineHover}
+          highlightGutter
         />
       </div>
       {isRunnable &&
