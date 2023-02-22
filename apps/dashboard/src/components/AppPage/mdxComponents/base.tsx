@@ -66,9 +66,6 @@ export function li(p: Props<HTMLLIElement, LiHTMLAttributes<HTMLLIElement>>) {
 export function p(p: Props<HTMLParagraphElement>) {
   return (
     <p className="
-      text-slate-600
-      text-base
-      leading-7
     ">
       {p.children}
     </p>
@@ -83,13 +80,12 @@ export function code(p: Props<HTMLElement>) {
   return (
     <code className="
       rounded
-      mx-[2px]
       py-px
+      font-normal
       px-1
-      text-indigo-100
       text-sm
-      font-medium
-      bg-slate-500
+      bg-slate-300
+      text-slate-800
       whitespace-nowrap
       before:content-['']
       after:content-['']

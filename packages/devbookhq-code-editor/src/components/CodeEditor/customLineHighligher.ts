@@ -22,7 +22,7 @@ const highlightDecoration = Decoration.line({
 
 const indicateDecoration = Decoration.line({
   attributes: {
-    class: 'cm-highlight-line',
+    class: 'cm-indicate-line',
   },
 })
 

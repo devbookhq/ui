@@ -36,6 +36,7 @@ function getHighlightMarker(position: number, length: number) {
 export const addGutterHighlight = StateEffect.define<{
   highlightSequences: number[][]
   indicateSequences: number[][]
+  dim: number[]
 }>()
 
 const highlightClass = 'cm-highlight-gutter-line'
@@ -45,7 +46,14 @@ const baseClass = 'cm-custom-gutter-line'
 const firstClass = `${baseClass}-first`
 const lastClass = `${baseClass}-last`
 
-// Indicate markers
+/**
+ * Marks gutter elements that first in the sequence
+ */
+const dimGutterMarker = new class extends GutterMarker {
+  elementClass = 'cm-dim-gutter-line'
+}
+
+// Indication markers
 
 /**
  * Marks gutter elements that first in the sequence
@@ -120,6 +128,7 @@ export function customLineGutterHighlighter() {
             set = set.update({
               sort: true,
               add: [
+                ...e.value.dim.map(l => dimGutterMarker.range(l)),
                 ...e.value.highlightSequences.flatMap(s => {
                   return s.map((l, i, a) => {
                     const marker = getHighlightMarker(i, a.length)

@@ -216,39 +216,11 @@ const CodeEditor = forwardRef<Handler, Props>(
     )
 
     useEffect(
-      function configureHighlightGutter() {
-        if (!editor) return
-        if (!highlightedLines && !indicatedLines) return
-
-        // Sort the lines and then aggregate them to sequences.
-        const highlightSequences = highlightedLines
-          ? findSequences(highlightedLines.slice().sort((a, b) => a - b))
-          : []
-        // Filter out the highlighted lines, sort the lines and then aggregate them to sequences.
-        const indicateSequences = indicatedLines
-          ? findSequences(indicatedLines.filter(l => !highlightedLines?.includes(l)).slice().sort((a, b) => a - b))
-          : []
-        editor.view.dispatch({
-          effects: addGutterHighlight.of({
-            highlightSequences,
-            indicateSequences,
-          }),
-        })
-      },
-      [
-        editor,
-        highlightedLines,
-        indicatedLines,
-      ],
-    )
-
-    useEffect(
       function configureHighlightLines() {
         if (!editor) return
         if (!highlightedLines && !indicatedLines) return
 
         const state = editor.view.state
-
         const dimLines: number[] = []
 
         if (highlightedLines && highlightedLines?.length > 0) {
@@ -259,13 +231,26 @@ const CodeEditor = forwardRef<Handler, Props>(
           }
         }
 
+        const highlightSequences =
+          findSequences((highlightedLines || []).slice().sort((a, b) => a - b))
+        // Filter out the highlighted lines, sort the lines and then aggregate them to sequences.
+        const indicateSequences =
+          findSequences((indicatedLines || []).filter(l => !highlightedLines?.includes(l)).slice().sort((a, b) => a - b))
+
         editor.view.dispatch({
-          effects: addLineHighlight.of({
-            highlight: highlightedLines?.map(l => state.doc.line(l).from) || [],
-            // Filters out the highlighted lines
-            indicate: indicatedLines?.filter(l => !highlightedLines?.includes(l)).map(l => state.doc.line(l).from) || [],
-            dim: dimLines.map(l => state.doc.line(l).from),
-          }),
+          effects: [
+            addGutterHighlight.of({
+              highlightSequences,
+              indicateSequences,
+              dim: dimLines.map(l => state.doc.line(l).from),
+            }),
+            addLineHighlight.of({
+              highlight: highlightedLines?.map(l => state.doc.line(l).from) || [],
+              // Filters out the highlighted lines
+              indicate: indicatedLines?.filter(l => !highlightedLines?.includes(l)).map(l => state.doc.line(l).from) || [],
+              dim: dimLines.map(l => state.doc.line(l).from),
+            }),
+          ]
         })
       },
       [

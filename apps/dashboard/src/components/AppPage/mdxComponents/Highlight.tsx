@@ -115,7 +115,7 @@ function Highlight({ children, lines }: Props) {
       items-center
       flex-1
       relative
-      py-0.5
+      my-0.5
     "
     >
       <div
@@ -124,17 +124,25 @@ function Highlight({ children, lines }: Props) {
           transition-all
           border-transparent
           border
-          border-r-8
-          p-2
+          z-10
           rounded-md
           items-center`,
-          {
-            'border-cyan-100': wasClicked || isActive,
-          }
         )}
       >
         {children}
       </div>
+      <div className={clsx(
+        `absolute
+        top-0
+        -right-2
+        rounded
+        bottom-0
+        -left-2
+        `,
+        {
+          'bg-slate-200': wasClicked || isActive,
+        },
+      )} />
       <div
         className={clsx(`
           right-0
@@ -150,7 +158,6 @@ function Highlight({ children, lines }: Props) {
           items-center
           transition-all
           cursor-pointer
-          hover:text-slate-600
           `,
           {
             'text-slate-600': wasClicked,
@@ -172,6 +179,8 @@ function Highlight({ children, lines }: Props) {
           hover:bg-slate-50
           items-center
           space-x-1
+          group-hover:text-cyan-200
+          group-hover:border-cyan-200
           `,
             {
               'border-cyan-200 text-cyan-200': wasClicked,
@@ -182,6 +191,7 @@ function Highlight({ children, lines }: Props) {
           <CurlyBraces size="16px" />
         </div>
         <Text
+          className="group-hover:text-cyan-200"
           size={Text.size.S3}
           text="Show code"
         />

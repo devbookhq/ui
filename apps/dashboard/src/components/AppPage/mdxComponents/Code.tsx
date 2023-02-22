@@ -31,25 +31,39 @@ import { useAppContext } from '../AppContext'
 
 const gutterHighlightRadius = '8px'
 
+const transition = {
+  transitionProperty: 'font-size;',
+  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
+  transitionDuration: '150ms;',
+}
+
 const customTheme = EditorView.theme({
-  '&': { height: '100%', fontSize: '14px' },
-  '.cm-gutters': { background: '#282c34', paddingLeft: '4px' },
-  '.cm-lineNumbers .cm-gutterElement': { paddingRight: '12px' },
-  '.cm-scroller': { overflow: 'auto' },
+  '&': {
+    height: '100%',
+    fontSize: '13px',
+  },
+  '.cm-lineNumbers .cm-gutterElement': {
+    paddingRight: '12px',
+  },
+  '.cm-scroller': {
+    overflow: 'auto',
+  },
+  // Gutter styling
+  '.cm-gutters': {
+    background: '#282c34',
+    paddingLeft: '4px'
+  },
   '.cm-highlight-gutter-line': {
-    background: '#b3d1fb',
-    transformOrigin: 'center left;',
+    fontSize: '13.5px;',
+    background: '#64748b',
+    color: '#f1f5f9',
     cursor: 'pointer',
-    transitionProperty: 'opacity;',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    transitionDuration: '150ms;',
+    ...transition,
   },
   '.cm-indicate-gutter-line': {
     background: '#3d424d',
     cursor: 'pointer',
-    transitionProperty: 'opacity;',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    transitionDuration: '150ms;',
+    ...transition,
   },
   '.cm-gutter-lint .cm-custom-gutter-line-first': {
     borderTopLeftRadius: gutterHighlightRadius,
@@ -63,28 +77,24 @@ const customTheme = EditorView.theme({
   '.cm-lineNumbers .cm-custom-gutter-line-first': {
     borderTopRightRadius: gutterHighlightRadius,
   },
-  '.cm-highlight-line': {
-    scale: '1.05;',
-    opacity: '1;',
-    cursor: 'pointer',
-    transitionProperty: 'opacity height width;',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    transitionDuration: '150ms;',
-    transformOrigin: 'center left;',
+  '.cm-dim-gutter-line': {
+    fontSize: '12.5px;',
+    opacity: '0.4;',
+    ...transition,
   },
+  // Line styling
   '.cm-line': {
-    transitionProperty: 'opacity height width;',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    transitionDuration: '150ms;',
-    transformOrigin: 'center left;',
+    ...transition,
+  },
+  '.cm-highlight-line': {
+    fontSize: '13.5px;',
+    cursor: 'pointer',
+    ...transition,
   },
   '.cm-dim-line': {
+    fontSize: '12.5px;',
     opacity: '0.4',
-    scale: '0.95;',
-    transitionProperty: 'opacity height width;',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    transitionDuration: '150ms;',
-    transformOrigin: 'center left;',
+    ...transition,
   },
 })
 
@@ -112,23 +122,23 @@ function Code({
   const isRunnable = !!onRun
   const [appCtx, setAppCtx] = useAppContext()
 
-  const highlightedLines = useMemo(() => {
-    const lines = Object.values(appCtx.Explanation)
+  const {
+    highlightedLines,
+    indicatedLines,
+  } = useMemo(() => {
+    const lines = Object
+      .values(appCtx.Explanation)
       .filter(notEmpty)
-      .filter(v => v.enabled)
-      .flatMap(v => v.highlightLines)
-      .filter(onlyUnique)
 
-    return lines
-  }, [appCtx.Explanation])
-
-  const indicatedLines = useMemo(() => {
-    const lines = Object.values(appCtx.Explanation)
-      .filter(notEmpty)
-      .flatMap(v => v.highlightLines)
-      .filter(onlyUnique)
-
-    return lines
+    return {
+      highlightedLines: lines
+        .filter(v => v.enabled)
+        .flatMap(v => v.highlightLines)
+        .filter(onlyUnique),
+      indicatedLines: lines
+        .flatMap(v => v.highlightLines)
+        .filter(onlyUnique)
+    }
   }, [appCtx.Explanation])
 
   const appendOutput = useCallback((out: OutStdoutResponse | OutStderrResponse) => {
@@ -196,8 +206,6 @@ function Code({
       writeFile(children)
     }
   }, [writeFile, children])
-
-  console.log('indicateed', indicatedLines)
 
   return (
     <div
@@ -324,10 +332,12 @@ function Code({
               >
                 <Text
                   className="text-gray-600"
+                  size={Text.size.S3}
                   text=">"
                 />
                 <Text
                   className={o.type === OutType.Stdout ? 'text-slate-200' : 'text-red-500'}
+                  size={Text.size.S3}
                   text={o.line}
                 />
               </div>
