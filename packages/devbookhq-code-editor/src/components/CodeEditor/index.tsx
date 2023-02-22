@@ -16,6 +16,7 @@ import { createExtension } from '../../hooks/useLanguageServer/codeMirror'
 import { LanguageSetup, getLanguageSetup } from '../../hooks/useLanguageServer/setup'
 import { LSClients } from '../../hooks/useLanguageServer/useLanguageServerClients'
 import { getFileURI, offsetToPos } from '../../hooks/useLanguageServer/utils'
+import { findSequences } from '../../utils/findSequences'
 import { activeLineHighlighter } from './activeLineHighlighter'
 import createEditorState from './createEditorState'
 import { addGutterHighlight } from './customLineGutterHighlighter'
@@ -223,10 +224,10 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!editor) return
         if (!gutterHighlightLines) return
 
-        const state = editor.view.state
+        const sequences = findSequences(gutterHighlightLines.slice().sort((a, b) => a - b))
         editor.view.dispatch({
           effects: addGutterHighlight.of({
-            highlight: gutterHighlightLines ? gutterHighlightLines.map(l => state.doc.line(l).from) : [],
+            sequences,
           }),
         })
       },

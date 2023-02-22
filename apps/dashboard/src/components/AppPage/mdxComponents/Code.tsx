@@ -185,6 +185,8 @@ function Code({
     }
   }, [writeFile, children])
 
+  console.log('indicateed', indicatedLines)
+
   return (
     <div
       style={{
