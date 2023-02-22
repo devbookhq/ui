@@ -37,6 +37,10 @@ const darkEditorTheme = EditorView.theme({
     transitionProperty: 'color;',
     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
     transitionDuration: '150ms;',
+  },
+  ".cm-highlight-gutter-line": {
+    background: "#3d424d",
+    cursor: "pointer"
   }
 })
 
@@ -58,10 +62,6 @@ transition-duration: 150ms;
 const lineHighlightMark = Decoration.line({
   attributes: { style: 'opacity: 1; cursor: pointer;' + transitionAll },
 })
-
-// const lineIndicateMark = Decoration.line({
-//   attributes: { style: 'background: #334155; cursor: pointer;' + transitionAll },
-// })
 
 export interface Props {
   file?: string

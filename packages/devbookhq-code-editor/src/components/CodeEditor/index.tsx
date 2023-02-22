@@ -18,6 +18,7 @@ import { LSClients } from '../../hooks/useLanguageServer/useLanguageServerClient
 import { getFileURI, offsetToPos } from '../../hooks/useLanguageServer/utils'
 import { activeLineHighlighter } from './activeLineHighlighter'
 import createEditorState from './createEditorState'
+import { addGutterHighlight } from './customGutter'
 import { addLineHighlight } from './customLineHighligher'
 
 export interface Props {
@@ -47,10 +48,11 @@ export interface Props {
   openFileInLanguageServer?: boolean
   onCopy?: (selection: string, startLine: number) => void
   highlightedLines?: number[]
-  highlightGutter?: boolean
   highlightDecoration?: Decoration
   indicatedLines?: number[]
   indicateDecoration?: Decoration
+  highlightGutter?: boolean
+  gutterHighlightLines?: number[]
   onLineHover?: (line: number | undefined) => void
 
 }
@@ -72,6 +74,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       highlightDecoration,
       indicateDecoration,
       highlightGutter,
+      gutterHighlightLines,
       onContentChange,
       isReadOnly = false,
       supportedLanguages,
@@ -221,10 +224,27 @@ const CodeEditor = forwardRef<Handler, Props>(
     )
 
     useEffect(
+      function configureHighlightedGutterLines() {
+        if (!editor) return
+        if (!gutterHighlightLines) return
+
+        const state = editor.view.state
+        editor.view.dispatch({
+          effects: addGutterHighlight.of({
+            highlight: gutterHighlightLines ? gutterHighlightLines.map(l => state.doc.line(l).from) : [],
+          }),
+        })
+      },
+      [
+        editor,
+        gutterHighlightLines,
+      ],
+    )
+
+    useEffect(
       function configureHighlightedAndIndicatedLines() {
         if (!editor) return
         if (!highlightedLines && !indicatedLines) return
-        if (highlightedLines?.length === 0 && indicatedLines?.length === 0) return
 
         const state = editor.view.state
         editor.view.dispatch({
@@ -233,15 +253,6 @@ const CodeEditor = forwardRef<Handler, Props>(
             indicate: indicatedLines ? indicatedLines.filter(l => !highlightedLines?.includes(l)).map(l => state.doc.line(l).from) : [],
           }),
         })
-
-        // return () => {
-        //   editor.view.dispatch({
-        //     effects: addLineHighlight.of({
-        //       highlight: [],
-        //       indicate: [],
-        //     }),
-        //   })
-        // }
       },
       [
         editor,
