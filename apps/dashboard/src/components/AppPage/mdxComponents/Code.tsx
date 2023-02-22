@@ -73,9 +73,11 @@ const darkEditorTheme = EditorView.theme({
 const dimLines = EditorView.theme({
   '.cm-line': {
     opacity: '0.4',
-    // transitionProperty: 'all;',
-    // transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
-    // transitionDuration: '150ms;',
+    scale: '0.95',
+    transitionProperty: 'all;',
+    transitionTimingFunction: 'linear;',
+    transitionDuration: '150ms;',
+    transformOrigin: 'center left;',
   },
 })
 
@@ -86,7 +88,7 @@ transition-duration: 150ms;
 `
 
 const lineHighlightMark = Decoration.line({
-  attributes: { style: 'scale: 1.05; opacity: 1; cursor: pointer; transform-origin: center left;' },
+  attributes: { style: 'scale: 1.15; opacity: 1; cursor: pointer; transform-origin: center left;' + transitionAll },
 })
 
 export interface Props {
