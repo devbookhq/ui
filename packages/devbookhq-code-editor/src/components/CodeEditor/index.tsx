@@ -18,7 +18,7 @@ import { LSClients } from '../../hooks/useLanguageServer/useLanguageServerClient
 import { getFileURI, offsetToPos } from '../../hooks/useLanguageServer/utils'
 import { activeLineHighlighter } from './activeLineHighlighter'
 import createEditorState from './createEditorState'
-import { addGutterHighlight } from './customGutter'
+import { addGutterHighlight } from './customLineGutterHighlighter'
 import { addLineHighlight } from './customLineHighligher'
 
 export interface Props {
@@ -51,10 +51,8 @@ export interface Props {
   highlightDecoration?: Decoration
   indicatedLines?: number[]
   indicateDecoration?: Decoration
-  highlightGutter?: boolean
   gutterHighlightLines?: number[]
   onLineHover?: (line: number | undefined) => void
-
 }
 
 export interface ExtendedCMDiagnostic extends CMDiagnostic {
@@ -73,7 +71,6 @@ const CodeEditor = forwardRef<Handler, Props>(
       content = '',
       highlightDecoration,
       indicateDecoration,
-      highlightGutter,
       gutterHighlightLines,
       onContentChange,
       isReadOnly = false,
@@ -145,7 +142,6 @@ const CodeEditor = forwardRef<Handler, Props>(
           state,
         } = createEditorState(content, {
           highlightDecoration,
-          highlightGutter,
           indicateDecoration,
         })
 
@@ -177,7 +173,6 @@ const CodeEditor = forwardRef<Handler, Props>(
         autofocus,
         content,
         highlightDecoration,
-        highlightGutter,
         indicateDecoration,
       ],
     )

@@ -41,7 +41,7 @@ const darkEditorTheme = EditorView.theme({
   '.cm-highlight-gutter-line': {
     background: '#3d424d',
     cursor: 'pointer'
-  }
+  },
 })
 
 const dimLines = EditorView.theme({
@@ -244,7 +244,6 @@ function Code({
           isReadOnly={!isEditable}
           onContentChange={writeFile}
           onLineHover={handleLineHover}
-          highlightGutter
         />
       </div>
       {isRunnable &&

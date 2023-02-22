@@ -9,7 +9,7 @@ const highlightMarker = new class extends GutterMarker {
   elementClass = 'cm-highlight-gutter-line'
 }
 
-export function customGutter() {
+export function customLineGutterHighlighter() {
   const field = StateField.define({
     create() { return RangeSet.empty },
     provide: p => gutterLineClass.from(p),
@@ -33,7 +33,7 @@ export function customGutter() {
   return [
     field,
     gutter({
-      class: "cm-highlight-gutter",
+      class: 'cm-highlight-gutter',
       markers: v => v.state.field(field),
       initialSpacer: () => highlightMarker,
     }),

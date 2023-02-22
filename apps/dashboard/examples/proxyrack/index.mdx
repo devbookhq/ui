@@ -11,14 +11,14 @@ This endpoint provides access to unique monthly residential IP addresses and has
 
 HTTPS and SOCKS protocols are enabled on this service.
 
-<Explanation lines="3">
+<Highlight lines="3">
 **Geo-target a country by adjusting the username.** With `'yourUsername-country-US'` we are geo-targeting US IPs, but you can change this to another country of your choosing.
-</Explanation>
+</Highlight>
 
 
-<Explanation lines="21-30">
+<Highlight lines="21-30">
 To make sure this works properly **check by making a request to the `/stats` API endpoint**. Under `requestParams` you will see this reflected as `country`.
-</Explanation>
+</Highlight>
 </div>
 
 <Code file="index.js" onRun={() => "node /code/index.js"}>
