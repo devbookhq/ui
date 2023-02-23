@@ -23,23 +23,20 @@ function useMouseIndicator() {
     if (!isActive) return
 
     const el = document.createElement('div')
-    el.innerHTML = 'LOAD'
 
-    el.style.position = 'absolute'
+    // DELETE: FOR TESTING
     el.style.background = 'blue'
-    el.style.transform = 'translate(-50%, -50%)'
-    // document.body.appendChild(el)
+    el.innerHTML = 'LOADING'
 
-    // Create dom el
-    // Add dom el progress (custom dom el pass)
-    // Get current mouse
-    // Attack dom el with some offset
+    el.style.position = 'fixed'
+    el.style.pointerEvents = 'none'
+    document.body.appendChild(el)
 
     const handleWindowMouseMove = (event: MouseEvent) => {
       const x = event.clientX
       const y = event.clientY
-
-      el.style.transform = 'translate(-50%, -50%)'
+      el.style.top = `${y}px`
+      el.style.left = `${x}px`
     }
     window.addEventListener('mousemove', handleWindowMouseMove)
     return () => {
@@ -47,7 +44,7 @@ function useMouseIndicator() {
         'mousemove',
         handleWindowMouseMove,
       )
-      // document.body.removeChild(el)
+      document.body.removeChild(el)
     }
   }, [isActive])
 
