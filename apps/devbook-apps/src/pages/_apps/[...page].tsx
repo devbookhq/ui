@@ -1,10 +1,12 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
-import { CompiledAppContent } from 'apps/content'
+import { CompiledAppContent, AppContentJSON } from 'apps/content'
 import { prisma } from 'queries/prisma'
 import AppPage from 'components/AppPage'
-import { AppContentJSON, compileContent } from 'apps/content'
+import { compileContent } from 'apps/content'
+
+
 
 interface PathProps extends ParsedUrlQuery {
   page: string

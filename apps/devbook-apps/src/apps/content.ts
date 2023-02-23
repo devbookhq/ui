@@ -1,7 +1,7 @@
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 
-export interface AppContentJSON {
+export type AppContentJSON = {
   env?: {
     id: string,
   }
@@ -15,7 +15,6 @@ export interface AppContentJSON {
   }[]
 }
 
-
 export interface AppPageContent {
   mdx: string
   css?: string
@@ -23,7 +22,6 @@ export interface AppPageContent {
     id: string,
   }
 }
-
 
 export interface CompiledAppContent {
   environmentID?: string
