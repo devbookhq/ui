@@ -1,0 +1,124 @@
+@import './apps.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .scrollbar-gutter {
+    /* This prevents scrollbars from moving the content */
+    /* https://css-tricks.com/almanac/properties/s/scrollbar-gutter */
+    scrollbar-gutter:stable both-edges;
+  }
+
+  .autocomplete-scrollbar {
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      /* @apply bg-black-650; */
+      &:hover {
+        /* @apply bg-black-600; */
+      }
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background: transparent;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  *,
+  *:before,
+  *:after {
+    @apply box-border;
+  }
+
+  html,
+  body {
+    @apply h-full;
+    @apply bg-gray-100;
+    @apply text-slate-700 antialiased;
+
+    font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
+      'Helvetica', sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  #__next {
+    @apply flex h-inherit flex-col items-center;
+  }
+
+  button {
+    @apply focus:outline-green-400;
+  }
+
+  a {
+    @apply focus:outline-green-400;
+  }
+
+  .scroller {
+    scrollbar-color: #cbd5e1 transparent;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #f8fafc inset;
+  -webkit-text-fill-color: #475569;
+  caret-color: #000;
+}
+
+.scroller::-webkit-scrollbar {
+  /* CUSTOM */
+  width: 8px;
+  height: 8px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  @apply bg-slate-300;
+  @apply rounded;
+}
+
+.scroller::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
+.__dbk__container.Horizontal {
+  overflow: visible !important;
+}
+
+.instructions-scrollbar::-webkit-scrollbar
+{
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+.instructions-scrollbar::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  background-color: #718096;
+}
+/* ======================== */

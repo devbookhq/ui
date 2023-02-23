@@ -7,7 +7,7 @@
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build --filter=dashboard^... && changeset publish",
+    "release": "turbo run build --filter=dashboard^... --filter=devbook-apps^... && changeset publish",
     "postinstall": "turbo db:generate"
   },
   "devDependencies": {

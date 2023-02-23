@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "isolatedModules": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "jsx": "preserve",
+    "baseUrl": "src",
+    "incremental": true
+  },
+  "include": ["next-env.d.ts", "decs.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "tsconfig.json",
+    "node_modules",
+    "next.config.js",
+    "postcss.config.js",
+    "tailwind.config.js",
+    ".eslintrc.js"
+  ]
+}

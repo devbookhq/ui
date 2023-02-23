@@ -8,6 +8,7 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "dashboard",
-    "database"
+    "database",
+    "devbook-apps"
   ]
 }
