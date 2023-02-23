@@ -15,6 +15,7 @@ import {
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 import { PostProjectBody } from 'pages/api/project'
 import { apps } from 'database'
@@ -24,7 +25,7 @@ import Select from 'components/Select'
 import { defaultRepoPath } from 'utils/constants'
 import Button from 'components/Button'
 import SpinnerIcon from 'components/icons/Spinner'
-import Repositories from 'components/Repositories'
+const Repos = dynamic(() => import('components/Repos'), { ssr: false })
 
 async function handlePostProject(url: string, { arg }: { arg: PostProjectBody }) {
   return await fetch(url, {
@@ -152,7 +153,7 @@ export default function NewProject() {
               { 'hidden': repoSetup },
             )}
           >
-            <Repositories
+            <Repos
               onRepoSelection={setRepoSetup}
             />
           </div>

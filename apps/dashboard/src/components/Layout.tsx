@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { posthog } from 'posthog-js'
+
 import { apps } from 'database'
 
 import Header from './Header'
@@ -130,7 +131,9 @@ export default function Layout({ children, meta: pageMeta, app }: Props) {
         overflow-hidden
       "
       >
-        {!isSignIn && !isSignUp && <Header app={app} />}
+        {!isSignIn && !isSignUp &&
+          <Header app={app} />
+        }
         <div
           className="
           flex

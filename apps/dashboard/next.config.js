@@ -15,7 +15,6 @@ const pluginWrapper = composePlugins(
 const config = {
   reactStrictMode: true,
   swcMinify: true,
-  transpilePackages: ['@devbookhq/code-editor'],
   experimental: {
     esmExternals: 'loose',
     swcPlugins: [['next-superjson-plugin', {}]],

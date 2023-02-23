@@ -19,7 +19,7 @@ export interface Props {
   onRepoSelection: (repoSetup: Pick<PostProjectBody, 'accessToken' | 'installationID' | 'repositoryID'> & { fullName: string, defaultBranch: string, branches?: string[], url: string }) => void
 }
 
-function Repositories({ onRepoSelection }: Props) {
+function Repos({ onRepoSelection }: Props) {
   const [accessToken, setAccessToken] = useLocalStorage<string | undefined>('gh_access_token', undefined)
   const gitHub = useGitHub(accessToken)
   const { repos, refetch } = useRepositories(gitHub)
@@ -188,4 +188,4 @@ function Repositories({ onRepoSelection }: Props) {
   )
 }
 
-export default Repositories
+export default Repos

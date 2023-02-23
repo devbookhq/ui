@@ -5,9 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        barlow: ['Barlow', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
-        mono: ['\'JetBrains Mono\'', 'monospace'],
       },
       lineClamp: { 10: '10' },
       transparent: 'transparent',
@@ -46,5 +44,5 @@ module.exports = {
       flex: { 'guide-card': '1 1 30%' },
     },
   },
-  plugins: [require('@tailwindcss/line-clamp'), require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/line-clamp')],
 }

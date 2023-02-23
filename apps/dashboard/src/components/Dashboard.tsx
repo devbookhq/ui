@@ -2,11 +2,10 @@ import { useState } from 'react'
 import { AppProps } from 'next/app'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-import { apps } from 'database'
 
+import { apps } from 'database'
 import Layout from 'components/Layout'
 import { PostHogProvider } from 'utils/PostHogProvider'
-
 
 export interface Props {
   appProps: AppProps<{ app?: apps, initialSession: Session }>

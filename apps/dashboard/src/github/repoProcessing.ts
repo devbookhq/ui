@@ -2,10 +2,23 @@ import { Octokit } from '@octokit/rest'
 // import * as toml from '@iarna/toml'
 import JSZip from 'jszip'
 
-import { AppContentJSON } from 'apps/content'
 import path from 'path'
 
 // const envConfigName = 'dbk.toml'
+
+export type AppContentJSON = {
+  env?: {
+    id: string,
+  }
+  mdx: {
+    name: string
+    content: string
+  }[]
+  css?: {
+    name: string
+    content: string
+  }[]
+}
 
 export interface File {
   content: string
