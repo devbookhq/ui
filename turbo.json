@@ -29,7 +29,8 @@
         "^build"
       ],
       "env": [
-        "SUPABASE_WEBHOOK_SECRET"
+        "SUPABASE_WEBHOOK_SECRET",
+        "SUPABASE_POSTGRES_POOL_URL"
       ]
     },
     "build#dashboard": {
