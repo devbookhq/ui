@@ -19,6 +19,19 @@
         "^build"
       ]
     },
+    "build#devbook-apps": {
+      "outputs": [
+        "dist/**",
+        ".next/**"
+      ],
+      "dependsOn": [
+        "^db:generate",
+        "^build"
+      ],
+      "env": [
+        "SUPABASE_WEBHOOK_SECRET"
+      ]
+    },
     "build#dashboard": {
       "outputs": [
         "dist/**",
