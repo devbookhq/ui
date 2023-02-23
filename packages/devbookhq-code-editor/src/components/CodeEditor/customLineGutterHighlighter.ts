@@ -127,7 +127,6 @@ export function customLineGutterHighlighter() {
             set = set.update({
               sort: true,
               add: [
-                ...e.value.dim.map(l => dimGutterMarker.range(l)),
                 ...e.value.highlightSequences.flatMap(s => {
                   return s.map((l, i, a) => {
                     const marker = getHighlightMarker(i, a.length)
@@ -142,6 +141,7 @@ export function customLineGutterHighlighter() {
                     return marker.range(offset)
                   })
                 }),
+                ...e.value.dim.map(l => dimGutterMarker.range(l)),
               ]
             })
           }

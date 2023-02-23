@@ -12,8 +12,9 @@ import Navigate from './Navigate'
 import Highlight from './Highlight'
 import Output from './Output'
 
-const Filetree = dynamic(() => import('./Filetree'), { ssr: false })
+// import Code from './Code'
 const Code = dynamic(() => import('./Code'), { ssr: false })
+const Filetree = dynamic(() => import('./Filetree'), { ssr: false })
 const Terminal = dynamic(() => import('./Terminal'), { ssr: false })
 
 const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {

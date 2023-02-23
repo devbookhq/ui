@@ -27,7 +27,7 @@ const disableSpellchecking = {
   spellcheck: 'false',
 }
 
-function createEditorState(content: string) {
+function createEditorState(content: string, opts: { lintGutter?: boolean }) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
@@ -40,10 +40,10 @@ function createEditorState(content: string) {
     extensions: [
       EditorView.contentAttributes.of(disableSpellchecking),
       editabilityExtensions.of([]),
-      lintGutter({
+      opts.lintGutter ? lintGutter({
         tooltipFilter: _ => [],
         markerFilter: d => d.filter(v => v.severity === 'error'),
-      }),
+      }) : [],
       lineNumbers(),
       bracketMatching(),
       highlightSpecialChars(),

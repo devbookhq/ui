@@ -58,6 +58,7 @@ export interface Props {
    */
   indicatedLines?: number[]
   onGutterHover?: (line: number | undefined) => void
+  lintGutter?: boolean
 }
 
 export interface ExtendedCMDiagnostic extends CMDiagnostic {
@@ -74,6 +75,7 @@ const CodeEditor = forwardRef<Handler, Props>(
   (
     {
       content = '',
+      lintGutter = true,
       onContentChange,
       isReadOnly = false,
       supportedLanguages,
@@ -142,7 +144,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           editabilityExtensions,
           keymapExtensions,
           state,
-        } = createEditorState(content)
+        } = createEditorState(content, { lintGutter })
 
         const view = new EditorView({
           state,
@@ -169,6 +171,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         }
       },
       [
+        lintGutter,
         autofocus,
         content,
       ],

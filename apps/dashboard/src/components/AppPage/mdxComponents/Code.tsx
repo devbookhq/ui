@@ -32,7 +32,7 @@ import { useAppContext } from '../AppContext'
 const gutterHighlightRadius = '8px'
 
 const transition = {
-  transitionProperty: 'font-size;',
+  transitionProperty: 'font-size background;',
   transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
   transitionDuration: '150ms;',
 }
@@ -44,6 +44,7 @@ const customTheme = EditorView.theme({
   },
   '.cm-lineNumbers .cm-gutterElement': {
     paddingRight: '12px',
+    paddingLeft: '22px',
   },
   '.cm-scroller': {
     overflow: 'auto',
@@ -51,48 +52,44 @@ const customTheme = EditorView.theme({
   // Gutter styling
   '.cm-gutters': {
     background: '#282c34',
-    paddingLeft: '4px'
+    paddingLeft: '4px',
   },
   '.cm-highlight-gutter-line': {
-    fontSize: '13.5px;',
-    background: '#64748b',
+    fontSize: '13.25px;',
     color: '#f1f5f9',
+    background: '#64748b',
     cursor: 'pointer',
     ...transition,
   },
   '.cm-indicate-gutter-line': {
-    background: '#3d424d',
+    background: '#475569',
     cursor: 'pointer',
     ...transition,
   },
-  '.cm-gutter-lint .cm-first-gutter-line': {
-    borderTopLeftRadius: gutterHighlightRadius,
-  },
-  '.cm-gutter-lint .cm-last-gutter-line': {
-    borderBottomLeftRadius: gutterHighlightRadius,
+  '.cm-dim-gutter-line': {
+    fontSize: '12.75px;',
+    opacity: '0.4;',
+    ...transition,
   },
   '.cm-lineNumbers .cm-last-gutter-line': {
     borderBottomRightRadius: gutterHighlightRadius,
+    borderBottomLeftRadius: gutterHighlightRadius,
   },
   '.cm-lineNumbers .cm-first-gutter-line': {
     borderTopRightRadius: gutterHighlightRadius,
-  },
-  '.cm-dim-gutter-line': {
-    fontSize: '12.5px;',
-    opacity: '0.4;',
-    ...transition,
+    borderTopLeftRadius: gutterHighlightRadius,
   },
   // Line styling
   '.cm-line': {
     ...transition,
   },
   '.cm-highlight-line': {
-    fontSize: '13.5px;',
+    fontSize: '13.25px;',
     cursor: 'pointer',
     ...transition,
   },
   '.cm-dim-line': {
-    fontSize: '12.5px;',
+    fontSize: '12.75px;',
     opacity: '0.4',
     ...transition,
   },
@@ -115,7 +112,7 @@ function Code({
   children,
   isEditable,
 }: Props) {
-  const [process, setProcess] = useState<Process>()
+  const [proc, setProc] = useState<Process>()
   const [isRunning, setIsRunning] = useState(false)
   const [output, setOutput] = useState<(OutStdoutResponse | OutStderrResponse)[]>([])
   const { session } = useSharedSession()
@@ -162,7 +159,7 @@ function Code({
       onStdout: appendOutput,
       onStderr: appendOutput,
       onExit: () => setIsRunning(false),
-    }).then(setProcess)
+    }).then(setProc)
       .catch(err => {
         const e: OutStderrResponse = {
           line: err,
@@ -180,9 +177,11 @@ function Code({
     setAppCtx,
   ])
 
-
   useEffect(function autorun() {
-    run()
+    // Disable autorun in dev because of the constant triggering on hot reload
+    if (process.env.NODE_ENV !== 'development') {
+      run()
+    }
   }, [run])
 
   const handleCopyToClipboard = useCallback(() => {
@@ -190,13 +189,13 @@ function Code({
   }, [children])
 
   const stop = useCallback(() => {
-    process?.kill()
-  }, [
-    process,
-  ])
+    proc?.kill()
+  }, [proc])
 
   const writeFile = useCallback((content: string) => {
     if (!file) return
+
+    // TODO: This is specific for one proxyrack example - add regular env vars replacement.
     const replacedCode = content
       .replace('\'yourUsername-country-US\'', 'process.env.USERNAME + "-country-US"')
       .replace('\'yourPassword\'', 'process.env.PASSWORD')
@@ -283,6 +282,7 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
+          lintGutter={false}
           indicatedLines={indicatedLines}
           highlightedLines={highlightedLines}
           content={children as string}
@@ -329,7 +329,6 @@ function Code({
               />
             }
           </div>
-
           <div className="flex flex-1 overflow-auto flex-col scroller">
             {output.map(o => (
               <div
@@ -337,6 +336,7 @@ function Code({
                 flex
                 items-stretch
                 justify-start
+                scroller
                 whitespace-pre
                 space-x-1
               "

@@ -16,6 +16,44 @@ export interface Props {
   file?: string
 }
 
+function useMouseIndicator() {
+  const [isActive, setIsActive] = useState(false)
+
+  useEffect(function attach() {
+    if (!isActive) return
+
+    const el = document.createElement('div')
+    el.innerHTML = 'LOAD'
+
+    el.style.position = 'absolute'
+    el.style.background = 'blue'
+    el.style.transform = 'translate(-50%, -50%)'
+    // document.body.appendChild(el)
+
+    // Create dom el
+    // Add dom el progress (custom dom el pass)
+    // Get current mouse
+    // Attack dom el with some offset
+
+    const handleWindowMouseMove = (event: MouseEvent) => {
+      const x = event.clientX
+      const y = event.clientY
+
+      el.style.transform = 'translate(-50%, -50%)'
+    }
+    window.addEventListener('mousemove', handleWindowMouseMove)
+    return () => {
+      window.removeEventListener(
+        'mousemove',
+        handleWindowMouseMove,
+      )
+      // document.body.removeChild(el)
+    }
+  }, [isActive])
+
+  return setIsActive
+}
+
 let idCounter = 0
 
 const hoverTimeout = 550
@@ -31,12 +69,16 @@ function Highlight({ children, lines }: Props) {
     setID(idCounter++)
   }, [])
 
-  const debouncedHover = useMemo(() => debounce((active: boolean) => setIsActive(active)
-    , hoverTimeout, {
+  const setIndicatorState = useMouseIndicator()
+
+  const debouncedHover = useMemo(() => debounce((active: boolean) => {
+    setIsActive(active)
+    setIndicatorState(false)
+  }, hoverTimeout, {
     leading: false,
     trailing: true,
-    maxWait: 650,
-  }), [setIsActive])
+    maxWait: hoverTimeout,
+  }), [setIsActive, setIndicatorState])
 
   useEffect(function handleEditorHover() {
     if (!parsedLines) return
@@ -46,14 +88,17 @@ function Highlight({ children, lines }: Props) {
       setIsActive(false)
       debouncedHover(false)
       debouncedHover.flush()
+      setIndicatorState(false)
     } else {
       const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
+      setIndicatorState(hasOverlap)
       debouncedHover(hasOverlap)
     }
   }, [
     appCtx.Code.hoveredLine,
     parsedLines,
     debouncedHover,
+    setIndicatorState,
   ])
 
   useEffect(function propagateToAppState() {
