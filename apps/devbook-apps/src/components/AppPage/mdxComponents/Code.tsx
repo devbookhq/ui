@@ -56,7 +56,7 @@ const customTheme = EditorView.theme({
   },
   '.cm-highlight-gutter-line': {
     color: '#e9edf2',
-    background: 'rgb(148 163 184 / 0.4)',
+    background: 'rgb(148 163 184 / 0.55)',
     cursor: 'pointer',
   },
   '.cm-indicate-gutter-line': {

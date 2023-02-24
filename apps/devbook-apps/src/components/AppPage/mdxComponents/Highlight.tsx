@@ -185,13 +185,12 @@ function Highlight({ children, lines }: Props) {
           `absolute
         inset-y-0
         -inset-x-2
-        rounded`,
+        rounded-lg`,
           {
             'bg-slate-400/20': wasClicked || isActive,
           },
         )} />
       <div
-        style={wasClicked ? tailwindTransition : transition}
         className={clsx(`
           right-0
           -mr-5
@@ -200,10 +199,11 @@ function Highlight({ children, lines }: Props) {
           translate-x-full
           flex
           space-x-2 
+          transition-all
           absolute
           not-prose
-          group
           items-center
+          hover:text-slate-600
           cursor-pointer
           `,
           {
@@ -223,14 +223,12 @@ function Highlight({ children, lines }: Props) {
           rounded
           border
           flex
-          hover:bg-slate-50
+          transition-all
           items-center
           space-x-1
-          group-hover:text-cyan-200
-          group-hover:border-cyan-200
           `,
             {
-              'border-cyan-200 text-cyan-200': wasClicked,
+              'border-cyan-500': wasClicked,
               'border-slate-300': !wasClicked,
             }
           )}
@@ -238,7 +236,7 @@ function Highlight({ children, lines }: Props) {
           <CurlyBraces size="16px" />
         </div>
         <Text
-          className="group-hover:text-cyan-200 transition-all"
+          className="transition-all font-mono"
           size={Text.size.S3}
           text={wasClicked ? 'Hide code' : 'Show code'}
         />
