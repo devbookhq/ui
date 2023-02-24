@@ -58,6 +58,7 @@ export interface Props {
    */
   indicatedLines?: number[]
   onGutterHover?: (line: number | undefined) => void
+  onGutterClick?: (line: number | undefined) => void
   lintGutter?: boolean
 }
 
@@ -87,6 +88,7 @@ const CodeEditor = forwardRef<Handler, Props>(
       onGutterHover,
       onHoverView,
       autofocus,
+      onGutterClick,
       onDiagnosticsChange,
       indicatedLines,
       filename,
@@ -371,6 +373,33 @@ const CodeEditor = forwardRef<Handler, Props>(
         }
       },
       [editor, onGutterHover],
+    )
+
+    useEffect(
+      function configureGutterHoverChangeHandler() {
+        if (!editor) return
+        if (!onGutterClick) return
+
+        const handleMouseDown = (event: MouseEvent) => {
+          const state = editor.view.state
+          const pos = editor.view.posAtCoords(event)
+          if (pos) {
+            let line = state.doc.lineAt(pos).number
+            onGutterClick(line)
+          } else {
+            onGutterClick(undefined)
+          }
+        }
+
+        const gutters = editor.view.dom.getElementsByClassName('cm-gutters').item(0) as HTMLElement
+        if (!gutters) return
+
+        gutters.addEventListener('mousedown', handleMouseDown)
+        return () => {
+          gutters.removeEventListener('mousedown', handleMouseDown)
+        }
+      },
+      [editor, onGutterClick],
     )
 
     useEffect(
