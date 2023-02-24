@@ -187,7 +187,7 @@ function Highlight({ children, lines }: Props) {
         -inset-x-2
         rounded`,
           {
-            'bg-slate-200': wasClicked || isActive,
+            'bg-slate-400/20': wasClicked || isActive,
           },
         )} />
       <div
@@ -199,7 +199,7 @@ function Highlight({ children, lines }: Props) {
           -translate-y-1/2
           translate-x-full
           flex
-          space-x-2
+          space-x-2 
           absolute
           not-prose
           group

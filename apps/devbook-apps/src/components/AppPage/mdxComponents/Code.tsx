@@ -52,16 +52,15 @@ const customTheme = EditorView.theme({
   },
   // Gutter styling
   '.cm-gutters': {
-    background: '#282c34',
     paddingLeft: '4px',
   },
   '.cm-highlight-gutter-line': {
     color: '#e9edf2',
-    background: '#64748b',
+    background: 'rgb(148 163 184 / 0.4)',
     cursor: 'pointer',
   },
   '.cm-indicate-gutter-line': {
-    background: '#475569',
+    background: '#384352',
     cursor: 'pointer',
   },
   '.cm-dim-gutter-line': {
