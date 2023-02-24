@@ -1,6 +1,6 @@
 import { syntaxHighlighting } from '@codemirror/language'
 import { Diagnostic as CMDiagnostic, forEachDiagnostic } from '@codemirror/lint'
-import { Compartment, EditorState, Prec, Extension } from '@codemirror/state'
+import { Compartment, EditorState, Prec, Extension, EditorSelection } from '@codemirror/state'
 import { EditorView, keymap } from '@codemirror/view'
 import { classHighlighter } from '@lezer/highlight'
 import {
@@ -68,6 +68,7 @@ export interface ExtendedCMDiagnostic extends CMDiagnostic {
 
 export interface Handler {
   focus: () => void
+  scrollTo: (startLine: number, endLine?: number) => boolean
   getSelection: () => string | undefined
   getDiagnostics: () => ExtendedCMDiagnostic[] | undefined
 }
@@ -125,6 +126,18 @@ const CodeEditor = forwardRef<Handler, Props>(
         }))
 
         return diagnostics
+      },
+      scrollTo: (startLine: number, endLine?: number) => {
+        if (!editor) return false
+        const state = editor.view.state
+        const start = state.doc.line(startLine).from
+        const end = endLine ? state.doc.line(endLine).from : undefined
+        editor.view.dispatch({
+          effects: EditorView.scrollIntoView(
+            EditorSelection.range(start, end ? end : start)
+          ),
+        })
+        return true
       },
       getSelection: () => {
         const state = editor?.view.state
