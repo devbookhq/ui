@@ -19,8 +19,6 @@ export interface Props {
 
 let idCounter = 0
 
-const hoverTimeout = 0
-
 function Highlight({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
   const [appCtx, setAppCtx] = useAppContext()
@@ -142,7 +140,7 @@ function Highlight({ children, lines }: Props) {
       py-1
     "
     >
-      {isIndicatorVisible &&
+      {/* {isIndicatorVisible &&
         <div
           ref={indicatorRef}
           className="
@@ -158,7 +156,7 @@ function Highlight({ children, lines }: Props) {
             </svg>
           </div>
         </div>
-      }
+      } */}
       <div
         className={clsx(`
           flex
