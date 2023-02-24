@@ -42,12 +42,12 @@ function Highlight({ children, lines }: Props) {
     setID(idCounter++)
   }, [])
 
-  const indicatorRef = useRef<HTMLDivElement>(null)
+  // const indicatorRef = useRef<HTMLDivElement>(null)
 
-  const [isIndicatorVisible, setIndicatorState] = useMouseIndicator(
-    indicatorRef,
-    !isSelected,
-  )
+  // const [isIndicatorVisible, setIndicatorState] = useMouseIndicator(
+  //   indicatorRef,
+  //   !isSelected,
+  // )
 
   useEffect(function handleEditorHover() {
     if (!parsedLines) return
@@ -55,16 +55,16 @@ function Highlight({ children, lines }: Props) {
 
     if (!appCtx.Code.hoveredLine || !parsedLines) {
       setHovered(Hover.None)
-      setIndicatorState(false)
+      // setIndicatorState(false)
     } else {
       const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
-      setIndicatorState(hasOverlap)
+      // setIndicatorState(hasOverlap)
       setHovered(hasOverlap ? Hover.Gutter : Hover.None)
     }
   }, [
     appCtx.Code.hoveredLine,
     parsedLines,
-    setIndicatorState,
+    // setIndicatorState,
   ])
 
   const handleLineClick = useCallback((line: number) => {
