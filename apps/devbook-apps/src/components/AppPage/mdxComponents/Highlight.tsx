@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { CurlyBraces, Loader2 } from 'lucide-react'
+import { CurlyBraces } from 'lucide-react'
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import debounce from 'lodash.debounce'
 
