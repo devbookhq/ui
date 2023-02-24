@@ -228,14 +228,12 @@ function Highlight({ children, lines }: Props) {
         })}
       >
         <div
-          style={isSelected ? tailwindTransition : transition}
           className={clsx(`
           bg-white
           p-1
           rounded
           border
           flex
-          transition-all
           items-center
           space-x-1
           `,
@@ -245,10 +243,10 @@ function Highlight({ children, lines }: Props) {
             }
           )}
         >
-          <CurlyBraces size="16px" />
+          <CurlyBraces size="16px" className="" />
         </div>
         <Text
-          className="transition-all font-mono"
+          className="font-mono"
           size={Text.size.S3}
           text={isSelected ? 'Hide code' : 'Show code'}
         />
