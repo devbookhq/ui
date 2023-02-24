@@ -19,6 +19,7 @@ export interface AppContext {
     [id: number]: {
       highlightLines: number[]
       enabled: boolean
+      lineClickHandler?: (line: number) => void
     } | undefined
   }
 }

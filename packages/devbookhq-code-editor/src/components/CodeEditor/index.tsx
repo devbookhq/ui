@@ -58,7 +58,7 @@ export interface Props {
    */
   indicatedLines?: number[]
   onGutterHover?: (line: number | undefined) => void
-  onGutterClick?: (line: number | undefined) => void
+  onGutterClick?: (line: number) => void
   lintGutter?: boolean
 }
 
@@ -348,10 +348,9 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!onGutterHover) return
 
         const handleMouseMove = (event: MouseEvent) => {
-          const state = editor.view.state
           const pos = editor.view.posAtCoords(event)
           if (pos) {
-            let line = state.doc.lineAt(pos).number
+            const line = editor.view.state.doc.lineAt(pos).number
             onGutterHover(line)
           } else {
             onGutterHover(undefined)
@@ -381,13 +380,10 @@ const CodeEditor = forwardRef<Handler, Props>(
         if (!onGutterClick) return
 
         const handleMouseDown = (event: MouseEvent) => {
-          const state = editor.view.state
           const pos = editor.view.posAtCoords(event)
           if (pos) {
-            let line = state.doc.lineAt(pos).number
+            const line = editor.view.state.doc.lineAt(pos).number
             onGutterClick(line)
-          } else {
-            onGutterClick(undefined)
           }
         }
 

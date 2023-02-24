@@ -212,6 +212,12 @@ function Code({
     })
   }, [setAppCtx])
 
+  const handleLineClick = useCallback((line: number) => {
+    Object
+      .values(appCtx.Explanation)
+      .forEach(v => v?.lineClickHandler?.(line))
+  }, [appCtx])
+
   useEffect(function writeInitialFile() {
     if (typeof children === 'string') {
       writeFile(children)
@@ -292,6 +298,7 @@ function Code({
           isReadOnly={!isEditable}
           onContentChange={writeFile}
           onGutterHover={handleLineHover}
+          onGutterClick={handleLineClick}
         />
       </div>
       {isRunnable &&

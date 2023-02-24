@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { CurlyBraces, Loader2 } from 'lucide-react'
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import debounce from 'lodash.debounce'
 
 import { parseNumericRange } from 'utils/parseNumericRange'
@@ -69,7 +69,15 @@ function Highlight({ children, lines }: Props) {
     setIndicatorState,
   ])
 
-  useEffect(function propagateToAppState() {
+  const handleLineClick = useCallback((line: number) => {
+    if (!parsedLines) return
+    const hasOverlap = parsedLines.includes(line)
+    if (hasOverlap) {
+      setWasClicked(s => !s)
+    }
+  }, [parsedLines])
+
+  useEffect(function attachToAppState() {
     if (id === undefined) return
     if (!parsedLines) return
     if (parsedLines.length === 0) return
@@ -78,10 +86,12 @@ function Highlight({ children, lines }: Props) {
       if (!d.Explanation[id]) {
         d.Explanation[id] = {
           highlightLines: parsedLines,
-          enabled: false
+          enabled: false,
+          lineClickHandler: handleLineClick,
         }
       } else {
         d.Explanation[id]!.highlightLines = parsedLines
+        d.Explanation[id]!.lineClickHandler = handleLineClick
       }
     })
 
@@ -95,6 +105,7 @@ function Highlight({ children, lines }: Props) {
   }, [
     parsedLines,
     setAppCtx,
+    handleLineClick,
     id,
   ])
 
