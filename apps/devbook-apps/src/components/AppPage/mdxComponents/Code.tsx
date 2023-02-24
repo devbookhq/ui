@@ -32,7 +32,7 @@ import { useAppContext } from '../AppContext'
 const gutterHighlightRadius = '8px'
 
 const transition = {
-  transitionProperty: 'font-size background;',
+  transitionProperty: 'opacity font-size background;',
   transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1);',
   transitionDuration: '150ms;',
 }
@@ -55,16 +55,18 @@ const customTheme = EditorView.theme({
     paddingLeft: '4px',
   },
   '.cm-highlight-gutter-line': {
-    fontSize: '13.25px;',
+    // fontSize: '13.25px;',
     color: '#f1f5f9',
     background: '#64748b',
     cursor: 'pointer',
     ...transition,
+    // transitionProperty: 'opacity font-size background;',
   },
   '.cm-indicate-gutter-line': {
     background: '#475569',
     cursor: 'pointer',
     ...transition,
+    // transitionProperty: 'opacity font-size background;',
   },
   '.cm-dim-gutter-line': {
     opacity: '0.4;',
@@ -86,6 +88,7 @@ const customTheme = EditorView.theme({
     fontSize: '13.25px;',
     cursor: 'pointer',
     ...transition,
+    // transitionProperty: 'opacity font-size background;',
   },
   '.cm-dim-line': {
     opacity: '0.4',
