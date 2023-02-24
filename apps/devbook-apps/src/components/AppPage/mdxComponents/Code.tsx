@@ -34,7 +34,7 @@ const gutterHighlightRadius = '8px'
 export const transition = {
   transitionProperty: 'background, opacity, color, font-size',
   transitionTimingFunction: 'cubic-bezier(0.64, 0, 0.78, 0)',
-  transitionDuration: '350ms',
+  transitionDuration: '320ms',
 }
 
 const customTheme = EditorView.theme({

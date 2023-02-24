@@ -19,6 +19,12 @@ export interface Props {
 
 let idCounter = 0
 
+const tailwindTransition = {
+  transitionProperty: 'all',
+  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  transitionDuration: '150ms',
+}
+
 function Highlight({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
   const [appCtx, setAppCtx] = useAppContext()
@@ -142,7 +148,7 @@ function Highlight({ children, lines }: Props) {
       py-1
     "
     >
-      {isIndicatorVisible &&
+      {/* {isIndicatorVisible &&
         <div
           ref={indicatorRef}
           className="
@@ -158,7 +164,7 @@ function Highlight({ children, lines }: Props) {
             </svg>
           </div>
         </div>
-      }
+      } */}
       <div
         className={clsx(`
           flex
@@ -174,7 +180,7 @@ function Highlight({ children, lines }: Props) {
         {children}
       </div>
       <div
-        style={wasClicked ? {} : transition}
+        style={wasClicked ? tailwindTransition : transition}
         className={clsx(
           `absolute
         inset-y-0
@@ -185,7 +191,7 @@ function Highlight({ children, lines }: Props) {
           },
         )} />
       <div
-        style={wasClicked ? {} : transition}
+        style={wasClicked ? tailwindTransition : transition}
         className={clsx(`
           right-0
           -mr-5
@@ -210,7 +216,7 @@ function Highlight({ children, lines }: Props) {
         onClick={() => setWasClicked(e => !e)}
       >
         <div
-          style={wasClicked ? {} : transition}
+          style={wasClicked ? tailwindTransition : transition}
           className={clsx(`
           bg-white
           p-1
