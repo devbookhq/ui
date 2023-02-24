@@ -107,6 +107,7 @@ function Highlight({ children, lines }: Props) {
       if (!d.Explanation[id]) {
         d.Explanation[id] = {
           highlightLines: parsedLines,
+          lineClickHandler: handleLineClick,
           enabled: true
         }
       } else {
@@ -125,6 +126,7 @@ function Highlight({ children, lines }: Props) {
     isActive,
     parsedLines,
     wasClicked,
+    handleLineClick,
     setAppCtx,
     id,
   ])
@@ -140,12 +142,12 @@ function Highlight({ children, lines }: Props) {
       py-1
     "
     >
-      {/* {isIndicatorVisible &&
+      {isIndicatorVisible &&
         <div
           ref={indicatorRef}
           className="
-          fixed
           z-40
+          fixed
           pointer-events-none
           "
         >
@@ -156,7 +158,7 @@ function Highlight({ children, lines }: Props) {
             </svg>
           </div>
         </div>
-      } */}
+      }
       <div
         className={clsx(`
           flex
@@ -172,7 +174,7 @@ function Highlight({ children, lines }: Props) {
         {children}
       </div>
       <div
-        style={transition}
+        style={wasClicked ? {} : transition}
         className={clsx(
           `absolute
         inset-y-0
@@ -183,7 +185,7 @@ function Highlight({ children, lines }: Props) {
           },
         )} />
       <div
-        style={transition}
+        style={wasClicked ? {} : transition}
         className={clsx(`
           right-0
           -mr-5
@@ -208,7 +210,7 @@ function Highlight({ children, lines }: Props) {
         onClick={() => setWasClicked(e => !e)}
       >
         <div
-          style={transition}
+          style={wasClicked ? {} : transition}
           className={clsx(`
           bg-white
           p-1

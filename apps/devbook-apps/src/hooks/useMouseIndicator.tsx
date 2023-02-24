@@ -5,14 +5,19 @@ export function useMouseIndicator(ref: RefObject<HTMLElement>, enabled?: boolean
 
   useEffect(function attach() {
     if (!ref.current) return
-    if (!enabled) return
-    if (!isActive) return
+    if (!enabled || !isActive) {
+      ref.current.style.visibility = 'hidden'
+      return
+    }
+
+    ref.current.style.visibility = 'hidden'
 
     const handleWindowMouseMove = (event: MouseEvent) => {
       if (!ref.current) return
       const x = event.clientX
       const y = event.clientY
 
+      ref.current.style.visibility = 'visible'
       ref.current.style.top = `${y}px`
       ref.current.style.left = `${x}px`
     }
