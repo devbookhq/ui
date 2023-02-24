@@ -1,12 +1,13 @@
 import clsx from 'clsx'
-import { CurlyBraces } from 'lucide-react'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { CurlyBraces, Loader2 } from 'lucide-react'
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import debounce from 'lodash.debounce'
 
 import { parseNumericRange } from 'utils/parseNumericRange'
 import Text from 'components/typography/Text'
 
 import { useAppContext } from '../AppContext'
+import { useMouseIndicator } from 'hooks/useMouseIndicator'
 
 export interface Props {
   children?: ReactNode
@@ -16,44 +17,9 @@ export interface Props {
   file?: string
 }
 
-function useMouseIndicator() {
-  const [isActive, setIsActive] = useState(false)
-
-  useEffect(function attach() {
-    if (!isActive) return
-
-    const el = document.createElement('div')
-
-    // DELETE: FOR TESTING
-    el.style.background = 'blue'
-    el.innerHTML = 'LOADING'
-
-    el.style.position = 'fixed'
-    el.style.pointerEvents = 'none'
-    document.body.appendChild(el)
-
-    const handleWindowMouseMove = (event: MouseEvent) => {
-      const x = event.clientX
-      const y = event.clientY
-      el.style.top = `${y}px`
-      el.style.left = `${x}px`
-    }
-    window.addEventListener('mousemove', handleWindowMouseMove)
-    return () => {
-      window.removeEventListener(
-        'mousemove',
-        handleWindowMouseMove,
-      )
-      document.body.removeChild(el)
-    }
-  }, [isActive])
-
-  return setIsActive
-}
-
 let idCounter = 0
 
-const hoverTimeout = 550
+const hoverTimeout = 650
 
 function Highlight({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
@@ -66,7 +32,12 @@ function Highlight({ children, lines }: Props) {
     setID(idCounter++)
   }, [])
 
-  const setIndicatorState = useMouseIndicator()
+  const indicatorRef = useRef<HTMLDivElement>(null)
+
+  const [isIndicatorVisible, setIndicatorState] = useMouseIndicator(
+    indicatorRef,
+    !isActive && !wasClicked,
+  )
 
   const debouncedHover = useMemo(() => debounce((active: boolean) => {
     setIsActive(active)
@@ -172,6 +143,21 @@ function Highlight({ children, lines }: Props) {
       py-1
     "
     >
+      {isIndicatorVisible &&
+        <div
+          ref={indicatorRef}
+          className="
+          fixed
+          z-40
+          pointer-events-none
+          "
+        >
+          <div className="absolute -top-2 left-2 text-cyan-200 -rotate-90">
+            <Loader2 size="18px" className="absolute" />
+            <Loader2 size="18px" className="animate-spin" />
+          </div>
+        </div>
+      }
       <div
         className={clsx(`
           flex
