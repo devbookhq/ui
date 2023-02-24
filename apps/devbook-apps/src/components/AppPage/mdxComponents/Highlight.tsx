@@ -19,7 +19,7 @@ export interface Props {
 
 let idCounter = 0
 
-const hoverTimeout = 650
+const hoverTimeout = 500
 
 function Highlight({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
@@ -152,9 +152,11 @@ function Highlight({ children, lines }: Props) {
           pointer-events-none
           "
         >
-          <div className="absolute top-2 left-2 text-cyan-200 -rotate-90">
-            <Loader2 size="18px" className="absolute" />
-            <Loader2 size="18px" className="animate-spin" />
+          <div className="absolute top-1 left-2">
+            <svg className="indicator">
+              <circle className="indicator-bg" cx="12" cy="12" r="8" />
+              <circle className="meter" cx="12" cy="12" r="8" />
+            </svg>
           </div>
         </div>
       }

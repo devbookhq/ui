@@ -122,3 +122,36 @@ select:-webkit-autofill:focus {
   background-color: #718096;
 }
 /* ======================== */
+
+/* Progress indicator */
+.indicator {
+  width: 24px;
+  height: 24px;
+}
+
+.indicator-bg {
+  fill: none;
+  stroke-width: 3.5px;
+  stroke: #1e293b;
+}
+
+.meter {
+  fill: none;
+  stroke-width: 4px;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dasharray: 360;
+  stroke-dashoffset: 100;
+  stroke: #a3e635;
+  animation: progress 2.4s ease-out;
+}
+
+@keyframes progress {
+    from {
+        stroke-dashoffset: 360;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
