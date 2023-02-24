@@ -1,13 +1,13 @@
 import clsx from 'clsx'
 import { CurlyBraces } from 'lucide-react'
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import debounce from 'lodash.debounce'
 
 import { parseNumericRange } from 'utils/parseNumericRange'
 import Text from 'components/typography/Text'
 
 import { useAppContext } from '../AppContext'
 import { useMouseIndicator } from 'hooks/useMouseIndicator'
+import { transition } from './Code'
 
 export interface Props {
   children?: ReactNode
@@ -19,7 +19,7 @@ export interface Props {
 
 let idCounter = 0
 
-const hoverTimeout = 500
+const hoverTimeout = 0
 
 function Highlight({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
@@ -39,30 +39,21 @@ function Highlight({ children, lines }: Props) {
     !wasClicked,
   )
 
-  const debouncedHover = useMemo(() => debounce((active: boolean) => {
-    setIsActive(active)
-  }, hoverTimeout, {
-    maxWait: hoverTimeout,
-  }), [setIsActive, setIndicatorState])
-
   useEffect(function handleEditorHover() {
     if (!parsedLines) return
     if (parsedLines.length === 0) return
 
     if (!appCtx.Code.hoveredLine || !parsedLines) {
       setIsActive(false)
-      debouncedHover(false)
-      debouncedHover.flush()
       setIndicatorState(false)
     } else {
       const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
       setIndicatorState(hasOverlap)
-      debouncedHover(hasOverlap)
+      setIsActive(hasOverlap)
     }
   }, [
     appCtx.Code.hoveredLine,
     parsedLines,
-    debouncedHover,
     setIndicatorState,
   ])
 
@@ -171,7 +162,6 @@ function Highlight({ children, lines }: Props) {
       <div
         className={clsx(`
           flex
-          transition-all
           border-transparent
           border
           z-10
@@ -183,17 +173,19 @@ function Highlight({ children, lines }: Props) {
       >
         {children}
       </div>
-      <div className={clsx(
-        `absolute
-        transition-all
+      <div
+        style={transition}
+        className={clsx(
+          `absolute
         inset-y-0
         -inset-x-2
         rounded`,
-        {
-          'bg-slate-200': wasClicked || isActive,
-        },
-      )} />
+          {
+            'bg-slate-200': wasClicked || isActive,
+          },
+        )} />
       <div
+        style={transition}
         className={clsx(`
           right-0
           -mr-5
@@ -206,7 +198,6 @@ function Highlight({ children, lines }: Props) {
           not-prose
           group
           items-center
-          transition-all
           cursor-pointer
           `,
           {
@@ -219,10 +210,10 @@ function Highlight({ children, lines }: Props) {
         onClick={() => setWasClicked(e => !e)}
       >
         <div
+          style={transition}
           className={clsx(`
           bg-white
           p-1
-          transition-all
           rounded
           border
           flex

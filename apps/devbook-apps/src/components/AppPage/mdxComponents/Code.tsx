@@ -31,10 +31,10 @@ import { useAppContext } from '../AppContext'
 
 const gutterHighlightRadius = '8px'
 
-const transition = {
-  transitionProperty: 'opacity font-size background;',
-  transitionTimingFunction: 'cubic-bezier(0.12, 0, 0.39, 0);',
-  transitionDuration: '250ms;',
+export const transition = {
+  transitionProperty: 'background, opacity, color, font-size',
+  transitionTimingFunction: 'cubic-bezier(0.64, 0, 0.78, 0)',
+  transitionDuration: '450ms',
 }
 
 const customTheme = EditorView.theme({
@@ -45,6 +45,7 @@ const customTheme = EditorView.theme({
   '.cm-lineNumbers .cm-gutterElement': {
     paddingRight: '12px',
     paddingLeft: '22px',
+    ...transition,
   },
   '.cm-scroller': {
     overflow: 'auto',
@@ -55,22 +56,16 @@ const customTheme = EditorView.theme({
     paddingLeft: '4px',
   },
   '.cm-highlight-gutter-line': {
-    // fontSize: '13.25px;',
-    color: '#f1f5f9',
+    color: '#e9edf2',
     background: '#64748b',
     cursor: 'pointer',
-    ...transition,
-    // transitionProperty: 'opacity font-size background;',
   },
   '.cm-indicate-gutter-line': {
     background: '#475569',
     cursor: 'pointer',
-    ...transition,
-    // transitionProperty: 'opacity font-size background;',
   },
   '.cm-dim-gutter-line': {
     opacity: '0.4;',
-    ...transition,
   },
   '.cm-lineNumbers .cm-last-gutter-line': {
     borderBottomRightRadius: gutterHighlightRadius,
@@ -87,12 +82,9 @@ const customTheme = EditorView.theme({
   '.cm-highlight-line': {
     fontSize: '13.25px;',
     cursor: 'pointer',
-    ...transition,
-    // transitionProperty: 'opacity font-size background;',
   },
   '.cm-dim-line': {
     opacity: '0.4',
-    ...transition,
   },
 })
 
