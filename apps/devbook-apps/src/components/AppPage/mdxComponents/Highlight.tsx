@@ -246,7 +246,7 @@ function Highlight({ children, lines }: Props) {
         <Text
           className="group-hover:text-cyan-200 transition-all"
           size={Text.size.S3}
-          text="Show code"
+          text={wasClicked ? "Hide code" : "Show code"}
         />
       </div>
     </div>
