@@ -152,7 +152,7 @@ function Highlight({ children, lines }: Props) {
           pointer-events-none
           "
         >
-          <div className="absolute -top-2 left-2 text-cyan-200 -rotate-90">
+          <div className="absolute top-2 left-2 text-cyan-200 -rotate-90">
             <Loader2 size="18px" className="absolute" />
             <Loader2 size="18px" className="animate-spin" />
           </div>
