@@ -132,9 +132,10 @@ const CodeEditor = forwardRef<Handler, Props>(
         const state = editor.view.state
         const start = state.doc.line(startLine).from
         const end = endLine ? state.doc.line(endLine).from : undefined
+
         editor.view.dispatch({
           effects: EditorView.scrollIntoView(
-            EditorSelection.range(start, end ? end : start)
+            EditorSelection.range(start, end ? end : start),
           ),
         })
         return true

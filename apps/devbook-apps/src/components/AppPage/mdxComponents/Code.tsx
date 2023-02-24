@@ -1,4 +1,4 @@
-import { CodeEditor } from '@devbookhq/code-editor'
+import { CodeEditor, CodeEditorHandler } from '@devbookhq/code-editor'
 import { EditorView } from '@codemirror/view'
 import { Loader as LoaderIcon } from 'lucide-react'
 import {
@@ -12,6 +12,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import { oneDark } from '@codemirror/theme-one-dark'
@@ -49,6 +50,7 @@ const customTheme = EditorView.theme({
   },
   '.cm-scroller': {
     overflow: 'auto',
+    scrollBehavior: 'smooth',
   },
   // Gutter styling
   '.cm-gutters': {
@@ -110,6 +112,7 @@ function Code({
   const { session } = useSharedSession()
   const isRunnable = !!onRun
   const [appCtx, setAppCtx] = useAppContext()
+  const codeRef = useRef<CodeEditorHandler>(null)
 
   const {
     highlightedLines,
@@ -119,16 +122,38 @@ function Code({
       .values(appCtx.Explanation)
       .filter(notEmpty)
 
+    const scrollLines = lines
+      .filter(v => v.enabled && v.scroll)
+      .flatMap(v => v.highlightLines)
+      .filter(notEmpty)
+      .filter(onlyUnique)
+      .sort((a, b) => a - b)
+
+    const firstScrollLine = scrollLines.length > 0
+      ? scrollLines[0]
+      : undefined
+    const lastScrollLine = scrollLines.length > 0
+      ? scrollLines[scrollLines.length - 1]
+      : undefined
+
+    console.log('SCR', firstScrollLine, lastScrollLine)
+
+    if (firstScrollLine !== undefined) {
+      codeRef.current?.scrollTo(firstScrollLine, lastScrollLine)
+    }
+
     return {
       highlightedLines: lines
         .filter(v => v.enabled)
         .flatMap(v => v.highlightLines)
+        .filter(notEmpty)
         .filter(onlyUnique),
       indicatedLines: lines
         .flatMap(v => v.highlightLines)
+        .filter(notEmpty)
         .filter(onlyUnique)
     }
-  }, [appCtx.Explanation])
+  }, [appCtx.Explanation, codeRef])
 
   const appendOutput = useCallback((out: OutStdoutResponse | OutStderrResponse) => {
     setOutput(arr => [...arr, out])
@@ -286,6 +311,7 @@ function Code({
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={theme}
+          ref={codeRef}
           isReadOnly={!isEditable}
           onContentChange={writeFile}
           onGutterHover={handleLineHover}
@@ -327,14 +353,13 @@ function Code({
               />
             }
           </div>
-          <div className="flex flex-1 overflow-auto flex-col scroller">
+          <div className="flex flex-1 overflow-auto flex-col">
             {output.map(o => (
               <div
                 className="
                 flex
                 items-stretch
                 justify-start
-                scroller
                 whitespace-pre
                 space-x-1
               "

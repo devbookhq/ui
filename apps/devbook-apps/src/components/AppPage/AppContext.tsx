@@ -17,8 +17,9 @@ export interface AppContext {
   }
   Explanation: {
     [id: number]: {
-      highlightLines: number[]
-      enabled: boolean
+      highlightLines?: number[]
+      enabled?: boolean
+      scroll?: boolean
       lineClickHandler?: (line: number) => void
     } | undefined
   }

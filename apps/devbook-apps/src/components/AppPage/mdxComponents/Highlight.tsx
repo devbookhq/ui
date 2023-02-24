@@ -25,11 +25,17 @@ const tailwindTransition = {
   transitionDuration: '150ms',
 }
 
+enum Hover {
+  None,
+  Gutter,
+  Button,
+}
+
 function Highlight({ children, lines }: Props) {
   const parsedLines = useMemo(() => lines ? parseNumericRange(lines) : undefined, [lines])
   const [appCtx, setAppCtx] = useAppContext()
-  const [isActive, setIsActive] = useState(false)
-  const [wasClicked, setWasClicked] = useState(false)
+  const [hover, setHovered] = useState(Hover.None)
+  const [isSelected, setIsSelected] = useState(false)
 
   const [id, setID] = useState<number>()
   useEffect(function getComponentID() {
@@ -40,7 +46,7 @@ function Highlight({ children, lines }: Props) {
 
   const [isIndicatorVisible, setIndicatorState] = useMouseIndicator(
     indicatorRef,
-    !wasClicked,
+    !isSelected,
   )
 
   useEffect(function handleEditorHover() {
@@ -48,12 +54,12 @@ function Highlight({ children, lines }: Props) {
     if (parsedLines.length === 0) return
 
     if (!appCtx.Code.hoveredLine || !parsedLines) {
-      setIsActive(false)
+      setHovered(Hover.None)
       setIndicatorState(false)
     } else {
       const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
       setIndicatorState(hasOverlap)
-      setIsActive(hasOverlap)
+      setHovered(hasOverlap ? Hover.Gutter : Hover.None)
     }
   }, [
     appCtx.Code.hoveredLine,
@@ -65,7 +71,7 @@ function Highlight({ children, lines }: Props) {
     if (!parsedLines) return
     const hasOverlap = parsedLines.includes(line)
     if (hasOverlap) {
-      setWasClicked(s => !s)
+      setIsSelected(s => !s)
     }
   }, [parsedLines])
 
@@ -78,7 +84,6 @@ function Highlight({ children, lines }: Props) {
       if (!d.Explanation[id]) {
         d.Explanation[id] = {
           highlightLines: parsedLines,
-          enabled: false,
           lineClickHandler: handleLineClick,
         }
       } else {
@@ -106,7 +111,7 @@ function Highlight({ children, lines }: Props) {
     if (!parsedLines) return
     if (parsedLines.length === 0) return
 
-    const state = wasClicked || isActive
+    const state = isSelected || hover !== Hover.None
     if (!state) return
 
     setAppCtx(d => {
@@ -114,10 +119,12 @@ function Highlight({ children, lines }: Props) {
         d.Explanation[id] = {
           highlightLines: parsedLines,
           lineClickHandler: handleLineClick,
-          enabled: true
+          enabled: true,
+          scroll: isSelected || hover === Hover.Button,
         }
       } else {
         d.Explanation[id]!.enabled = state
+        d.Explanation[id]!.scroll = isSelected || hover === Hover.Button
       }
     })
 
@@ -129,9 +136,9 @@ function Highlight({ children, lines }: Props) {
       })
     }
   }, [
-    isActive,
+    hover,
     parsedLines,
-    wasClicked,
+    isSelected,
     handleLineClick,
     setAppCtx,
     id,
@@ -180,14 +187,14 @@ function Highlight({ children, lines }: Props) {
         {children}
       </div>
       <div
-        style={wasClicked ? tailwindTransition : transition}
+        style={isSelected ? tailwindTransition : transition}
         className={clsx(
           `absolute
         inset-y-0
         -inset-x-2
         rounded-lg`,
           {
-            'bg-slate-400/20': wasClicked || isActive,
+            'bg-slate-400/20': isSelected || hover,
           },
         )} />
       <div
@@ -207,16 +214,16 @@ function Highlight({ children, lines }: Props) {
           cursor-pointer
           `,
           {
-            'text-slate-600': wasClicked,
-            'text-slate-400': !wasClicked,
+            'text-slate-600': isSelected,
+            'text-slate-400': !isSelected,
           })
         }
-        onMouseOver={() => setIsActive(true)}
-        onMouseLeave={() => setIsActive(false)}
-        onClick={() => setWasClicked(e => !e)}
+        onMouseOver={() => setHovered(Hover.Button)}
+        onMouseLeave={() => setHovered(Hover.None)}
+        onClick={() => setIsSelected(e => !e)}
       >
         <div
-          style={wasClicked ? tailwindTransition : transition}
+          style={isSelected ? tailwindTransition : transition}
           className={clsx(`
           bg-white
           p-1
@@ -228,8 +235,8 @@ function Highlight({ children, lines }: Props) {
           space-x-1
           `,
             {
-              'border-cyan-500': wasClicked,
-              'border-slate-300': !wasClicked,
+              'border-cyan-500': isSelected,
+              'border-slate-300': !isSelected,
             }
           )}
         >
@@ -238,7 +245,7 @@ function Highlight({ children, lines }: Props) {
         <Text
           className="transition-all font-mono"
           size={Text.size.S3}
-          text={wasClicked ? 'Hide code' : 'Show code'}
+          text={isSelected ? 'Hide code' : 'Show code'}
         />
       </div>
     </div>
