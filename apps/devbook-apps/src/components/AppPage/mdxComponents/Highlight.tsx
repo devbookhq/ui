@@ -36,15 +36,12 @@ function Highlight({ children, lines }: Props) {
 
   const [isIndicatorVisible, setIndicatorState] = useMouseIndicator(
     indicatorRef,
-    !isActive && !wasClicked,
+    !wasClicked,
   )
 
   const debouncedHover = useMemo(() => debounce((active: boolean) => {
     setIsActive(active)
-    setIndicatorState(false)
   }, hoverTimeout, {
-    leading: false,
-    trailing: true,
     maxWait: hoverTimeout,
   }), [setIsActive, setIndicatorState])
 
@@ -246,7 +243,7 @@ function Highlight({ children, lines }: Props) {
         <Text
           className="group-hover:text-cyan-200 transition-all"
           size={Text.size.S3}
-          text={wasClicked ? "Hide code" : "Show code"}
+          text={wasClicked ? 'Hide code' : 'Show code'}
         />
       </div>
     </div>

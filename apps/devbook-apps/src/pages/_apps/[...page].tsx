@@ -6,8 +6,6 @@ import { prisma } from 'queries/prisma'
 import AppPage from 'components/AppPage'
 import { compileContent } from 'apps/content'
 
-
-
 interface PathProps extends ParsedUrlQuery {
   page: string
 }
@@ -54,6 +52,7 @@ export const getStaticProps: GetStaticProps<Props, PathProps> = async ({ params 
 
     const css = dbContent.css?.find(n => n.name === 'index.css')?.content
 
+    // TODO: Check how the mdx compile works to ensure this is 100% not a remote code execution vulnerability
     const content = await compileContent({
       mdx,
       css,

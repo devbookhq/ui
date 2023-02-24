@@ -23,6 +23,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   const stringBody = body.toString()
   const appContent = JSON.parse(stringBody) as AppPageContent
 
+  // TODO: Check how the mdx compile works to ensure this is 100% not a remote code execution vulnerability
   const content = await compileContent(appContent)
 
   return {
