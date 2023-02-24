@@ -67,7 +67,6 @@ const customTheme = EditorView.theme({
     ...transition,
   },
   '.cm-dim-gutter-line': {
-    fontSize: '12.75px;',
     opacity: '0.4;',
     ...transition,
   },
@@ -89,7 +88,6 @@ const customTheme = EditorView.theme({
     ...transition,
   },
   '.cm-dim-line': {
-    fontSize: '12.75px;',
     opacity: '0.4',
     ...transition,
   },
