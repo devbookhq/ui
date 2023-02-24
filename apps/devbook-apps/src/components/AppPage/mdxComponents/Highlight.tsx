@@ -218,9 +218,14 @@ function Highlight({ children, lines }: Props) {
             'text-slate-400': !isSelected,
           })
         }
-        onMouseOver={() => setHovered(Hover.Button)}
+        onMouseEnter={() => setHovered(Hover.Button)}
         onMouseLeave={() => setHovered(Hover.None)}
-        onClick={() => setIsSelected(e => !e)}
+        onClick={() => setIsSelected(e => {
+          if (e) {
+            setHovered(Hover.None)
+          }
+          return !e
+        })}
       >
         <div
           style={isSelected ? tailwindTransition : transition}
