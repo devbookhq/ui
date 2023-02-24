@@ -132,10 +132,10 @@ select:-webkit-autofill:focus {
 .indicator-bg {
   fill: none;
   stroke-width: 3.5px;
-  stroke: #1e293b;
-  opacity: 0;
+  stroke: #14532d;
+  /* opacity: 0; */
   /* animation: progress 0.5s cubic-bezier(0.64, 0, 0.78, 0); */
-  animation: progress 0.55s cubic-bezier(0.64, 0, 0.78, 0);
+  /* animation: progress 0.55s cubic-bezier(0.64, 0, 0.78, 0); */
 }
 
 .meter {
@@ -147,7 +147,7 @@ select:-webkit-autofill:focus {
   stroke-dasharray: 360;
   stroke-dashoffset: 100;
   stroke: #22c55e;
-  opacity: 0;
+  /* opacity: 0; */
   animation: progress 0.55s cubic-bezier(0.64, 0, 0.78, 0);
 }
 
