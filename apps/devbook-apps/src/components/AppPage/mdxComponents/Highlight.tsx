@@ -1,12 +1,11 @@
 import clsx from 'clsx'
 import { CurlyBraces } from 'lucide-react'
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { parseNumericRange } from 'utils/parseNumericRange'
 import Text from 'components/typography/Text'
 
 import { useAppContext } from '../AppContext'
-import { useMouseIndicator } from 'hooks/useMouseIndicator'
 import { transition } from './Code'
 
 export interface Props {
