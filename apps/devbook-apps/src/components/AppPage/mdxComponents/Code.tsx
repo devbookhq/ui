@@ -113,6 +113,7 @@ function Code({
   const isRunnable = !!onRun
   const [appCtx, setAppCtx] = useAppContext()
   const codeRef = useRef<CodeEditorHandler>(null)
+  const [code, setCode] = useState(children as string)
 
   const {
     highlightedLines,
@@ -135,8 +136,6 @@ function Code({
     const lastScrollLine = scrollLines.length > 0
       ? scrollLines[scrollLines.length - 1]
       : undefined
-
-    console.log('SCR', firstScrollLine, lastScrollLine)
 
     if (firstScrollLine !== undefined) {
       codeRef.current?.scrollTo(firstScrollLine, lastScrollLine)
@@ -166,7 +165,7 @@ function Code({
     if (!onRun) return
     if (!session) return
 
-    const cmd = onRun(children as string)
+    const cmd = onRun(code)
     setOutput([])
     setAppCtx(a => {
       a.Code.output = []
@@ -189,9 +188,23 @@ function Code({
   }, [
     onRun,
     session,
-    children,
+    code,
     appendOutput,
   ])
+
+  const stop = useCallback(() => {
+    proc?.kill()
+  }, [proc])
+
+  useEffect(function attachToAppState() {
+    setAppCtx(d => {
+      d.Code.changeContent = (change) => {
+        setCode(change)
+      }
+      d.Code.run = run
+      d.Code.stop = stop
+    })
+  }, [run, stop])
 
   useEffect(function autorun() {
     // Disable autorun in dev because of the constant triggering on hot reload
@@ -201,12 +214,9 @@ function Code({
   }, [run])
 
   const handleCopyToClipboard = useCallback(() => {
-    navigator.clipboard.writeText(children as string)
-  }, [children])
+    navigator.clipboard.writeText(code)
+  }, [code])
 
-  const stop = useCallback(() => {
-    proc?.kill()
-  }, [proc])
 
   const writeFile = useCallback((content: string) => {
     if (!file) return
@@ -214,6 +224,8 @@ function Code({
     // TODO: This is specific for one proxyrack example - add regular env vars replacement.
     const replacedCode = content
       .replace('\'yourUsername-country-US\'', 'process.env.USERNAME + "-country-US"')
+      .replace('\'yourUsername-country-FR\'', 'process.env.USERNAME + "-country-FR"')
+      .replace('\'yourUsername-country-CA\'', 'process.env.USERNAME + "-country-CA"')
       .replace('\'yourPassword\'', 'process.env.PASSWORD')
 
     session?.filesystem?.write(path.join(rootdir, file), replacedCode)
@@ -235,10 +247,10 @@ function Code({
   }, [appCtx])
 
   useEffect(function writeInitialFile() {
-    if (typeof children === 'string') {
-      writeFile(children)
+    if (typeof code === 'string') {
+      writeFile(code)
     }
-  }, [writeFile, children])
+  }, [writeFile, code])
 
   return (
     <div
@@ -307,7 +319,7 @@ function Code({
           lintGutter={false}
           indicatedLines={indicatedLines}
           highlightedLines={highlightedLines}
-          content={children as string}
+          content={code}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={theme}
@@ -353,7 +365,7 @@ function Code({
               />
             }
           </div>
-          <div className="flex flex-1 overflow-auto flex-col">
+          <div className="flex flex-1 overflow-auto flex-col scroller">
             {output.map(o => (
               <div
                 className="

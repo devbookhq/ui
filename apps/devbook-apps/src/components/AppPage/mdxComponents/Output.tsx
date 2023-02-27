@@ -9,20 +9,20 @@ function extractJSON(str: string): [any, number, number] | undefined {
   firstOpen = str.indexOf('{', firstOpen)
   do {
     firstClose = str.lastIndexOf('}')
-    console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose)
+    // console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose)
     if (firstClose <= firstOpen) {
       return undefined
     }
     do {
       candidate = str.substring(firstOpen, firstClose + 1)
-      console.log('candidate: ' + candidate)
+      // console.log('candidate: ' + candidate)
       try {
         var res = JSON.parse(candidate)
-        console.log('...found')
+        // console.log('...found')
         return [res, firstOpen, firstClose + 1]
       }
       catch (e) {
-        console.log('...failed')
+        // console.log('...failed')
       }
       firstClose = str.substring(0, firstClose).lastIndexOf('}')
     } while (firstClose > firstOpen)
@@ -72,7 +72,7 @@ function Output({
   return (
     <div className="
     flex
-    my-2
+    my-1.5
     flex-col
     flex-1
     space-y-1
@@ -100,6 +100,7 @@ function Output({
             size={Text.size.S3}
             className="
             text-slate-400
+            italic
             "
           />
         }

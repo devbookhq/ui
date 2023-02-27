@@ -14,6 +14,9 @@ export interface AppContext {
   Code: {
     hoveredLine?: number
     output?: string[]
+    run?: () => void
+    stop?: () => void
+    changeContent?: (change: (content: string) => string) => void
   }
   Explanation: {
     [id: number]: {

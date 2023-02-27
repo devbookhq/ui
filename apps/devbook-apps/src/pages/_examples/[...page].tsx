@@ -1,13 +1,14 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 import fs from 'fs/promises'
+import path from 'path'
+import dynamic from 'next/dynamic'
 
-import AppPage from 'components/AppPage'
+const AppPage = dynamic(() => import('components/AppPage'), { ssr: false })
 import {
   CompiledAppContent,
   compileContent,
 } from 'apps/content'
-import path from 'path'
 
 const examplesDirectory = 'examples'
 

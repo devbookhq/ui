@@ -1,7 +1,8 @@
 import { GetServerSideProps } from 'next'
 import getRawBody from 'raw-body'
+import dynamic from 'next/dynamic'
 
-import AppPage from 'components/AppPage'
+const AppPage = dynamic(() => import('components/AppPage'), { ssr: false })
 import {
   CompiledAppContent,
   compileContent,

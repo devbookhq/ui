@@ -1,9 +1,10 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
+import dynamic from 'next/dynamic'
 
+const AppPage = dynamic(() => import('components/AppPage'), { ssr: false })
 import { CompiledAppContent, AppContentJSON } from 'apps/content'
 import { prisma } from 'queries/prisma'
-import AppPage from 'components/AppPage'
 import { compileContent } from 'apps/content'
 
 interface PathProps extends ParsedUrlQuery {

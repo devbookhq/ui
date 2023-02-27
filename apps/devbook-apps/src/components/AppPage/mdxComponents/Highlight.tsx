@@ -172,6 +172,7 @@ function Highlight({ children, lines }: Props) {
         </div>
       } */}
       <div
+        suppressHydrationWarning={true}
         className={clsx(`
           flex
           border-transparent
