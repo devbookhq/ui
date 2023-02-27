@@ -15,6 +15,7 @@ export interface AppContext {
     hoveredLine?: number
     output?: string[]
     run?: () => void
+    isRunning?: boolean
     stop?: () => void
     changeContent?: (change: (content: string) => string) => void
   }

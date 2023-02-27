@@ -19,13 +19,9 @@ function Input({
 
   const [target, setTarget] = useState<'FR' | 'US' | 'CA'>('US')
 
-
-
-
   function changeCode(geotarget: 'US' | 'FR' | 'CA') {
     // TODO: Make this hardcoded replacement general
     appCtx.Code.stop?.()
-
     setTarget(geotarget)
 
     setContent(c =>
@@ -60,8 +56,6 @@ function Input({
     cursor-pointer
     ">
       <div
-        // TODO: Check why is this happening - the MDX should not be rendered on server
-        suppressHydrationWarning={true}
         onClick={() => {
           switch (target) {
             case 'FR':
@@ -79,6 +73,7 @@ function Input({
         border-green-500
         inline-flex
         pb-[2px]
+        transition-all
         group-hover:border-green-600
         border-b-4
       "

@@ -1,7 +1,5 @@
 import type { MDXRemote } from 'next-mdx-remote'
 import { ComponentProps } from 'react'
-import dynamic from 'next/dynamic'
-
 
 import {
   a,
@@ -13,10 +11,10 @@ import Navigate from './Navigate'
 import Highlight from './Highlight'
 import Output from './Output'
 import Input from './Input'
-
-const Code = dynamic(() => import('./Code'), { ssr: false })
-const Filetree = dynamic(() => import('./Filetree'), { ssr: false })
-const Terminal = dynamic(() => import('./Terminal'), { ssr: false })
+import Run from './Run'
+import Code from './Code'
+import Terminal from './Terminal'
+import Filetree from './Filetree'
 
 const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   a,
@@ -26,6 +24,7 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   Code,
   Output,
   Terminal,
+  Run,
   Highlight,
   Columns,
   Input,

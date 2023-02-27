@@ -1,8 +1,7 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
-import dynamic from 'next/dynamic'
 
-const AppPage = dynamic(() => import('components/AppPage'), { ssr: false })
+import AppPage from 'components/AppPage'
 import { CompiledAppContent, AppContentJSON } from 'apps/content'
 import { prisma } from 'queries/prisma'
 import { compileContent } from 'apps/content'
@@ -14,7 +13,7 @@ interface PathProps extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
   return {
     paths: [],
-    fallback: true,
+    fallback: 'blocking',
   }
 }
 

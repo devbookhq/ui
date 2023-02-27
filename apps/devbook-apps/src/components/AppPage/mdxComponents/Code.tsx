@@ -198,6 +198,12 @@ function Code({
 
   useEffect(function attachToAppState() {
     setAppCtx(d => {
+      d.Code.isRunning = isRunning
+    })
+  }, [isRunning])
+
+  useEffect(function attachToAppState() {
+    setAppCtx(d => {
       d.Code.changeContent = (change) => {
         setCode(change)
       }

@@ -1,13 +1,11 @@
 import { useSession, SharedSessionProvider } from '@devbookhq/react'
 import { FiletreeProvider } from '@devbookhq/filesystem'
-import { MDXRemote } from 'next-mdx-remote'
+import dynamic from 'next/dynamic'
 
-import '@devbookhq/terminal/dist/index.css'
-// import '@devbookhq/code-editor/dist/index.css'
-
-import mdxComponents from './mdxComponents'
 import { CompiledAppContent } from 'apps/content'
+
 import { AppContextProvider } from './AppContext'
+const MDXRender = dynamic(() => import('./MDXRender'), { ssr: false })
 
 export interface Props {
   content: CompiledAppContent
@@ -26,21 +24,7 @@ function AppPage({ content }: Props) {
     <AppContextProvider>
       <SharedSessionProvider session={sessionHandle}>
         <FiletreeProvider>
-          <div
-            className="
-            min-h-[100vh]
-            min-w-[100vw]
-            overflow-hidden
-            bg-slate-100
-          ">
-            <MDXRemote
-              {...content.serialized}
-              components={mdxComponents}
-            />
-            <style jsx global>
-              {`${content.css}`}
-            </style>
-          </div>
+          <MDXRender content={content} />
         </FiletreeProvider>
       </SharedSessionProvider>
     </AppContextProvider>

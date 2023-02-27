@@ -11,7 +11,7 @@ import {
   indentOnInput,
 } from '@codemirror/language'
 import { lintGutter } from '@codemirror/lint'
-import { Compartment, EditorState } from '@codemirror/state'
+import { Compartment, EditorState, Extension } from '@codemirror/state'
 import {
   EditorView,
   dropCursor,
@@ -27,7 +27,7 @@ const disableSpellchecking = {
   spellcheck: 'false',
 }
 
-function createEditorState(content: string, opts: { lintGutter?: boolean }) {
+function createEditorState(content: string, opts: { lintGutter?: boolean, theme?: Extension }) {
   const languageExtensions = new Compartment()
   const languageServiceExtensions = new Compartment()
   const contentHandlingExtensions = new Compartment()
@@ -38,6 +38,7 @@ function createEditorState(content: string, opts: { lintGutter?: boolean }) {
   const state = EditorState.create({
     doc: content,
     extensions: [
+      opts.theme ? opts.theme : [],
       EditorView.contentAttributes.of(disableSpellchecking),
       editabilityExtensions.of([]),
       opts.lintGutter ? lintGutter({

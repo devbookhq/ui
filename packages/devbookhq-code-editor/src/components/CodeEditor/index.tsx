@@ -160,7 +160,7 @@ const CodeEditor = forwardRef<Handler, Props>(
           editabilityExtensions,
           keymapExtensions,
           state,
-        } = createEditorState(content, { lintGutter })
+        } = createEditorState(content, { lintGutter, theme })
 
         const view = new EditorView({
           state,
@@ -190,6 +190,7 @@ const CodeEditor = forwardRef<Handler, Props>(
         lintGutter,
         autofocus,
         content,
+        theme,
       ],
     )
 
@@ -296,22 +297,6 @@ const CodeEditor = forwardRef<Handler, Props>(
         }
       },
       [editor, languageSetup],
-    )
-
-    useEffect(
-      function configureThemeExtensions() {
-        if (!editor) return
-
-        editor.view.dispatch({
-          effects: editor.themeExtensions.reconfigure(theme),
-        })
-        return () => {
-          editor.view.dispatch({
-            effects: editor.themeExtensions.reconfigure([]),
-          })
-        }
-      },
-      [editor, theme],
     )
 
     useEffect(

@@ -1,3 +1,5 @@
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   important: true,
@@ -5,9 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        barlow: ['Barlow', 'sans-serif'],
-        inter: ['Inter', 'sans-serif'],
-        mono: ['\'JetBrains Mono\'', 'monospace'],
+        sans: ['var(--font-inter)', ...fontFamily.sans],
+        mono: ['var(--font-jet-brains)', ...fontFamily.mono],
       },
       lineClamp: { 10: '10' },
       transparent: 'transparent',

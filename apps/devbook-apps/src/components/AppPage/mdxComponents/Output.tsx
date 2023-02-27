@@ -3,6 +3,7 @@ import { chromeLight, ObjectInspector, } from 'react-inspector'
 
 import { useAppContext } from '../AppContext'
 import Text from 'components/typography/Text'
+import { LoaderIcon } from 'lucide-react'
 
 function extractJSON(str: string): [any, number, number] | undefined {
   let firstOpen: number = 0, firstClose: number, candidate: string
@@ -46,6 +47,7 @@ function Output({
   expandPaths,
 }: Props) {
   const [appCtx] = useAppContext()
+
   const content = useMemo(() => {
     if (!appCtx.Code.output) return
 
@@ -69,6 +71,8 @@ function Output({
 
   }, [appCtx.Code.output, type, position])
 
+  const isLoading = appCtx.Code.isRunning
+
   return (
     <div className="
     flex
@@ -77,11 +81,23 @@ function Output({
     flex-1
     space-y-1
     ">
+
       {label &&
-        <Text
-          text={label}
-          className="text-slate-500"
-        />
+        <div className="flex space-x-2 items-center">
+          {isLoading &&
+            <LoaderIcon
+              className="
+                  text-gray-500
+                  animate-spin
+                "
+              size={14}
+            />
+          }
+          <Text
+            text={label}
+            className="text-slate-500"
+          />
+        </div>
       }
       <div className="
       border

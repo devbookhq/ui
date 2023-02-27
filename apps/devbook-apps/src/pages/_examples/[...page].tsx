@@ -2,9 +2,8 @@ import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 import fs from 'fs/promises'
 import path from 'path'
-import dynamic from 'next/dynamic'
 
-const AppPage = dynamic(() => import('components/AppPage'), { ssr: false })
+import AppPage from 'components/AppPage'
 import {
   CompiledAppContent,
   compileContent,
@@ -24,7 +23,7 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
   // TODO: Build examples pages for all mdx files, not just index.mdx.
   return {
     paths: pages.map(page => ({ params: { page: [page] } })),
-    fallback: true,
+    fallback: 'blocking',
   }
 }
 

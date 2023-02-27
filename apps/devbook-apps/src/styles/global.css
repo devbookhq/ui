@@ -1,3 +1,5 @@
+@import '@devbookhq/terminal/dist/index.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,7 +32,7 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   *,
@@ -45,8 +47,6 @@
     @apply bg-gray-100;
     @apply text-slate-700 antialiased;
 
-    font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
-      'Helvetica', sans-serif;
     text-rendering: optimizeLegibility;
   }
 
@@ -66,6 +66,11 @@
     scrollbar-color: #cbd5e1 transparent;
     scrollbar-width: thin;
     scrollbar-gutter: stable;
+  }
+
+  h3 {
+    align-items: center;
+    display: flex;
   }
 }
 
