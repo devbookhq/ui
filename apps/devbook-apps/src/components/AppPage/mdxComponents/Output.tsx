@@ -31,12 +31,24 @@ function extractJSON(str: string): [any, number, number] | undefined {
   } while (firstOpen != -1)
 }
 
+function extract(o: any, pathSegments: string[]) {
+  return pathSegments.reduce((prev, curr) => {
+    console.log(prev, curr)
+    if (prev === undefined) return prev
+    if (curr in prev) {
+      return prev[curr]
+    }
+    return undefined
+  }, o)
+}
+
 export interface Props {
-  type: 'json' | 'line'
+  type: 'json' | 'line' | 'value'
   position?: number
   children?: ReactNode
   noContentLabel?: string
   expandPaths?: string | string[]
+  extractPath?: string[]
 }
 
 function Output({
@@ -45,13 +57,14 @@ function Output({
   children,
   noContentLabel,
   expandPaths,
+  extractPath,
 }: Props) {
   const [appCtx] = useAppContext()
 
   const content = useMemo(() => {
     if (!appCtx.Code.output) return
 
-    if (type === 'json') {
+    if (type === 'json' || type === 'value') {
       let blob = appCtx.Code.output.join('')
       for (let i = 1; i <= position; i++) {
         const parsed = extractJSON(blob)
@@ -71,6 +84,9 @@ function Output({
 
   }, [appCtx.Code.output, type, position])
 
+  const extractedContent = content && extractPath ? extract(content, extractPath) : content
+
+  console.log('c', extractedContent)
   const isLoading = appCtx.Code.isRunning
 
   return (
@@ -115,7 +131,7 @@ function Output({
       py-2
       space-y-2
     ">
-        {noContentLabel && content === undefined &&
+        {noContentLabel && extractedContent === undefined &&
           <Text
             text={noContentLabel}
             size={Text.size.S3}
@@ -125,7 +141,7 @@ function Output({
             "
           />
         }
-        {content !== undefined && type === 'json' &&
+        {extractedContent !== undefined && type === 'json' &&
           <ObjectInspector
             data={content}
             expandPaths={expandPaths}
@@ -137,9 +153,9 @@ function Output({
             } as any}
           />
         }
-        {content !== undefined && type === 'line' &&
+        {extractedContent !== undefined && (type === 'line' || type === 'value') &&
           <div className="font-mono whitespace-pre">
-            {content}
+            {extractedContent}
           </div>
         }
       </div>

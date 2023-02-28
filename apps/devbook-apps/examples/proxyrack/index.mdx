@@ -14,7 +14,7 @@ HTTPS and SOCKS protocols are enabled on this service.
 <Highlight lines="3">
 **Geo-target a country by adjusting the username.** Change <Input line={3} >yourUsername-country-US</Input> to target a country of your choosing.
 </Highlight>
-<Output type="json" position={1} noContentLabel="Waiting for data" >
+<Output type="value" position={1} noContentLabel="Waiting for data" extractPath={["ip"]} >
 Proxied <State entry="target" /> IP address
 </Output>
 
