@@ -15,33 +15,25 @@ function Run({
   const [appCtx] = useAppContext()
 
   return (
-    <div className="flex flex-1 items-center justify-end relative">
+    <div className="relative">
       <div
         onClick={appCtx.Code.isRunning ? () => appCtx.Code.stop?.() : () => appCtx.Code.run?.()}
         className={clsx(`
-          right-0
-          -mr-5
-          top-1/2
-          -translate-y-1/2
-          translate-x-full
+          left-0
+          -ml-5
+          -translate-x-full
           flex
-          space-x-2 
-          transition-all
+          space-x-2
           absolute
           not-prose
           items-center
           py-0.5
           pr-2
+          group
           pl-1
           rounded
-          text-slate-400
-          hover:text-slate-600
           cursor-pointer
           `,
-          {
-            'hover:bg-red-600/10': appCtx.Code.isRunning,
-            'hover:bg-green-600/10': !appCtx.Code.isRunning,
-          }
         )}
       >
         <div
@@ -49,9 +41,16 @@ function Run({
           rounded
           flex
           p-1
+          transition-all
+          text-slate-400
+          group-hover:text-slate-600
           items-center
           space-x-1
           `,
+            {
+              'bg-red-600/10': appCtx.Code.isRunning,
+              'bg-green-600/10': !appCtx.Code.isRunning,
+            }
           )}
         >
           {appCtx.Code.isRunning
@@ -72,7 +71,7 @@ function Run({
           }
         </div>
         <Text
-          className="font-normal"
+          className="font-normal text-slate-400 group-hover:text-slate-600 transition-all"
           size={Text.size.S3}
           text={appCtx.Code.isRunning ? 'Stop' : 'Run'}
         />

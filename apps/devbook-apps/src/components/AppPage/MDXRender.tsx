@@ -15,8 +15,6 @@ function MDXRender({ content }: Props) {
             min-w-[100vw]
             overflow-hidden
             bg-slate-100
-            prose-h2:flex
-            prose-h2:flex-1
           ">
       <MDXRemote
         {...content.serialized}
