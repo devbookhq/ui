@@ -1,4 +1,4 @@
-import { useMemo, ReactNode, useCallback } from 'react'
+import { useMemo, ReactNode } from 'react'
 import { chromeLight, ObjectInspector, ObjectLabel, ObjectRootLabel } from 'react-inspector'
 
 import { useAppContext } from '../AppContext'
@@ -93,7 +93,7 @@ function Output({
       if (!highlightField || highlightField !== name) {
         return depth === 0
           ? <ObjectRootLabel name={name} data={data} />
-          : <ObjectLabel name={name} data={data} isNonenumerable={isNonenumerable} />;
+          : <ObjectLabel name={name} data={data} isNonenumerable={isNonenumerable} />
       } else {
         return depth === 0
           ? <ObjectRootLabel name={name} data={data} />
