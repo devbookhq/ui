@@ -1,11 +1,10 @@
-import { ChevronDown as ChevronDownIcon } from 'lucide-react'
 import {
   useCallback,
   useRef,
   useState,
 } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
-import cn from 'clsx'
+import clsx from 'clsx'
 
 import Text from 'components/typography/Text'
 
@@ -54,27 +53,33 @@ function Select({
         ref={ref}
       >
         <div
-          className="
-            transition-all
+          className={clsx(
+            `transition-all
             cursor-pointer
-            rounded
             flex
+            hover:border-green-600
+            hover:text-green-600
+            border-b-4
             items-center
             justify-between
             space-x-2
-            min-w-[70px]
-          "
+            min-w-[70px]`,
+            {
+              'text-green-600 border-green-600': isOpened,
+              'text-green-500 border-green-500': !isOpened,
+            }
+          )}
           onClick={() => setIsOpened(val => !val)}
         >
           <Text
-            className="text-green-500 group-hover:border-green-600 font-mono"
+            className="font-mono"
             text={selectedValue.title}
           />
         </div>
 
         {/* Modal */}
         {isOpened && (
-          <div className={cn(
+          <div className={clsx(
             {
               'left-0': direction === 'left',
               'right-0': direction === 'right',
@@ -84,26 +89,13 @@ function Select({
             
             absolute
             p-1
-            mt-1
-            pr-2
-            border border-green-300 hover:border-green-400
+            mt-0.5
+            border border-green-500
             rounded
             bg-slate-50
             space-y-2
             min-w-[150px]`
           )}>
-            {/* Label */}
-            <div className="
-              px-1
-              relative
-              left-[20px]
-            ">
-              <Text
-                className="text-green-500"
-                text={label}
-              />
-            </div>
-
             <div className="
               flex
               flex-col

@@ -1,5 +1,5 @@
 import Select from 'components/Select'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useAppContext } from '../AppContext'
 
 export interface Props {
@@ -56,24 +56,13 @@ function Input({
     inline-flex
     cursor-pointer
     ">
-      <div
-        className="
-        border-green-500
-        inline-flex
-        group
-        transition-all
-        group-hover:border-green-600
-        border-b-4
-      "
-      >
-        <Select
-          label=""
-          onChange={(v) => { changeCode(v.key) }}
-          direction="left"
-          selectedValue={getValue(target || value)}
-          values={targets.map(getValue)}
-        />
-      </div>
+      <Select
+        label=""
+        onChange={(v) => { changeCode(v.key) }}
+        direction="left"
+        selectedValue={getValue(target || value)}
+        values={targets.map(getValue)}
+      />
     </div>
   )
 }

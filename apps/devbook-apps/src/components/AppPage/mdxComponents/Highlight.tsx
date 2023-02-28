@@ -218,7 +218,7 @@ function Highlight({ children, lines }: Props) {
           <CurlyBraces size="16px" className="" />
         </div>
         <Text
-          className="font-mono"
+          className=""
           size={Text.size.S3}
           text="Code"
         />

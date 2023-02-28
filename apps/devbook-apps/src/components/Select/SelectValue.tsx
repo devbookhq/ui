@@ -1,6 +1,7 @@
 import { Check as CheckIcon } from 'lucide-react'
 
 import Text from 'components/typography/Text'
+import clsx from 'clsx'
 
 export interface Value {
   title: string
@@ -20,34 +21,40 @@ function SelectValue({
 }: Props) {
   return (
     <div
-      className="
-        py-0.5
-        px-1
-        rounded
+      className={clsx(
+        `
+        px-2
         cursor-pointer
-        hover:bg-gray-100
+        border-transparent
+        hover:bg-green-500/20
         flex
         items-center
-        space-x-1.5
-      "
+        rounded
+        justofy-center
+        space-x-2
+        py-1
+        `,
+        { 'text-green-600 border-green-600': isSelected },
+      )}
       onClick={() => onSelect(value)}
     >
-      <div className="
-        w-[14px]
-        h-[14px]
+      <div className={clsx(
+        `w-[14px]
+        h-[16px]
         flex
         items-center
         justify-center
-      ">
+        `,
+      )}>
         {isSelected &&
           <CheckIcon
-            className="text-brand-500"
+            className="self-center"
             size={14}
           />
         }
       </div>
       <Text
-        className="whitespace-nowrap"
+        className="whitespace-nowrap font-mono"
         text={value.title}
       />
     </div>

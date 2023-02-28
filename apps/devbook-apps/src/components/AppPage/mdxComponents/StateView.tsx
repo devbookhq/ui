@@ -11,7 +11,7 @@ function StateView({ entry }: Props) {
   return (
     <>
       {value !== undefined &&
-        <strong className="">
+        <strong className="text-green-600">
           {value}
         </strong>
       }

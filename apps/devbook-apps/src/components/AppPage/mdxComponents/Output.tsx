@@ -78,10 +78,20 @@ function Output({
     flex
     flex-col
     flex-1
+    space-y-1
+    mt-1
+    mb-2
     ">
 
       {children &&
-        <div className="space-x-2 items-center flex flex-row">
+        <div className="
+          space-x-2
+          items-center
+          flex
+          flex-row
+          prose-p:my-0
+          "
+        >
           {isLoading &&
             <LoaderIcon
               className="
