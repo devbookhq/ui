@@ -67,7 +67,7 @@ function Select({
             min-w-[70px]`,
             {
               'text-cyan-500 border-cyan-500': isOpened,
-              'text-cyan-200 border-cyan-200': !isOpened,
+              'text-cyan-500/80 border-cyan-500/80': !isOpened,
             }
           )}
           onClick={() => setIsOpened(val => !val)}
@@ -95,7 +95,7 @@ function Select({
             absolute
             p-1
             mt-0.5
-            border border-cyan-200
+            border border-cyan-500
             rounded
             bg-slate-50
             space-y-2
