@@ -97,7 +97,7 @@ function Output({
       } else {
         return depth === 0
           ? <ObjectRootLabel name={name} data={data} />
-          : <div className="border-brand-500 border inline-flex px-1 rounded py-0.5 -ml-1">
+          : <div className="border-brand-300 border bg-white shadow-lg inline-flex px-1 rounded py-0.5 -ml-1">
             <ObjectLabel name={name} data={data} isNonenumerable={isNonenumerable} />
           </div>
       }
