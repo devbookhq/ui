@@ -34,6 +34,10 @@ function Run({
           rounded
           cursor-pointer
           `,
+          {
+            'bg-red-600/10': appCtx.Code.isRunning,
+            'bg-green-600/10': !appCtx.Code.isRunning,
+          }
         )}
       >
         <div
@@ -47,10 +51,6 @@ function Run({
           items-center
           space-x-1
           `,
-            {
-              'bg-red-600/10': appCtx.Code.isRunning,
-              'bg-green-600/10': !appCtx.Code.isRunning,
-            }
           )}
         >
           {appCtx.Code.isRunning
