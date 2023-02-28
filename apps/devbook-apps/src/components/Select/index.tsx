@@ -5,6 +5,7 @@ import {
 } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import clsx from 'clsx'
+import { ChevronDown as ChevronDownIcon } from 'lucide-react'
 
 import Text from 'components/typography/Text'
 
@@ -71,6 +72,10 @@ function Select({
           )}
           onClick={() => setIsOpened(val => !val)}
         >
+          <ChevronDownIcon
+            className="self-center"
+            size={14}
+          />
           <Text
             className="font-mono"
             text={selectedValue.title}
