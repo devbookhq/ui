@@ -63,7 +63,7 @@ function Select({
             border-b-4
             items-center
             justify-between
-            space-x-2
+            space-x-1
             min-w-[70px]`,
             {
               'text-green-600 border-green-600': isOpened,
@@ -72,13 +72,13 @@ function Select({
           )}
           onClick={() => setIsOpened(val => !val)}
         >
-          <ChevronDownIcon
-            className="self-center"
-            size={14}
-          />
           <Text
             className="font-mono"
             text={selectedValue.title}
+          />
+          <ChevronDownIcon
+            className="self-center"
+            size={14}
           />
         </div>
 
