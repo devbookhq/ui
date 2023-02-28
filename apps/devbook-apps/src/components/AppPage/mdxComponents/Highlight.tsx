@@ -210,7 +210,7 @@ function Highlight({ children, lines }: Props) {
           space-x-1
           `,
             {
-              'border-cyan-500': isSelected,
+              'border-brand-500': isSelected,
               'border-slate-300': !isSelected,
             }
           )}

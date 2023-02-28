@@ -29,11 +29,11 @@
   }
 
   button {
-    @apply focus:outline-cyan-200;
+    @apply focus:outline-brand-200;
   }
 
   a {
-    @apply focus:outline-cyan-200;
+    @apply focus:outline-brand-200;
   }
 
   .scroller {
