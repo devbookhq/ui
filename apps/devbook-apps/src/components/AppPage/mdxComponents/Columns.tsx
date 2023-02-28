@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ColumnsIcon } from 'lucide-react'
+import { Layout } from 'lucide-react'
 import React, {
   ReactNode, useState,
 } from 'react'
@@ -35,12 +35,13 @@ function Columns({
 
   return (
     <>
-      <div className="fixed bottom-0">
-        <div className="p-2">
-          <ColumnsIcon
-            size="18px"
+      <div className="fixed right-0 bottom-0">
+        <div className="p-3">
+          <Layout
+            size="24px"
             className="
             text-slate-400
+            transition-all
             hover:text-slate-600
             cursor-pointer
           "
@@ -53,6 +54,7 @@ function Columns({
         h-full
         max-h-full
         max-w-[100vw]
+        transition-all
         flex
         items-start
         justify-center
@@ -67,6 +69,7 @@ function Columns({
           max-h-full
           p-4
           scroller
+          transition-all
           overflow-auto
           `,
             {
@@ -90,7 +93,7 @@ function Columns({
           className={clsx(
             `self-stretch
           w-full
-          
+          transition-all
           max-h-full
           flex
           overflow-auto
