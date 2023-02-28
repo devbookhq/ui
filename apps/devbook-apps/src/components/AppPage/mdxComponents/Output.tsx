@@ -89,7 +89,7 @@ function Output({
   const extractedContent = content && extractPath ? extract(content, extractPath) : content
 
   const renderer = useMemo(() => {
-    return ({ depth, name, data, isNonenumerable, expanded }: any) => {
+    const r = ({ depth, name, data, isNonenumerable, expanded }: any) => {
       if (!highlightField || highlightField !== name) {
         return depth === 0
           ? <ObjectRootLabel name={name} data={data} />
@@ -102,6 +102,8 @@ function Output({
           </div>
       }
     }
+    r.displayName = 'Renderer'
+
   }, [highlightField])
 
   const isLoading = appCtx.Code.isRunning
