@@ -67,7 +67,7 @@ function Select({
             min-w-[70px]`,
             {
               'text-brand-500 border-brand-500': isOpened,
-              'text-brand-500/80 border-brand-500/80': !isOpened,
+              'text-brand-400 border-brand-400': !isOpened,
             }
           )}
           onClick={() => setIsOpened(val => !val)}
