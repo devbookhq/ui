@@ -30,7 +30,7 @@ function SelectValue({
         flex
         items-center
         rounded
-        justofy-center
+        justify-center
         space-x-2
         py-1
         `,
