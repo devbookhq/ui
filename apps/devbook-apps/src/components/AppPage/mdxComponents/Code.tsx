@@ -384,7 +384,7 @@ function Code({
                 key={o.timestamp}
               >
                 <Text
-                  className="text-gray-600 pl-2"
+                  className="text-gray-600"
                   size={Text.size.S3}
                   text=">"
                 />
