@@ -26,7 +26,7 @@ function SelectValue({
         px-2
         cursor-pointer
         border-transparent
-        hover:bg-green-500/20
+        hover:bg-cyan-200
         flex
         items-center
         rounded
@@ -34,7 +34,7 @@ function SelectValue({
         space-x-2
         py-1
         `,
-        { 'text-green-600 border-green-600': isSelected },
+        { 'text-cyan-500 border-cyan-500': isSelected },
       )}
       onClick={() => onSelect(value)}
     >

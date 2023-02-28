@@ -1,5 +1,5 @@
-import { useMemo, ReactNode } from 'react'
-import { chromeLight, ObjectInspector, } from 'react-inspector'
+import { useMemo, ReactNode, useCallback } from 'react'
+import { chromeLight, ObjectInspector, ObjectLabel, ObjectRootLabel } from 'react-inspector'
 
 import { useAppContext } from '../AppContext'
 import Text from 'components/typography/Text'
@@ -49,6 +49,7 @@ export interface Props {
   noContentLabel?: string
   expandPaths?: string | string[]
   extractPath?: string[]
+  highlightField?: string
 }
 
 function Output({
@@ -57,6 +58,7 @@ function Output({
   children,
   noContentLabel,
   expandPaths,
+  highlightField,
   extractPath,
 }: Props) {
   const [appCtx] = useAppContext()
@@ -86,7 +88,22 @@ function Output({
 
   const extractedContent = content && extractPath ? extract(content, extractPath) : content
 
-  console.log('c', extractedContent)
+  const renderer = useMemo(() => {
+    return ({ depth, name, data, isNonenumerable, expanded }: any) => {
+      if (!highlightField || highlightField !== name) {
+        return depth === 0
+          ? <ObjectRootLabel name={name} data={data} />
+          : <ObjectLabel name={name} data={data} isNonenumerable={isNonenumerable} />;
+      } else {
+        return depth === 0
+          ? <ObjectRootLabel name={name} data={data} />
+          : <div className="bg-cyan-200 inline-flex px-2 rounded py-0.5 -ml-2">
+            <ObjectLabel name={name} data={data} isNonenumerable={isNonenumerable} />
+          </div>
+      }
+    }
+  }, [highlightField])
+
   const isLoading = appCtx.Code.isRunning
 
   return (
@@ -145,6 +162,7 @@ function Output({
           <ObjectInspector
             data={content}
             expandPaths={expandPaths}
+            nodeRenderer={renderer}
             theme={{
               ...chromeLight, ...({
                 TREENODE_PADDING_LEFT: 20,
