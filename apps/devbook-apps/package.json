@@ -41,7 +41,8 @@
     "react-dom": "^18.2.0",
     "react-inspector": "^6.0.1",
     "superjson": "^1.12.2",
-    "use-immer": "^0.8.1"
+    "use-immer": "^0.8.1",
+    "usehooks-ts": "^2.9.1"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.1.5",

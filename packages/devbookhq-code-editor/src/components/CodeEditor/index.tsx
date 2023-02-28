@@ -68,6 +68,7 @@ export interface ExtendedCMDiagnostic extends CMDiagnostic {
 
 export interface Handler {
   focus: () => void
+  editor?: EditorView,
   scrollTo: (startLine: number, endLine?: number) => boolean
   getSelection: () => string | undefined
   getDiagnostics: () => ExtendedCMDiagnostic[] | undefined
@@ -127,6 +128,7 @@ const CodeEditor = forwardRef<Handler, Props>(
 
         return diagnostics
       },
+      editor: editor?.view,
       scrollTo: (startLine: number, endLine?: number) => {
         if (!editor) return false
         const state = editor.view.state

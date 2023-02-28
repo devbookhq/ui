@@ -41,29 +41,19 @@ function Highlight({ children, lines }: Props) {
     setID(idCounter++)
   }, [])
 
-  // const indicatorRef = useRef<HTMLDivElement>(null)
-
-  // const [isIndicatorVisible, setIndicatorState] = useMouseIndicator(
-  //   indicatorRef,
-  //   !isSelected,
-  // )
-
   useEffect(function handleEditorHover() {
     if (!parsedLines) return
     if (parsedLines.length === 0) return
 
     if (!appCtx.Code.hoveredLine || !parsedLines) {
       setHovered(Hover.None)
-      // setIndicatorState(false)
     } else {
       const hasOverlap = parsedLines.includes(appCtx.Code.hoveredLine)
-      // setIndicatorState(hasOverlap)
       setHovered(hasOverlap ? Hover.Gutter : Hover.None)
     }
   }, [
     appCtx.Code.hoveredLine,
     parsedLines,
-    // setIndicatorState,
   ])
 
   const handleLineClick = useCallback((line: number) => {
@@ -154,23 +144,6 @@ function Highlight({ children, lines }: Props) {
       py-1
     "
     >
-      {/* {isIndicatorVisible &&
-        <div
-          ref={indicatorRef}
-          className="
-          z-40
-          fixed
-          pointer-events-none
-          "
-        >
-          <div className="absolute top-1 left-2">
-            <svg className="indicator">
-              <circle className="indicator-bg" cx="12" cy="12" r="8" />
-              <circle className="meter" cx="12" cy="12" r="8" />
-            </svg>
-          </div>
-        </div>
-      } */}
       <div
         className={clsx(`
           flex
@@ -247,7 +220,7 @@ function Highlight({ children, lines }: Props) {
         <Text
           className="font-mono"
           size={Text.size.S3}
-          text={isSelected ? 'Hide code' : 'Show code'}
+          text="Code"
         />
       </div>
     </div>

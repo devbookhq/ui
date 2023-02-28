@@ -1,50 +1,51 @@
-import { ReactNode, useState } from 'react'
+import Select from 'components/Select'
+import { ReactNode, useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext'
-
-import {
-  code as C,
-} from './base'
 
 export interface Props {
   children: ReactNode
   line?: number
+  value?: string
 }
+
+const targets = ['US', 'FR', 'CA']
+
+function getUsername(target: string) {
+  return `yourUsername-country-${target}`
+}
+
+function getValue(target: string) {
+  return {
+    key: target,
+    title: getUsername(target),
+  }
+}
+
+const key = 'target'
 
 function Input({
   children,
   line,
+  value = 'US',
 }: Props) {
   const [appCtx, setAppCtx] = useAppContext()
-  const [content, setContent] = useState(children?.toString() as string)
+  useEffect(function attach() {
+    setAppCtx(d => {
+      d.state[key] = value
+    })
+  }, [value])
+  const target = appCtx.state[key]
 
-  const [target, setTarget] = useState<'FR' | 'US' | 'CA'>('US')
-
-  function changeCode(geotarget: 'US' | 'FR' | 'CA') {
+  function changeCode(newTarget: string) {
     // TODO: Make this hardcoded replacement general
-    appCtx.Code.stop?.()
-    setTarget(geotarget)
-
-    setContent(c =>
-      c
-        .replace('yourUsername-country-US', `yourUsername-country-${geotarget}`)
-        .replace('yourUsername-country-FR', `yourUsername-country-${geotarget}`)
-        .replace('yourUsername-country-CA', `yourUsername-country-${geotarget}`)
-    )
-
     appCtx.Code.changeContent?.(code =>
       code
-        .replace('\'yourUsername-country-US\'', `\'yourUsername-country-${geotarget}\'`)
-        .replace('\'yourUsername-country-FR\'', `\'yourUsername-country-${geotarget}\'`)
-        .replace('\'yourUsername-country-CA\'', `\'yourUsername-country-${geotarget}\'`)
+        .replace(`\'${getUsername(target || value)}\'`, `\'${getUsername(newTarget)}\'`)
     )
 
-    if (line !== undefined) {
-      Object.values(appCtx.Explanation).forEach(e => {
-        if (!e?.enabled) {
-          e?.lineClickHandler?.(line)
-        }
-      })
-    }
+    setAppCtx(d => {
+      d.state[key] = newTarget
+    })
 
     appCtx.Code.run?.()
   }
@@ -56,31 +57,22 @@ function Input({
     cursor-pointer
     ">
       <div
-        onClick={() => {
-          switch (target) {
-            case 'FR':
-              changeCode('US')
-              break
-            case 'US':
-              changeCode('CA')
-              break
-            case 'CA':
-              changeCode('FR')
-              break
-          }
-        }}
         className="
         border-green-500
         inline-flex
-        pb-[2px]
+        group
         transition-all
         group-hover:border-green-600
         border-b-4
       "
       >
-        <C>
-          {content}
-        </C>
+        <Select
+          label=""
+          onChange={(v) => { changeCode(v.key) }}
+          direction="left"
+          selectedValue={getValue(target || value)}
+          values={targets.map(getValue)}
+        />
       </div>
     </div>
   )

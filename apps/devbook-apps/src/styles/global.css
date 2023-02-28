@@ -4,32 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .scrollbar-gutter {
-    /* This prevents scrollbars from moving the content */
-    /* https://css-tricks.com/almanac/properties/s/scrollbar-gutter */
-    scrollbar-gutter:stable both-edges;
-  }
-
-  .autocomplete-scrollbar {
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      /* @apply bg-black-650; */
-      &:hover {
-        /* @apply bg-black-600; */
-      }
-    }
-    &::-webkit-scrollbar-track {
-      border-radius: 10px;
-      background: transparent;
-    }
-  }
-}
-
 @layer base {
   :root {
     color-scheme: dark;
@@ -65,12 +39,7 @@
   .scroller {
     scrollbar-color: #cbd5e1 transparent;
     scrollbar-width: thin;
-    scrollbar-gutter: stable;
-  }
-
-  h3 {
-    align-items: center;
-    display: flex;
+    scrollbar-gutter: stable both-edges;
   }
 }
 
@@ -106,74 +75,4 @@ select:-webkit-autofill:focus {
 
 .scroller::-webkit-scrollbar-corner {
   @apply bg-transparent;
-}
-
-.__dbk__container.Horizontal {
-  overflow: visible !important;
-}
-
-.instructions-scrollbar::-webkit-scrollbar
-{
-  width: 6px;
-  height: 6px;
-  background-color: transparent;
-}
-
-.instructions-scrollbar::-webkit-scrollbar-thumb
-{
-  border-radius: 10px;
-  background-color: #718096;
-}
-/* ======================== */
-
-/* Progress indicator */
-.indicator {
-  width: 24px;
-  height: 24px;
-}
-
-.indicator-bg {
-  fill: none;
-  stroke-width: 3.5px;
-  stroke: #14532d;
-  /* opacity: 0; */
-  /* animation: progress 0.5s cubic-bezier(0.64, 0, 0.78, 0); */
-  /* animation: progress 0.55s cubic-bezier(0.64, 0, 0.78, 0); */
-}
-
-.meter {
-  fill: none;
-  stroke-width: 4px;
-  stroke-linecap: round;
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-  stroke-dasharray: 360;
-  stroke-dashoffset: 100;
-  stroke: #22c55e;
-  /* opacity: 0; */
-  animation: progress 0.55s cubic-bezier(0.64, 0, 0.78, 0);
-}
-
-@keyframes progress {
-  0% {
-    stroke-dashoffset: 360;
-    opacity: 0.7;
-  }
-  5% {
-    stroke-dashoffset: 360;
-    /* opacity: 0.5; */
-  }
-  90% {
-    stroke-dashoffset: 120;
-    /* opacity: 1; */
-  }
-  99% {
-    stroke-dashoffset: 10;
-    /* opacity: 1; */
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-    /* opacity: 0; */
-  }
 }

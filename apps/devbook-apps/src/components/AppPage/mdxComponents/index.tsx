@@ -14,6 +14,7 @@ import Input from './Input'
 import Run from './Run'
 import Code from './Code'
 import Terminal from './Terminal'
+import StateView from './StateView'
 import Filetree from './Filetree'
 
 const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
@@ -22,6 +23,7 @@ const mdxComponents: ComponentProps<typeof MDXRemote>['components'] = {
   pre: Pre,
   Filetree,
   Code,
+  State: StateView,
   Output,
   Terminal,
   Run,

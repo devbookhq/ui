@@ -19,6 +19,9 @@ export interface AppContext {
     stop?: () => void
     changeContent?: (change: (content: string) => string) => void
   }
+  state: {
+    [key: string]: string | undefined
+  },
   Explanation: {
     [id: number]: {
       highlightLines?: number[]
@@ -37,6 +40,7 @@ export function AppContextProvider({
   const state = useImmer<AppContext>({
     Code: {},
     Explanation: {},
+    state: {},
   })
 
   return (

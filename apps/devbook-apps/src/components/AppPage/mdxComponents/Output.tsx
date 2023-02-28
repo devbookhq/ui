@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, ReactNode } from 'react'
 import { chromeLight, ObjectInspector, } from 'react-inspector'
 
 import { useAppContext } from '../AppContext'
@@ -34,7 +34,7 @@ function extractJSON(str: string): [any, number, number] | undefined {
 export interface Props {
   type: 'json' | 'line'
   position?: number
-  label?: string
+  children?: ReactNode
   noContentLabel?: string
   expandPaths?: string | string[]
 }
@@ -42,7 +42,7 @@ export interface Props {
 function Output({
   type,
   position = 1,
-  label,
+  children,
   noContentLabel,
   expandPaths,
 }: Props) {
@@ -76,14 +76,12 @@ function Output({
   return (
     <div className="
     flex
-    my-1.5
     flex-col
     flex-1
-    space-y-1
     ">
 
-      {label &&
-        <div className="flex space-x-2 items-center">
+      {children &&
+        <div className="space-x-2 items-center flex flex-row">
           {isLoading &&
             <LoaderIcon
               className="
@@ -93,10 +91,7 @@ function Output({
               size={14}
             />
           }
-          <Text
-            text={label}
-            className="text-slate-500"
-          />
+          {children}
         </div>
       }
       <div className="
