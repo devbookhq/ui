@@ -23,7 +23,7 @@ function Run({
           -ml-5
           -translate-x-full
           flex
-          space-x-2
+          space-x-0.5
           absolute
           not-prose
           items-center
@@ -46,24 +46,24 @@ function Run({
           flex
           p-1
           transition-all
-          text-slate-400
-          group-hover:text-slate-600
           items-center
           space-x-1
           `,
+            {
+              'text-red-400 group-hover:text-red-600': appCtx.Code.isRunning,
+              'text-green-500 group-hover:text-green-600': !appCtx.Code.isRunning,
+            }
           )}
         >
           {appCtx.Code.isRunning
             ? <Square
               className="
-            text-red-500
             cursor-pointer
           "
               size={16}
             />
             : <Play
               className="
-            text-green-500
             cursor-pointer
           "
               size={16}
@@ -71,7 +71,16 @@ function Run({
           }
         </div>
         <Text
-          className="font-normal text-slate-400 group-hover:text-slate-600 transition-all"
+          className={clsx(`
+          font-normal
+          transition-all
+          `,
+            {
+              'text-red-400 group-hover:text-red-600': appCtx.Code.isRunning,
+              'text-green-500 group-hover:text-green-600': !appCtx.Code.isRunning,
+            }
+          )
+          }
           size={Text.size.S3}
           text={appCtx.Code.isRunning ? 'Stop' : 'Run'}
         />
