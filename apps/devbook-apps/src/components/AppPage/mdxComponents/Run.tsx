@@ -3,9 +3,7 @@ import { Play, Square } from 'lucide-react'
 import { ReactNode } from 'react'
 
 import { useAppContext } from '../AppContext'
-import RunButton from '../RunButton'
 import Text from 'components/typography/Text'
-import StopButton from '../StopButton'
 
 export interface Props {
   children: ReactNode
