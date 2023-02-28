@@ -104,6 +104,7 @@ function Output({
     }
     r.displayName = 'Renderer'
 
+    return r
   }, [highlightField])
 
   const isLoading = appCtx.Code.isRunning
