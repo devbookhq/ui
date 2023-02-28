@@ -1,11 +1,11 @@
+import clsx from 'clsx'
+import { Play, Square } from 'lucide-react'
 import { ReactNode } from 'react'
 
 import { useAppContext } from '../AppContext'
 import RunButton from '../RunButton'
-import StopButton from '../StopButton'
 import Text from 'components/typography/Text'
-import clsx from 'clsx'
-import { CurlyBraces } from 'lucide-react'
+import StopButton from '../StopButton'
 
 export interface Props {
   children: ReactNode
@@ -17,25 +17,9 @@ function Run({
   const [appCtx] = useAppContext()
 
   return (
-    <div className="inline-flex mr-1 flex-1">
-      {!appCtx.Code.isRunning ? (
-        <RunButton
-          onClick={() => appCtx.Code.run?.()}
-        />
-      ) : (
-        <StopButton
-          onClick={() => appCtx.Code.stop?.()}
-        />
-      )}
-
+    <div className="flex flex-1 items-center justify-end relative">
       <div
-        className={clsx(
-          `absolute
-        inset-y-0
-        -inset-x-2
-        rounded-lg`,
-        )} />
-      <div
+        onClick={appCtx.Code.isRunning ? () => appCtx.Code.stop?.() : () => appCtx.Code.run?.()}
         className={clsx(`
           right-0
           -mr-5
@@ -48,31 +32,51 @@ function Run({
           absolute
           not-prose
           items-center
+          py-0.5
+          pr-2
+          pl-1
+          rounded
+          text-slate-400
           hover:text-slate-600
           cursor-pointer
-          text-slate-400
           `,
-        )
-        }
+          {
+            'hover:bg-red-600/10': appCtx.Code.isRunning,
+            'hover:bg-green-600/10': !appCtx.Code.isRunning,
+          }
+        )}
       >
         <div
           className={clsx(`
-          bg-white
-          p-1
           rounded
-          border
           flex
+          p-1
           items-center
           space-x-1
           `,
           )}
         >
-          <CurlyBraces size="16px" className="" />
+          {appCtx.Code.isRunning
+            ? <Square
+              className="
+            text-red-500
+            cursor-pointer
+          "
+              size={16}
+            />
+            : <Play
+              className="
+            text-green-500
+            cursor-pointer
+          "
+              size={16}
+            />
+          }
         </div>
         <Text
-          className="font-mono"
+          className="font-normal"
           size={Text.size.S3}
-          text="Code"
+          text={appCtx.Code.isRunning ? 'Stop' : 'Run'}
         />
       </div>
     </div>
