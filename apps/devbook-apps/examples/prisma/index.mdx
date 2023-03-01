@@ -1,0 +1,47 @@
+---
+envID: 5udkAFHBVrGz
+---
+
+<Columns>
+<div>
+## <Run /> Pagination and Sorting
+###  Sort
+
+Prisma Client supports [filtering and sorting](prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting) with the `where` and `orderBy` query options respectively.
+
+Use [orderBy](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#orderby) to sort a list of records or a nested list of records by a particular field or set of fields.
+
+<Highlight lines="5-8">
+You can **sort by properties of a relation**. 
+Change the property <Input line={6} >published: true</Input> used for sorting or the <Input line={7}>asc</Input> order of sorting.
+</Highlight>
+<Output type="array" position={1} noContentLabel="Waiting for data" >
+Published posts in ascending order
+</Output>
+
+<Highlight lines="11-13">
+In 2.19.0 and later, you can sort by the **count of related records**.
+</Highlight>
+<Output type="array" position={2} noContentLabel="Waiting for data">
+Authors ordered by the number of posts they have written
+</Output>
+</div>
+
+<Code file="index.js" onRun={() => "node /code/index.js"}>
+{`import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+const posts = await prisma.post.findMany({
+  where: { published: true },
+  orderBy: { createdAt: "asc" },
+});
+console.log(JSON.stringify(posts, null, 2));
+
+const prolificAuthors = await prisma.user.findMany({
+  orderBy: { posts: { _count: "desc" } },
+});
+console.log(JSON.stringify(prolificAuthors, null, 2));
+`}
+</Code>
+</Columns>

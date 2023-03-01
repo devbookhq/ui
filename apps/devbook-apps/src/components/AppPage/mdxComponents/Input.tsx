@@ -11,7 +11,7 @@ export interface Props {
 const targets = ['US', 'FR', 'CA']
 
 function getUsername(target: string) {
-  return `yourUsername-country-${target}`
+  return `${target}`
 }
 
 function getValue(target: string) {
@@ -60,7 +60,7 @@ function Input({
         label=""
         onChange={(v) => { changeCode(v.key) }}
         direction="left"
-        selectedValue={getValue(target || value)}
+        selectedValue={getValue(children as string || target || value)}
         values={targets.map(getValue)}
       />
     </div>

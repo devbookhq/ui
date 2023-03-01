@@ -1,15 +1,16 @@
 import { useMemo, ReactNode } from 'react'
-import { chromeLight, ObjectInspector, ObjectLabel, ObjectRootLabel } from 'react-inspector'
+import { chromeLight, ObjectInspector, TableInspector, ObjectLabel, ObjectRootLabel } from 'react-inspector'
 
 import { useAppContext } from '../AppContext'
 import Text from 'components/typography/Text'
 import { LoaderIcon } from 'lucide-react'
 
-function extractJSON(str: string): [any, number, number] | undefined {
+
+function extractJSON(str: string, startDelimiter: '{' | '[', endDelimiter: '}' | ']'): [any, number, number] | undefined {
   let firstOpen: number = 0, firstClose: number, candidate: string
-  firstOpen = str.indexOf('{', firstOpen)
+  firstOpen = str.indexOf(startDelimiter, firstOpen)
   do {
-    firstClose = str.lastIndexOf('}')
+    firstClose = str.lastIndexOf(endDelimiter)
     // console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose)
     if (firstClose <= firstOpen) {
       return undefined
@@ -25,15 +26,14 @@ function extractJSON(str: string): [any, number, number] | undefined {
       catch (e) {
         // console.log('...failed')
       }
-      firstClose = str.substring(0, firstClose).lastIndexOf('}')
+      firstClose = str.substring(0, firstClose).lastIndexOf(endDelimiter)
     } while (firstClose > firstOpen)
-    firstOpen = str.indexOf('{', firstOpen + 1)
+    firstOpen = str.indexOf(startDelimiter, firstOpen + 1)
   } while (firstOpen != -1)
 }
 
 function extract(o: any, pathSegments: string[]) {
   return pathSegments.reduce((prev, curr) => {
-    console.log(prev, curr)
     if (prev === undefined) return prev
     if (curr in prev) {
       return prev[curr]
@@ -43,7 +43,7 @@ function extract(o: any, pathSegments: string[]) {
 }
 
 export interface Props {
-  type: 'json' | 'line' | 'value'
+  type: 'json' | 'line' | 'value' | 'array'
   position?: number
   children?: ReactNode
   noContentLabel?: string
@@ -66,12 +66,16 @@ function Output({
   const content = useMemo(() => {
     if (!appCtx.Code.output) return
 
-    if (type === 'json' || type === 'value') {
+    if (type === 'json' || type === 'value' || type === 'array') {
       let blob = appCtx.Code.output.join('')
+
       for (let i = 1; i <= position; i++) {
-        const parsed = extractJSON(blob)
+
+        console.log(blob)
+        const parsed = extractJSON(blob, type === 'array' ? '[' : '{', type === 'array' ? ']' : '}')
         if (!parsed) return
 
+        console.log(parsed[0])
         if (i === position) {
           return parsed[0]
         } else {
@@ -85,7 +89,6 @@ function Output({
     }
 
   }, [appCtx.Code.output, type, position])
-
   const extractedContent = content && extractPath ? extract(content, extractPath) : content
 
   const renderer = useMemo(() => {
@@ -159,6 +162,17 @@ function Output({
             text-slate-400
             italic
             "
+          />
+        }
+        {extractedContent !== undefined && type === 'array' &&
+          <TableInspector
+            data={content}
+            theme={{
+              ...chromeLight, ...({
+                TREENODE_PADDING_LEFT: 20,
+                BASE_BACKGROUND_COLOR: 'transparent',
+              })
+            } as any}
           />
         }
         {extractedContent !== undefined && type === 'json' &&

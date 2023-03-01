@@ -14,6 +14,7 @@ export function a(p: Props<HTMLAnchorElement, AnchorHTMLAttributes<HTMLAnchorEle
         font-bold
         border-b
         border-brand-500
+        transition-all
         hover:border-b-[2px]
         no-underline
       "
