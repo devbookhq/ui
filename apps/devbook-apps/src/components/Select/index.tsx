@@ -12,7 +12,6 @@ import Text from 'components/typography/Text'
 import SelectValue, { Value } from './SelectValue'
 
 export interface Props {
-  label: string
   values: Value[]
   selectedValue: Value
   onChange: (v: Value) => void
@@ -21,7 +20,6 @@ export interface Props {
 }
 
 function Select({
-  label,
   values,
   selectedValue,
   onChange,
@@ -63,8 +61,7 @@ function Select({
             border-b-4
             items-center
             justify-between
-            space-x-1
-            min-w-[70px]`,
+            space-x-1`,
             {
               'text-brand-500 border-brand-500': isOpened,
               'text-brand-400 border-brand-400': !isOpened,
@@ -98,8 +95,7 @@ function Select({
             border border-brand-500
             rounded
             bg-slate-50
-            space-y-2
-            min-w-[150px]`
+            space-y-2`
           )}>
             <div className="
               flex

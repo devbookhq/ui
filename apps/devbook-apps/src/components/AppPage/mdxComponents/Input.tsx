@@ -1,50 +1,43 @@
 import Select from 'components/Select'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext'
 
 export interface Props {
   children: ReactNode
-  line?: number
-  value?: string
-}
-
-const targets = ['US', 'FR', 'CA']
-
-function getUsername(target: string) {
-  return `${target}`
+  values?: string[]
+  entry: string
 }
 
 function getValue(target: string) {
   return {
     key: target,
-    title: getUsername(target),
+    title: target,
   }
 }
 
-const key = 'target'
-
 function Input({
   children,
-  line,
-  value = 'US',
+  values = [],
+  entry,
 }: Props) {
   const [appCtx, setAppCtx] = useAppContext()
   useEffect(function attach() {
-    setAppCtx(d => {
-      d.state[key] = value
-    })
-  }, [value])
-  const target = appCtx.state[key]
+    if (values && values?.length > 0) {
+      setAppCtx(d => {
+        d.state[entry] = values[0]
+      })
+    }
+  }, [entry, values])
+
+  const target = appCtx.state[entry]
 
   function changeCode(newTarget: string) {
-    // TODO: Make this hardcoded replacement general
     appCtx.Code.changeContent?.(code =>
-      code
-        .replace(`\'${getUsername(target || value)}\'`, `\'${getUsername(newTarget)}\'`)
+      code.replace(`${target}`, `${newTarget}`)
     )
 
     setAppCtx(d => {
-      d.state[key] = newTarget
+      d.state[entry] = newTarget
     })
 
     appCtx.Code.run?.()
@@ -57,11 +50,10 @@ function Input({
     cursor-pointer
     ">
       <Select
-        label=""
         onChange={(v) => { changeCode(v.key) }}
         direction="left"
-        selectedValue={getValue(children as string || target || value)}
-        values={targets.map(getValue)}
+        selectedValue={getValue(children as string || target || '')}
+        values={values.map(getValue)}
       />
     </div>
   )

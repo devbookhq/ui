@@ -27,7 +27,7 @@
     "@devbookhq/code-editor": "workspace:*",
     "@devbookhq/filesystem": "workspace:*",
     "@devbookhq/react": "workspace:*",
-    "@devbookhq/terminal": "workspace:^0.1.22",
+    "@devbookhq/terminal": "workspace:*",
     "clsx": "^1.2.1",
     "database": "workspace:*",
     "immer": "^9.0.19",

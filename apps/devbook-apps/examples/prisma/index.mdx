@@ -7,16 +7,16 @@ envID: 5udkAFHBVrGz
 ## <Run /> Pagination and Sorting
 ###  Sort
 
-Prisma Client supports [filtering and sorting](prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting) with the `where` and `orderBy` query options respectively.
+Prisma Client supports [filtering and sorting](https://prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting) with the `where` and `orderBy` query options respectively.
 
-Use [orderBy](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#orderby) to sort a list of records or a nested list of records by a particular field or set of fields.
+Use [orderBy](https://prisma.io/docs/reference/api-reference/prisma-client-reference#orderby) to sort a list of records or a nested list of records by a particular field or set of fields.
 
 <Highlight lines="5-8">
 You can **sort by properties of a relation**. 
-Change the property <Input line={6} >published: true</Input> used for sorting or the <Input line={7}>asc</Input> order of sorting.
+Change the property <Input entry="property" values={["published: true", "published: false"]} /> used for sorting or the <Input entry="order" values={["createdAt: \"asc\"", "createdAt: \"desc\""]} /> order of sorting.
 </Highlight>
 <Output type="array" position={1} noContentLabel="Waiting for data" >
-Published posts in ascending order
+<State entry="property" transform={{ "published: true": "Published", "published: false":"Non-published" }}/> posts in <State entry="order" transform={{ "createdAt: \"asc\"": "ascending", "createdAt: \"desc\"":"descending" }}/> order
 </Output>
 
 <Highlight lines="11-13">
