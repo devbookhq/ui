@@ -1,4 +1,8 @@
-import { CodeEditor, CodeEditorHandler } from '@devbookhq/code-editor'
+import {
+  CodeEditor,
+  CodeEditorHandler,
+  useLanguageClients,
+} from '@devbookhq/code-editor'
 import { EditorView } from '@codemirror/view'
 import { Loader as LoaderIcon } from 'lucide-react'
 import {
@@ -115,6 +119,8 @@ function Code({
   const codeRef = useRef<CodeEditorHandler>(null)
   const [code, setCode] = useState(children as string)
 
+  const clients = useLanguageClients()
+
   const {
     highlightedLines,
     indicatedLines,
@@ -223,18 +229,9 @@ function Code({
     navigator.clipboard.writeText(code)
   }, [code])
 
-
   const writeFile = useCallback((content: string) => {
     if (!file) return
-
-    // TODO: This is specific for one proxyrack example - add regular env vars replacement.
-    const replacedCode = content
-      .replace('\'yourUsername-country-US\'', 'process.env.USERNAME + "-country-US"')
-      .replace('\'yourUsername-country-FR\'', 'process.env.USERNAME + "-country-FR"')
-      .replace('\'yourUsername-country-CA\'', 'process.env.USERNAME + "-country-CA"')
-      .replace('\'yourPassword\'', 'process.env.PASSWORD')
-
-    session?.filesystem?.write(path.join(rootdir, file), replacedCode)
+    session?.filesystem?.write(path.join(rootdir, file), content)
   }, [
     session,
     file,
@@ -323,6 +320,7 @@ function Code({
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
           lintGutter={false}
+          languageClients={clients}
           indicatedLines={indicatedLines}
           highlightedLines={highlightedLines}
           content={code}

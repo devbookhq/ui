@@ -1,10 +1,12 @@
 import { useSession, SharedSessionProvider } from '@devbookhq/react'
+import { LanguageClientsProvider } from '@devbookhq/code-editor'
 import { FiletreeProvider } from '@devbookhq/filesystem'
 import dynamic from 'next/dynamic'
 
 import { CompiledAppContent } from 'apps/content'
 
 import { AppContextProvider } from './AppContext'
+import { supportedLanguages } from 'apps/languages'
 const MDXRender = dynamic(() => import('./MDXRender'), { ssr: false })
 
 export interface Props {
@@ -24,7 +26,13 @@ function AppPage({ content }: Props) {
     <AppContextProvider>
       <SharedSessionProvider session={sessionHandle}>
         <FiletreeProvider>
-          <MDXRender content={content} />
+          <LanguageClientsProvider
+            languageServerPort={5523}
+            session={sessionHandle.session}
+            supportedLanguages={supportedLanguages}
+          >
+            <MDXRender content={content} />
+          </LanguageClientsProvider>
         </FiletreeProvider>
       </SharedSessionProvider>
     </AppContextProvider>

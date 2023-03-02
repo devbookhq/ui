@@ -1,4 +1,5 @@
 @import '@devbookhq/terminal/dist/index.css';
+@import '@devbookhq/code-editor/dist/index.css';
 
 @tailwind base;
 @tailwind components;
