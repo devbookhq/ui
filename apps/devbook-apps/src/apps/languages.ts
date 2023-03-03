@@ -3,7 +3,6 @@ import { javascript } from '@codemirror/lang-javascript'
 import { json } from '@codemirror/lang-json'
 
 import typescriptDefaultServerCapabilities from './languageServerCapabilities/typescript.json'
-import prismaDefaultServerCapabilities from './languageServerCapabilities/prisma.json'
 
 export enum LanguageID {
   TypeScript = 'typescript',
