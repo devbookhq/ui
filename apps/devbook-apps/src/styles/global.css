@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   *,
@@ -59,7 +59,7 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #f8fafc inset;
-  -webkit-text-fill-color: #475569;
+  -webkit-text-fill-color: #e2e8f0;
   caret-color: #000;
 }
 
