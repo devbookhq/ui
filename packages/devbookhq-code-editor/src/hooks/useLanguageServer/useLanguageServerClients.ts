@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { logger } from '../../utils'
 
 import { LanguageServerClient } from './languageServerClient'
 import { LanguageServer } from './languageServerProcess'
@@ -9,12 +10,16 @@ export type LSClients = {
   [key: string]: LanguageServerClient
 }
 
+const log = logger('LanguageServiceClients')
+
 function useLanguageServerClients({
   rootdir,
   server,
+  debug,
 }: {
   server?: LanguageServer
   rootdir: string
+  debug?: boolean,
 }) {
   const [state, setState] = useState<{
     clients?: LSClients
@@ -82,7 +87,7 @@ function useLanguageServerClients({
         })
       }
     },
-    [server, rootdir],
+    [server, rootdir, debug],
   )
 
   return state?.clients

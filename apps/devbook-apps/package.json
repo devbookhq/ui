@@ -30,6 +30,7 @@
     "@devbookhq/terminal": "workspace:*",
     "clsx": "^1.2.1",
     "database": "workspace:*",
+    "highlight.js": "^11.6.0",
     "immer": "^9.0.19",
     "lucide-react": "^0.105.0",
     "next": "13.2.1",

@@ -17,6 +17,7 @@ export interface LanguageClientsProviderProps {
   children: ReactNode
   supportedLanguages: LanguageSetup[]
   languageServerPort: number
+  debug?: boolean
 }
 
 export function LanguageClientsProvider({
@@ -25,11 +26,13 @@ export function LanguageClientsProvider({
   session,
   languageServerPort,
   rootdir = '/code',
+  debug,
 }: LanguageClientsProviderProps) {
   const server = useExternalLanguageServer({
     supportedLanguages,
     session,
     port: languageServerPort,
+    debug,
   })
   const languageClients = useLanguageServerClients({
     rootdir,

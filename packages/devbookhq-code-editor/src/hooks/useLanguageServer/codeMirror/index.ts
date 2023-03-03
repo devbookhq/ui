@@ -30,26 +30,28 @@ export function createExtension(options: {
 
   const { extension: signatureExtension, getSignatureState } = signature(getPlugin)
 
+  const p = ViewPlugin.define(
+    view => (plugin = new LanguageServerPlugin(
+      view,
+      options.openFile,
+      getSignatureState,
+      options.onDiagnosticsChange,
+    )),
+  )
+
   return {
     extension: [
       client.of(options.client),
       documentURI.of(options.documentURI),
       languageID.of(options.client.languageID),
       signatureExtension,
-      ViewPlugin.define(
-        view => (plugin = new LanguageServerPlugin(
-          view,
-          options.openFile,
-          getSignatureState,
-          options.onDiagnosticsChange,
-        )),
-      ),
+      p,
       Prec.highest(
         keymap.of([
           {
             key: 'Mod-s',
-            run: c => {
-              plugin?.requestFormatting(c)
+            run: view => {
+              plugin?.requestFormatting(view)
               // Pass the event to the next keybinding
               return false
             },
@@ -64,6 +66,9 @@ export function createExtension(options: {
         ]),
       ),
       hoverTooltip(async (view, pos) => {
+        const plugin = getPlugin()
+
+        console.log(plugin)
         if (!plugin) return null
 
         const positon = offsetToPos(view.state.doc, pos)

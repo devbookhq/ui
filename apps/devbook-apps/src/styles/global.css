@@ -1,5 +1,5 @@
 @import '@devbookhq/terminal/dist/index.css';
-@import '@devbookhq/code-editor/dist/index.css';
+@import './codemirror.css';
 
 @tailwind base;
 @tailwind components;

@@ -128,6 +128,7 @@ importers:
       database: workspace:*
       eslint: ^8.32.0
       eslint-config-next: ^13.2.1
+      highlight.js: ^11.6.0
       immer: ^9.0.19
       lucide-react: ^0.105.0
       next: 13.2.1
@@ -156,6 +157,7 @@ importers:
       '@devbookhq/terminal': link:../../packages/devbookhq-terminal
       clsx: 1.2.1
       database: link:../../packages/database
+      highlight.js: 11.7.0
       immer: 9.0.19
       lucide-react: 0.105.0_react@18.2.0
       next: 13.2.1_biqbaboplfbrettd7655fr4n2y

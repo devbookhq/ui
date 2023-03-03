@@ -327,8 +327,9 @@ function Code({
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={theme}
+          openFileInLanguageServer
           ref={codeRef}
-          isReadOnly={!isEditable}
+          isReadOnly={isEditable}
           onContentChange={writeFile}
           onGutterHover={handleLineHover}
           onGutterClick={handleLineClick}

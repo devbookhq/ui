@@ -28,6 +28,7 @@ function AppPage({ content }: Props) {
         <FiletreeProvider>
           <LanguageClientsProvider
             languageServerPort={5523}
+            debug
             session={sessionHandle.session}
             supportedLanguages={supportedLanguages}
           >
