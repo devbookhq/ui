@@ -328,7 +328,7 @@ function Code({
           supportedLanguages={supportedLanguages}
           theme={theme}
           ref={codeRef}
-          isReadOnly={isEditable}
+          isReadOnly={!isEditable}
           onContentChange={writeFile}
           onGutterHover={handleLineHover}
           onGutterClick={handleLineClick}

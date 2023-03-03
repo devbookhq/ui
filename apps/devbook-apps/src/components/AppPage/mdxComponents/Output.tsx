@@ -171,12 +171,12 @@ function Output({
               ...chromeLight, ...({
                 TREENODE_PADDING_LEFT: 20,
                 BASE_BACKGROUND_COLOR: 'transparent',
-                TABLE_BORDER_COLOR: "transparent",
-                TABLE_TH_BACKGROUND_COLOR: "transparent",
-                TABLE_TH_HOVER_COLOR: "transparent",
-                TABLE_SORT_ICON_COLOR: "black",
-                TABLE_DATA_BACKGROUND_IMAGE: "linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(51, 139, 255, 0.0980392) 50%, rgba(51, 139, 255, 0.0980392))",
-                TABLE_DATA_BACKGROUND_SIZE: "128px 32px",
+                TABLE_BORDER_COLOR: 'transparent',
+                TABLE_TH_BACKGROUND_COLOR: 'transparent',
+                TABLE_TH_HOVER_COLOR: 'transparent',
+                TABLE_SORT_ICON_COLOR: 'black',
+                TABLE_DATA_BACKGROUND_IMAGE: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(51, 139, 255, 0.0980392) 50%, rgba(51, 139, 255, 0.0980392))',
+                TABLE_DATA_BACKGROUND_SIZE: '128px 32px',
               })
             } as any}
           />

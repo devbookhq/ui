@@ -1,5 +1,5 @@
 import Select from 'components/Select'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useAppContext } from '../AppContext'
 
 export interface Props {
