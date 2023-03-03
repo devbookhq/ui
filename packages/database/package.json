@@ -1,5 +1,10 @@
 {
   "name": "database",
+  "version": "0.0.0",
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@prisma/client": "^4.9.0"
   },

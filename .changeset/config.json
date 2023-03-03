@@ -9,6 +9,8 @@
   "ignore": [
     "dashboard",
     "database",
-    "devbook-apps"
+    "devbook-apps",
+    "eslint-config-devbookhq",
+    "devbookhq-tsconfig"
   ]
 }
