@@ -24,11 +24,11 @@ export const supportedLanguages: LanguageSetup[] = [
     fileExtensions: ['.json'],
     languageExtensions: json(),
   },
-  {
-    // Necessary packages were installed by `npm i -g @prisma/language-server`
-    languageServerCommand: 'prisma-language-server',
-    fileExtensions: ['.prisma'],
-    languageID: LanguageID.Prisma,
-    defaultServerCapabilities: prismaDefaultServerCapabilities.result.capabilities as ServerCapabilities,
-  },
+  // {
+  //   // Necessary packages were installed by `npm i -g @prisma/language-server`
+  //   languageServerCommand: 'prisma-language-server',
+  //   fileExtensions: ['.prisma'],
+  //   languageID: LanguageID.Prisma,
+  //   defaultServerCapabilities: prismaDefaultServerCapabilities.result.capabilities as ServerCapabilities,
+  // },
 ]
