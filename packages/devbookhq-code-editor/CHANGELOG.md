@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.28
+
+### Patch Changes
+
+- Add functionality for devbook apps
+
 ## 0.1.27
 
 ### Patch Changes
