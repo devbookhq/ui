@@ -26,7 +26,7 @@ function SelectValue({
         px-2
         cursor-pointer
         border-transparent
-        hover:bg-brand-100/60
+        hover:bg-brand-200
         flex
         items-center
         rounded

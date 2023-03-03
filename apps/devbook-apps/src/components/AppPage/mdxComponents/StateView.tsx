@@ -12,7 +12,7 @@ function StateView({ entry, transform }: Props) {
   return (
     <>
       {value !== undefined &&
-        <strong className="text-brand-500">
+        <strong className="text-brand-600">
           {transform ? transform[value] : value}
         </strong>
       }

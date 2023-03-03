@@ -56,15 +56,15 @@ function Select({
             `transition-all
             cursor-pointer
             flex
-            hover:border-brand-500
-            hover:text-brand-500
+            hover:border-brand-600
+            hover:text-brand-600
             border-b-4
             items-center
             justify-between
             space-x-1`,
             {
-              'text-brand-500 border-brand-500': isOpened,
-              'text-brand-400 border-brand-400': !isOpened,
+              'text-brand-600 border-brand-600': isOpened,
+              'text-brand-500 border-brand-500': !isOpened,
             }
           )}
           onClick={() => setIsOpened(val => !val)}
@@ -92,7 +92,7 @@ function Select({
             absolute
             p-1
             mt-0.5
-            border border-brand-500
+            border border-brand-600
             rounded
             bg-slate-50
             space-y-2`
