@@ -15,10 +15,11 @@ import CopyToClipboardButton from '../CopyToClipboardButton'
 import RunButton from '../RunButton'
 import StopButton from '../StopButton'
 import { rootdir } from 'utils/constants'
+import clsx from 'clsx'
 
 export interface Props {
   root?: string
-  cmd: string
+  cmd?: string
 }
 
 function Terminal({
@@ -31,10 +32,13 @@ function Terminal({
   const [process, setProcess] = useState<TerminalProcess>()
 
   const handleCopyToClipboard = useCallback(() => {
+    if (!cmd) return
     navigator.clipboard.writeText(cmd)
   }, [cmd])
 
   const run = useCallback(async () => {
+    if (!cmd) return
+
     termRef.current?.clear()
     // This is a hack that allows us keep track if a command has finished running.
     // Instead of just writing command into an input and simulating pressing an enter,
@@ -60,7 +64,7 @@ function Terminal({
       flex
       flex-col
     ">
-      <div className="
+      {cmd && <div className="
         flex
         space-x-2
         text-white
@@ -116,14 +120,18 @@ function Terminal({
           />
         </div>
       </div>
-      <div className="
-        relative
+      }
+      <div className={clsx(
+        `relative
         flex
         h-[200px]
         overflow-hidden
-        rounded-t-none
-        rounded-b-lg
-      ">
+        `,
+        {
+          'rounded-b-lg rounded-t-none': !!cmd,
+          'rounded-lg': !cmd,
+        }
+      )}>
         <Term
           ref={termRef}
           rootdir={rootdir}
