@@ -83,6 +83,7 @@ const customTheme = EditorView.theme({
   // Line styling
   '.cm-line': {
     ...transition,
+    transitionProperty: 'opacity, color, font-size'
   },
   '.cm-highlight-line': {
     fontSize: '13.25px;',
@@ -319,11 +320,11 @@ function Code({
             inset-0
             ${isRunnable ? 'not-prose' : 'not-prose rounded-b-lg'}
           `}
-          lintGutter={false}
           languageClients={clients}
           indicatedLines={indicatedLines}
           highlightedLines={highlightedLines}
           content={code}
+          lintGutter={false}
           filename={file ? path.join(rootdir, file) : path.join(rootdir, `dummy-name-${Math.floor(Math.random() * 1000)}.${lang}`)}
           supportedLanguages={supportedLanguages}
           theme={theme}
