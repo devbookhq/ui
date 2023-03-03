@@ -1,5 +1,14 @@
-import { useMemo, ReactNode } from 'react'
-import { chromeLight, ObjectInspector, TableInspector, ObjectLabel, ObjectRootLabel, chromeDark } from 'react-inspector'
+import {
+  useMemo,
+  ReactNode,
+} from 'react'
+import {
+  chromeLight,
+  ObjectInspector,
+  TableInspector,
+  ObjectLabel,
+  ObjectRootLabel,
+} from 'react-inspector'
 
 import { useAppContext } from '../AppContext'
 import Text from 'components/typography/Text'
