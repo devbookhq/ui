@@ -13,17 +13,18 @@ Use [orderBy](https://prisma.io/docs/reference/api-reference/prisma-client-refer
 
 <Highlight lines="5-8">
 You can **sort by properties of a relation**. 
-Change the property <Input entry="property" values={["published: true", "published: false"]} /> used for sorting or the <Input entry="order" values={["createdAt: \"asc\"", "createdAt: \"desc\""]} /> order of sorting.
+Property used for sorting is defined by <Input entry="property" values={["published: true", "published: false"]} /> and the <Input entry="order" values={["createdAt: \"asc\"", "createdAt: \"desc\""]} /> defines the sorting order.
 </Highlight>
 <Output type="array" position={1} noContentLabel="Waiting for data" >
-<State entry="property" transform={{ "published: true": "Published", "published: false":"Non-published" }}/> posts in <State entry="order" transform={{ "createdAt: \"asc\"": "ascending", "createdAt: \"desc\"":"descending" }}/> order
+<State entry="property" transform={{ "published: true": "Published", "published: false":"Non-published" }}/> posts in <State entry="order" transform={{ "createdAt: \"asc\"": "ascending", "createdAt: \"desc\"":"descending" }}/> order:
 </Output>
 
 <Highlight lines="11-13">
-In 2.19.0 and later, you can sort by the **count of related records**.
+In 2.19.0 and later, you can sort by the **count of related records**. <Input entry="count-order" values={["_count: \"asc\"", "_count: \"desc\""]} /> defines the sorting order.
 </Highlight>
 <Output type="array" position={2} noContentLabel="Waiting for data">
-Authors ordered by the number of posts they have written
+
+Authors in <State entry="count-order" transform={{ "_count: \"desc\"": "descending", "_count: \"asc\"": "ascending" }}/> order by the number of posts:
 </Output>
 </div>
 
