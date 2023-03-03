@@ -1,4 +1,4 @@
-import { DiagnosticTag, ServerCapabilities } from 'vscode-languageserver-protocol'
+import { DiagnosticTag, MessageConnection, ServerCapabilities } from 'vscode-languageserver-protocol'
 
 import { LSPConnection, createLSPConnection } from './lspConnection'
 import { createMessageConnection } from './ws'

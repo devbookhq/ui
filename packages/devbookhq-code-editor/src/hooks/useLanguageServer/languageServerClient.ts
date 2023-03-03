@@ -31,11 +31,11 @@ export class LanguageServerClient {
     })
 
     this.lsp.onLogMessage(data => {
-      // log('Log in language service', data)
+      log('Log in language service', data)
     })
 
     this.lsp.onShowMessage(data => {
-      // log('User message in language service', data)
+      log('User message in language service', data)
     })
   }
 

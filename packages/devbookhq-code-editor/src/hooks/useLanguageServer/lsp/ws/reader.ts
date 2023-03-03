@@ -1,11 +1,11 @@
-import type {
+import {
   DataCallback,
   Disposable,
   Message,
   MessageReader,
   PartialMessageInfo,
+  Emitter,
 } from 'vscode-jsonrpc'
-import { Emitter } from 'vscode-ws-jsonrpc'
 
 export const createMessageReader = (wsocket: WebSocket): MessageReader => {
   let state: 'initial' | 'listening' | 'closed' = 'initial'

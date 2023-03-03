@@ -1,5 +1,7 @@
-import type { Logger, MessageConnection } from 'vscode-jsonrpc'
-import { createMessageConnection as createMessageConnectionRW } from 'vscode-ws-jsonrpc'
+import {
+  createMessageConnection as createMessageConnectionRW,
+  Logger,
+} from 'vscode-jsonrpc'
 
 import { createMessageReader } from './reader'
 import { createMessageWriter } from './writer'
@@ -12,8 +14,8 @@ import { createMessageWriter } from './writer'
 export const createMessageConnection = (
   webSocket: WebSocket,
   logger: Logger = createConsoleLogger(),
-): Promise<MessageConnection> =>
-  new Promise(onConnection => {
+) =>
+  new Promise<ReturnType<typeof createMessageConnectionRW>>(onConnection => {
     webSocket.onopen = () => {
       const conn = createMessageConnectionRW(
         createMessageReader(webSocket),

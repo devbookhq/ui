@@ -1,5 +1,4 @@
-import type { Message, MessageWriter } from 'vscode-jsonrpc'
-import { Emitter } from 'vscode-ws-jsonrpc'
+import { Message, MessageWriter, Emitter } from 'vscode-jsonrpc'
 
 export const createMessageWriter = (wsocket: WebSocket): MessageWriter => {
   const errorEmitter = new Emitter<[Error, Message, number]>()

@@ -45,11 +45,11 @@ import {
   WillSaveTextDocumentNotification,
   WillSaveTextDocumentWaitUntilRequest,
   WorkspaceSymbolRequest,
+  MessageConnection,
 } from 'vscode-languageserver-protocol'
 import type {
   CancellationToken,
   Message,
-  MessageConnection,
   NotificationHandler,
 } from 'vscode-jsonrpc'
 
