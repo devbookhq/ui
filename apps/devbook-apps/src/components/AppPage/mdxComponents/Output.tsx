@@ -1,5 +1,5 @@
 import { useMemo, ReactNode } from 'react'
-import { chromeLight, ObjectInspector, TableInspector, ObjectLabel, ObjectRootLabel } from 'react-inspector'
+import { chromeLight, ObjectInspector, TableInspector, ObjectLabel, ObjectRootLabel, chromeDark } from 'react-inspector'
 
 import { useAppContext } from '../AppContext'
 import Text from 'components/typography/Text'
@@ -165,21 +165,29 @@ function Output({
           />
         }
         {extractedContent !== undefined && type === 'array' &&
-          <TableInspector
-            data={content}
-            theme={{
-              ...chromeLight, ...({
-                TREENODE_PADDING_LEFT: 20,
-                BASE_BACKGROUND_COLOR: 'transparent',
-                TABLE_BORDER_COLOR: 'transparent',
-                TABLE_TH_BACKGROUND_COLOR: 'transparent',
-                TABLE_TH_HOVER_COLOR: 'transparent',
-                TABLE_SORT_ICON_COLOR: 'black',
-                TABLE_DATA_BACKGROUND_IMAGE: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(51, 139, 255, 0.0980392) 50%, rgba(51, 139, 255, 0.0980392))',
-                TABLE_DATA_BACKGROUND_SIZE: '128px 32px',
-              })
-            } as any}
-          />
+          <>
+            {content.length === 0 &&
+              <div className="whitespace-pre text-xs font-bold">
+                No items found
+              </div>
+            }
+            {content.length > 0 &&
+              <TableInspector
+                data={content}
+                theme={{
+                  ...chromeLight, ...({
+                    BASE_BACKGROUND_COLOR: 'transparent',
+                    TABLE_BORDER_COLOR: 'transparent',
+                    TABLE_TH_BACKGROUND_COLOR: 'transparent',
+                    TABLE_TH_HOVER_COLOR: 'transparent',
+                    TABLE_SORT_ICON_COLOR: 'black',
+                    TABLE_DATA_BACKGROUND_IMAGE: 'transparent',
+                    TABLE_DATA_BACKGROUND_SIZE: '128px 64px',
+                  })
+                } as any}
+              />
+            }
+          </>
         }
         {extractedContent !== undefined && type === 'json' &&
           <ObjectInspector
