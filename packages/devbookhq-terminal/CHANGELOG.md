@@ -1,5 +1,11 @@
 # @devbookhq/terminal
 
+## 0.1.23
+
+### Patch Changes
+
+- Update SDK
+
 ## 0.1.22
 
 ### Patch Changes

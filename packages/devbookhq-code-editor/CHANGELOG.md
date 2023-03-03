@@ -1,5 +1,11 @@
 # @devbookhq/code-editor
 
+## 0.1.29
+
+### Patch Changes
+
+- Fix LSP
+
 ## 0.1.28
 
 ### Patch Changes

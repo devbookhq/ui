@@ -13,6 +13,7 @@ export { LanguageServerClient } from './hooks/useLanguageServer/languageServerCl
 export { LanguageServerPlugin } from './hooks/useLanguageServer/languageServerPlugin'
 export { LanguageServerProcess } from './hooks/useLanguageServer/languageServerProcess'
 
+export type { Hover, Position, CompletionItem, CompletionList, SignatureHelp } from 'vscode-languageserver-protocol'
 export type { LSClients } from './hooks/useLanguageServer/useLanguageServerClients'
 export type { Handler as CodeEditorHandler, ExtendedCMDiagnostic, Props as CodeEditorProps } from './components/CodeEditor'
 export type { LanguageSetup, ServerCapabilities } from './hooks/useLanguageServer/setup'

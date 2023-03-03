@@ -68,7 +68,6 @@ export function createExtension(options: {
       hoverTooltip(async (view, pos) => {
         const plugin = getPlugin()
 
-        console.log(plugin)
         if (!plugin) return null
 
         const positon = offsetToPos(view.state.doc, pos)

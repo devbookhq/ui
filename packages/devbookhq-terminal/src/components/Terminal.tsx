@@ -44,7 +44,7 @@ export interface Props {
   isPersistent?: boolean
   placeholder?: string
   rootdir?: string
-  session?: Session,
+  session?: Session
 }
 
 const Terminal = forwardRef<Handler, Props>(({

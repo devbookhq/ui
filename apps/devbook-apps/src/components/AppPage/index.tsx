@@ -17,7 +17,7 @@ const defaultAppEnvID = '6VaSXKc5wNSr'
 
 function AppPage({ content }: Props) {
   const sessionHandle = useSession({
-    codeSnippetID: content.serialized?.frontmatter?.envID || content.environmentID || defaultAppEnvID,
+    codeSnippetID: content.serialized?.frontmatter?.envID as string | undefined || content.environmentID || defaultAppEnvID,
     debug: process.env.NODE_ENV === 'development',
     inactivityTimeout: 0,
   })

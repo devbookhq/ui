@@ -1,5 +1,11 @@
 # @devbookhq/react
 
+## 2.0.9
+
+### Patch Changes
+
+- Update SDK
+
 ## 2.0.8
 
 ### Patch Changes

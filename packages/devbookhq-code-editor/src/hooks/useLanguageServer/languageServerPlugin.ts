@@ -191,7 +191,6 @@ export class LanguageServerPlugin implements PluginValue {
   ): Promise<{ tooltip: Tooltip, result: Hover } | null> {
     if (!this.client.capabilities.hoverProvider) return null
 
-    console.log('HR', line, character, this.documentURI)
     const result = await this.client.lsp.getHoverInfo({
       textDocument: { uri: this.documentURI },
       position: {
@@ -199,8 +198,6 @@ export class LanguageServerPlugin implements PluginValue {
         character,
       },
     })
-
-    console.log('RES', result)
 
     if (!result) return null
     const { contents, range } = result
