@@ -7,34 +7,33 @@ envID: 5udkAFHBVrGz
 ## <Run /> Pagination and Sorting
 ###  Sort
 
-Prisma Client supports [filtering and sorting](https://prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting) with the `where` and `orderBy` query options respectively.
+Prisma Client supports [sorting](https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting#sorting) with the [orderBy](https://prisma.io/docs/reference/api-reference/prisma-client-reference#orderby) query option.
 
-Use [orderBy](https://prisma.io/docs/reference/api-reference/prisma-client-reference#orderby) to sort a list of records or a nested list of records by a particular field or set of fields.
+Use `orderBy` to sort a list of records or a nested list of records by a particular property or set of properties.
 
 <Highlight lines="5-8">
-You can **sort by properties of a relation**. 
-Property used for sorting is defined by <Input entry="property" values={["published: true", "published: false"]} /> and the <Input entry="order" values={["createdAt: \"asc\"", "createdAt: \"desc\""]} /> defines the sorting order.
+You can **sort by properties of a relation**. Modify <Input entry="order" values={["createdAt: \"asc\"", "createdAt: \"desc\""]} /> to change the sorting order.
 </Highlight>
 <Output type="array" position={1} noContentLabel="Waiting for data" >
-<State entry="property" transform={{ "published: true": "Published", "published: false":"Non-published" }}/> posts in <State entry="order" transform={{ "createdAt: \"asc\"": "ascending", "createdAt: \"desc\"":"descending" }}/> order:
+Non-published posts sorted by the `createdAt` property in <State entry="order" transform={{ "createdAt: \"asc\"": "ascending", "createdAt: \"desc\"":"descending" }}/> order:
 </Output>
 
 <Highlight lines="11-13">
-In 2.19.0 and later, you can **sort by the count of related records**. <Input entry="count-order" values={["_count: \"asc\"", "_count: \"desc\""]} /> defines the sorting order.
+You can also **sort by the count of related records**. Modify <Input entry="count-order" values={["_count: \"asc\"", "_count: \"desc\""]} /> to change the sorting order.
 </Highlight>
 <Output type="array" position={2} noContentLabel="Waiting for data">
 
-Authors in <State entry="count-order" transform={{ "_count: \"desc\"": "descending", "_count: \"asc\"": "ascending" }}/> order by the number of posts:
+Authors in <State entry="count-order" transform={{ "_count: \"desc\"": "descending", "_count: \"asc\"": "ascending" }}/> order by the number of their posts:
 </Output>
 </div>
 
-<Code file="index.js" onRun={() => "node /code/index.js"}>
+<Code file="index.js" onRun={() => "node /code/index.js"} isEditable>
 {`import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 const posts = await prisma.post.findMany({
-  where: { published: true },
+  where: { published: false },
   orderBy: { createdAt: "asc" },
 });
 console.log(JSON.stringify(posts, null, 2));
